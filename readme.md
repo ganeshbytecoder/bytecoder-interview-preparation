@@ -5,3 +5,7 @@
 mvn archetype:generate -DgroupId=com.example -DartifactId=health-check-module -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
 DgroupId is package name inside
+
+
+command to run a module 
+mvn -pl child-module1 spring-boot:run

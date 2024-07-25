@@ -3,9 +3,9 @@ package com.gschoudhary.design.patterns.structural.adapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.design.patterns.structural.adapter.CurrencyType;
-import com.bytecoder.design.patterns.structural.adapter.RupeeConvertor;
-import com.bytecoder.design.patterns.structural.adapter.TradeService;
+import com.bytecoder.DesignPatterns.structural.adapter.CurrencyType;
+import com.bytecoder.DesignPatterns.structural.adapter.RupeeConvertor;
+import com.bytecoder.DesignPatterns.structural.adapter.TradeService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -3,7 +3,7 @@ package com.gschoudhary.design.patterns.structural.composite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.design.patterns.structural.composite.staticLevel.*;
+import com.bytecoder.DesignPatterns.structural.composite.staticLevel.*;
 
 //problem
 // create hierarchy

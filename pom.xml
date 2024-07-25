@@ -62,7 +62,9 @@
           
     
     <module>spring-boot-module</module>
-      
+    <module>test</module>
+    <module>open-api-module</module>
+
   </modules>
     	
   

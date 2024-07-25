@@ -1,0 +1,135 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<configuration>-->
+
+<!--    <property name="LOGS" value="./logs" />-->
+
+<!--    <appender name="Console"-->
+<!--              class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            <Pattern>-->
+<!--               { "time": "%black(%d{ISO8601})", "logger": "%logger", "level": "[%highlight(%-5level)]", "thread": "%blue(%t)", "class": "%yellow(%C)", "message": "%msg%throwable" }\n-->
+<!--            </Pattern>-->
+<!--        </layout>-->
+<!--    </appender>-->
+
+<!--    <appender name="serverLog"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOGS}/serverLog.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>-->
+<!--                { time: %black(%d{ISO8601}), logger: %logger, level: [%highlight(%-5level)], thread: %blue(%t), class: %yellow(%C), message: %msg%throwable }\n-->
+<!--            </Pattern>-->
+<!--        </encoder>-->
+
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOGS}/archived/serverLog-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+<!--    <appender name="serviceLog"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOGS}/serviceLog.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>-->
+<!--                { time: %black(%d{ISO8601}), logger: %logger, level: [%highlight(%-5level)], thread: %blue(%t), class: %yellow(%C), message: %msg%throwable }\n-->
+<!--            </Pattern>-->
+<!--        </encoder>-->
+
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOGS}/archived/serviceLog-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+<!--    <appender name="springLog"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOGS}/springLog.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>-->
+<!--                { time: %black(%d{ISO8601}), logger: %logger, level: [%highlight(%-5level)], thread: %blue(%t), class: %yellow(%C), message: %msg%throwable }\n-->
+<!--            </Pattern>-->
+<!--        </encoder>-->
+
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOGS}/archived/springLog-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+<!--    <appender name="hibernateLog"-->
+<!--              class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOGS}/hibernateLog.log</file>-->
+<!--        <encoder-->
+<!--                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <Pattern>-->
+<!--                { time: %black(%d{ISO8601}), logger: %logger, level: [%highlight(%-5level)], thread: %blue(%t), class: %yellow(%C), message: %msg%throwable }\n-->
+<!--            </Pattern>-->
+<!--        </encoder>-->
+
+<!--        <rollingPolicy-->
+<!--                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; rollover daily and when the file reaches 10 MegaBytes &ndash;&gt;-->
+<!--            <fileNamePattern>${LOGS}/archived/hibernateLog-%d{yyyy-MM-dd}.%i.log-->
+<!--            </fileNamePattern>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy-->
+<!--                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>10MB</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash; LOG everything at INFO level &ndash;&gt;-->
+<!--&lt;!&ndash;    root will have all the logs by default&ndash;&gt;-->
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="Console" />-->
+<!--        <appender-ref ref="serviceLog" />-->
+<!--&lt;!&ndash;        <appender-ref ref="springLog" />&ndash;&gt;-->
+
+<!--    </root>-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; LOG "com.baeldung*" at TRACE level &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <logger name="com" level="info" additivity="true">&ndash;&gt;-->
+<!--&lt;!&ndash;        <appender-ref ref="Console" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </logger>&ndash;&gt;-->
+
+<!--    <logger name="ganeshsingh" level="info" additivity="true">-->
+<!--        <appender-ref ref="serviceLog" />-->
+<!--    </logger>-->
+
+<!--&lt;!&ndash;    <logger name="org.apache"  level="error">&ndash;&gt;-->
+<!--&lt;!&ndash;        <appender-ref ref="serverLog" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </logger>&ndash;&gt;-->
+
+<!--    <logger name="org.springframework"  level="info" additivity="false">-->
+<!--        <appender-ref ref="springLog" />-->
+<!--    </logger>-->
+
+<!--&lt;!&ndash;    <logger name="org.hibernate" level="error" additivity="false">&ndash;&gt;-->
+<!--&lt;!&ndash;        <appender-ref ref="hibernateLog" />&ndash;&gt;-->
+<!--&lt;!&ndash;    </logger>&ndash;&gt;-->
+
+<!--</configuration>-->
+
+

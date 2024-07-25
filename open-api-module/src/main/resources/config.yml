@@ -1,0 +1,18 @@
+
+
+partner:
+  name: sonata
+  http:
+    request:
+      requestType: Get
+      url: google.com
+    authType:
+      type: NoAuth
+      http:
+        request:
+          requestType: post
+          url: google.com
+
+    headers:
+      content-type: application/json
+

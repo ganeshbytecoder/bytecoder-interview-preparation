@@ -1,4 +1,4 @@
-package AdjacencyList;
+package com.bytecoder.DSA.Graphs.AdjacencyList;
 
 import lombok.Data;
 import lombok.ToString;

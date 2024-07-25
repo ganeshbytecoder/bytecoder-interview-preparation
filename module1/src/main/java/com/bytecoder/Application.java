@@ -1,6 +1,5 @@
 package com.bytecoder;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 // not make method or variable class must be public
 @FunctionalInterface
@@ -54,7 +53,6 @@ class Thread1 extends Thread{
     }
 }
 //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
-@SpringBootApplication
 public class Application {
     public static void main(String[] args) {
 //        SpringApplication.run(Application.class, args);

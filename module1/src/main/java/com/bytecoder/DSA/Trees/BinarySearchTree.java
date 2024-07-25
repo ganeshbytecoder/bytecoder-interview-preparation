@@ -110,7 +110,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
             curr = curr.getRightChild();
         }
 
-        return (int) curr.getData();
+        return 1;
     }
 
     @Override
@@ -128,7 +128,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         while (curr.getLeftChild() != null) {
             curr = curr.getLeftChild();
         }
-        return (int) curr.getData();
+        return 1;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.bytecoder.java8.FunctionalProgramming;
 
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
+
 
 import java.util.Random;
 import java.util.function.*;
@@ -20,7 +19,7 @@ public class InBuiltFunctionalInterfaces {
         System.out.println(Thread.currentThread());
         consumer.accept( "test string");
     }
-    @Async
+
     public static void execute(BiConsumer<String, String> biConsumer){
         System.out.println(Thread.currentThread());
         biConsumer.accept("test", "string");

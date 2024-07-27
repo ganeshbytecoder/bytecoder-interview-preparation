@@ -1,0 +1,61 @@
+{
+  "excelMappings": {
+    "BOOK NAME": {
+      "dbTableName": "book_table",
+      "dbColumnName": "bookname",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "BOOK AUTHER": {
+      "dbTableName": "book_table",
+      "dbColumnName": "bookauthor",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "BOOK FORMAT": {
+      "dbTableName": "book_table",
+      "dbColumnName": "bookformat",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "ISBN": {
+      "dbTableName": "book_table",
+      "dbColumnName": "isbn",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "PUBLISH YEAR": {
+      "dbTableName": "book_table",
+      "dbColumnName": "publishyear",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "account_num": {
+      "dbTableName": "book_table",
+      "publishyear": "account_num",
+      "primaryKeyComponent": "true",
+      "isRequired": "false",
+      "dataType": "string"
+    },
+    "Loan Id": {
+      "dbTableName": "book_table",
+      "dbColumnName": "account_num",
+      "primaryKeyComponent": "true",
+      "isRequired": "false",
+      "dataType": "string"
+    },
+    "Due Date": {
+      "dbTableName": "book_table",
+      "dbColumnName": "demand_due_date",
+      "primaryKeyComponent": "true",
+      "isRequired": "false",
+      "dataType": "date",
+      "format": "dd/MM/yyyy"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "TOKENS": [
+    "BOOK NAME",
+    "BOOK AUTHER",
+    "BOOK FORMAT",
+    "ISBN",
+    "PUBLISH YEAR"
+  ],
+  "excelMappings": {
+    "bookname": {
+      "dbTableName": "book_table",
+      "dbColumnName": "book_table",
+      "columnName": "BOOK NAME",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string",
+      "rowIndex": 0
+    },
+    "bookauthor": {
+      "dbTableName": "book_table",
+      "columnName": "BOOK AUTHER",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "bookformat": {
+      "dbTableName": "book_table",
+      "columnName": "BOOK FORMAT",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "isbn": {
+      "dbTableName": "book_table",
+      "columnName": "ISBN",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    },
+    "publishyear": {
+      "dbTableName": "book_table",
+      "columnName": "PUBLISH YEAR",
+      "primaryKeyComponent": "true",
+      "isRequired": "true",
+      "dataType": "string"
+    }
+  }
+}

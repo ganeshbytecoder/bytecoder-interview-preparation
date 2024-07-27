@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.gschoudhary</groupId>
-  <artifactId>spring-boot-module</artifactId>
+  <artifactId>bytecoder-module</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>spring-boot-module</name>
   <url>http://maven.apache.org</url>

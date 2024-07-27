@@ -22,11 +22,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TestRestController {
     private final Logger logger;
 
-    private OneApiServiceImp oneApiServiceImp;
 
     @Autowired
     public TestRestController(OneApiServiceImp oneApiServiceImp) {
-        this.oneApiServiceImp = oneApiServiceImp;
         this.logger = LoggerFactory.getLogger(TestRestController.class);
     }
 

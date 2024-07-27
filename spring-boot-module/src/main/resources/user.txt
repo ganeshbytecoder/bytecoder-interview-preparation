@@ -1,3 +1,0 @@
-ganesh , 26
-ganesh1 , 27
-ganesh2 , 28

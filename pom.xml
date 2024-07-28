@@ -61,11 +61,10 @@
     <!-- Add more modules as needed -->
           
     
-    <module>bytecoder-module</module>
+    <module>open-auth-module</module>
     <module>test</module>
     <module>open-api-module</module>
     <module>spring-batch</module>
-    <module>Oauth2-module</module>
 
   </modules>
     	

@@ -1,8 +1,8 @@
 package com.gschoudhary.helpers;
 
 
-import com.gschoudhary.models.UserInfo;
-import com.gschoudhary.models.UserRole;
+import com.gschoudhary.models.UserInfoEntity;
+import com.gschoudhary.models.RoleEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,20 +11,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails extends UserInfo implements UserDetails {
+public class CustomUserDetailsEntity extends UserInfoEntity implements UserDetails {
 
     private String username;
     private String password;
     Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(UserInfo byUsername) {
+    public CustomUserDetailsEntity(UserInfoEntity byUsername) {
         this.username = byUsername.getUsername();
         this.password= byUsername.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();
 
-        for(UserRole role : byUsername.getRoles()){
+        for(RoleEntity role : byUsername.getRoles()){
 
-            auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
+            auths.add(new SimpleGrantedAuthority(role.getTitle().toUpperCase()));
         }
         this.authorities = auths;
     }

@@ -1,6 +1,6 @@
 package com.gschoudhary.dtos;
 
-import com.gschoudhary.models.UserRole;
+import com.gschoudhary.models.RoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,6 @@ public class UserRequest {
     private String password;
 
     @NotEmpty
-    private Set<UserRole> roles;
-
+    private Set<RoleEntity> roles;
 
 }

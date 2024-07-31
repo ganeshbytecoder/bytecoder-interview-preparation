@@ -3,8 +3,8 @@ package com.gschoudhary.services;
 
 import com.gschoudhary.dtos.UserRequest;
 import com.gschoudhary.dtos.UserResponse;
-import com.gschoudhary.models.UserInfo;
-import com.gschoudhary.models.UserRole;
+import com.gschoudhary.models.UserInfoEntity;
+import com.gschoudhary.models.RoleEntity;
 import com.gschoudhary.repositories.RoleRepository;
 import com.gschoudhary.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -36,26 +36,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserRequest userRequest) {
 
-        UserInfo savedUser = null;
+        UserInfoEntity savedUser = null;
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String rawPassword = userRequest.getPassword();
         String encodedPassword = encoder.encode(rawPassword);
 
-        for(UserRole userRole: userRequest.getRoles()){
-            Optional<UserRole> userRole1 = roleRepository.findByName(userRole.getName());
+        for(RoleEntity roleEntity : userRequest.getRoles()){
+            Optional<RoleEntity> userRole1 = roleRepository.findByTitle(roleEntity.getTitle());
             if(!userRole1.isPresent()){
-                roleRepository.save(userRole);
+                roleRepository.save(roleEntity);
             }else {
                 System.out.println("present");
             }
         }
 
-        UserInfo user = modelMapper.map(userRequest, UserInfo.class);
+        UserInfoEntity user = modelMapper.map(userRequest, UserInfoEntity.class);
         System.out.println(user.toString());
         user.setPassword(encodedPassword);
         if(userRequest.getId() != null){
-            UserInfo oldUser = userRepository.findFirstById(userRequest.getId());
+            UserInfoEntity oldUser = userRepository.findFirstById(userRequest.getId());
             if(oldUser != null){
                 oldUser.setId(user.getId());
                 oldUser.setPassword(user.getPassword());
@@ -78,14 +78,14 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetail = (UserDetails) authentication.getPrincipal();
         String usernameFromAccessToken = userDetail.getUsername();
-        UserInfo user = userRepository.findByUsername(usernameFromAccessToken);
+        UserInfoEntity user = userRepository.findByUsername(usernameFromAccessToken);
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         return userResponse;
     }
 
     @Override
     public List<UserResponse> getAllUser() {
-        List<UserInfo> users = (List<UserInfo>) userRepository.findAll();
+        List<UserInfoEntity> users = (List<UserInfoEntity>) userRepository.findAll();
         Type setOfDTOsType = new TypeToken<List<UserResponse>>(){}.getType();
         List<UserResponse> userResponses = modelMapper.map(users, setOfDTOsType);
         return userResponses;

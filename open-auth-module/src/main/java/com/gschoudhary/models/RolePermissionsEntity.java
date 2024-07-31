@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -12,14 +13,21 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ROLES")
-public class UserRole {
+@Table(name = "PERMISSIONS")
+public class RolePermissionsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long id;
 
-    private String name;
+    private String title;
+
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="id")
+    @JsonIgnore
+    private RoleEntity roleEntity;
 
 }

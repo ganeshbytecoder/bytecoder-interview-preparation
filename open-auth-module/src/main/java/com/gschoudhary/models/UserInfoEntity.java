@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USERS")
-public class UserInfo {
+public class UserInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class UserInfo {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
 
 
 }

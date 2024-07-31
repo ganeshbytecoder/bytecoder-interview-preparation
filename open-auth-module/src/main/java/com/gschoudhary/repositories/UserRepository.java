@@ -2,15 +2,15 @@ package com.gschoudhary.repositories;
 
 
 import com.gschoudhary.helpers.RefreshableCRUDRepository;
-import com.gschoudhary.models.UserInfo;
+import com.gschoudhary.models.UserInfoEntity;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends RefreshableCRUDRepository<UserInfo, Long> {
+public interface UserRepository extends RefreshableCRUDRepository<UserInfoEntity, Long> {
 
-   public UserInfo findByUsername(String username);
+   public UserInfoEntity findByUsername(String username);
 
-   UserInfo findFirstById(Long id);
+   UserInfoEntity findFirstById(Long id);
 
 }

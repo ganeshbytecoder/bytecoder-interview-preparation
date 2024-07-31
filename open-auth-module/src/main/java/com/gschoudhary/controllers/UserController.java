@@ -56,16 +56,6 @@ public class UserController {
     }
 
 
-    @PostMapping("/profile")
-    public ResponseEntity<UserResponse> getUserProfile() {
-        try {
-        UserResponse userResponse = userService.getUser();
-        return ResponseEntity.ok().body(userResponse);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/test")
     public String test() {

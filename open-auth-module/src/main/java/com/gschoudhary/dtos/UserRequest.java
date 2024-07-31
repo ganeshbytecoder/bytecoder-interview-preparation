@@ -25,6 +25,6 @@ public class UserRequest {
     private String password;
 
     @NotEmpty
-    private Set<RoleEntity> roles;
+    private Set<String> roles;
 
 }

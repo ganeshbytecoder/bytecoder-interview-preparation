@@ -1,6 +1,6 @@
 package com.gschoudhary.services;
 
-
+import java.util.*;
 import com.gschoudhary.dtos.UserRequest;
 import com.gschoudhary.dtos.UserResponse;
 import com.gschoudhary.models.UserInfoEntity;
@@ -42,17 +42,17 @@ public class UserServiceImpl implements UserService {
         String rawPassword = userRequest.getPassword();
         String encodedPassword = encoder.encode(rawPassword);
 
-        for(RoleEntity roleEntity : userRequest.getRoles()){
-            Optional<RoleEntity> userRole1 = roleRepository.findByTitle(roleEntity.getTitle());
-            if(!userRole1.isPresent()){
-                roleRepository.save(roleEntity);
-            }else {
-                System.out.println("present");
-            }
-        }
 
         UserInfoEntity user = modelMapper.map(userRequest, UserInfoEntity.class);
+        Set<RoleEntity> roles = new HashSet<>();
+
+        for(String role : userRequest.getRoles()){
+            RoleEntity roleEntity = roleRepository.findByTitle(role).orElseThrow(()->new RuntimeException(String.format("role %s is not found", role)));
+            roles.add(roleEntity);
+        }
+
         System.out.println(user.toString());
+        user.setRoles(roles);
         user.setPassword(encodedPassword);
         if(userRequest.getId() != null){
             UserInfoEntity oldUser = userRepository.findFirstById(userRequest.getId());

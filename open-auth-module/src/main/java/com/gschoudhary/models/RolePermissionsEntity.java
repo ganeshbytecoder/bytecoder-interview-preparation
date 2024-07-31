@@ -1,18 +1,14 @@
 package com.gschoudhary.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "PERMISSIONS")
 public class RolePermissionsEntity {
 

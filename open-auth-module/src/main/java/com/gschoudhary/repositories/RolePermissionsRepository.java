@@ -12,6 +12,6 @@ public interface RolePermissionsRepository extends CrudRepository<RolePermission
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM RolePermissionsEntity u WHERE u.userRoleEntity.id = :id")
+    @Query("DELETE FROM RolePermissionsEntity u WHERE u.roleEntity.id = :id")
     void deleteAllWithRole(long id);
 }

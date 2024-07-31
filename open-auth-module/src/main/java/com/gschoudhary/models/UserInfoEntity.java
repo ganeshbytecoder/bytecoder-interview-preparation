@@ -1,27 +1,24 @@
 package com.gschoudhary.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "USERS")
 public class UserInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private long id;
 
     private String username;
@@ -29,7 +26,14 @@ public class UserInfoEntity {
     @JsonIgnore
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @JsonManagedReference
     private Set<RoleEntity> roles = new HashSet<>();
 
 

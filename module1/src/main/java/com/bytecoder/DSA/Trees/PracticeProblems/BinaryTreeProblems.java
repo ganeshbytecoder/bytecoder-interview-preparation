@@ -1,4 +1,9 @@
-package com.bytecoder.DSA.Trees;
+package com.bytecoder.DSA.Trees.PracticeProblems;
+
+import com.bytecoder.DSA.Trees.Node;
+import com.bytecoder.DSA.Trees.Tree;
+
+import java.util.List;
 
 public interface BinaryTreeProblems<T extends Comparable<T>> {
 
@@ -51,7 +56,14 @@ public interface BinaryTreeProblems<T extends Comparable<T>> {
     boolean areMirrors(Node<T> root1 , Node<T> root2);
 
 //    31* give an algorithm for printing all the ancestors of a node in a binary tree,
-
     void printAllAncestors(Node<T> root);
+
+
+//    Give an algorithm for finding thr vertical sum of a binary tree
+
+     List<Integer> getVerticalSum(Tree<T> node , int  column );
+
+
+     void zigZagTraversal(Tree<T> node);
 
 }

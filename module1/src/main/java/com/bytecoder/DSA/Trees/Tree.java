@@ -5,6 +5,7 @@ import java.util.List;
 public interface Tree<T extends Comparable<T>> {
 
     Node<T> getRoot();
+
     boolean isEmpty();
 
 

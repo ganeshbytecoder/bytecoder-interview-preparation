@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+/**
+ * @Auther - Ganesh Singh
+ * this class is used to create, update and login user
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {

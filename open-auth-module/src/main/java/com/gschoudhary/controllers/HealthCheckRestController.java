@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RestController
 @Slf4j
-public class HealthCheckRestController {
+public final class HealthCheckRestController {
     private final Logger logger;
 
     @Autowired

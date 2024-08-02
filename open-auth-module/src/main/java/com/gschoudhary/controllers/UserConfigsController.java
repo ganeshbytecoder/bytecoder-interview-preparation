@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api/v1")
-public class UserConfigsController {
+public final class UserConfigsController {
 
     @Autowired
     RoleAndPermissionsService roleAndPermissionsService;
@@ -57,7 +57,6 @@ public class UserConfigsController {
         }
     }
 
-
     @DeleteMapping(value = "/roles")
     public ResponseEntity deleteRole(@RequestBody RoleAndPermissionsDto roleAndPermissionsDto) {
         try {
@@ -67,6 +66,9 @@ public class UserConfigsController {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 
 }

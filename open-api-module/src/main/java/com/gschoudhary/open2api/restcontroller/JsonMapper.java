@@ -10,14 +10,14 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-@Service
+
 public class JsonMapper {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper()
+  private final ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private static final Validator validator = factory.getValidator();
+    private  final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private  final Validator validator = factory.getValidator();
 
 
     public <T> T fromJson(String json, Class<T> clazz) throws Exception {

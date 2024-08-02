@@ -23,7 +23,7 @@ public class HealthCheckRestController {
 
     @Autowired
     public HealthCheckRestController() {
-        this.logger = LoggerFactory.getLogger("ganeshsingh");
+        this.logger = LoggerFactory.getLogger("HealthCheckRestController");
     }
 
     /**

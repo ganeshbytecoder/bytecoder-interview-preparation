@@ -1,6 +1,5 @@
 package com.gschoudhary.open2api.restcontroller;
 
-import com.gschoudhary.Users.UserDto;
 import com.gschoudhary.open2api.service.OneApiServiceImp;
 import com.gschoudhary.open2api.utils.validator.JsonValidator;
 import org.slf4j.Logger;
@@ -29,8 +28,6 @@ public class OneApiRestController {
     private JsonValidator jsonValidator;
 
 
-    @Autowired
-    JsonMapper jsonMapper;
 
     @Autowired
     ServiceFactory serviceFactory;
@@ -57,10 +54,7 @@ public class OneApiRestController {
             return new ResponseEntity<>("object is not json. please make right request", HttpStatus.OK);
         }
         try {
-
-            UserDto userDto = jsonMapper.fromJson(object, UserDto.class);
-
-            response = serviceFactory.getService(code).apply(userDto);
+            response = serviceFactory.getService(code).execute(object);
         } catch (Exception e) {
             throw new ValidationException(e);
         }

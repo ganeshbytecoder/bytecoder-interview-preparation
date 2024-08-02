@@ -1,21 +1,44 @@
 package com.gschoudhary.Users;
 
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Function;
 
+
+@NoArgsConstructor
 @Service("A")
-public class UsersServiceImpl implements Function<UserDto, String> {
+class Get implements OneApi<UserDto, UserDto> {
 
 
-    private UsersServiceImpl() {
+    @Override
+    public UserDto apply(UserDto userDto) {
+        System.out.println(userDto.toString());
+        return userDto;
     }
 
+    @Override
+    public Class<UserDto> getType() {
+        return UserDto.class;
+    }
+}
+
+
+@Service("B")
+class Post implements OneApi<UserDto, String> {
 
     @Override
     public String apply(UserDto userDto) {
         System.out.println(userDto.toString());
-        return "Successfully Saved";
+        return "Successfully Saved B";
+    }
+
+    @Override
+    public Class<UserDto> getType() {
+        return UserDto.class;
     }
 }
+
+
+
+

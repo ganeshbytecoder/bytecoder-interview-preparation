@@ -2,18 +2,31 @@ package com.gschoudhary.Users;
 
 
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Service
+public class UsersServiceImpl {
 
+    @Autowired
+    UserRepository userRepository;
+
+    ModelMapper modelMapper = new ModelMapper();
+
+}
 
 @NoArgsConstructor
 @Service("A")
-class Get implements OneApi<UserDto, UserDto> {
+class Get extends UsersServiceImpl implements OneApi<UserDto, UserDto> {
 
 
     @Override
     public UserDto apply(UserDto userDto) {
         System.out.println(userDto.toString());
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+//        userEntity = userRepository.save(userEntity);
+        System.out.println(userEntity);
         return userDto;
     }
 

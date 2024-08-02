@@ -1,6 +1,7 @@
 package com.gschoudhary.open2api.restcontroller;
 
-import com.gschoudhary.open2api.service.syncApi.OneApiServiceImp;
+import com.gschoudhary.Users.UserDto;
+import com.gschoudhary.open2api.service.OneApiServiceImp;
 import com.gschoudhary.open2api.utils.validator.JsonValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.ExecutionException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,6 +26,13 @@ public class OneApiRestController {
 
     private JsonValidator jsonValidator;
 
+
+    @Autowired
+    JsonMapper jsonMapper;
+
+    @Autowired
+    ServiceFactory serviceFactory;
+
     @Autowired
     public OneApiRestController(OneApiServiceImp oneApiServiceImp, JsonValidator jsonValidator) {
         this.oneApiServiceImp = oneApiServiceImp;
@@ -39,15 +45,27 @@ public class OneApiRestController {
      *
      * @return response body
      */
-    @PostMapping(path = "/app/v1/one-api", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity checkHealth(@RequestHeader(name = "code", defaultValue = "CODE") String code, @RequestHeader(name = "type", defaultValue = "SYNC") String requestType, @RequestBody String object) throws ExecutionException, InterruptedException {
+    @PostMapping(path = "/api/v1/one-api", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity execute(@RequestHeader(name = "code", defaultValue = "CODE") String code, @RequestBody(required = true) String object) {
         logger.info("making request =" + code + " " + object);
-        String response = null;
+
+        Object response = null;
         logger.info("current thread in controller" + Thread.currentThread());
         if (!jsonValidator.isValidJson(object)) {
             return new ResponseEntity<>("object is not json. please make right request", HttpStatus.OK);
         }
-        response = oneApiServiceImp.makeRequest(code, object, requestType);
+
+        System.out.println("Push event in db for api stats");
+        System.out.println("Push event  for data backup");
+
+        try {
+
+            UserDto userDto = jsonMapper.fromJson(object, UserDto.class);
+
+            response = serviceFactory.getService(code).apply(userDto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

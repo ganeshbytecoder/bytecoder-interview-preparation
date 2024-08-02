@@ -1,4 +1,4 @@
-package com.gschoudhary.open2api.service.syncApi;
+package com.gschoudhary.open2api.service;
 
 import com.gschoudhary.open2api.domain.ApiConfigEntity;
 import com.gschoudhary.open2api.domain.AuthConfigEntity;

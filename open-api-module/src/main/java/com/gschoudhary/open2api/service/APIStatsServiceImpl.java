@@ -12,7 +12,6 @@ public class APIStatsServiceImpl {
     ApiStatsRepository apiStatsRepository;
 
 
-
     public ApiStatsEntity accept(String code, String object) {
 
         System.out.println("Saving api stats" + object);

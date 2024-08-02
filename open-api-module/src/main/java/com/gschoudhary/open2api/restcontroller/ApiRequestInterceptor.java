@@ -67,13 +67,14 @@ public class ApiRequestInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws IOException {
-        System.out.println(request.getAttribute("id"));
-        long id = (long) request.getAttribute("id");
-        apiStatsService.update(id, "response", response.getStatus());
+
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) {
+      System.out.println(request.getAttribute("id"));
+        long id = (long) request.getAttribute("id");
+        apiStatsService.update(id, "response", response.getStatus());
     }
 
 }

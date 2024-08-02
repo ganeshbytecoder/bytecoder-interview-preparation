@@ -29,9 +29,9 @@ public class JsonMapper {
         if (!violations.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (ConstraintViolation<T> violation : violations) {
-                sb.append(violation.getMessage()).append("\n");
+                sb.append(violation.getPropertyPath()).append(": ").append(violation.getMessage()).append("\n");
             }
-            throw new Exception("Validation errors:\n" + sb.toString());
+            throw new Exception("Validation errors: \\n "+ sb.toString());
         }
 
         return obj;    }

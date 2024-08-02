@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -54,17 +56,13 @@ public class OneApiRestController {
         if (!jsonValidator.isValidJson(object)) {
             return new ResponseEntity<>("object is not json. please make right request", HttpStatus.OK);
         }
-
-        System.out.println("Push event in db for api stats");
-        System.out.println("Push event  for data backup");
-
         try {
 
             UserDto userDto = jsonMapper.fromJson(object, UserDto.class);
 
             response = serviceFactory.getService(code).apply(userDto);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ValidationException(e);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -2,7 +2,7 @@
 * Built-In Functional Interfaces ?
 
 * to generate module use following command
-mvn archetype:generate -DgroupId=com.example -DartifactId=health-check-module -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn archetype:generate -DgroupId=com.bytecoder -DartifactId=com.bytecoder.api -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
 DgroupId is package name inside
 

@@ -19,33 +19,6 @@ public class ApiRequestInterceptor implements HandlerInterceptor {
     @Autowired
     APIStatsServiceImpl apiStatsService;
 
-
-    private String getBody(HttpServletRequest request) throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = null;
-
-        try {
-            bufferedReader = request.getReader();
-            char[] charBuffer = new char[128];
-            int bytesRead;
-            while ((bytesRead = bufferedReader.read(charBuffer)) != -1) {
-                stringBuilder.append(charBuffer, 0, bytesRead);
-            }
-        } catch (IOException ex) {
-            throw ex;
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ex) {
-                    throw ex;
-                }
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 

@@ -1,4 +1,4 @@
-package com.gschoudhary.Bytecoder.exams;
+package com.gschoudhary.Bytecoder.papers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,39 +11,39 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/v2")
-public class ExamRestController {
+public class PaperRestController {
     private final Logger logger = LoggerFactory.getLogger(RestController.class);
 
     @Autowired
-    private ExamsService examsService;
+    private PaperService paperService;
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody(required = true) ExamDtos examDtos) {
-        Object response = examsService.create(examDtos);
+    public ResponseEntity create(@RequestBody(required = true) PaperDto paperDto) {
+        Object response = paperService.create(paperDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity getAll(@RequestBody(required = true) ExamDtos examDtos) {
-        Object response = examsService.getAll(examDtos);
+    public ResponseEntity getAll(@RequestBody(required = true) PaperDto paperDto) {
+        Object response = paperService.getAll(paperDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity getById(@RequestBody(required = true) ExamDtos examDtos) {
-        Object response = examsService.getById(examDtos);
+    public ResponseEntity getById(@RequestBody(required = true) PaperDto paperDto) {
+        Object response = paperService.getById(paperDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody(required = true) ExamDtos examDtos) {
-        Object response = examsService.update(examDtos);
+    public ResponseEntity update(@RequestBody(required = true) PaperDto paperDto) {
+        Object response = paperService.update(paperDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@RequestBody(required = true) ExamDtos examDtos) {
-        Object response = examsService.delete(examDtos);
+    public ResponseEntity delete(@RequestBody(required = true) PaperDto paperDto) {
+        Object response = paperService.delete(paperDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

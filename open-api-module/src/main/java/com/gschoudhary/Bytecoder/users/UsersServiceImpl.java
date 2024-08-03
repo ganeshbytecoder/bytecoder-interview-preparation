@@ -1,56 +1,46 @@
 package com.gschoudhary.Bytecoder.users;
 
-
-import com.gschoudhary.open2api.service.OneApi;
-import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsersServiceImpl {
-
-    @Autowired
-    UserRepository userRepository;
-
-    ModelMapper modelMapper = new ModelMapper();
-
-}
-
-@NoArgsConstructor
-@Service("A")
-class Get  implements OneApi<UserDto, UserDto> {
+public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public UserDto apply(UserDto userDto) {
-        System.out.println(userDto.toString());
-//        userEntity = userRepository.save(userEntity);
+    public UserDto create(UserDto userDto) {
+        System.out.println(userDto);
+
         return userDto;
     }
 
     @Override
-    public Class<UserDto> getType() {
-        return UserDto.class;
+    public UserDto getAll(UserDto userDto) {
+        System.out.println(userDto);
+
+        return userDto;
     }
-}
 
-
-@Service("B")
-class Post implements OneApi<UserDto, String> {
 
     @Override
-    public String apply(UserDto userDto) {
-        System.out.println(userDto.toString());
-        return "Successfully Saved B";
+    public UserDto getById(UserDto userDto) {
+        System.out.println(userDto);
+
+        return userDto;
     }
+
 
     @Override
-    public Class<UserDto> getType() {
-        return UserDto.class;
+    public UserDto update(UserDto userDto) {
+        System.out.println(userDto);
+
+        return userDto;
+    }
+
+
+    @Override
+    public UserDto delete(UserDto userDto) {
+        System.out.println(userDto);
+
+        return userDto;
     }
 }
-
-
-
-

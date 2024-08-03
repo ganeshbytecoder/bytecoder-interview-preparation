@@ -21,6 +21,7 @@ public class RoleEntity {
     @Column(name = "id")
     private long id;
 
+
     private String title;
 
     private String description;

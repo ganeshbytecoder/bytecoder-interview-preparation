@@ -1,4 +1,4 @@
-package com.gschoudhary.Users;
+package com.gschoudhary.open2api.service;
 
 import com.gschoudhary.open2api.restcontroller.JsonMapper;
 

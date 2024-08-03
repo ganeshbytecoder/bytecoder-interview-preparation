@@ -1,7 +1,7 @@
 package com.gschoudhary.open2api.restcontroller;
 
 
-import com.gschoudhary.Users.OneApi;
+import com.gschoudhary.open2api.service.OneApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 @Component
 public class ServiceFactory {

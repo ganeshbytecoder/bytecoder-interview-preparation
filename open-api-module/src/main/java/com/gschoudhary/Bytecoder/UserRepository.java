@@ -1,4 +1,4 @@
-package com.gschoudhary.Users;
+package com.gschoudhary.Bytecoder;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -1,11 +1,13 @@
 package com.gschoudhary;
 
+import com.gschoudhary.Bytecoder.RolesService;
 import com.gschoudhary.open2api.domain.ApiConfigEntity;
 import com.gschoudhary.open2api.domain.AuthConfigEntity;
 import com.gschoudhary.open2api.enums.AuthType;
 import com.gschoudhary.open2api.enums.MethodType;
 import com.gschoudhary.open2api.repository.ApiConfigRepository;
 import com.gschoudhary.open2api.repository.AuthConfigRepository;
+import com.gschoudhary.open2api.restcontroller.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,26 @@ public class Open2apiApplication {
     @Autowired
     private AuthConfigRepository authConfigRepository;
 
+
+    @Autowired
+    private static RolesService rolesService;
+
+
+    public static void addRoutes() {
+        Router.POST("/api/v1/codec", (c) -> "codec " + c);
+
+        Router.POST("/api/v1/codea", (c) -> rolesService.addRole());
+
+        Router.POST("/api/v1/codeb", (c) -> rolesService.getRoles());
+    }
+
+
     private static final Logger log = LoggerFactory.getLogger(Open2apiApplication.class);
 
     public static void main(String[] args) {
         System.out.println("starting application");
         SpringApplication.run(Open2apiApplication.class, args);
+        addRoutes();
     }
 
     @Bean
@@ -82,8 +99,8 @@ public class Open2apiApplication {
                     .id(1L)
                     .mediaType("application/x-www-form-urlencoded")
                     .methodType(MethodType.POST)
-					.authType(AuthType.OAUTH2)
-					.jsonObject("grant_type=client_credentials&scope=read write&client_secret=090e0205ee913508d65f54fc2103dd5e&client_id=partner-samavesh")
+                    .authType(AuthType.OAUTH2)
+                    .jsonObject("grant_type=client_credentials&scope=read write&client_secret=090e0205ee913508d65f54fc2103dd5e&client_id=partner-samavesh")
                     .apiCode("1010")
                     .apiUrl("https://auth.uat1.kalfin.in/oauth/token")
                     .build();

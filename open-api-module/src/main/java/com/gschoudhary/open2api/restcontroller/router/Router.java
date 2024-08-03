@@ -15,7 +15,8 @@ public class Router {
 
 
     public static void POST(String code, Function<Object, Object> function) {
-
         post.put(code, function);
     }
+
+
 }

@@ -12,15 +12,15 @@ import javax.validation.ValidationException;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v2")
 public class RouterController {
     private final Logger logger = LoggerFactory.getLogger(RestController.class);
 
 
-    @PostMapping(path = "/{api_code}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity execute(@PathVariable("api_code") String api_code, @RequestHeader(name = "code", defaultValue = "CODE") String code, @RequestBody(required = true) String object, HttpServletRequest request
+    @PostMapping(path = "/test", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity execute( @RequestBody(required = true) String object, HttpServletRequest request
     ) {
-        logger.info("making request =" + code + " " + object);
+        logger.info("making request = " + object);
 
         Object response = null;
 

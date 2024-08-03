@@ -15,9 +15,9 @@ public class WebConfigService implements WebMvcConfigurer {
         this.requestInterceptor = requestInterceptor;
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(requestInterceptor)
-                .addPathPatterns("/**"); // Apply interceptor to all endpoints
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(requestInterceptor)
+//                .addPathPatterns("/**"); // Apply interceptor to all endpoints
+//    }
 }

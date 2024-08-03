@@ -1,5 +1,7 @@
 package com.gschoudhary.Bytecoder;
 
+import com.gschoudhary.Bytecoder.exams.ExamDtos;
+import com.gschoudhary.Bytecoder.exams.ExamsServiceImpl;
 import com.gschoudhary.open2api.restcontroller.router.Router;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,8 @@ public class Routers {
 
 
     @Autowired
-    private Routers(RolesService rolesService) {
-        Router.POST("/api/v1/users/register", (c) -> "codec " + c);
+    private Routers(RolesService rolesService, ExamsServiceImpl examsService) {
+        Router.POST("/api/v2/exams", (c) -> examsService.addExam((ExamDtos) c));
         Router.POST("/api/v1/codea", (c) -> rolesService.addRole());
         Router.POST("/api/v1/codeb", (c) -> rolesService.getRoles());
     }

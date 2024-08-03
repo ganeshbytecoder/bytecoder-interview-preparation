@@ -26,10 +26,13 @@ public class HttpRequestExecuter implements HttpRequestExecuterService {
         System.out.println("executing thread " + Thread.currentThread());
 
         Headers headers = authHeaderService.getHeaders();
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new RequestInterceptor())
                 .build();
+
         RequestBody requestBody = RequestBody.create(MediaType.parse(apiConfigEntity.getMediaType()), apiConfigEntity.getJsonObject());
+
         Request request = new Request.Builder()
                 .method(apiConfigEntity.getMethodType().getValue(), requestBody)
                 .url(apiConfigEntity.getApiUrl())
@@ -48,7 +51,6 @@ public class HttpRequestExecuter implements HttpRequestExecuterService {
         Map<String, Object> map = new HashMap<>();
         map.put("access_token", "-----");
         String resp = "";
-
         try {
             resp = response.body().string();
             System.out.println(resp);

@@ -1,4 +1,4 @@
-package com.gschoudhary.Bytecoder;
+package com.gschoudhary.Bytecoder.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.gschoudhary.Bytecoder;
+package com.gschoudhary.Bytecoder.users;
 
 
 import com.gschoudhary.open2api.service.OneApi;
@@ -19,15 +19,13 @@ public class UsersServiceImpl {
 
 @NoArgsConstructor
 @Service("A")
-class Get extends UsersServiceImpl implements OneApi<UserDto, UserDto> {
+class Get  implements OneApi<UserDto, UserDto> {
 
 
     @Override
     public UserDto apply(UserDto userDto) {
         System.out.println(userDto.toString());
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 //        userEntity = userRepository.save(userEntity);
-        System.out.println(userEntity);
         return userDto;
     }
 

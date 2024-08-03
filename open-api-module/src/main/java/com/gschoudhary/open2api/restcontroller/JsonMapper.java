@@ -1,8 +1,8 @@
 package com.gschoudhary.open2api.restcontroller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,15 +13,15 @@ import java.util.Set;
 
 public class JsonMapper {
 
-  private final ObjectMapper objectMapper = new ObjectMapper()
+    private final ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private  final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private  final Validator validator = factory.getValidator();
+    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private final Validator validator = factory.getValidator();
 
 
     public <T> T fromJson(String json, Class<T> clazz) throws Exception {
-     // Map JSON to Java Object
+        // Map JSON to Java Object
         T obj = objectMapper.readValue(json, clazz);
 
         // Validate the object
@@ -31,10 +31,16 @@ public class JsonMapper {
             for (ConstraintViolation<T> violation : violations) {
                 sb.append(violation.getPropertyPath()).append(": ").append(violation.getMessage()).append("\n");
             }
-            throw new Exception("Validation errors: \\n "+ sb.toString());
+            throw new Exception("Validation errors: \\n " + sb.toString());
         }
 
-        return obj;    }
+        return obj;
+    }
+
+
+    public <T> String toJson(Class<T> object) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(object);
+    }
 
 }
 

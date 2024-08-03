@@ -53,7 +53,7 @@ public class ApiRequestInterceptor implements HandlerInterceptor {
         System.out.println("Request Method: " + request.getMethod());
 
         // Example: Check for a custom header
-        String apiCode = request.getHeader("code");
+        String apiCode = request.getRequestURI();
         if (apiCode == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Missing or invalid api code");

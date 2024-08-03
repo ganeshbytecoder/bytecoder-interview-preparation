@@ -27,17 +27,7 @@ public class Open2apiApplication {
     private AuthConfigRepository authConfigRepository;
 
 
-    @Autowired
-    private static RolesService rolesService;
 
-
-    public static void addRoutes() {
-        Router.POST("/api/v1/codec", (c) -> "codec " + c);
-
-        Router.POST("/api/v1/codea", (c) -> rolesService.addRole());
-
-        Router.POST("/api/v1/codeb", (c) -> rolesService.getRoles());
-    }
 
 
     private static final Logger log = LoggerFactory.getLogger(Open2apiApplication.class);
@@ -45,7 +35,6 @@ public class Open2apiApplication {
     public static void main(String[] args) {
         System.out.println("starting application");
         SpringApplication.run(Open2apiApplication.class, args);
-        addRoutes();
     }
 
     @Bean

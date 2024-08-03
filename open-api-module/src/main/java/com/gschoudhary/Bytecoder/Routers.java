@@ -12,7 +12,6 @@ public class Routers {
 
     @Autowired
     private Routers(RolesService rolesService, ExamsServiceImpl examsService) {
-        Router.POST("/api/v2/exams", (c) -> examsService.addExam((ExamDtos) c));
         Router.POST("/api/v1/codea", (c) -> rolesService.addRole());
         Router.POST("/api/v1/codeb", (c) -> rolesService.getRoles());
     }

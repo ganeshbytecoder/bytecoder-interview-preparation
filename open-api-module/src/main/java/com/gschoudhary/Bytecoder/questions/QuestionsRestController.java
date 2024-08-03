@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/v2")
+@RequestMapping("/api/v2/questions")
 public class QuestionsRestController {
     private final Logger logger = LoggerFactory.getLogger(RestController.class);
 

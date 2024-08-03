@@ -1,4 +1,4 @@
-package com.gschoudhary.open2api.restcontroller;
+package com.gschoudhary.open2api.restcontroller.router;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

@@ -1,4 +1,4 @@
-package com.gschoudhary.open2api.restcontroller;
+package com.gschoudhary.open2api.restcontroller.ExceptionHandler;
 
 import com.gschoudhary.open2api.restcontroller.Dtos.ResponseDto;
 import org.springframework.http.HttpStatus;

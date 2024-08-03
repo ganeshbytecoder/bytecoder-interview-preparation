@@ -7,7 +7,7 @@ import com.gschoudhary.open2api.enums.AuthType;
 import com.gschoudhary.open2api.enums.MethodType;
 import com.gschoudhary.open2api.repository.ApiConfigRepository;
 import com.gschoudhary.open2api.repository.AuthConfigRepository;
-import com.gschoudhary.open2api.restcontroller.Router;
+import com.gschoudhary.open2api.restcontroller.router.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

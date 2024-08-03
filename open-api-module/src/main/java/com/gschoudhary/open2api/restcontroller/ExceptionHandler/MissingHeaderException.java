@@ -1,4 +1,4 @@
-package com.gschoudhary.open2api.restcontroller;
+package com.gschoudhary.open2api.restcontroller.ExceptionHandler;
 
 public class MissingHeaderException extends RuntimeException {
     public MissingHeaderException(String message) {

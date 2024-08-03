@@ -1,4 +1,4 @@
-package com.gschoudhary.open2api.restcontroller;
+package com.gschoudhary.open2api.restcontroller.router;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

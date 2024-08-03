@@ -1,6 +1,6 @@
 package com.gschoudhary.dtos;
 
-import com.gschoudhary.models.RolePermissionsEntity;
+import com.gschoudhary.models.PermissionEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public class RoleAndPermissionsDto {
 
     private String title;
     private String description;
-    private List<RolePermissionsEntity> permissions;
+    private List<PermissionEntity> permissions;
 
 
 }

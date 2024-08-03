@@ -1,12 +1,9 @@
 package com.gschoudhary.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -27,7 +24,7 @@ public class RoleEntity {
     private String description;
 
     @OneToMany(mappedBy = "roleEntity")
-    private List<RolePermissionsEntity> permissions;
+    private List<PermissionEntity> permissions;
 
 
     public RoleEntity(String title, String description) {

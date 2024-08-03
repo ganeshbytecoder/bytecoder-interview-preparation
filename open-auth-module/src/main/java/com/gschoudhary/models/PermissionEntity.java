@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Setter
 @NoArgsConstructor
 @Table(name = "PERMISSIONS")
-public class RolePermissionsEntity {
+public class PermissionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +22,6 @@ public class RolePermissionsEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="id")
     @JsonIgnore
     private RoleEntity roleEntity;
 

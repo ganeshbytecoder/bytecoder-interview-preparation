@@ -3,7 +3,7 @@ package com.gschoudhary.services;
 import java.util.*;
 import com.gschoudhary.dtos.UserRequest;
 import com.gschoudhary.dtos.UserResponse;
-import com.gschoudhary.models.UserInfoEntity;
+import com.gschoudhary.models.UserEntity;
 import com.gschoudhary.models.RoleEntity;
 import com.gschoudhary.repositories.RoleRepository;
 import com.gschoudhary.repositories.UserRepository;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,14 +35,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(UserRequest userRequest) {
 
-        UserInfoEntity savedUser = null;
+        UserEntity savedUser = null;
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String rawPassword = userRequest.getPassword();
         String encodedPassword = encoder.encode(rawPassword);
 
 
-        UserInfoEntity user = modelMapper.map(userRequest, UserInfoEntity.class);
+        UserEntity user = modelMapper.map(userRequest, UserEntity.class);
         Set<RoleEntity> roles = new HashSet<>();
 
         for(String role : userRequest.getRoles()){
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         user.setPassword(encodedPassword);
         if(userRequest.getId() != null){
-            UserInfoEntity oldUser = userRepository.findFirstById(userRequest.getId());
+            UserEntity oldUser = userRepository.findFirstById(userRequest.getId());
             if(oldUser != null){
                 oldUser.setId(user.getId());
                 oldUser.setPassword(user.getPassword());
@@ -78,14 +77,14 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetail = (UserDetails) authentication.getPrincipal();
         String usernameFromAccessToken = userDetail.getUsername();
-        UserInfoEntity user = userRepository.findByUsername(usernameFromAccessToken);
+        UserEntity user = userRepository.findByUsername(usernameFromAccessToken);
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         return userResponse;
     }
 
     @Override
     public List<UserResponse> getAllUser() {
-        List<UserInfoEntity> users = (List<UserInfoEntity>) userRepository.findAll();
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
         Type setOfDTOsType = new TypeToken<List<UserResponse>>(){}.getType();
         List<UserResponse> userResponses = modelMapper.map(users, setOfDTOsType);
         return userResponses;

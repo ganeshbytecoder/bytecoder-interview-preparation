@@ -2,8 +2,8 @@ package com.gschoudhary.services;
 
 import com.gschoudhary.dtos.ResponseDto;
 import com.gschoudhary.dtos.RoleAndPermissionsDto;
+import com.gschoudhary.models.PermissionEntity;
 import com.gschoudhary.models.RoleEntity;
-import com.gschoudhary.models.RolePermissionsEntity;
 import com.gschoudhary.repositories.RolePermissionsRepository;
 import com.gschoudhary.repositories.RoleRepository;
 import org.modelmapper.ModelMapper;
@@ -33,9 +33,9 @@ public class RoleAndPermissionsServiceImpl implements RoleAndPermissionsService 
                 }
         );
 
-        for (RolePermissionsEntity rolePermissionsEntity : roleAndPermissionsDto.getPermissions()) {
-            rolePermissionsEntity.setRoleEntity(roleEntity);
-            rolePermissionsRepository.save(rolePermissionsEntity);
+        for (PermissionEntity permissionEntity : roleAndPermissionsDto.getPermissions()) {
+            permissionEntity.setRoleEntity(roleEntity);
+            rolePermissionsRepository.save(permissionEntity);
         }
 
         ResponseDto<RoleAndPermissionsDto> userRoleEntityResponseDto = new ResponseDto<>();
@@ -60,9 +60,9 @@ public class RoleAndPermissionsServiceImpl implements RoleAndPermissionsService 
     public ResponseDto<RoleAndPermissionsDto> updateRole(RoleAndPermissionsDto roleAndPermissionsDto) {
         RoleEntity roleEntity = roleRepository.findByTitle(roleAndPermissionsDto.getTitle()).orElseThrow(() -> new RuntimeException("Role is not found."));
         rolePermissionsRepository.deleteAllWithRole(roleEntity.getId());
-        for (RolePermissionsEntity rolePermissionsEntity : roleAndPermissionsDto.getPermissions()) {
-            rolePermissionsEntity.setRoleEntity(roleEntity);
-            rolePermissionsRepository.save(rolePermissionsEntity);
+        for (PermissionEntity permissionEntity : roleAndPermissionsDto.getPermissions()) {
+            permissionEntity.setRoleEntity(roleEntity);
+            rolePermissionsRepository.save(permissionEntity);
         }
 
         ResponseDto<RoleAndPermissionsDto> userRoleEntityResponseDto = new ResponseDto<>();

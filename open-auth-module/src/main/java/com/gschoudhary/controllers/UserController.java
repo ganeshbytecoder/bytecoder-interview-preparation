@@ -60,15 +60,6 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/test")
-    public String test() {
-        try {
-            return "Welcome";
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
 
     @PostMapping("/login")
     public JwtResponseDTO AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){

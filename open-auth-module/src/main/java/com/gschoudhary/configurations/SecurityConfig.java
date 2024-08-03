@@ -40,9 +40,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/**", "/api/v1/login", "/app/health", "/api/v1/refreshToken").permitAll()
+                .requestMatchers("/api/v1/users", "/api/v1/login", "/app/health", "/api/v1/refreshToken").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/v2/**")
+                .authorizeHttpRequests().requestMatchers("/api/v1/roles")
                 .authenticated()
                 .and()
                 .sessionManagement()

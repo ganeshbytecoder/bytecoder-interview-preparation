@@ -1,7 +1,7 @@
 package com.gschoudhary.helpers;
 
 
-import com.gschoudhary.models.UserInfoEntity;
+import com.gschoudhary.models.UserEntity;
 import com.gschoudhary.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         logger.debug("Entering in loadUserByUsername Method...");
-        UserInfoEntity user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByUsername(username);
         if(user == null){
             logger.error("Username not found: " + username);
             throw new UsernameNotFoundException("could not found user..!!");

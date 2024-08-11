@@ -7,6 +7,7 @@ public class AdjacencyMatrixGraph {
     public static void main(String[] args) {
         AdjacencyMatrix<String> matrix = new AdjacencyMatrix<>(4, true);
 
+
         String[] values = {"A", "B", "C", "D"};
 
 

@@ -1,7 +1,6 @@
-package com.bytecoder.DSA.Graphs;
+package com.bytecoder.DSA.Graphs.AdjacencyMatrix;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 class Edge<T> {

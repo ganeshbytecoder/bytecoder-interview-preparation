@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Graphs;
+package com.bytecoder.DSA.Graphs.AdjacencyMatrix;
 
 
 public class AdjacencyMatrixGraph {

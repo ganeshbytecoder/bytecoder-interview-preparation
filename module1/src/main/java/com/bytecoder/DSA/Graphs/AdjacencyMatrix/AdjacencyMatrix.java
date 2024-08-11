@@ -1,10 +1,10 @@
-package com.bytecoder.DSA.Graphs;
+package com.bytecoder.DSA.Graphs.AdjacencyMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class AdjacencyMatrix<T> {
+public class AdjacencyMatrix<T> {
     private List<Node<T>> vertices = new ArrayList<>();
     private int[][] matrix;
 

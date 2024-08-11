@@ -8,9 +8,7 @@ public interface Tree<T extends Comparable<T>> {
 
     boolean isEmpty();
 
-
     Tree<T> insert(T data);
-
 
     //    without recursion
     Tree<T> insert_m2(T data);

@@ -6,13 +6,13 @@ import lombok.Data;
 class Node<T> {
     int id;
 
-    T node;
+    T data;
 
     boolean visited;
 
-    Node(int index, T node) {
+    Node(int index, T data) {
         this.id = index;
-        this.node = node;
+        this.data = data;
         this.visited = false;
     }
 

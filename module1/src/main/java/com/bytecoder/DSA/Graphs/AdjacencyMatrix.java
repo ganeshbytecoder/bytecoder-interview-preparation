@@ -8,10 +8,13 @@ class AdjacencyMatrix<T> {
     private List<Node<T>> vertices = new ArrayList<>();
     private int[][] matrix;
 
+    private boolean directed;
 
-    AdjacencyMatrix(int n) {
+
+    AdjacencyMatrix(int n, boolean directed) {
 
         matrix = new int[n][n];
+        this.directed = directed;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 matrix[i][j] = -1;
@@ -32,7 +35,7 @@ class AdjacencyMatrix<T> {
         int j = edge.end.id;
         matrix[i][j] = edge.cost;
 
-        if (!edge.directed) {
+        if (!this.directed) {
             matrix[j][i] = edge.cost;
 
         }
@@ -55,7 +58,17 @@ class AdjacencyMatrix<T> {
 
     private Node<T> getNodeById(int id) {
 
-        List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList())
+        List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList());
+        if (nodes.size() != 1) {
+            throw new RuntimeException("ID either does not exists or duplicate");
+        }
+        return nodes.get(0);
+    }
+
+
+    public Node<T> getNodeByName(T data) {
+
+        List<Node<T>> nodes = vertices.stream().filter(node -> node.getData() == data).collect(Collectors.toList());
         if (nodes.size() != 1) {
             throw new RuntimeException("ID either does not exists or duplicate");
         }
@@ -67,7 +80,7 @@ class AdjacencyMatrix<T> {
 
     void printMatrix() {
         for (Node<T> node : vertices) {
-            System.out.print(node.node.toString() + " ");
+            System.out.print(node.data.toString() + "   ");
         }
         System.out.println();
         for (int i = 0; i < matrix.length; i++) {

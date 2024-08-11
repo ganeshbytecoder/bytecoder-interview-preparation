@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AdjacencyMatrix<T> {
+public class AdjacencyMatrix<T> implements Graph {
 
     private final List<Node<T>> vertices = new ArrayList<>();
 
@@ -23,14 +23,19 @@ public class AdjacencyMatrix<T> {
         }
     }
 
+
+
+    public void addNode(Node<T> node) {
+        vertices.add(node);
+    }
+
+    @Override
     public List<Node<T>> getAllNodes() {
         return vertices;
     }
 
-    public void addVertex(Node<T> node) {
-        vertices.add(node);
-    }
 
+    @Override
     public void addEdge(Edge edge) {
         int i = edge.start.id;
         int j = edge.end.id;
@@ -42,6 +47,7 @@ public class AdjacencyMatrix<T> {
         }
     }
 
+    @Override
     public List<Edge> getAllEdges() {
         List<Edge> edges = new ArrayList<>();
 
@@ -67,6 +73,11 @@ public class AdjacencyMatrix<T> {
     }
 
 
+    public boolean hasEdge(Node<T> src, Node<T> end) {
+        return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
+    }
+
+
     public Node<T> getNodeByName(T data) {
 
         List<Node<T>> nodes = vertices.stream().filter(node -> node.getData() == data).collect(Collectors.toList());
@@ -77,7 +88,8 @@ public class AdjacencyMatrix<T> {
     }
 
 
-    void printMatrix() {
+    @Override
+    public void printGraph() {
         for (Node<T> node : vertices) {
             System.out.print(node.data.toString() + "   ");
         }
@@ -89,4 +101,32 @@ public class AdjacencyMatrix<T> {
             System.out.println();
         }
     }
+
+
+    @Override
+    public void dfs() {
+
+        for (int i = 0; i < vertices.size(); i++) {
+            if (!vertices.get(i).visited) {
+                dfsTraversal(vertices.get(i));
+            }
+        }
+
+    }
+
+
+    public void dfsTraversal(Node<T> node) {
+        System.out.println(node.data.toString());
+        node.setVisited(true);
+
+        for (int i = 0; i < matrix[0].length; i++) {
+            if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
+                dfsTraversal(getNodeById(i));
+            }
+        }
+
+
+    }
+
+
 }

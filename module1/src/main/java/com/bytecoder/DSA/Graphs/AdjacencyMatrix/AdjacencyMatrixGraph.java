@@ -12,7 +12,7 @@ public class AdjacencyMatrixGraph {
 
 
         for (int i = 0; i < 4; i++) {
-            matrix.addVertex(new Node<>(i, values[i]));
+            matrix.addNode(new Node<>(i, values[i]));
         }
 
         matrix.getAllNodes().stream().forEach(System.out::println);
@@ -20,13 +20,16 @@ public class AdjacencyMatrixGraph {
         matrix.getAllEdges().stream().forEach(System.out::println);
 
         matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 10));
+
         matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
 
         matrix.getAllEdges().stream().forEach(System.out::println);
 
         System.out.println("Matrix");
 
-        matrix.printMatrix();
+        matrix.printGraph();
+
+        matrix.dfs();
 
 
     }

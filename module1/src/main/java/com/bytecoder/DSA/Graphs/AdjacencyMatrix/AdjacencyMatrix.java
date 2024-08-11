@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdjacencyMatrix<T> {
-    private List<Node<T>> vertices = new ArrayList<>();
-    private int[][] matrix;
 
-    private boolean directed;
+    private final List<Node<T>> vertices = new ArrayList<>();
 
+    private final int[][] matrix;
+
+    private final boolean directed;
 
     AdjacencyMatrix(int n, boolean directed) {
 
@@ -74,8 +75,6 @@ public class AdjacencyMatrix<T> {
         }
         return nodes.get(0);
     }
-
-
 
 
     void printMatrix() {

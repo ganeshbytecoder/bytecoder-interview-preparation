@@ -24,8 +24,8 @@ public class AdjacencyMatrixGraph {
 
         matrix.getAllEdges().stream().forEach(System.out::println);
 
-
         System.out.println("Matrix");
+
         matrix.printMatrix();
 
 

@@ -58,7 +58,7 @@ class AdjacencyList<T> {
 
     void printMatrix() {
         for (Node<T> node : getAllNodes()) {
-            System.out.print(node.data.toString() + "   ");
+            System.out.println(node.data.toString() + "   ");
 
             for (Map.Entry<Node<T>, Integer> neighbor : node.getNeighbors().entrySet()) {
                 System.out.println(node.data + " -> " + neighbor.getKey().getData() + " " + neighbor.getValue());

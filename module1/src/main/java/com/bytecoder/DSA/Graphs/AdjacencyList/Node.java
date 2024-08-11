@@ -8,7 +8,6 @@ import java.util.Map;
 
 @Data
 class Node<T> {
-    int id;
 
     T data;
 
@@ -17,8 +16,7 @@ class Node<T> {
     @ToString.Exclude
     private Map<Node<T>, Integer> neighbors = new HashMap<>();
 
-    Node(int index, T data) {
-        this.id = index;
+    Node( T data) {
         this.data = data;
         this.visited = false;
     }
@@ -28,4 +26,11 @@ class Node<T> {
     }
 
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "data=" + data +
+                ", visited=" + visited +
+                '}';
+    }
 }

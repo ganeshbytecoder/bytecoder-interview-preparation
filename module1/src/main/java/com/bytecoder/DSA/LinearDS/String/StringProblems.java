@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Array;
+package com.bytecoder.DSA.LinearDS.String;
 
 import java.util.Arrays;
 import java.util.List;

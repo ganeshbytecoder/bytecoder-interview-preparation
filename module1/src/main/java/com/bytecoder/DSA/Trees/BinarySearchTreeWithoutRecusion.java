@@ -3,21 +3,50 @@ package com.bytecoder.DSA.Trees;
 import java.util.Collections;
 import java.util.List;
 
-public class NaryTree<T extends Comparable<T>> implements Tree<T> {
-    @Override
-    public Node<T> getRoot() {
-        return null;
+public class BinarySearchTreeWithoutRecusion<T extends Comparable<T>> implements Tree<T> {
+
+    private Node<T> root;
+
+    public BinarySearchTreeWithoutRecusion() {
+    }
+
+    public Node getRoot() {
+        return root;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return root == null;
     }
+
+
+    public Node<T> insertNode_v2(T data, Node<T> node) {
+
+        if (node == null) {
+            return new Node<>(data);
+        }
+        if (node.getData().compareTo(data) > 0) {
+            node.setLeftChild(insertNode_v2(data, node.getLeftChild()));
+        } else {
+            node.setRightChild(insertNode_v2(data, node.getRightChild()));
+        }
+        return node;
+    }
+
 
     @Override
     public Tree<T> insert(T data) {
         return null;
     }
+
+    @Override
+    public void delete(T data) {
+
+
+    }
+
+
+
 
     @Override
     public void traverse(TraversalType traversalType) {
@@ -36,11 +65,11 @@ public class NaryTree<T extends Comparable<T>> implements Tree<T> {
         return 0;
     }
 
+
     @Override
     public int getHeight() {
         return 0;
     }
-
 
     @Override
     public int getLevel(T data) {
@@ -53,16 +82,10 @@ public class NaryTree<T extends Comparable<T>> implements Tree<T> {
         return Collections.emptyList();
     }
 
-
     @Override
     public boolean searchData(T data) {
         return false;
     }
 
-
-    @Override
-    public void delete(T data) {
-
-    }
 
 }

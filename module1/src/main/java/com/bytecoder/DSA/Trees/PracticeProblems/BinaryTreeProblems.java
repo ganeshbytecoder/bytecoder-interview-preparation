@@ -13,15 +13,19 @@ public interface BinaryTreeProblems<T extends Comparable<T>> {
     int getSumOfNodesAtLevel_m2(Node<T> root);
 
 
-//    get level order traverse from bottom to top
+//    print given level in BT
+    void printGivenLevel(Node<T> node , int level);
+
+
+//  get level order traverse from bottom to top
     void traverseFromBottom2Top(Node<T> root);
 
-//    Give an algorithm for finding the deepest node of the binary tree
+//  Give an algorithm for finding the deepest node of the binary tree
     Node<T> getDeepestNode(Node<T> root);
 
 
-//    traverse using DFS without recursion
-//    traverse using BFS without recursion
+//  traverse using DFS without recursion
+//  traverse using BFS without recursion
 
 //  11. int getHeight or getDepth of tree without recursion (use q.push[node,level])
     int getHeight_m2();
@@ -55,15 +59,14 @@ public interface BinaryTreeProblems<T extends Comparable<T>> {
 //  27* given two trees, give a algorithm for checking whether they are mirrors of each other ?.
     boolean areMirrors(Node<T> root1 , Node<T> root2);
 
-//    31* give an algorithm for printing all the ancestors of a node in a binary tree,
+//  31* give an algorithm for printing all the ancestors of a node in a binary tree,
     void printAllAncestors(Node<T> root);
 
 
-//    Give an algorithm for finding thr vertical sum of a binary tree
+//  32* Give an algorithm for finding thr vertical sum of a binary tree
+    List<Integer> getVerticalSum(Tree<T> node , int  column );
 
-     List<Integer> getVerticalSum(Tree<T> node , int  column );
 
-
-     void zigZagTraversal(Tree<T> node);
+    void zigZagTraversal(Tree<T> node);
 
 }

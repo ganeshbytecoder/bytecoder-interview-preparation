@@ -24,7 +24,7 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     @Override
     public Tree<T> insert(T data) {
         if (this.isEmpty()) {
-            root = new Node(data);
+            root = new Node<T>(data);
             return this;
         }
         Queue<Node<T>> queue = new LinkedList<>();
@@ -46,35 +46,10 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
                 queue.add(temp.getRightChild());
             }
         }
-        System.out.println(root);
         return this;
     }
 
-    private void insert_m2(Node<T> node, T data) {
-        if (this.isEmpty()) {
-            root = new Node<>(data);
-        }
-        if (node == null) {
-            return;
-        }
-        if (node.getLeftChild() == null) {
-            node.setLeftChild(new Node<>(data));
-            return;
-        }
-        if (node.getRightChild() == null) {
-            node.setRightChild(new Node<>(data));
-            return;
-        }
 
-        insert_m2(node.getLeftChild(), data);
-        insert_m2(node.getRightChild(), data);
-    }
-
-    @Override
-    public Tree<T> insert_m2(T data) {
-        insert_m2(root, data);
-        return this;
-    }
 
 
     @Override
@@ -83,88 +58,29 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
         System.out.println(traversalType);
         if ((traversalType.equals(TraversalType.IN_ORDER))) {
             traverseInOrder(this.root);
-            traverse_m2(traversalType);
 
         }
         if (traversalType.equals(TraversalType.POST_ORDER)) {
             traversePostOrder(this.root);
-            traverse_m2(traversalType);
 
 
         }
         if (traversalType.equals(TraversalType.PRE_ORDER)) {
             traversePreOrder(this.root);
-            traverse_m2(traversalType);
 
 
         }
         if (traversalType.equals(TraversalType.LEVEL_ORDER)) {
             traverseLevelOrder(this.root);
-            traverse_m2(traversalType);
 
         }
     }
 
-    @Override
-    public void traverse_m2(TraversalType traversalType) {
-
-        System.out.println("\n Solving using without recursion");
-        System.out.println(traversalType);
-        if ((traversalType.equals(TraversalType.IN_ORDER))) {
-            traverseInOrder_m2(this.root);
-        }
-        if (traversalType.equals(TraversalType.POST_ORDER)) {
-            traversePostOrder_m2(this.root);
-
-        }
-        if (traversalType.equals(TraversalType.PRE_ORDER)) {
-            traversePreOrder_m2(this.root);
-
-        }
-        if (traversalType.equals(TraversalType.LEVEL_ORDER)) {
-            traverseLevelOrder_m2(this.root);
-
-        }
-
-    }
-
-    private void traverseLevelOrder_m2(Node<T> root) {
-
-
-    }
-
-    private void traversePreOrder_m2(Node<T> root) {
-        Stack<Node> stack = new Stack<>();
-        stack.add(root);
-        while (!stack.isEmpty()) {
-            Node<T> temp = stack.pop();
-            System.out.print(String.format(" %d", temp.getData()));
-              if (temp.getRightChild() != null) {
-                stack.add(temp.getRightChild());
-            }
-            if (temp.getLeftChild() != null) {
-                stack.add(temp.getLeftChild());
-            }
-
-        }
-    }
-
-    private void traversePostOrder_m2(Node<T> root) {
-    }
-
-    private void traverseInOrder_m2(Node<T> root) {
-
-    }
 
 
     @Override
     public void delete(T data) {
 
-
-    }
-
-    @Override
-    public void delete_m2(T data) {
 
     }
 
@@ -183,48 +99,14 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
         return max_value;
     }
 
-    private int get_max_m2(Node node) {
-        Node<T> minNode  = node;
-        if (node== null){
-            return max_value;
-        }
-
-        Queue<Node<T>> queue = new LinkedList<>();
-        queue.add(node);
-        while (!queue.isEmpty()){
-            Node<T> temp = queue.poll();
-        if (temp.getData().compareTo(minNode.getData()) > 0) {
-                max_value = (Integer) temp.getData();
-            }
-            if(temp.getLeftChild()!=null){
-                queue.add(temp.getLeftChild());
-            }
-            if(temp.getRightChild() != null){
-                queue.add(temp.getRightChild());
-            }
-        }
-
-        return max_value;
-    }
 
 
     @Override
     public int getMax() {
         if (isEmpty()) {
-            return max_value;
+            return Integer.MIN_VALUE;
         }
-        int m1 = get_max(root);
-        int m2 = get_max_m2(root);
-        if (m1 - m2 != 0) {
-
-            throw new RuntimeException(String.format("Both M1 and M2 results are not same %d  %d", m1, m2));
-        }
-        return max_value;
-    }
-
-    @Override
-    public int getMax_m2() {
-        return 0;
+        return get_max(root);
     }
 
 
@@ -237,50 +119,30 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
         return -1;
     }
 
-    @Override
-    public int getMin_m2() {
-        return 0;
-    }
 
     @Override
     public int getHeight() {
         return 0;
     }
 
-    @Override
-    public int getHeight_m2() {
-        return 0;
-    }
 
     @Override
     public int getLevel(T data) {
         return 0;
     }
 
-    @Override
-    public int getLevel_m2(T data) {
-        return 0;
-    }
 
     @Override
     public List<Node<T>> getNodesAtLevel(int level) {
         return Collections.emptyList();
     }
 
-    @Override
-    public List<Node<T>> getNodesAtLevel_m2(int level) {
-        return Collections.emptyList();
-    }
 
     @Override
     public boolean searchData(T data) {
         return false;
     }
 
-    @Override
-    public boolean searchData_m2(T data) {
-        return false;
-    }
 
 
     private T getMax(Node<T> node) {

@@ -3,7 +3,7 @@ package com.bytecoder.DSA.Trees;
 import java.util.Collections;
 import java.util.List;
 
-public class NaryTree<T extends Comparable<T>> implements Tree<T> {
+public class NaryTreeWithoutRecusion<T extends Comparable<T>> implements Tree<T> {
     @Override
     public Node<T> getRoot() {
         return null;

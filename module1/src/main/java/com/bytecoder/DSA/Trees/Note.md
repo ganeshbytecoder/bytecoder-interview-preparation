@@ -32,6 +32,7 @@ public static class Node<T extends Comparable<T>> {
 * Create – create a tree in the data structure.
 * Insert − Inserts data in a tree.
 * Search − Searches specific data in a tree to check whether it is present or not.
+* 
 * Traversal:
   * Depth-First-Search Traversal
     * In-order
@@ -39,14 +40,17 @@ public static class Node<T extends Comparable<T>> {
     * post-order
   * Breadth-First-Search Traversal
     * level order 
+    * 
 * finding the size of the tree 
 * finding the height of the tree
-### note: inoreder with any other combination can form a tree
 
-| cc  |   |   |   |   |
+### note: in-order with any other combination can form a tree
+
+|     |   |   |   |   |
 |-----|---|---|---|---|
-| efe |   |   |   |   |
 |     |   |   |   |   |
 |     |   |   |   |   |
 |     |   |   |   |   |
 |     |   |   |   |   |
+|     |   |   |   |   |
+

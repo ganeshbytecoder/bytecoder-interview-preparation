@@ -73,6 +73,7 @@ public class AdjacencyMatrix<T> implements Graph {
     }
 
 
+
     public boolean hasEdge(Node<T> src, Node<T> end) {
         return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
     }
@@ -115,7 +116,7 @@ public class AdjacencyMatrix<T> implements Graph {
     }
 
 
-    public void dfsTraversal(Node<T> node) {
+    private void dfsTraversal(Node<T> node) {
         System.out.println(node.data.toString());
         node.setVisited(true);
 
@@ -126,6 +127,11 @@ public class AdjacencyMatrix<T> implements Graph {
         }
 
 
+    }
+
+    public boolean detectCycle(){
+
+        return false;
     }
 
 

@@ -16,19 +16,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         return root;
     }
 
-    public Node<T> insertNode_v2(T data, Node<T> node) {
-
-        if (node == null) {
-            return new Node<>(data);
-        }
-        if (node.getData().compareTo(data) > 0) {
-            node.setLeftChild(insertNode_v2(data, node.getLeftChild()));
-        } else {
-            node.setRightChild(insertNode_v2(data, node.getRightChild()));
-        }
-        return node;
-    }
-
 
     public void insertNode(T data, Node<T> node) {
         if (node.getData().compareTo(data) > 0) {
@@ -58,19 +45,10 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         return this;
     }
 
-    @Override
-    public Tree<T> insert_m2(T data) {
-        return null;
-    }
 
     @Override
     public void delete(T data) {
 
-
-    }
-
-    @Override
-    public void delete_m2(T data) {
 
     }
 
@@ -94,11 +72,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         }
     }
 
-    @Override
-    public void traverse_m2(TraversalType traversalType) {
-
-    }
-
 
     @Override
     public int getMax() {
@@ -111,11 +84,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         }
 
         return 1;
-    }
-
-    @Override
-    public int getMax_m2() {
-        return 0;
     }
 
 
@@ -131,50 +99,30 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         return 1;
     }
 
-    @Override
-    public int getMin_m2() {
-        return 0;
-    }
 
     @Override
     public int getHeight() {
         return 0;
     }
 
-    @Override
-    public int getHeight_m2() {
-        return 0;
-    }
 
     @Override
     public int getLevel(T data) {
         return 0;
     }
 
-    @Override
-    public int getLevel_m2(T data) {
-        return 0;
-    }
 
     @Override
     public List<Node<T>> getNodesAtLevel(int level) {
         return Collections.emptyList();
     }
 
-    @Override
-    public List<Node<T>> getNodesAtLevel_m2(int level) {
-        return Collections.emptyList();
-    }
 
     @Override
     public boolean searchData(T data) {
         return false;
     }
 
-    @Override
-    public boolean searchData_m2(T data) {
-        return false;
-    }
 
     @Override
     public boolean isEmpty() {

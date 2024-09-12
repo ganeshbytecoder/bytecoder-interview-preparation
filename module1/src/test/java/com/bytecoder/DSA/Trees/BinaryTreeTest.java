@@ -1,12 +1,15 @@
 package com.bytecoder.DSA.Trees;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 class BinaryTreeTest {
-        BinaryTree binaryTree;
+    BinaryTree<Integer> binaryTree;
 
     @BeforeEach
     void setUp() {
@@ -14,7 +17,7 @@ class BinaryTreeTest {
 //                  6     12
 //                9  30 11  10
 //        insert();
-        binaryTree = new BinaryTree<Integer>();
+        binaryTree = new BinaryTree<>();
 
 
     }
@@ -26,6 +29,9 @@ class BinaryTreeTest {
 
     @Test
     void isEmpty() {
+
+        Assertions.assertTrue(binaryTree.isEmpty(), "Implementation is not correct");
+
     }
 
     @Test
@@ -37,25 +43,16 @@ class BinaryTreeTest {
         binaryTree.insert(5);
         binaryTree.insert(6);
         binaryTree.insert(7);
-//        System.out.println(binaryTree.getRoot().getData());
+        binaryTree.traverse(TraversalType.LEVEL_ORDER);
+        binaryTree.traverse(TraversalType.LEVEL_ORDER);
+        Assertions.assertTrue(true, "Implementation is not correct");
 
     }
 
-    @Test
-    void insert_m2() {
-        binaryTree.insert_m2(10);
-        binaryTree.insert_m2(6);
-        binaryTree.insert_m2(12);
-        binaryTree.insert_m2(9);
-        binaryTree.insert_m2(30);
-        binaryTree.insert_m2(11);
-        binaryTree.insert_m2(10);
-        System.out.println(binaryTree.getRoot());
-    }
+
 
     @Test
     void traverse() {
-
         insert();
         binaryTree.traverse(TraversalType.LEVEL_ORDER);
         binaryTree.traverse(TraversalType.PRE_ORDER);
@@ -63,65 +60,48 @@ class BinaryTreeTest {
         binaryTree.traverse(TraversalType.IN_ORDER);
     }
 
-    @Test
-    void traverse_m2() {
-    }
+
 
     @Test
     void delete() {
     }
 
-    @Test
-    void delete_m2() {
-    }
+
 
     @Test
     void getMax() {
-        insert();
-        System.out.println( binaryTree.getMax());
+        List<Integer> list = Arrays.asList(1,2,3,4,54,5,65);
+        list.forEach(i->binaryTree.insert(i));
+        Assertions.assertEquals(Collections.max(list),binaryTree.getMax(), "Max is not true");
     }
 
-    @Test
-    void getMax_m2() {
-    }
+
 
     @Test
     void getMin() {
     }
 
-    @Test
-    void getMin_m2() {
-    }
 
     @Test
     void getHeight() {
     }
 
-    @Test
-    void getHeight_m2() {
-    }
 
     @Test
     void getLevel() {
     }
 
-    @Test
-    void getLevel_m2() {
-    }
+
 
     @Test
     void getNodesAtLevel() {
     }
 
-    @Test
-    void getNodesAtLevel_m2() {
-    }
+
 
     @Test
     void searchData() {
     }
 
-    @Test
-    void searchData_m2() {
-    }
+
 }

@@ -5,13 +5,13 @@ public class Main {
 
 
     public static void main(String[] args) {
-        GraphImpl<String> matrix = new GraphImpl<>(4, true);
+        GraphImpl<String> matrix = new GraphImpl<>(5, false);
 
 
-        String[] values = {"A", "B", "C", "D"};
+        String[] values = {"A", "B", "C", "D", "E"};
 
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             matrix.addNode(new Node<>(i, values[i]));
         }
 
@@ -21,7 +21,11 @@ public class Main {
 
         matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 10));
 
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("D"), 10));
+
         matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("E"), 10));
 
         matrix.getAllEdges().stream().forEach(System.out::println);
 
@@ -30,6 +34,8 @@ public class Main {
         matrix.printGraph();
 
         matrix.dfs();
+
+        matrix.bfs();
 
 
     }

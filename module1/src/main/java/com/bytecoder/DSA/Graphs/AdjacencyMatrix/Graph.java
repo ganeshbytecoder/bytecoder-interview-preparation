@@ -3,23 +3,28 @@ package com.bytecoder.DSA.Graphs.AdjacencyMatrix;
 
 import java.util.List;
 
-public interface Graph <T> {
+public interface Graph<T> {
 
 
-//    void addNode(Node<T> node);
+    void addNode(Node node);
+
+
+    void removeNode(Node<T> node);
 
     List<Node<T>> getAllNodes();
 
     void addEdge(Edge edge);
 
+    void removeEdge(Edge edge);
+
     List<Edge> getAllEdges();
 
-//    boolean hasEdge(Node src, Node end);
+    boolean hasEdge(Node<T> src, Node<T> end);
 
-//    Node<T> getNodeByName(T data);
+    void dfs();
 
+    void bfs();
 
     void printGraph();
 
-    void dfs();
 }

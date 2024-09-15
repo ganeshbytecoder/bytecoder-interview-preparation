@@ -24,9 +24,19 @@ public class GraphImpl<T> implements Graph {
     }
 
 
-
-    public void addNode(Node<T> node) {
+    @Override
+    public void addNode(Node node) {
         vertices.add(node);
+    }
+
+
+    @Override
+    public void removeNode(Node node) {
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[node.id][i] = -1;
+        }
+        vertices.remove(node);
+
     }
 
     @Override
@@ -48,6 +58,11 @@ public class GraphImpl<T> implements Graph {
     }
 
     @Override
+    public void removeEdge(Edge edge) {
+
+    }
+
+    @Override
     public List<Edge> getAllEdges() {
         List<Edge> edges = new ArrayList<>();
 
@@ -63,6 +78,7 @@ public class GraphImpl<T> implements Graph {
         return edges;
     }
 
+
     private Node<T> getNodeById(int id) {
 
         List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList());
@@ -73,8 +89,8 @@ public class GraphImpl<T> implements Graph {
     }
 
 
-
-    public boolean hasEdge(Node<T> src, Node<T> end) {
+    @Override
+    public boolean hasEdge(Node src, Node end) {
         return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
     }
 
@@ -92,10 +108,12 @@ public class GraphImpl<T> implements Graph {
     @Override
     public void printGraph() {
         for (Node<T> node : vertices) {
-            System.out.print(node.data.toString() + "   ");
+            System.out.print("  " + node.data.toString() + " ");
         }
         System.out.println();
         for (int i = 0; i < matrix.length; i++) {
+            System.out.print(vertices.get(i).data.toString() + " ");
+
             for (int j = 0; j < matrix.length; j++) {
                 System.out.print(matrix[i][j] + " ");
             }
@@ -106,6 +124,8 @@ public class GraphImpl<T> implements Graph {
 
     @Override
     public void dfs() {
+        System.out.println("Traversing DFS");
+        vertices.forEach(vertex -> vertex.setVisited(false));
 
         for (int i = 0; i < vertices.size(); i++) {
             if (!vertices.get(i).visited) {
@@ -115,21 +135,43 @@ public class GraphImpl<T> implements Graph {
 
     }
 
+    @Override
+    public void bfs() {
+        vertices.forEach(vertex -> vertex.setVisited(false));
+        System.out.println("Traversing BFS");
+        for (int i = 0; i < vertices.size(); i++) {
+            if (!vertices.get(i).visited) {
+                bfsTraversal(vertices.get(i));
+            }
+        }
+
+    }
+
 
     private void dfsTraversal(Node<T> node) {
-        System.out.println(node.data.toString());
         node.setVisited(true);
-
         for (int i = 0; i < matrix[0].length; i++) {
             if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
                 dfsTraversal(getNodeById(i));
             }
         }
+        System.out.print(node.data.toString() + "  ");
+    }
 
+    private void bfsTraversal(Node<T> node) {
+        node.setVisited(true);
+        System.out.print(node.data.toString() + "  ");
+
+        for (int i = 0; i < matrix[0].length; i++) {
+            if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
+
+                bfsTraversal(getNodeById(i));
+            }
+        }
 
     }
 
-    public boolean detectCycle(){
+    public boolean detectCycle() {
 
         return false;
     }

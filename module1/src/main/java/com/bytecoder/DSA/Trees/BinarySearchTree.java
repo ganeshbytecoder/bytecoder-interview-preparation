@@ -1,19 +1,18 @@
 package com.bytecoder.DSA.Trees;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+@Getter
 public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
     private Node<T> root;
 
     public BinarySearchTree() {
-    }
-
-    public Node getRoot() {
-        return root;
     }
 
 
@@ -49,6 +48,11 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
     @Override
     public void delete(T data) {
 
+//        find the node with this data
+//        find the right/left most leaf
+//        replace the value and delete leaf
+
+
 
     }
 
@@ -83,7 +87,9 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
             curr = curr.getRightChild();
         }
 
-        return 1;
+        curr.getData();
+
+        return  1;
     }
 
 

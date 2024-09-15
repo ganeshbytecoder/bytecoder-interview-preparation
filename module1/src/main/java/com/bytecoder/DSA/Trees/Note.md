@@ -43,6 +43,7 @@ public static class Node<T extends Comparable<T>> {
     * 
 * finding the size of the tree 
 * finding the height of the tree
+* level of node 
 
 ### note: in-order with any other combination can form a tree
 

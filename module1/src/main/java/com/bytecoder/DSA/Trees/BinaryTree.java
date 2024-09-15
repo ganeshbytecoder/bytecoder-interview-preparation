@@ -1,6 +1,9 @@
 package com.bytecoder.DSA.Trees;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 
 public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
@@ -50,8 +53,6 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-
-
     @Override
     public void traverse(TraversalType traversalType) {
         System.out.println("\n Solving using recursion");
@@ -77,7 +78,6 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-
     @Override
     public void delete(T data) {
 
@@ -100,15 +100,28 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-
     @Override
     public int getMax() {
         if (isEmpty()) {
-            return Integer.MIN_VALUE;
+            return -1;
         }
         return get_max(root);
     }
 
+
+    private int min_value = Integer.MAX_VALUE;
+
+    private int get_min(Node node) {
+        if (node == null) {
+            return min_value;
+        }
+        if (node.getData().compareTo(min_value) > 0) {
+            min_value = (int) node.getData();
+        }
+        get_max(node.getLeftChild());
+        get_max(node.getRightChild());
+        return min_value;
+    }
 
     @Override
     public int getMin() {
@@ -116,47 +129,83 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
             return -1;
         }
 
+        return get_min(root);
+    }
+
+
+    private int getHeight(Node<T> node) {
+
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild()));
+    }
+
+    @Override
+    public int getHeight() {
+        return getHeight(root);
+    }
+
+    int level = Integer.MIN_VALUE;
+
+    private int getLevel(Node<T> node, T data, int level) {
+        if (node == null) {
+            return -1;
+        }
+        if (node.getData().equals(data)) {
+            this.level = level;
+            System.out.println("level of tree " + this.level);
+            return level;
+        }
+        getLevel(node.getLeftChild(), data, level + 1);
+        getLevel(node.getLeftChild(), data, level + 1);
         return -1;
     }
 
 
     @Override
-    public int getHeight() {
-        return 0;
+    public int getLevel(T data) {
+        getLevel(root, data, 0);
+        return this.level;
     }
 
 
-    @Override
-    public int getLevel(T data) {
-        return 0;
+    private List<T> getNodesAtLevel(Node<T> node, int currentLevel, List<Node<T>> list, int level) {
+
+        if (currentLevel == level) {
+            list.add(node);
+        }
+        getNodesAtLevel(node.getLeftChild(), currentLevel + 1, list, level);
+        getNodesAtLevel(node.getLeftChild(), currentLevel + 1, list, level);
+
+        return null;
     }
 
 
     @Override
     public List<Node<T>> getNodesAtLevel(int level) {
-        return Collections.emptyList();
+        List<Node<T>> list = new ArrayList<>();
+
+        getNodesAtLevel(root, 0, list, level);
+
+        return list;
     }
 
 
-    @Override
-    public boolean searchData(T data) {
+    private boolean searchData(Node<T> node, T data) {
+
+        if (node.getData().equals(data)) {
+            return true;
+        }
+        searchData(node.getLeftChild(), data);
+        searchData(node.getRightChild(), data);
+
         return false;
     }
 
-
-
-    private T getMax(Node<T> node) {
-        if (node.getRightChild() != null) {
-            return getMin(node.getLeftChild());
-        }
-        return node.getData();
-    }
-
-    private T getMin(Node<T> node) {
-        if (node.getLeftChild() != null) {
-            return getMin(node.getLeftChild());
-        }
-        return node.getData();
+    @Override
+    public boolean searchData(T data) {
+        return searchData(getRoot(), data);
     }
 
 

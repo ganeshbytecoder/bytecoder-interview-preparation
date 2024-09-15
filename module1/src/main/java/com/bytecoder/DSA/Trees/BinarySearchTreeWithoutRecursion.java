@@ -3,11 +3,18 @@ package com.bytecoder.DSA.Trees;
 import java.util.Collections;
 import java.util.List;
 
-public class BinarySearchTreeWithoutRecusion<T extends Comparable<T>> implements Tree<T> {
+
+/***
+ * Don't use recursion use only queue, stack and array to solve tree problems
+ * @param <T>
+ */
+public class BinarySearchTreeWithoutRecursion<T extends Comparable<T>> implements Tree<T> {
+
+
 
     private Node<T> root;
 
-    public BinarySearchTreeWithoutRecusion() {
+    public BinarySearchTreeWithoutRecursion() {
     }
 
     public Node getRoot() {

@@ -10,11 +10,8 @@ public interface BinaryTreeProblems<T extends Comparable<T>> {
 
     int getSumOfNodesAtLevel(Node<T> root);
 
-    int getSumOfNodesAtLevel_m2(Node<T> root);
-
-
 //    print given level in BT
-    void printGivenLevel(Node<T> node , int level);
+    void printAllNodesGivenLevel(Node<T> node , int level);
 
 
 //  get level order traverse from bottom to top

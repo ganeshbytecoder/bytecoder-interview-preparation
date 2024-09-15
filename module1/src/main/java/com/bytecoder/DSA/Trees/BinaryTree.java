@@ -137,7 +137,7 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private int min_value = Integer.MAX_VALUE;
+    private int min_value = Integer.MIN_VALUE;
 
     private int get_min(Node node) {
         if (node == null) {
@@ -174,39 +174,35 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
         return getHeight(root);
     }
 
-    int level = Integer.MIN_VALUE;
 
     private int getLevel(Node<T> node, T data, int level) {
         if (node == null) {
             return -1;
         }
         if (node.getData().equals(data)) {
-            this.level = level;
-            System.out.println("level of tree " + this.level);
             return level;
         }
-        getLevel(node.getLeftChild(), data, level + 1);
-        getLevel(node.getLeftChild(), data, level + 1);
-        return -1;
+        return Math.max(getLevel(node.getLeftChild(), data, level + 1), getLevel(node.getLeftChild(), data, level + 1));
     }
 
 
     @Override
     public int getLevel(T data) {
-        getLevel(root, data, 0);
-        return this.level;
+        return getLevel(root, data, 0);
     }
 
 
-    private List<T> getNodesAtLevel(Node<T> node, int currentLevel, List<Node<T>> list, int level) {
+    private void getNodesAtLevel(Node<T> node, int currentLevel, List<Node<T>> list, int level) {
 
+        if(node == null){
+            return ;
+        }
         if (currentLevel == level) {
             list.add(node);
         }
         getNodesAtLevel(node.getLeftChild(), currentLevel + 1, list, level);
-        getNodesAtLevel(node.getLeftChild(), currentLevel + 1, list, level);
+        getNodesAtLevel(node.getRightChild(), currentLevel + 1, list, level);
 
-        return null;
     }
 
 

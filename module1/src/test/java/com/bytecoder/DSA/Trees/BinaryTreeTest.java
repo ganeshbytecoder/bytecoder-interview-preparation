@@ -50,7 +50,6 @@ class BinaryTreeTest {
     }
 
 
-
     @Test
     void traverse() {
         insert();
@@ -61,24 +60,38 @@ class BinaryTreeTest {
     }
 
 
-
     @Test
     void delete() {
-    }
+        binaryTree.insert(1);
+        binaryTree.insert(2);
+        binaryTree.insert(3);
+        binaryTree.insert(4);
+        binaryTree.insert(5);
+        binaryTree.insert(6);
+        binaryTree.insert(7);
 
+        binaryTree.delete(5);
+                    /*
+                      1
+                  2         3
+               4    5   6       7
+                     */
+        binaryTree.traverse(TraversalType.LEVEL_ORDER);
+
+    }
 
 
     @Test
     void getMax() {
-        List<Integer> list = Arrays.asList(1,2,3,4,54,5,65);
-        list.forEach(i->binaryTree.insert(i));
-        Assertions.assertEquals(Collections.max(list),binaryTree.getMax(), "Max is not true");
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 54, 5, 65);
+        list.forEach(i -> binaryTree.insert(i));
+        Assertions.assertEquals(Collections.max(list), binaryTree.getMax(), "Max is not true");
     }
-
 
 
     @Test
     void getMin() {
+
     }
 
 
@@ -92,11 +105,9 @@ class BinaryTreeTest {
     }
 
 
-
     @Test
     void getNodesAtLevel() {
     }
-
 
 
     @Test

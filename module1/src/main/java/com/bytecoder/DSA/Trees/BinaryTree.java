@@ -1,9 +1,6 @@
 package com.bytecoder.DSA.Trees;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 
 public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
@@ -78,10 +75,41 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
+    private void delete(Node<T> root, T data) {
+
+        Node<T> node = searchData(root, data).orElseThrow(() -> new RuntimeException(String.format("There is no node with {0}", data)));
+
+        //       single child or no child
+        if (node.getRightChild() == null || node.getLeftChild() == null) {
+            if (node.getLeftChild() != null) {
+                node = node.getLeftChild();
+
+            } else if (node.getRightChild() != null) {
+                node = node.getRightChild();
+
+            } else {
+                node = null;
+            }
+        } else {
+            Node<T> temp = getRightMostNode(node);
+            System.out.println("right mode " + temp.getData());
+            node.setData(temp.getData());
+            delete(node.getRightChild(), temp.getData());
+        }
+
+
+    }
+
+    private Node<T> getRightMostNode(Node<T> node) {
+        if (node.getLeftChild() == null && node.getRightChild() == null) {
+            return node;
+        }
+        return getRightMostNode(node.getRightChild());
+    }
+
     @Override
     public void delete(T data) {
-
-
+        delete(getRoot(), data);
     }
 
 
@@ -192,20 +220,23 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private boolean searchData(Node<T> node, T data) {
-
-        if (node.getData().equals(data)) {
-            return true;
+    private Optional<Node<T>> searchData(Node<T> node, T data) {
+        if(node==null){
+            return Optional.empty();
         }
-        searchData(node.getLeftChild(), data);
-        searchData(node.getRightChild(), data);
-
-        return false;
+        if (node.getData().equals(data)) {
+            return Optional.of(node);
+        }
+       Optional<Node<T>> result =  searchData(node.getLeftChild(), data);
+        if(result.isPresent()){
+            return result;
+        }
+        return searchData(node.getRightChild(), data);
     }
 
     @Override
     public boolean searchData(T data) {
-        return searchData(getRoot(), data);
+        return searchData(getRoot(), data).map(node -> true).orElse(false);
     }
 
 

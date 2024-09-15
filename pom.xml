@@ -44,14 +44,10 @@
 
 
     <modules>
-
-
         <module>module1</module>
         <module>open-auth-module</module>
-        <module>test</module>
         <module>open-api-module</module>
         <module>spring-batch</module>
-        <module>com.bytecoder.api</module>
     </modules>
 
 

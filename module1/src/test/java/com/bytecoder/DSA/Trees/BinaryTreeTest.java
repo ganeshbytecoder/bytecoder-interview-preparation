@@ -133,8 +133,6 @@ class BinaryTreeTest {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 54, 5, 65);
         list.forEach(i -> binaryTree.insert(i));
         Assertions.assertTrue(binaryTree.searchData(54), "value is  not found");
-
-
     }
 
 

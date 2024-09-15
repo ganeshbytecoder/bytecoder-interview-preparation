@@ -1,11 +1,11 @@
 package com.bytecoder.DSA.Graphs.AdjacencyMatrix;
 
 
-public class AdjacencyMatrixGraph {
+public class Main {
 
 
     public static void main(String[] args) {
-        AdjacencyMatrix<String> matrix = new AdjacencyMatrix<>(4, true);
+        GraphImpl<String> matrix = new GraphImpl<>(4, true);
 
 
         String[] values = {"A", "B", "C", "D"};

@@ -146,7 +146,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         if (node.getRightChild() != null) {
             return getMax(node.getLeftChild());
         }
-        max_value = (int) node.getData();
+        node.getData();
         return max_value;
     }
 
@@ -156,7 +156,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         if (node.getLeftChild() != null) {
             return getMin(node.getLeftChild());
         }
-        min_value = (int) node.getData();
+        node.getData();
         return min_value;
     }
 

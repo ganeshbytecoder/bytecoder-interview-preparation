@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AdjacencyMatrix<T> implements Graph {
+public class GraphImpl<T> implements Graph {
 
     private final List<Node<T>> vertices = new ArrayList<>();
 
@@ -12,7 +12,7 @@ public class AdjacencyMatrix<T> implements Graph {
 
     private final boolean directed;
 
-    AdjacencyMatrix(int n, boolean directed) {
+    GraphImpl(int n, boolean directed) {
 
         matrix = new int[n][n];
         this.directed = directed;

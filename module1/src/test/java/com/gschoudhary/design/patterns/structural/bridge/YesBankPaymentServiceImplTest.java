@@ -16,6 +16,9 @@ class YesBankPaymentServiceImplTest {
 
     }
 
+
+//    using abstract factory -> payment mode using builder ->  singleton object ->
+
     @Test
     void makePayment() {
         yesBankPaymentService = new YesBankPaymentServiceImpl(new CashPaymentModeService());

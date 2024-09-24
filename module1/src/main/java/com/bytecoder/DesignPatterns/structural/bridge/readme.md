@@ -6,7 +6,8 @@ and implementation—which can be developed independently of each other.
 * YesBankPaymentService(PaymentMode)
 * ICICIBankPaymentService(PaymentMode)
 
-* Note - when you have choice like combination between two or more one type and two or more other type of implementation using bridge using composition not inheritance
+* Note - when you have choice like combination between two or more one type and two or more other type of implementation using bridge using composition not inheritance.
+* create hierarchy using abstraction and use composition for combining two objects. 
 * examples :
 * separate class hierarchies. so that the original classes will reference an object of the new hierarchy, and use composite to work them 
   * TVs() and remotes(digital or normal)

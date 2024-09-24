@@ -27,8 +27,15 @@ Composite is a structural design pattern that lets you compose objects into tree
                 Company
                   CEO
       CTO         CBO         CFO
-
+  Assistant , manager , deputy, 
+teams -> 
   
 
 Note: head will have all the child access
     
+
+            Company->
+          head of india
+
+states, branches, people (can come below him)
+(city, branches, people), branch-> owner(person), person -> will have hierarchy

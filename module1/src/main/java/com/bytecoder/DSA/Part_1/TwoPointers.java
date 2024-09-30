@@ -1,9 +1,11 @@
 package com.bytecoder.DSA.Part_1;
 
+import java.util.HashSet;
+
 public class TwoPointers {
 
     //    Write a function that takes a string, s, as an input and determines whether or not it is a palindrome.
-   //     initialise two pointers and start from beginning and end and progress towards middle element using while loop
+    //     initialise two pointers and start from beginning and end and progress towards middle element using while loop
     public boolean isPalindrome(String s) {
 
         return false;
@@ -48,9 +50,21 @@ public class TwoPointers {
     public static boolean isPalindrome2(String s) {
 
         // Replace this placeholder return statement with your code
-    
+
         return false;
     }
 
+
+
+// slow and faster pointers
+
+//  Question:  Check whether or not a linked list contains a cycle.
+
+
+
+//    Question: Middle of the Linked List
+
+
+//    question : https://leetcode.com/problems/find-the-duplicate-number/description/
 
 }

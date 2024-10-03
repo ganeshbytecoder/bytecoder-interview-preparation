@@ -4,33 +4,6 @@ import lombok.*;
 
 import java.util.Optional;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-class Customer {
-    private int id;
-
-    private String name;
-
-    private int age;
-
-    private String address;
-
-}
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-class User {
-    private String name;
-
-    private int age;
-
-    private String address;
-}
 public class OptionalApplications {
     public static Optional<User> optionalFunctions() {
         Optional<Customer> customer = Optional.ofNullable(new Customer(1, "testuser", 26, "test address"));

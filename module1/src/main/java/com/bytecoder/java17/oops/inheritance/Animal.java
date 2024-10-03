@@ -11,9 +11,3 @@ public class Animal {
     }
 }
 
-class Cat extends Animal{
-
-    public Cat(String name, String sound, int age){
-        this.name=name;
-    }
-}

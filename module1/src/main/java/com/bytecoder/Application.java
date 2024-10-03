@@ -1,6 +1,5 @@
 package com.bytecoder;
 
-
 // not make method or variable class must be public
 @FunctionalInterface
 interface BaseAnimal {

@@ -37,3 +37,20 @@ Explanation: There is no occurrence of “practice” in “geeksforgeeks”
 
 https://www.geeksforgeeks.org/roman-number-to-integer/
 
+https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/ 
+
+https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/
+
+https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/?ref=asr30
+
+https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/?ref=asr29
+
+https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/?ref=asr28
+
+https://www.geeksforgeeks.org/longest-substring-that-can-be-made-a-palindrome-by-swapping-of-characters/?ref=asr27
+
+https://www.geeksforgeeks.org/longest-substring-with-no-pair-of-adjacent-characters-are-adjacent-english-alphabets/?ref=asr26
+
+https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-at-least-k-times-set-3/?ref=asr25
+
+https://www.geeksforgeeks.org/longest-prefix-also-suffix/

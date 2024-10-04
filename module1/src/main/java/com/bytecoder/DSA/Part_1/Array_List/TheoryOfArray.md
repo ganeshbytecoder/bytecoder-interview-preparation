@@ -1,5 +1,10 @@
 ### 1. **Reverse the Array**
-   - **Hint**: Use two pointers, one at the beginning and one at the end, and swap the elements until the pointers meet in the middle.
+   - **Hint**:
+   - In-Place Reversal with Loop: This is the most efficient way to reverse an array in terms of both time and space complexity. It only requires O(n) time and O(1) space. 
+   - New Array Method: This approach is simpler but requires additional space (O(n)). 
+   - Using Collections API: Suitable for object arrays, not for primitive arrays.
+   - Use two pointers, one at the beginning and one at the end, and swap the elements until the pointers meet in the middle.
+
 
 ### 2. **Find the Maximum and Minimum Element in an Array**
    - **Hint**: Traverse the array while maintaining two variables for the maximum and minimum values.

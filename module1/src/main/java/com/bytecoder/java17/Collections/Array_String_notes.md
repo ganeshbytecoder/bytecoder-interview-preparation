@@ -1,3 +1,278 @@
+
+In Java, `Comparator` and `Comparable` are two interfaces used for comparing objects. They both define methods for sorting and ordering objects but are used in different scenarios. Here's a detailed explanation of both:
+
+### `Comparable` Interface
+
+The `Comparable` interface is used to define the natural ordering of objects. A class that implements `Comparable` can be sorted using standard sorting methods (like `Collections.sort()` or `Arrays.sort()`) without providing any extra comparator because the class itself provides the logic for comparing its instances.
+
+#### Key Points:
+- **Single natural ordering**: The class implementing `Comparable` can have only one comparison logic.
+- **Modifies the class**: To use `Comparable`, you need to implement the interface in the class itself and override the `compareTo()` method.
+
+#### Method:
+- **`int compareTo(T o)`**: Compares the current object (`this`) with the specified object (`o`). Returns:
+  - A negative integer if the current object is less than the specified object.
+  - Zero if they are equal.
+  - A positive integer if the current object is greater than the specified object.
+
+#### Example:
+
+```java
+public class Employee implements Comparable<Employee> {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Natural ordering based on the 'id'
+    @Override
+    public int compareTo(Employee other) {
+        return Integer.compare(this.id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name + "'}";
+    }
+
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(3, "John"));
+        employees.add(new Employee(1, "Alice"));
+        employees.add(new Employee(2, "Bob"));
+
+        Collections.sort(employees);  // Sorts by natural ordering (id)
+        System.out.println(employees);
+    }
+}
+```
+
+**Output:**
+```
+[Employee{id=1, name='Alice'}, Employee{id=2, name='Bob'}, Employee{id=3, name='John'}]
+```
+
+In the above example, the natural ordering is based on the employee ID.
+
+### `Comparator` Interface
+
+The `Comparator` interface is used to define custom comparison logic. It allows sorting objects based on multiple criteria or when you cannot or do not want to modify the class being compared (e.g., a third-party class or when you need multiple sorting strategies).
+
+#### Key Points:
+- **Multiple custom orderings**: You can define different sorting strategies using different `Comparator` implementations.
+- **Does not modify the class**: You do not need to modify the class itself to use `Comparator`. The comparison logic is defined outside the class.
+
+#### Methods:
+- **`int compare(T o1, T o2)`**: Compares two objects. Returns:
+  - A negative integer if the first object is less than the second object.
+  - Zero if they are equal.
+  - A positive integer if the first object is greater than the second object.
+
+#### Example:
+
+```java
+import java.util.Comparator;
+
+public class Employee {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name + "'}";
+    }
+
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(3, "John"));
+        employees.add(new Employee(1, "Alice"));
+        employees.add(new Employee(2, "Bob"));
+
+        // Custom comparator to sort by name
+        Comparator<Employee> nameComparator = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                return e1.name.compareTo(e2.name);
+            }
+        };
+
+        Collections.sort(employees, nameComparator);  // Sorts by name
+        System.out.println(employees);
+    }
+}
+```
+
+**Output:**
+```
+[Employee{id=1, name='Alice'}, Employee{id=2, name='Bob'}, Employee{id=3, name='John'}]
+```
+
+
+### When to Use `Comparable`:
+
+- When a class has a single, natural ordering (e.g., alphabetical order for `String`, numerical order for `Integer`).
+- When you control the source code and want to make the comparison logic part of the class.
+
+### When to Use `Comparator`:
+
+- When you need multiple ways to compare objects (e.g., sorting by name, then by age).
+- When you cannot or do not want to modify the class (e.g., third-party classes).
+- When you need custom sorting logic, for instance, case-insensitive sorting or reverse order.
+
+### Example Using Java 8+ Lambda for Comparator:
+
+Starting from Java 8, you can use lambda expressions and method references to make the use of `Comparator` more concise.
+
+```java
+import java.util.*;
+
+public class Employee {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name + "'}";
+    }
+
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(3, "John"));
+        employees.add(new Employee(1, "Alice"));
+        employees.add(new Employee(2, "Bob"));
+
+        // Lambda expression to sort by name
+        employees.sort(Comparator.comparing(e -> e.name));
+
+        System.out.println(employees);
+    }
+}
+```
+
+**Output:**
+```
+[Employee{id=1, name='Alice'}, Employee{id=2, name='Bob'}, Employee{id=3, name='John'}]
+```
+
+### Summary:
+
+- **Comparable** is used for natural ordering within a class, where the comparison logic is defined inside the class.
+- **Comparator** is used for custom or multiple orderings, where the comparison logic is defined externally and can be reused in different contexts.
+
+
+### In Java, you can apply multiple comparators to sort a list by chaining them together. 
+
+1. **Chaining comparators manually** using `Comparator.thenComparing()`.
+2. **Using multiple comparators in a custom class**.
+
+### 1. **Using `Comparator.thenComparing()`**
+
+The `Comparator.thenComparing()` method allows you to chain multiple comparators. For example, you might want to sort employees first by name and then by ID if the names are the same.
+
+#### Example:
+
+```java
+import java.util.*;
+
+public class Employee {
+    private int id;
+    private String name;
+    private int age;
+
+    public Employee(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name + "', age=" + age + "}";
+    }
+
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(3, "John", 25));
+        employees.add(new Employee(2, "Alice", 30));
+        employees.add(new Employee(4, "Bob", 20));
+        employees.add(new Employee(1, "Alice", 22));
+
+        // Sorting by name first, then by age
+        employees.sort(Comparator.comparing(Employee::getName)
+                                 .thenComparing(Employee::getAge));
+
+        // Print the sorted list
+        employees.forEach(System.out::println);
+    }
+}
+```
+
+**Output:**
+```
+Employee{id=1, name='Alice', age=22}
+Employee{id=2, name='Alice', age=30}
+Employee{id=4, name='Bob', age=20}
+Employee{id=3, name='John', age=25}
+```
+
+
+This method is very flexible and allows you to define multiple comparators separately and then chain them together when needed.
+
+### Sorting with Multiple Criteria in Reverse Order
+
+You can also combine multiple comparators with reverse order sorting using `reversed()`:
+
+```java
+//pass an anonymous Comparator class or implement in class
+Comparator<Developer> byAge = new Comparator<Developer>() {
+			@Override
+			public int compare(Developer o1, Developer o2) {
+				return o1.getAge() - o2.getAge();
+			}
+		};
+
+
+// full custom comparator in lambda function
+Comparator<Developer> byName = (Developer o1, Developer o2)->o1.getName().compareTo(o2.getName());
+
+
+// Create comparators
+Comparator<Employee> nameComparator = Comparator.comparing(Employee::getName);
+Comparator<Employee> ageComparator = Comparator.comparingInt(Employee::getAge);
+
+
+employees.sort(Comparator.comparing(Employee::getName)
+                         .thenComparing(Employee::getAge)
+                         .reversed());
+```
+
+
+
 ## Array Methods
 
 array is collection of similar type of elements. which has contiguous memory location.
@@ -412,9 +687,171 @@ Java's `String` class provides a wide range of methods to manipulate and interac
     ```
 
 ### Summary
+Note : **String is immutable whereas StringBuffer and StringBuilder are mutable classes. StringBuffer is thread-safe and synchronized whereas StringBuilder is not**
 
 The `String` class in Java provides a rich set of methods for various operations, including:
 
 - **Character access**: `charAt()`, `substring()`
 - **Searching**: `indexOf()`, `lastIndexOf()`, `contains()`
 - **Comparison**: `equals()`, `compareTo()`, `equalsIgnore
+
+
+
+
+### Extra Methods in `StringBuilder` (Not in `String`):
+
+1. **`append()`**  
+   Appends the specified string or value to the current `StringBuilder` instance. This method is overloaded to accept various types such as strings, characters, integers, floats, booleans, and more.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.append(" World");
+   sb.append(123);
+   System.out.println(sb);  // Output: "Hello World123"
+   ```
+
+2. **`insert()`**  
+   Inserts the specified string, character, or value at the specified index in the current `StringBuilder`. Like `append()`, it is overloaded to accept various types.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.insert(5, " World");
+   System.out.println(sb);  // Output: "Hello World"
+   ```
+
+3. **`delete()`**  
+   Removes the characters in a substring of the `StringBuilder`. The substring starts at the specified `start` index and extends to the character at index `end - 1`.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello World");
+   sb.delete(5, 11);
+   System.out.println(sb);  // Output: "Hello"
+   ```
+
+4. **`deleteCharAt()`**  
+   Removes the character at the specified index from the `StringBuilder`.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.deleteCharAt(1);
+   System.out.println(sb);  // Output: "Hllo"
+   ```
+
+5. **`replace()`**  
+   Replaces the characters in a substring of the `StringBuilder` with characters from the specified `String`. The substring begins at `start` and extends to `end - 1`.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello World");
+   sb.replace(6, 11, "Java");
+   System.out.println(sb);  // Output: "Hello Java"
+   ```
+
+6. **`reverse()`**  
+   Reverses the sequence of characters in the `StringBuilder`.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.reverse();
+   System.out.println(sb);  // Output: "olleH"
+   ```
+
+7. **`setCharAt()`**  
+   Sets the character at the specified index to a new character.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.setCharAt(1, 'a');
+   System.out.println(sb);  // Output: "Hallo"
+   ```
+
+8. **`setLength()`**  
+   Sets the length of the `StringBuilder`. If the new length is less than the current length, the string is truncated. If the new length is greater than the current length, null characters (`\u0000`) are appended.
+
+   ```java
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.setLength(3);
+   System.out.println(sb);  // Output: "Hel"
+   ```
+
+
+12. **`substring()`**  
+    Extracts a substring from the `StringBuilder`. Unlike the `substring()` method in `String`, this method does not modify the `StringBuilder`.
+
+    ```java
+    StringBuilder sb = new StringBuilder("Hello World");
+    String sub = sb.substring(6);  // Extracts a substring
+    System.out.println(sub);  // Output: "World"
+    ```
+
+### Summary of Key Differences:
+
+- **Mutability**: `StringBuilder` is mutable, meaning it can be changed after creation, while `String` is immutable.
+- **Modification Methods**: `StringBuilder` provides methods like `append()`, `insert()`, `delete()`, `replace()`, `setCharAt()`, etc., which allow direct modification of the character sequence.
+- **Efficiency**: `StringBuilder` is more efficient than `String` for scenarios involving frequent string manipulation (e.g., concatenation in loops), as it avoids the overhead of creating new `String` objects with every modification.
+
+These methods make `StringBuilder` the preferred choice for scenarios where you need to build or modify strings frequently, especially in performance-critical applications.
+
+
+
+### `String` Methods Not Available in `StringBuilder`:
+
+1. **`equals()`**
+   - `String` uses content-based equality to compare two strings.
+   - `StringBuilder` uses the default `Object.equals()` method (reference comparison), which compares memory addresses rather than content.
+
+2. **`equalsIgnoreCase(String anotherString)`**
+   - Compares two strings lexicographically, ignoring case differences.
+   - This method is not available in `StringBuilder`.
+
+3. **`compareTo(String anotherString)`**
+   - Lexicographically compares two strings.
+   - `StringBuilder` does not have `compareTo()`.
+
+4. **`compareToIgnoreCase(String str)`**
+   - Lexicographically compares two strings, ignoring case differences.
+   - Not available in `StringBuilder`.
+
+5. **`matches(String regex)`**
+   - Tests if the string matches the given regular expression.
+   - `StringBuilder` does not support pattern matching.
+
+6. **`split(String regex)`**
+   - Splits the string into an array of substrings based on the specified regular expression.
+   - `StringBuilder` does not have a `split()` method.
+
+7. **`startsWith(String prefix)`**
+   - Tests whether the string starts with the specified prefix.
+   - This method is not available in `StringBuilder`.
+
+8. **`endsWith(String suffix)`**
+   - Tests whether the string ends with the specified suffix.
+   - `StringBuilder` does not support this method.
+
+9. **`contains(CharSequence s)`**
+   - Checks if the string contains the specified character sequence.
+   - Not available in `StringBuilder`.
+
+10. **`contentEquals(CharSequence cs)`**
+    - Compares the string to the specified character sequence.
+    - `StringBuilder` does not have this method.
+
+11. **`toLowerCase()` and `toUpperCase()`**
+    - Converts all characters in the string to lowercase or uppercase.
+    - `StringBuilder` lacks these methods, though you can manually implement them using mutable operations.
+
+12. **`trim()`**
+    - Removes leading and trailing whitespace from the string.
+    - `StringBuilder` does not have a `trim()` method, though you could implement this behavior manually by deleting characters.
+
+13. **`intern()`**
+    - Returns a canonical representation of the string from the string pool.
+    - Not present in `StringBuilder`.
+
+14. **`hashCode()`**
+    - `String` computes a hash code based on the content of the string.
+    - `StringBuilder` inherits the default `Object.hashCode()`, which is based on memory address, not content.
+
+15. **`toCharArray()`**
+    - Converts the string to a character array.
+    - This method is not available in `StringBuilder`.
+

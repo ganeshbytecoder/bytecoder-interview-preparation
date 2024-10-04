@@ -1,5 +1,6 @@
 package com.bytecoder.DesignPatterns.bahavioral.command;
 public class DebitAmountImpl implements PaymentCommand {
+
     private AccountDetails accountDetails;
 
     private int amount;

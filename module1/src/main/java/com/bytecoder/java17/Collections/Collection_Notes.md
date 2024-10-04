@@ -38,8 +38,6 @@
     - **Implementations**:
         - `ArrayList`: A resizable array implementation.
         - `LinkedList`: A doubly linked list implementation.
-        - `Vector`: Similar to `ArrayList` but synchronized.
-        - `Stack`: A last-in-first-out (LIFO) stack based on `Vector`.
 
  
 
@@ -311,9 +309,7 @@ This makes `Deque` suitable for use cases where elements need to be processed in
 
    ```java
    HashSet<String> hashSet = new HashSet<>();
-   hashSet.
-
-add("Mango");
+   hashSet.add("Mango");
    ```
 
 4. **`TreeSet`**:
@@ -338,15 +334,134 @@ add("Mango");
 
 ### Collections Utility Class:
 
-The `Collections` class provides several utility methods that can be used to operate on collections, such as:
+The `Collections` class in Java provides various static utility methods for operating on collections (like `List`, `Set`, and `Map`). These methods are useful for tasks such as sorting, searching, reversing, and synchronizing collections. Below are some of the most commonly used utility methods provided by the `Collections` class.
 
-- **`Collections.sort(List<T> list)`**: Sorts a list in natural order.
-- **`Collections.reverse(List<T> list)`**: Reverses the order of elements in a list.
-- **`Collections.synchronizedMap(Map<K, V> map)`**: Returns a synchronized view of the map.
-- **`Collections.unmodifiableList(List<T> list)`**: Returns an unmodifiable view of the list.
+### Common Utility Methods in the `Collections` Class:
+
+1. **`sort(List<T> list)`**
+   - Sorts the specified list in ascending order based on the natural ordering of its elements.
+   - For custom sorting, you can use `sort(List<T> list, Comparator<? super T> c)` to specify a comparator.
+
+   ```java
+   List<String> list = Arrays.asList("banana", "apple", "pear");
+   Collections.sort(list);
+   System.out.println(list);  // Output: [apple, banana, pear]
+   ```
+
+2. **`reverse(List<?> list)`**
+   - Reverses the order of the elements in the specified list.
+
+   ```java
+   List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+   Collections.reverse(list);
+   System.out.println(list);  // Output: [5, 4, 3, 2, 1]
+   ```
+
+3. **`shuffle(List<?> list)`**
+   - Randomly shuffles the elements in the specified list.
+
+   ```java
+   List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+   Collections.shuffle(list);
+   System.out.println(list);  // Output: A randomly shuffled list
+   ```
+
+4. **`min(Collection<? extends T> coll)`**
+   - Returns the minimum element of the specified collection, according to the natural ordering of its elements.
+   - You can use `min(Collection<? extends T> coll, Comparator<? super T> comp)` for custom comparison.
+
+   ```java
+   List<Integer> list = Arrays.asList(3, 1, 4, 1, 5);
+   int min = Collections.min(list);
+   System.out.println(min);  // Output: 1
+   ```
+
+5. **`max(Collection<? extends T> coll)`**
+   - Returns the maximum element of the specified collection, according to the natural ordering of its elements.
+   - You can use `max(Collection<? extends T> coll, Comparator<? super T> comp)` for custom comparison.
+
+   ```java
+   List<Integer> list = Arrays.asList(3, 1, 4, 1, 5);
+   int max = Collections.max(list);
+   System.out.println(max);  // Output: 5
+   ```
+
+6. **`binarySearch(List<? extends T> list, T key)`**
+   - Performs a binary search for the specified element in the specified sorted list and returns the index of the element.
+   - The list must be sorted prior to making this call.
+
+   ```java
+   List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+   int index = Collections.binarySearch(list, 3);
+   System.out.println(index);  // Output: 2
+   ```
+
+7. **`copy(List<? super T> dest, List<? extends T> src)`**
+   - Copies all elements from the source list into the destination list.
+   - The destination list must be at least as long as the source list.
+
+   ```java
+   List<Integer> src = Arrays.asList(1, 2, 3);
+   List<Integer> dest = Arrays.asList(0, 0, 0);
+   Collections.copy(dest, src);
+   System.out.println(dest);  // Output: [1, 2, 3]
+   ```
+
+8. **`fill(List<? super T> list, T obj)`**
+   - Replaces all elements of the specified list with the specified element.
+
+   ```java
+   List<Integer> list = Arrays.asList(1, 2, 3);
+   Collections.fill(list, 0);
+   System.out.println(list);  // Output: [0, 0, 0]
+   ```
+
+9. **`replaceAll(List<T> list, T oldVal, T newVal)`**
+   - Replaces all occurrences of one specified value in the list with another.
+
+   ```java
+   List<Integer> list = Arrays.asList(1, 2, 2, 3);
+   Collections.replaceAll(list, 2, 99);
+   System.out.println(list);  // Output: [1, 99, 99, 3]
+   ```
+
+10. **`swap(List<?> list, int i, int j)`**
+    - Swaps the elements at the specified positions in the specified list.
+
+    ```java
+    List<Integer> list = Arrays.asList(1, 2, 3, 4);
+    Collections.swap(list, 1, 3);
+    System.out.println(list);  // Output: [1, 4, 3, 2]
+    ```
+
+11. **`rotate(List<?> list, int distance)`**
+    - Rotates the elements in the specified list by the specified distance. The list is shifted by the distance, and elements shifted out on one end are reintroduced at the other end.
+
+    ```java
+    List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+    Collections.rotate(list, 2);
+    System.out.println(list);  // Output: [4, 5, 1, 2, 3]
+    ```
 
 
+14. **`disjoint(Collection<?> c1, Collection<?> c2)`**
+    - Returns `true` if the two specified collections have no elements in common.
 
+    ```java
+    List<Integer> list1 = Arrays.asList(1, 2, 3);
+    List<Integer> list2 = Arrays.asList(4, 5, 6);
+    boolean disjoint = Collections.disjoint(list1, list2);
+    System.out.println(disjoint);  // Output: true
+    ```
+
+15. **`frequency(Collection<?> c, Object o)`**
+    - Returns the number of occurrences of the specified element in the specified collection.
+
+    ```java
+    List<Integer> list = Arrays.asList(1, 2, 2, 3);
+    int freq = Collections.frequency(list, 2);
+    System.out.println(freq);  // Output: 2
+    ```
 
 
 

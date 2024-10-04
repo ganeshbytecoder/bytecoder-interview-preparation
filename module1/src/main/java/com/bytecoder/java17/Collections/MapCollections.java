@@ -7,7 +7,6 @@ import java.util.Set;
 
 public class MapCollections {
 
-Set<Integer>
-    Deque<Integer>
+
 
 }

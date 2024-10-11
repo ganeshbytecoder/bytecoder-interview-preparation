@@ -58,7 +58,8 @@ hint:
    - **Hint**: Reverse the first `k` nodes, and then recursively call the function for the remaining list. Link the end of the reversed list to the next reversed group.
 
 ### 3. **Write a Program to Detect a Loop in a Linked List**
-   - **Hint**: Use Floyd’s Cycle Detection Algorithm (Tortoise and Hare). Use two pointers that move at different speeds and check if they meet.
+   - **Hint**: Use Floyd’s Cycle Detection Algorithm (Tortoise and Hare).
+   - Use two pointers that move at different speeds and check if they meet.
 
 ### 4. **Write a Program to Delete Loop in a Linked List**
    - **Hint**: First detect the loop using Floyd's algorithm. Once detected, find the start of the loop and disconnect it.
@@ -160,3 +161,5 @@ hint:
    - **Hint**: Use a linked list to maintain the order of characters and a hash map to keep track of the count of each character.
 
 
+* https://leetcode.com/problems/merge-two-sorted-lists/submissions/1415980375/?envType=problem-list-v2&envId=recursion
+* https://leetcode.com/problems/remove-linked-list-elements/submissions/1416013441/?envType=problem-list-v2&envId=recursion&difficulty=EASY

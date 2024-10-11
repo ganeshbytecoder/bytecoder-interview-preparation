@@ -1,19 +1,6 @@
 https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2 
 
 
-Here are hints for solving common tree-related problems in Data Structures and Algorithms (DSA):
-
-### 1. **Level Order Traversal**
-   - Use a queue to traverse the tree level by level.
-   - Insert the root into the queue, then for each node, insert its children into the queue.
-
-### 2. **Reverse Level Order Traversal**
-   - Perform a normal level order traversal but push nodes to a stack instead of printing directly.
-   - After traversal, pop elements from the stack to reverse the order.
-
-### 3. **Height of a Tree**
-   - **Recursive Approach:** The height of a node is `1 + max(left_height, right_height)`.
-   - **Iterative Approach:** Use level order traversal, counting levels.
 
 ### 4. **Diameter of a Tree**
    - The diameter is the longest path between two nodes.
@@ -24,17 +11,10 @@ Here are hints for solving common tree-related problems in Data Structures and A
    - **Recursive Approach:** Swap the left and right children of each node recursively.
    - **Iterative Approach:** Use level order traversal and swap children at each level.
 
-### 6. **Inorder Traversal (Recursive & Iterative)**
+### 6. **Inorder/Preorder/Postorder Traversal (Recursive & Iterative)**
    - **Recursive:** Traverse left subtree, visit node, traverse right subtree.
    - **Iterative:** Use a stack to simulate recursion. Push nodes, go left, pop nodes when left is exhausted.
 
-### 7. **Preorder Traversal (Recursive & Iterative)**
-   - **Recursive:** Visit node, traverse left subtree, traverse right subtree.
-   - **Iterative:** Use a stack to process nodes in order.
-
-### 8. **Postorder Traversal (Recursive & Iterative)**
-   - **Recursive:** Traverse left subtree, traverse right subtree, visit node.
-   - **Iterative:** Use two stacks or a modified single-stack approach by visiting right subtree before left.
 
 ### 9. **Left View of a Tree**
    - Use level order traversal and track the first node at each level.
@@ -56,9 +36,16 @@ Here are hints for solving common tree-related problems in Data Structures and A
    - Calculate height and check balance recursively.
 
 ### 15. **Diagonal Traversal of a Binary Tree**
-   - Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
+![img_1.png](img_1.png) 
 
-### 16. **Boundary Traversal of a Binary Tree**
+**Output**: 8 10 14 3 6 7 13 1 4
+
+   - Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
+   - To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
+
+
+
+### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
    - Traverse the left boundary, then leaf nodes, then the right boundary (in reverse order).
 
 ### 17. **Construct Binary Tree from String with Bracket Representation**
@@ -68,7 +55,7 @@ Here are hints for solving common tree-related problems in Data Structures and A
    - Perform in-order traversal, convert each node into a doubly linked list node, and link them together.
 
 ### 19. **Convert Binary Tree into Sum Tree**
-   - Recursively replace each node with the sum of its left and right subtrees while keeping track of the original values.
+   - Recursively replace each node with the sum of its left and right subtrees while returning  Finally, return the sum of new value and value (which is sum of values in the subtree rooted with this node).
 
 ### 20. **Construct Binary Tree from Inorder and Preorder Traversal**
    - Use recursion and index tracking to build the tree. The first element in preorder is the root; use inorder to find left and right subtrees.
@@ -119,18 +106,6 @@ Here are hints for solving common tree-related problems in Data Structures and A
 
 ### 35. **Tree Isomorphism Problem**
    - Check if two trees can be transformed into each other by flipping subtrees.
-
-### 36. **Find a Value in a BST**
-   - Use binary search principles: move left if the value is smaller than the root, right otherwise.
-
-### 37. **Deletion of a Node in a BST**
-   - Recursively find the node, then replace it with its in-order successor or predecessor.
-
-### 38. **Find Min and Max Value in a BST**
-   - For minimum, go left until you reach the leaf. For maximum, go right.
-
-### 39. **Find Inorder Successor and Inorder Predecessor in a BST**
-   - Inorder successor: the smallest node in the right subtree. Inorder predecessor: the largest node in the left subtree.
 
 ### 40. **Check if a Tree is a BST**
    - Perform in-order traversal and check if the sequence is sorted.

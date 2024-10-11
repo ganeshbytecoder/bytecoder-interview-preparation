@@ -10,16 +10,30 @@
    - **Hint**: Traverse the array while maintaining two variables for the maximum and minimum values.
 
 ### 3. **Find the "Kth" Max and Min Element of an Array**
-   - **Hint**: Sort the array, and the Kth max will be at `arr[n-k]`, and the Kth min will be at `arr[k-1]`. Alternatively, use a min-heap or max-heap for better performance.
+**Hint**:
+   -  Sort the array, and the Kth max will be at `arr[n-k]`, and the Kth min will be at `arr[k-1]`. 
+   -  use a min-heap or max-heap for better performance.
 
 ### 4. **Sort the Array Consisting of Only 0s, 1s, and 2s**
-   - **Hint**: Use the Dutch National Flag algorithm with three pointers (low, mid, high) to partition the array into three segments.
+**Hint**: 
+   - Use the Dutch National Flag algorithm with three pointers (low, mid, high) to partition the array into three segments.
+   - use hashmap and count 
+   - count array
+   - sorting api (Arrays.sort())
 
 ### 5. **Move All Negative Elements to One Side of the Array**
-   - **Hint**: Use the partition process from the quicksort algorithm to move negative elements to one side.
+   - **Hint**: 
+   - any sorting algorithm
+   - two pointers since sorted order is not required 
+   - two array (-ve and +ve) and concat them into one 
+   - use one new array and start filling from back and front 
+   - Use the partition process from the quicksort algorithm to move negative elements to one side.
 
 ### 6. **Find the Union and Intersection of Two Sorted Arrays**
-   - **Hint**: Use two pointers, one for each array, and traverse through both arrays simultaneously. Use comparison to find union and intersection.
+**Hint**: 
+   - brute force
+   - Use two pointers, one for each array, and traverse through both arrays simultaneously. Use comparison to find union and intersection.
+   - use hashmap for each array and cross check elements
 
 ### 7. **Cyclically Rotate an Array by One**
    - **Hint**: Store the last element in a temporary variable, then shift all other elements to the right, and place the last element at the first position.

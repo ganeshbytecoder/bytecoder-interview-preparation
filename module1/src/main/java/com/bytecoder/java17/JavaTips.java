@@ -111,33 +111,51 @@ public class JavaTips {
 
 
     public static void main(String[] args) {
-        reverseString("ganesh");
-        hashmapSorting();
+//        reverseString("ganesh");
+//        hashmapSorting();
+//
+//        printNumbers(1, 2, 3, 4, 5);
+//        printNumbers(10, 20);
+//        printNumbers(new int[]{11, 22});
+//        printNumbers();  // No arguments can also be passed
+//
+////        handleDateTime();
+////        handleDateTime2();
+//
+//
+//           // Step 1: Define the string with timezone information
+//        String timestampWithZone = "2024-10-04T14:30:00+00:30";
+//
+//        // Step 2: Parse the string into an OffsetDateTime (which includes timezone information)
+//        OffsetDateTime offsetDateTime = OffsetDateTime.parse(timestampWithZone);
+//
+//        // Step 3: Extract the LocalDateTime from the OffsetDateTime, discarding the timezone
+//        LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
+//
+//        // Step 4: Print the LocalDateTime
+//        System.out.println("LocalDateTime (without time zone): " + localDateTime);
 
-        printNumbers(1, 2, 3, 4, 5);
-        printNumbers(10, 20);
-        printNumbers(new int[]{11, 22});
-        printNumbers();  // No arguments can also be passed
-
-//        handleDateTime();
-//        handleDateTime2();
-
-
-           // Step 1: Define the string with timezone information
-        String timestampWithZone = "2024-10-04T14:30:00+00:30";
-
-        // Step 2: Parse the string into an OffsetDateTime (which includes timezone information)
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(timestampWithZone);
-
-        // Step 3: Extract the LocalDateTime from the OffsetDateTime, discarding the timezone
-        LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
-
-        // Step 4: Print the LocalDateTime
-        System.out.println("LocalDateTime (without time zone): " + localDateTime);
-
+        System.out.println(solve("abc", "ahbgdc", 0,0));
 
 
     }
+
+
+    public static boolean solve(String s,String t, int i, int j){
+        if( j > t.length() ){
+            return false;
+        }
+        if(s.length()==i){
+            return true;
+        }
+        boolean ans;
+        if(t.charAt(j)==s.charAt(i)){
+            return solve(s,t, i+1, j+1);
+        }else{
+            return solve(s,t,i,j+1);
+        }
+    }
+
 
     private static void handleDateTime2() {
            // LocalDateTime.now() does not take the zone from the system's default or any other zone context. Instead, LocalDateTime is specifically designed to represent date and time without any time zone information. When you call LocalDateTime.now(), it retrieves the current date and time from the system clock

@@ -78,4 +78,5 @@ Hint:
 
 Hint:
 * using two pointers
+* brute-force 
 

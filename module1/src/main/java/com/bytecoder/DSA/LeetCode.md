@@ -16,6 +16,8 @@
 * https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
 * https://leetcode.com/problems/path-sum/description/
 * https://leetcode.com/problems/merge-two-binary-trees/
+* https://leetcode.com/problems/pascals-triangle-ii/description/?envType=problem-list-v2&envId=dynamic-programming&difficulty=EASY
+* https://leetcode.com/problems/is-subsequence/submissions/1417429417/?envType=problem-list-v2&envId=dynamic-programming&difficulty=EASY
 * https://leetcode.com/problems/increasing-order-search-tree/description/
 * https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
 * https://leetcode.com/problems/invert-binary-tree/description/
@@ -24,3 +26,5 @@
 * https://leetcode.com/problems/sum-root-to-leaf-numbers/submissions/1339140254/?envType=study-plan-v2&envId=top-interview-150
 * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/submissions/1328063250/
 * https://leetcode.com/problems/sum-root-to-leaf-numbers/submissions/1328155077/
+* https://leetcode.com/problems/unique-binary-search-trees-ii/?envType=problem-list-v2&envId=binary-tree
+* https://leetcode.com/problems/number-of-1-bits/submissions/1423436038/?envType=problem-list-v2&envId=divide-and-conquer&difficulty=EASY

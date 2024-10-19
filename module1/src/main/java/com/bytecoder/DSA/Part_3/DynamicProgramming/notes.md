@@ -1,2 +1,3 @@
-* https://leetcode.com/problems/pascals-triangle-ii/description/?envType=problem-list-v2&envId=dynamic-programming&difficulty=EASY
-* https://leetcode.com/problems/is-subsequence/submissions/1417429417/?envType=problem-list-v2&envId=dynamic-programming&difficulty=EASY
+- 279: Perfect Squares
+- 746: Min Cost Climbing Stairs
+- Coin Change

@@ -92,7 +92,7 @@
 ### 25. **Find Elements That Appear More Than "n/k" Times**
    - **Hint**: Use a modified Boyer-Moore majority vote algorithm to count potential candidates.
 
-### 26. **Maximum Profit by Buying and Selling a Share At Most Twice**
+* ### 26. **Maximum Profit by Buying and Selling a Share At Most Twice**
    - **Hint**: Create two arrays: one for the maximum profit by selling up to that day, and the other for the maximum profit by buying from that day onwards.
 
 ### 27. **Find Whether an Array is a Subset of Another Array**
@@ -110,17 +110,28 @@
 ### 31. **Smallest Subarray with Sum Greater Than a Given Value**
    - **Hint**: Use a sliding window technique to expand and shrink the window while keeping track of the sum.
 
-### 32. **Three-Way Partitioning of an Array Around a Given Value**
+* ### 32. **Three-Way Partitioning of an Array Around a Given Value**
    - **Hint**: Use the Dutch National Flag algorithm with three pointers to partition the array into three segments based on the given value.
 
-### 33. **Minimum Swaps Required to Bring Elements Less than or Equal to K Together**
+### 33. **Minimum Swaps Required to Bring together Elements Less than or Equal to K Together**
    - **Hint**: Find the number of elements less than or equal to `K`, then use a sliding window approach to count swaps in subarrays of that size.
 
-### 34. **Minimum No. of Operations Required to Make an Array Palindrome**
+### 34. **Minimum No. of Operations Required to Make an Array Palindrome. The only allowed operation is”merging” (of two adjacent elements)**
    - **Hint**: Use a two-pointer approach and incrementally match elements at both ends by either merging or replacing them.
 
 ### 35. **Median of Two Sorted Arrays of Equal Size**
    - **Hint**: Use binary search on one array to partition both arrays into two halves that balance the number of elements and the median condition.
+   - Merge two sorted arrays  (Pq) then get the median
+   - Merge sorting and then get the median  (keep m1 and m2)
+     - Case 1: m+n is odd, the median is at (m+n)/2th index in the array obtained after merging both the arrays. 
+     - Case 2: m+n is even, the median will be the average of elements at index ((m+n)/2 – 1) and (m+n)/2 in the array obtained after merging both the arrays
+
+
 
 ### 36. **Median of Two Sorted Arrays of Different Sizes**
    - **Hint**: Use a binary search on the smaller array to find the partition where the median lies, ensuring elements to the left are smaller than elements to the right.
+   - Merge two sorted arrays  (Pq) then get the median
+   - Merge sorting and then get the median  (keep m1 and m2)
+     - Case 1: m+n is odd, the median is at (m+n)/2th index in the array obtained after merging both the arrays. 
+     - Case 2: m+n is even, the median will be the average of elements at index ((m+n)/2 – 1) and (m+n)/2 in the array obtained after merging both the arrays
+

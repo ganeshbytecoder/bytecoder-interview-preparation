@@ -10,7 +10,13 @@ class Node<T> {
 
     boolean visited;
 
-    Node(int index, T data) {
+    public Node(int index) {
+        this.id = index;
+        this.data = data;
+        this.visited = false;
+    }
+
+    public Node(int index, T data) {
         this.id = index;
         this.data = data;
         this.visited = false;

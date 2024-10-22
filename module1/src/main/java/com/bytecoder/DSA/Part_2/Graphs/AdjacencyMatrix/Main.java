@@ -5,7 +5,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        GraphImpl<String> matrix = new GraphImpl<>(5, false);
+        GraphAdjMatrixImpl<String> matrix = new GraphAdjMatrixImpl<>(5, false);
 
 
         String[] values = {"A", "B", "C", "D", "E"};

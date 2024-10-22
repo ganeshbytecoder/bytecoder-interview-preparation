@@ -1,4 +1,49 @@
-Here are possible hints and strategies for tackling each of the mentioned graph problems:
+
+in the real world , many problems are representated in terms of objects and connections between them.
+for example, airline routes, electric circuits , LAN and internet , facebook friends etc
+
+**Graph**: a graph is a pair (V,E), where V is a set of nodes, called vertices (vertex) and E is collection of pairs of vertices
+
+
+![img.png](AdjacencyMatrix/img.png)
+
+![img.png](img.png)
+
+type of graphs:
+- Directed, undirected , weighted and unweighted graphs
+- two connected nodes are called adjacent nodes.
+- no cyclic in the graph is an acyclic graph
+
+### Representation of graph :
+
+1. Adjacency Matrix (matrix n*n)
+2. Adjacency List (using hashmap or node with hashmap(weighted))
+
+To Represent graphs, we need the number of vertices, the number edges (u,v) with their connections for example:
+Input: n = 3, edges = [[1,3],[2,3],[3,1]]
+
+```java
+// adjacencyList
+    Map<Integer,List<Integer>> adjacencyList = new HashMap<>();
+
+// adjacencyMatrix
+    int[][] matrix = new int[n][n];
+    
+    for(int[] edge : edges){
+        matrix[edge[0]][edge[1]]=1 or adjacencyList.get(edge[0]).add(edge[1]);
+        
+        }
+    
+    
+```
+
+
+To keep track of no of connections or isVisited you can have array or map for example
+```java
+    int[] visited = new int[n];
+//    visited[i] = true; means i node id visited
+//    counter[i]++; means i nodes total connections with other nodes
+```
 
 ### 1. **Create a Graph, Print it**
    - Use adjacency matrix or adjacency list to store the graph.
@@ -146,3 +191,8 @@ Here are possible hints and strategies for tackling each of the mentioned graph 
    - Check if the graph’s complement is bipartite. If it is, the graph can be divided into two cliques.
 
 Each problem has unique challenges, so applying appropriate graph traversal techniques, greedy approaches, or dynamic programming can help solve them.
+
+https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY
+

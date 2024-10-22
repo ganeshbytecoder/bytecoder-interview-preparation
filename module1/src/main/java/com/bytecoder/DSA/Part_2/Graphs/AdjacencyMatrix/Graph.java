@@ -8,7 +8,6 @@ public interface Graph<T> {
 
     void addNode(Node node);
 
-
     void removeNode(Node<T> node);
 
     List<Node<T>> getAllNodes();
@@ -24,6 +23,23 @@ public interface Graph<T> {
     void dfs();
 
     void bfs();
+
+    boolean isCyclic();
+
+    void implementDFSTopologicalSorting();
+
+    void implementBFSTopologicalSorting();
+
+//    prims algorithms for minimum/max spanning tree (
+    void printPrimMST();
+
+    void printKrushkalMST();
+
+//    shortest path between two nodes
+
+
+
+
 
     void printGraph();
 

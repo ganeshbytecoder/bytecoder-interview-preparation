@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class GraphImpl<T> implements Graph {
+class GraphImpl<T> implements Graph<T> {
     // No. of vertices
-    private int n;
+    private final int totalNodes;
 
-    private boolean directed;
+    private final boolean directed;
 
-    private List<Node<T>> adjacencyList = new ArrayList<>();
+    private final List<Node<T>> adjacencyList = new ArrayList<>();
 
-    public GraphImpl(int n, boolean directed) {
-        this.n = n;
+    public GraphImpl(int totalNodes, boolean directed) {
+        this.totalNodes = totalNodes;
         this.directed = directed;
     }
 

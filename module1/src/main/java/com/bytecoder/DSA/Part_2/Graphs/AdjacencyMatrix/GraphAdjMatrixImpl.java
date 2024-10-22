@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GraphImpl<T> implements Graph {
+public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     private final List<Node<T>> vertices = new ArrayList<>();
 
@@ -12,12 +12,13 @@ public class GraphImpl<T> implements Graph {
 
     private final boolean directed;
 
-    GraphImpl(int n, boolean directed) {
+    GraphAdjMatrixImpl(int n, boolean directed) {
 
         matrix = new int[n][n];
         this.directed = directed;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
+//                it can be 0 as well
                 matrix[i][j] = -1;
             }
         }
@@ -53,13 +54,18 @@ public class GraphImpl<T> implements Graph {
 
         if (!this.directed) {
             matrix[j][i] = edge.cost;
-
         }
     }
 
     @Override
     public void removeEdge(Edge edge) {
+        int i = edge.start.id;
+        int j = edge.end.id;
+        matrix[i][j] = -1;
 
+        if (!this.directed) {
+            matrix[j][i] = -1;
+        }
     }
 
     @Override
@@ -78,30 +84,9 @@ public class GraphImpl<T> implements Graph {
         return edges;
     }
 
-
-    private Node<T> getNodeById(int id) {
-
-        List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList());
-        if (nodes.size() != 1) {
-            throw new RuntimeException("ID either does not exists or duplicate");
-        }
-        return nodes.get(0);
-    }
-
-
     @Override
     public boolean hasEdge(Node src, Node end) {
         return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
-    }
-
-
-    public Node<T> getNodeByName(T data) {
-
-        List<Node<T>> nodes = vertices.stream().filter(node -> node.getData() == data).collect(Collectors.toList());
-        if (nodes.size() != 1) {
-            throw new RuntimeException("ID either does not exists or duplicate");
-        }
-        return nodes.get(0);
     }
 
 
@@ -126,12 +111,12 @@ public class GraphImpl<T> implements Graph {
     public void dfs() {
         System.out.println("Traversing DFS");
         vertices.forEach(vertex -> vertex.setVisited(false));
-
         for (int i = 0; i < vertices.size(); i++) {
             if (!vertices.get(i).visited) {
                 dfsTraversal(vertices.get(i));
             }
         }
+//        using stack
 
     }
 
@@ -144,6 +129,33 @@ public class GraphImpl<T> implements Graph {
                 bfsTraversal(vertices.get(i));
             }
         }
+
+//        using queue
+
+    }
+
+    @Override
+    public boolean isCyclic() {
+        return false;
+    }
+
+    @Override
+    public void implementDFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void implementBFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void printPrimMST() {
+
+    }
+
+    @Override
+    public void printKrushkalMST() {
 
     }
 
@@ -171,9 +183,23 @@ public class GraphImpl<T> implements Graph {
 
     }
 
-    public boolean detectCycle() {
+    private Node<T> getNodeById(int id) {
 
-        return false;
+        List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList());
+        if (nodes.size() != 1) {
+            throw new RuntimeException("ID either does not exists or duplicate");
+        }
+        return nodes.get(0);
+    }
+
+
+    public Node<T> getNodeByName(T data) {
+
+        List<Node<T>> nodes = vertices.stream().filter(node -> node.getData() == data).collect(Collectors.toList());
+        if (nodes.size() != 1) {
+            throw new RuntimeException("ID either does not exists or duplicate");
+        }
+        return nodes.get(0);
     }
 
 

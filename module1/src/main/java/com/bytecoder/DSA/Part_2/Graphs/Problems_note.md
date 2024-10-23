@@ -24,7 +24,9 @@ Input: n = 3, edges = [[1,3],[2,3],[3,1]]
 
 ```java
 // adjacencyList
-    Map<Integer,List<Integer>> adjacencyList = new HashMap<>();
+    Map<Integer,Set<Integer>> adjacencyList = new HashMap<>();
+//weighted adjacency
+    Map<Node,Map<Node,Integer>> adjacencyList = new HashMap<>();
 
 // adjacencyMatrix
     int[][] matrix = new int[n][n];
@@ -59,13 +61,15 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - Track visited nodes to avoid infinite loops.
    - DFS is useful for exploring deeper paths first.
 
-### 4. **Detect Cycle in Directed Graph using BFS/DFS Algorithm**
+### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
+   - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
+   - **BFS:** Use a queue and track parent nodes similarly to DFS.
+
+
+### 5. **Detect Cycle in Directed Graph using BFS/DFS Algorithm**
    - **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
    - **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
 
-### 5. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
-   - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
-   - **BFS:** Use a queue and track parent nodes similarly to DFS.
 
 ### 6. **Search in a Maze**
    - Model the maze as a graph where each cell is a node.

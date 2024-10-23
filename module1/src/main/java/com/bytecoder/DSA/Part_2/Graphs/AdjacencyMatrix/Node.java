@@ -12,7 +12,6 @@ class Node<T> {
 
     public Node(int index) {
         this.id = index;
-        this.data = data;
         this.visited = false;
     }
 

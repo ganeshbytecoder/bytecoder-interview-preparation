@@ -1,7 +1,6 @@
 package com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GraphAdjMatrixImpl<T> implements Graph<T> {
@@ -10,11 +9,13 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     private final int[][] matrix;
 
+    private final int numberOfNode;
+
     private final boolean directed;
 
     GraphAdjMatrixImpl(int n, boolean directed) {
-
-        matrix = new int[n][n];
+        this.numberOfNode = n;
+        this.matrix = new int[n][n];
         this.directed = directed;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -104,40 +105,285 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             }
             System.out.println();
         }
+
+
+        System.out.println("Printing adjacency list graph");
+
+        for (int i = 0; i < numberOfNode; i++) {
+
+            System.out.print("\n " + getNodeById(i).getData() + " -> ");
+
+            for (int j = 0; j < numberOfNode; j++) {
+                if (matrix[i][j] != -1) {
+                    System.out.print(getNodeById(j).getData() + " ,");
+                }
+
+            }
+        }
+        System.out.println();
+
+        getAllEdges().stream().forEach(System.out::println);
     }
 
 
     @Override
     public void dfs() {
         System.out.println("Traversing DFS");
+
         vertices.forEach(vertex -> vertex.setVisited(false));
-        for (int i = 0; i < vertices.size(); i++) {
+        // or
+        boolean[] visited = new boolean[getAllNodes().size()];
+
+        for (int i = 0; i < numberOfNode; i++) {
             if (!vertices.get(i).visited) {
                 dfsTraversal(vertices.get(i));
             }
         }
+
+
 //        using stack
+        Stack<Node<T>> stack = new Stack<>();
+        stack.add(vertices.get(0));
+
+        while (!stack.empty()) {
+            Node<T> node = stack.pop();
+            System.out.println(" " + node);
+            visited[node.id] = true;
+            for (int i = 0; i < numberOfNode; i++) {
+                if (!visited[i] && matrix[node.id][i] != -1) {
+                    stack.add(getNodeById(i));
+                }
+            }
+        }
+
 
     }
 
     @Override
     public void bfs() {
-        vertices.forEach(vertex -> vertex.setVisited(false));
-        System.out.println("Traversing BFS");
-        for (int i = 0; i < vertices.size(); i++) {
-            if (!vertices.get(i).visited) {
-                bfsTraversal(vertices.get(i));
+
+        //        using queue
+        Queue<Node<T>> queue = new LinkedList<>();
+        boolean[] visited = new boolean[getAllNodes().size()];
+
+        queue.add(vertices.get(0));
+        System.out.println();
+        while (!queue.isEmpty()) {
+            Node<T> node = queue.poll();
+            System.out.println(" " + node);
+            visited[node.id] = true;
+            for (int i = 0; i < numberOfNode; i++) {
+                if (!visited[i] && matrix[node.id][i] != -1) {
+                    queue.add(getNodeById(i));
+                }
             }
         }
 
-//        using queue
+        System.out.println(" \n Traversing BFS");
+        vertices.forEach(vertex -> vertex.setVisited(false));
+        queue = new LinkedList<>();
+        queue.add(getNodeById(0));
+        for (int i = 0; i < numberOfNode; i++) {
+            if (!vertices.get(i).visited) {
+                bfsTraversal(queue);
+            }
+        }
+
 
     }
+
+    private boolean detectCycleForUndirectedWithDFS(Node<T> node, Node<T> parent) {
+        System.out.println(node + " - " + parent);
+
+        node.setVisited(true);
+        boolean ans = false;
+        for (int i = 0; i < numberOfNode; i++) {
+            int connect = matrix[node.getId()][i];
+            if (connect != -1) {
+                if (getNodeById(i).isVisited() && getNodeById(i) != parent) {
+                    return true;
+                }
+                if (!getNodeById(i).isVisited()) {
+                    ans = detectCycleForUndirectedWithDFS(getNodeById(i), node);
+                }
+
+            }
+            if (ans) {
+                return true;
+            }
+        }
+        return ans;
+
+    }
+
+
+    private boolean detectCycleForDirectedWithDFS(Node<T> node, List<Node<T>> recCallStack) {
+
+        node.setVisited(true);
+        recCallStack.add(node);
+        boolean ans = false;
+        for (int neighbourId = 0; neighbourId < numberOfNode; neighbourId++) {
+            int connect = matrix[node.getId()][neighbourId];
+            if (connect != -1) {
+                if (getNodeById(neighbourId).isVisited() && recCallStack.contains(getNodeById(neighbourId))) {
+                    return true;
+                }
+                if (!getNodeById(neighbourId).isVisited()) {
+                    ans = detectCycleForUndirectedWithDFS(getNodeById(neighbourId), node);
+                }
+
+            }
+            if (ans) {
+                return true;
+            }
+        }
+        recCallStack.remove(node);
+        return ans;
+
+    }
+
+
+    private boolean detectCycleForUndirectedGraphWithBFS(Node<T> node) {
+
+
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(node);
+        while (!queue.isEmpty()) {
+            Node<T> curr_node = queue.poll();
+            curr_node.setVisited(true);
+            System.out.println("parent - " + curr_node);
+            for (int i = 0; i < numberOfNode; i++) {
+                if (matrix[curr_node.id][i] != -1) {
+                    System.out.println(getNodeById(i));
+                    if (getNodeById(i).isVisited() && getNodeById(i) != curr_node) {
+                        return true;
+                    } else if (!getNodeById(i).isVisited()) {
+                        queue.add(getNodeById(i));
+                    }
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+
+    private boolean detectCycleForDirectedGraphWithBFS(Node<T> node) {
+
+        System.out.println("Calling detectCycleForDirectedGraphWithBFS");
+
+
+        Queue<Node<T>> queue = new LinkedList<>();
+
+        List<Node<T>> recCallStack = new ArrayList<>();
+
+        queue.add(node);
+
+        while (!queue.isEmpty()) {
+            Node<T> curr_node = queue.poll();
+            curr_node.setVisited(true);
+            recCallStack.add(curr_node);
+
+            System.out.println("parent - " + curr_node);
+            for (int i = 0; i < numberOfNode; i++) {
+                if (matrix[curr_node.id][i] != -1) {
+                    System.out.println(getNodeById(i));
+                    if (getNodeById(i).isVisited() && recCallStack.contains(getNodeById(i))) {
+                        return true;
+                    } else if (!getNodeById(i).isVisited()) {
+                        queue.add(getNodeById(i));
+                    }
+                }
+            }
+
+        }
+
+
+        return false;
+
+    }
+
 
     @Override
     public boolean isCyclic() {
+        boolean dfs = false;
+        boolean ans = false;
+
+        if (directed) {
+
+            System.out.println("directed graphs");
+
+            if (dfs) {
+//        Detect Cycle in Undirected Graph using BFS/DFS Algorithm
+                for (Node<T> node : getAllNodes()) {
+                    if (!node.isVisited()) {
+                        ans = detectCycleForDirectedWithDFS(node, new ArrayList<>());
+                    }
+                    if (ans) {
+                        System.out.println("Cycle is detected with detectCycleForDirectedWithDFS");
+                        return true;
+                    }
+                }
+
+                System.out.println("Cycle is not detected with detectCycleForDirectedWithDFS");
+                return false;
+            } else {
+                getAllNodes().stream().forEach(node -> node.setVisited(false));
+                for (Node<T> node : getAllNodes()) {
+                    if (!node.isVisited()) {
+                        ans = detectCycleForDirectedGraphWithBFS(node);
+                        if (ans) {
+                            System.out.println("Cycle is detected with detectCycleForDirectedGraphWithBFS");
+                            return true;
+                        }
+                    }
+
+                }
+
+                System.out.println("Cycle is not detected with detectCycleForDirectedGraphWithBFS");
+
+
+            }
+
+        } else {
+            if (dfs) {
+//        Detect Cycle in Undirected Graph using BFS/DFS Algorithm
+                for (Node<T> node : getAllNodes()) {
+                    if (!node.isVisited()) {
+                        ans = detectCycleForUndirectedWithDFS(node, null);
+                    }
+                    if (ans) {
+                        System.out.println("Cycle is detected with DFS");
+                        return true;
+                    }
+                }
+
+                System.out.println("Cycle is not detected");
+                return false;
+            } else {
+
+                getAllNodes().stream().forEach(node -> node.setVisited(false));
+                for (Node<T> node : getAllNodes()) {
+                    if (!node.isVisited()) {
+                        ans = detectCycleForUndirectedGraphWithBFS(node);
+                        if (ans) {
+                            System.out.println("Cycle is detected with detectCycleForUndirectedGraphWithBFS");
+                            return true;
+                        }
+                    }
+
+                }
+
+                System.out.println("Cycle is not detected with detectCycleForUndirectedGraphWithBFS");
+
+            }
+        }
+
+
         return false;
     }
+
 
     @Override
     public void implementDFSTopologicalSorting() {
@@ -159,27 +405,40 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     }
 
+    private void processNode(Node<T> node) {
+        System.out.print(node.data.toString() + "  ");
+        node.setVisited(true);
+
+    }
 
     private void dfsTraversal(Node<T> node) {
         node.setVisited(true);
-        for (int i = 0; i < matrix[0].length; i++) {
+        for (int i = 0; i < numberOfNode; i++) {
             if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
                 dfsTraversal(getNodeById(i));
             }
         }
-        System.out.print(node.data.toString() + "  ");
+        processNode(node);
+
     }
 
-    private void bfsTraversal(Node<T> node) {
+    private void bfsTraversal(Queue<Node<T>> queue) {
+        if (queue.isEmpty()) {
+            return;
+        }
+        Node<T> node = queue.poll();
+
+        processNode(node);
         node.setVisited(true);
-        System.out.print(node.data.toString() + "  ");
 
-        for (int i = 0; i < matrix[0].length; i++) {
+        for (int i = 0; i < numberOfNode; i++) {
             if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
-
-                bfsTraversal(getNodeById(i));
+                queue.add(getNodeById(i));
             }
         }
+
+        bfsTraversal(queue);
+
 
     }
 

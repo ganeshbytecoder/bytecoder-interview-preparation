@@ -10,7 +10,6 @@ class Edge<T> {
 
     int cost;
 
-
     Edge(Node<T> start, Node<T> end, int cost) {
         this.start = start;
         this.end = end;
@@ -22,9 +21,9 @@ class Edge<T> {
     @Override
     public String toString() {
         return "Edge{" +
-                "cost=" + cost +
-                ", start=" + start.getData() +
+                "start=" + start.getData() +
                 ", end=" + end.getData() +
+                ", cost=" + cost +
                 '}';
     }
 }

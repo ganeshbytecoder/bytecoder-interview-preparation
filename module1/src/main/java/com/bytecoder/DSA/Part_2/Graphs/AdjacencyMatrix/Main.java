@@ -5,13 +5,13 @@ public class Main {
 
 
     public static void main(String[] args) {
-        GraphAdjMatrixImpl<String> matrix = new GraphAdjMatrixImpl<>(5, false);
+        GraphAdjMatrixImpl<String> matrix = new GraphAdjMatrixImpl<>(6, false);
 
 
-        String[] values = {"A", "B", "C", "D", "E"};
+        String[] values = {"A", "B", "C", "D", "E", "F"};
 
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             matrix.addNode(new Node<>(i, values[i]));
         }
 
@@ -19,9 +19,17 @@ public class Main {
 
         matrix.getAllEdges().stream().forEach(System.out::println);
 
+//        A->B,D
+//        B-> C
+//        C->E
+//        D-> F
+//
+
         matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 10));
 
         matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("D"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("D"), matrix.getNodeByName("F"), 10));
 
         matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
 

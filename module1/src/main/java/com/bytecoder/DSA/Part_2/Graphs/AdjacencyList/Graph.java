@@ -1,13 +1,11 @@
 package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 
-
 import java.util.List;
 
 public interface Graph<T> {
 
 
     void addNode(Node node);
-
 
     void removeNode(Node<T> node);
 
@@ -24,6 +22,24 @@ public interface Graph<T> {
     void dfs();
 
     void bfs();
+
+    boolean isCyclic();
+
+    void implementDFSTopologicalSorting();
+
+    void implementBFSTopologicalSorting();
+
+    void allTopologicalSorting();
+
+    boolean isTopologicalSortingValid(Node<T>[] sorting);
+
+    //    prims algorithms for minimum/max spanning tree (
+    void printPrimMST();
+
+    void printKrushkalMST();
+
+//    shortest path between two nodes
+
 
     void printGraph();
 

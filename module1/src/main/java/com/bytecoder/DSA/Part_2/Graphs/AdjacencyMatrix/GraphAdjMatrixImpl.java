@@ -384,15 +384,49 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         return false;
     }
 
+    private void implementDFSTopologicalSortingUtil(Node<T> node, Stack<Node<T>> stack) {
+
+        node.setVisited(true);
+
+        for (int i = 0; i < numberOfNode; i++) {
+            if (matrix[node.id][i] != -1) {
+                if (!getNodeById(i).isVisited()) {
+                    implementDFSTopologicalSortingUtil(getNodeById(i), stack);
+                }
+            }
+        }
+        stack.push(node);
+
+    }
 
     @Override
     public void implementDFSTopologicalSorting() {
+        Stack<Node<T>> stack = new Stack<>();
 
+        for (Node<T> node : getAllNodes()) {
+            if (!node.isVisited()) {
+                implementDFSTopologicalSortingUtil(node, stack);
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop());
+        }
     }
 
     @Override
     public void implementBFSTopologicalSorting() {
 
+    }
+
+    @Override
+    public void allTopologicalSorting() {
+
+    }
+
+    @Override
+    public boolean isTopologicalSortingValid(Node<T>[] sorting) {
+        return false;
     }
 
     @Override

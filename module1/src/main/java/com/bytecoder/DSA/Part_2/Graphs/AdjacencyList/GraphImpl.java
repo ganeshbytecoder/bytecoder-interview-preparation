@@ -6,29 +6,35 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 class GraphImpl<T> implements Graph<T> {
+
     // No. of vertices
-    private final int totalNodes;
+    private final int numberOfNode;
 
     private final boolean directed;
+
+    private final List<Node<T>> vertices = new ArrayList<>();
+
 
     private final List<Node<T>> adjacencyList = new ArrayList<>();
 
     public GraphImpl(int totalNodes, boolean directed) {
-        this.totalNodes = totalNodes;
+        this.numberOfNode = totalNodes;
         this.directed = directed;
     }
 
     @Override
     public void addNode(Node node) {
         adjacencyList.add(node);
+        vertices.add(node);
     }
 
     @Override
     public void removeNode(Node node) {
         adjacencyList.remove(node);
+        vertices.remove(node);
 
-        for(Node node1: adjacencyList){
-            if(node1.getNeighbors().get(node) != null){
+        for (Node node1 : adjacencyList) {
+            if (node1.getNeighbors().get(node) != null) {
                 node1.getNeighbors().remove(node);
             }
         }
@@ -36,7 +42,7 @@ class GraphImpl<T> implements Graph<T> {
 
     @Override
     public List<Node<T>> getAllNodes() {
-        return adjacencyList;
+        return vertices;
     }
 
 
@@ -82,8 +88,50 @@ class GraphImpl<T> implements Graph<T> {
     }
 
     @Override
-    public void printGraph() {
+    public boolean isCyclic() {
+        return false;
+    }
 
+    @Override
+    public void implementDFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void implementBFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void allTopologicalSorting() {
+
+    }
+
+    @Override
+    public boolean isTopologicalSortingValid(Node<T>[] sorting) {
+        return false;
+    }
+
+    @Override
+    public void printPrimMST() {
+
+    }
+
+    @Override
+    public void printKrushkalMST() {
+
+    }
+
+    @Override
+    public void printGraph() {
+        for (Node<T> node : getAllNodes()) {
+            System.out.println(node.data.toString() + "   ");
+
+            for (Map.Entry<Node<T>, Integer> neighbor : node.getNeighbors().entrySet()) {
+                System.out.println(node.data + " -> " + neighbor.getKey().getData() + " " + neighbor.getValue());
+            }
+            System.out.println();
+        }
     }
 
 
@@ -97,17 +145,13 @@ class GraphImpl<T> implements Graph<T> {
     }
 
 
-    void printMatrix() {
-        for (Node<T> node : getAllNodes()) {
-            System.out.println(node.data.toString() + "   ");
+    public Node<T> getNodeById(int index) {
 
-            for (Map.Entry<Node<T>, Integer> neighbor : node.getNeighbors().entrySet()) {
-                System.out.println(node.data + " -> " + neighbor.getKey().getData() + " " + neighbor.getValue());
-            }
-            System.out.println();
-
+        List<Node<T>> nodes = adjacencyList.stream().filter(node -> node.getId() == index).collect(Collectors.toList());
+        if (nodes.size() != 1) {
+            throw new RuntimeException("ID either does not exists or duplicate");
         }
-
+        return nodes.get(0);
     }
 
 

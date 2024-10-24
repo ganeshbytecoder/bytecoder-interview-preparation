@@ -71,6 +71,8 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
 
 
+----
+
 ### 6. **Search in a Maze**
    - Model the maze as a graph where each cell is a node.
    - Use BFS for the shortest path, or DFS to explore all possible paths.
@@ -99,8 +101,18 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - Use a priority queue (min-heap) to keep track of the shortest path to each node.
    - Greedily expand the shortest known path to reach all nodes in a weighted graph.
 
-### 13. **Implement Topological Sort**
-   - **DFS:** Use a stack to store the finish time of each node.
+---
+## **Implement Topological Sort** 
+```
+Topological sorting for Directed Acyclic Graph (DAG) is a linear ordering of vertices such that for every directed edge u-v, vertex u comes before v in the ordering.
+
+Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
+- it is used in scenarios where certain tasks must be done before others. such as scheduling tasks, resolving coureses prequites structures. 
+
+```
+![img_1.png](img_1.png)
+#### implementations: 
+   - **DFS:** Use a stack to store the finish time of each node. if(stack.size == no. of nodes)
    - **Kahn’s Algorithm:** Use BFS and maintain an in-degree array to identify nodes with no incoming edges.
 
 ### 14. **Minimum Time Taken by Each Job in a DAG**
@@ -115,6 +127,11 @@ To keep track of no of connections or isVisited you can have array or map for ex
 ### 17. **Alien Dictionary (Order of Characters)**
    - Create a graph with characters as nodes and edges representing the ordering between characters.
    - Perform topological sort on the graph to find the character order.
+-----
+
+
+## **Minimum spanning tree**
+
 
 ### 18. **Kruskal’s Algorithm**
    - Sort edges by weight and use the union-find data structure to form the minimum spanning tree by avoiding cycles.
@@ -199,4 +216,4 @@ Each problem has unique challenges, so applying appropriate graph traversal tech
 https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY
-
+https://leetcode.com/problems/course-schedule-ii/submissions/1431168360/

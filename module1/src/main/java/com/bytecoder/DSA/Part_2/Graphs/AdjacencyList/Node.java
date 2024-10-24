@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 class Node<T> {
 
+    int id;
+
     T data;
 
     boolean visited;
@@ -16,7 +18,14 @@ class Node<T> {
     @ToString.Exclude
     private Map<Node<T>, Integer> neighbors = new HashMap<>();
 
-    Node( T data) {
+    public Node(int index) {
+        this.id = index;
+        this.visited = false;
+    }
+
+
+    public Node(int index, T data) {
+        this.id = index;
         this.data = data;
         this.visited = false;
     }

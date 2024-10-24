@@ -30,6 +30,10 @@ public interface Graph<T> {
 
     void implementBFSTopologicalSorting();
 
+    void allTopologicalSorting();
+
+    boolean isTopologicalSortingValid(Node<T> [] sorting);
+
 //    prims algorithms for minimum/max spanning tree (
     void printPrimMST();
 

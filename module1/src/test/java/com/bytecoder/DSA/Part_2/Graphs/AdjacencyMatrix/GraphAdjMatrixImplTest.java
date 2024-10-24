@@ -9,7 +9,7 @@ class GraphAdjMatrixImplTest {
 
     @BeforeEach
     void setUp() {
-        matrix = new GraphAdjMatrixImpl<>(6, false);
+        matrix = new GraphAdjMatrixImpl<>(6, true);
         String[] values = {"A", "B", "C", "D", "E", "F"};
         for (int i = 0; i < 6; i++) {
             matrix.addNode(new Node<>(i, values[i]));
@@ -141,11 +141,28 @@ class GraphAdjMatrixImplTest {
 
     @Test
     void implementDFSTopologicalSorting() {
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("D"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("D"), matrix.getNodeByName("F"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("E"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("A"), 10));
+
+        matrix.implementDFSTopologicalSorting();
     }
 
     @Test
     void implementBFSTopologicalSorting() {
     }
+
+
+
 
     @Test
     void printPrimMST() {

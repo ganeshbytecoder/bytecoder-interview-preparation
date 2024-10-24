@@ -13,7 +13,7 @@ public class Main {
 
 
         for (int i = 0; i < 4; i++) {
-            graphImpl.addNode(new Node<>(values[i]));
+            graphImpl.addNode(new Node<>(i, values[i]));
         }
 
         graphImpl.getAllNodes().stream().forEach(System.out::println);
@@ -24,10 +24,10 @@ public class Main {
         graphImpl.addEdge(new Edge(graphImpl.getNodeByName("B"), graphImpl.getNodeByName("A"), 1));
         graphImpl.addEdge(new Edge(graphImpl.getNodeByName("B"), graphImpl.getNodeByName("D"), 11));
 
-        graphImpl.getAllEdges().stream().forEach(System.out::println);
+        graphImpl.getAllEdges().forEach(System.out::println);
 
         System.out.println("Matrix");
 
-        graphImpl.printMatrix();
+        graphImpl.printGraph();
     }
 }

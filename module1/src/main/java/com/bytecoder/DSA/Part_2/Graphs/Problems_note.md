@@ -47,6 +47,11 @@ To keep track of no of connections or isVisited you can have array or map for ex
 //    counter[i]++; means i nodes total connections with other nodes
 ```
 
+
+### Representation of graph in Databases:
+
+
+
 ### 1. **Create a Graph, Print it**
    - Use adjacency matrix or adjacency list to store the graph.
    - Print the graph by iterating over the matrix/list and displaying connections.
@@ -70,6 +75,82 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
    - **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
 
+### 5. **All possible paths from scr to dst using BFS/DFS Algorithm**
+
+### 5. **All possible paths from scr to dst using BFS/DFS Algorithm with at most k stops** 
+    **important** - https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
+ 
+
+
+## Disjoint set:
+Two sets are called disjoint sets if they don’t have any element in common, the intersection of sets is a null set.
+
+
+    - Find - Finding representative (root) of a disjoint set using Find operation.
+    - union : Merging disjoint sets to a single disjoint set using Union operation.
+
+subsetMap[rootDest].parent : this will get / update parent of rootDest 
+
+```java
+import java.util.HashMap;
+
+class Subset {
+    Node parent;
+    int rank;
+}
+
+
+Node find(Map<Node, Subset> subsets, Node node){
+    if(subsets.get(node) != node){
+      subsets[node].parent = find(subsets, subsets[node].parent);  
+    }
+    return subsets[node].parent;
+}
+
+public void union(Map<Node, Subset> subsetMap, Node src, Node dest){
+    
+    Node rootSrc = find(subsetMap, src);
+    
+    Node rootDest = find(subsetMap, dest);
+    
+    if(subsetMap.get(rootSrc).rank < subsetMap.get(rootDest)){
+//    this will update parent of rootSrc with rootDest
+        subsetMap[rootSrc].parent = rootDest;
+    } else if (subsetMap.get(rootSrc).rank > subsetMap.get(rootDest)) {
+//        this will update parent of rootDest with rootSrc
+        subsetMap[rootDest].parent = rootSrc;
+    }else {
+//        this will update parent of rootDest with rootSrc and increase rootSrc rank
+        subsetMap[rootDest].parent = rootSrc;
+        subsetMap[rootSrc].rank++;
+    }
+}
+
+
+public static void main(String[] args) {
+    Map<Node, Subset> subsets = new HashMap<>();
+
+    for (Node node : vertices) {
+        subsets[node] = new Subset(node, 0);
+    }
+    
+    
+//    we can use array is all nodes are numbers
+    
+//    parent[i] -> mean parent of i is the value node
+    int[] parents = new int[n];
+    
+//    rank[i] - rank of i 
+    int[] rank = new int[n];
+
+    for (int i : vertices) {
+        parents[i] = i;
+        rank[i] = 0;
+    }
+}
+```
+
+    **Two verices are in same graph component**
 
 ----
 
@@ -101,7 +182,8 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - Use a priority queue (min-heap) to keep track of the shortest path to each node.
    - Greedily expand the shortest known path to reach all nodes in a weighted graph.
 
----
+-----
+
 ## **Implement Topological Sort** 
 ```
 Topological sorting for Directed Acyclic Graph (DAG) is a linear ordering of vertices such that for every directed edge u-v, vertex u comes before v in the ordering.
@@ -127,20 +209,48 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 ### 17. **Alien Dictionary (Order of Characters)**
    - Create a graph with characters as nodes and edges representing the ordering between characters.
    - Perform topological sort on the graph to find the character order.
+
+
+### **Find all possible topological sort**
+
+### **is given topological sort valid ?**
+
 -----
 
 
-## **Minimum spanning tree**
+## **Spanning tree**
+
+**Spanning tree** : A spanning tree is a subset of Graph G, such that all the vertices are connected using minimum possible number of edges. Hence, a spanning tree does not have cycles and a graph may have more than one spanning tree.
+
+![img_2.png](img_2.png)
+
+**Properties of a Spanning Tree:**
+
+* A Spanning tree does not exist for a disconnected graph.
+* For a connected graph having N vertices then the number of edges in the spanning tree for that graph will be N-1.
+* A Spanning tree does not have any cycle.
+* We can construct a spanning tree for a complete graph by removing E-N+1 edges, where E is the number of Edges and N is the number of vertices.
+* Cayley’s Formula: It states that the number of spanning trees in a complete graph with N vertices isN^{N-2}       
 
 
-### 18. **Kruskal’s Algorithm**
+**Minimum spanning tree** the sum of the edge weights in spanning tree is min
+
+**Maximum spanning tree** the sum of the edge weights in spanning tree is max
+
+### 18. **Prim’s Algorithm** 
+    A greedy algorithm that starts with single vertex and grows the MST by adding the smallest edge that connects a vertex in the MST which is outside of MST.
+   - Use a priority queue to greedily pick the minimum weight edge expanding the MST, ensuring no cycles are formed
+
+### 19. **Kruskal’s Algorithm**
    - Sort edges by weight and use the union-find data structure to form the minimum spanning tree by avoiding cycles.
-
-### 19. **Prim’s Algorithm**
-   - Use a priority queue to greedily pick the minimum weight edge expanding the MST.
 
 ### 20. **Total Number of Spanning Trees**
    - Cayley’s formula for complete graphs, or Kirchhoff's Matrix-Tree Theorem for general graphs.
+
+
+----
+
+## Shorted Path algorithms
 
 ### 21. **Bellman-Ford Algorithm**
    - Use dynamic programming to relax edges repeatedly. Detect negative weight cycles by checking for changes after `V-1` iterations.
@@ -208,12 +318,13 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 ### 42. **Minimize Cash Flow among Friends**
    - Use a graph where vertices represent people and edges represent the net balance between pairs, then minimize cash flow using a greedy approach.
 
-### 43. **Two Clique Problem**
-   - Check if the graph’s complement is bipartite. If it is, the graph can be divided into two cliques.
-
-Each problem has unique challenges, so applying appropriate graph traversal techniques, greedy approaches, or dynamic programming can help solve them.
+https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
 
 https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/course-schedule-ii/submissions/1431168360/
+
+https://leetcode.com/problems/redundant-connection/submissions/1433882713/?envType=problem-list-v2&envId=graph
+
+https://leetcode.com/problems/all-paths-from-source-to-target/description/

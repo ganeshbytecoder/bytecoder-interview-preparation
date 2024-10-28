@@ -70,8 +70,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     }
 
     @Override
-    public List<Edge> getAllEdges() {
-        List<Edge> edges = new ArrayList<>();
+    public List<Edge<T>> getAllEdges() {
+        List<Edge<T>> edges = new ArrayList<>();
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -83,11 +83,6 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         }
 
         return edges;
-    }
-
-    @Override
-    public boolean hasEdge(Node src, Node end) {
-        return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
     }
 
 
@@ -432,6 +427,33 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     @Override
     public void printPrimMST() {
 
+        Comparator<Edge<T>> comparator = (edge1, edge2)-> edge1.getCost() - edge2.getCost();
+        PriorityQueue<Edge<T>> priorityQueue = new PriorityQueue<>(comparator);
+
+//         pick start node
+        priorityQueue.add(new Edge<>(getNodeById(0), getNodeById(0), 0));
+
+        List<Edge<T>> ansEdges = new ArrayList<>();
+
+        while (!priorityQueue.isEmpty()) {
+            Edge<T> edge = priorityQueue.poll();
+
+            if (edge.getEnd().isVisited()) {
+                continue;
+            }
+            edge.getEnd().setVisited(true);
+            ansEdges.add(edge);
+
+            for (Node<T> neighbour : getAllAdjacent(edge.getEnd())){
+                priorityQueue.add(getEdgeBetween(edge.getEnd(), neighbour));
+            }
+        }
+
+        for(Edge<T> edge : ansEdges){
+            System.out.println(edge);
+        }
+
+
     }
 
     @Override
@@ -493,6 +515,36 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             throw new RuntimeException("ID either does not exists or duplicate");
         }
         return nodes.get(0);
+    }
+
+
+    private Edge<T> getEdgeBetween(Node<T> start, Node<T> end) {
+
+        List<Edge<T>> edges = getAllEdges().stream().filter(edge -> edge.getStart().equals(start) && edge.getEnd().equals(end)).collect(Collectors.toList());
+        if (!edges.isEmpty()) {
+            return edges.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasEdge(Node src, Node end) {
+        return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
+    }
+
+
+    //    get all neighbours
+    public List<Node<T>> getAllAdjacent(Node<T> node) {
+        List<Node<T>> neighbours = new ArrayList<>();
+
+        for (int j = 0; j < matrix[node.getId()].length; j++) {
+            if (matrix[node.getId()][j] != -1) {
+                neighbours.add(getNodeById(j));
+            }
+        }
+
+
+        return neighbours;
     }
 
 

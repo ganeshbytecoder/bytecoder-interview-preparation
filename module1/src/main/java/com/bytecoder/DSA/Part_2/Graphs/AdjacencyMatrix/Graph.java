@@ -16,7 +16,7 @@ public interface Graph<T> {
 
     void removeEdge(Edge edge);
 
-    List<Edge> getAllEdges();
+    List<Edge<T>> getAllEdges();
 
     boolean hasEdge(Node<T> src, Node<T> end);
 
@@ -25,6 +25,8 @@ public interface Graph<T> {
     void bfs();
 
     boolean isCyclic();
+
+
 
     void implementDFSTopologicalSorting();
 
@@ -38,6 +40,9 @@ public interface Graph<T> {
     void printPrimMST();
 
     void printKrushkalMST();
+
+
+
 
 //    shortest path between two nodes
 

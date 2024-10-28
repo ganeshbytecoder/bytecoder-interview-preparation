@@ -3,7 +3,7 @@ package com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix;
 import lombok.Data;
 
 @Data
-class Edge<T> {
+public class Edge<T> {
     Node<T> start;
 
     Node<T> end;

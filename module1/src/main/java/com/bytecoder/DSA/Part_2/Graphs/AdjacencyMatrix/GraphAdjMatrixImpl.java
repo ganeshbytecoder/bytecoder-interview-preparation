@@ -412,6 +412,47 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     @Override
     public void implementBFSTopologicalSorting() {
 
+        int[] in_degree = new int[numberOfNode];
+
+        for(Node<T> vertex : getAllNodes()){
+            for(int neighbour_index =0; neighbour_index< numberOfNode ; neighbour_index++ ){
+                if(matrix[vertex.id][neighbour_index] != -1)
+                    in_degree[neighbour_index]+=1;
+            }
+        }
+
+        Queue<Node<T>> queue = new LinkedList<>();
+        for(int i =0 ; i< numberOfNode ; i++){
+            if(in_degree[i]==0){
+                queue.add(getNodeById(i));
+            }
+        }
+
+        List<Node<T>> result = new ArrayList<>();
+        int count =0;
+        while (!queue.isEmpty()){
+
+            Node<T> node = queue.poll();
+            result.add(node);
+
+            for(int neighbour_index =0; neighbour_index< numberOfNode ; neighbour_index++ ){
+                if(matrix[node.id][neighbour_index] != -1){
+                    if(--in_degree[neighbour_index] ==0) {
+                        queue.add(getNodeById(neighbour_index));
+                    }
+                }
+            }
+            count++;
+        }
+
+        if(count == numberOfNode){
+            for (Node<T> node : result){
+                System.out.println(node);
+            }
+        }else {
+            System.out.println("Not possible");
+        }
+
     }
 
     @Override
@@ -427,7 +468,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     @Override
     public void printPrimMST() {
 
-        Comparator<Edge<T>> comparator = (edge1, edge2)-> edge1.getCost() - edge2.getCost();
+        Comparator<Edge<T>> comparator = (edge1, edge2) -> edge1.getCost() - edge2.getCost();
         PriorityQueue<Edge<T>> priorityQueue = new PriorityQueue<>(comparator);
 
 //         pick start node
@@ -444,22 +485,126 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             edge.getEnd().setVisited(true);
             ansEdges.add(edge);
 
-            for (Node<T> neighbour : getAllAdjacent(edge.getEnd())){
+            for (Node<T> neighbour : getAllAdjacent(edge.getEnd())) {
                 priorityQueue.add(getEdgeBetween(edge.getEnd(), neighbour));
             }
         }
 
-        for(Edge<T> edge : ansEdges){
+        for (Edge<T> edge : ansEdges) {
             System.out.println(edge);
         }
 
 
     }
 
+    Node<T> find(Node<T> node, HashMap<Node<T>, Node<T>> parent) {
+        if (node == parent.get(node)) {
+            return parent.get(node);
+        }
+        return find(parent.get(node), parent);
+    }
+
+    void union(Node<T> src, Node<T> dst, HashMap<Node<T>, Node<T>> parent, int[] rank) {
+        Node<T> srcRoot = find(src, parent);
+        Node<T> dstRoot = find(dst, parent);
+
+        if (rank[srcRoot.id] > rank[dstRoot.id]) {
+            parent.put(dstRoot, srcRoot);
+        } else if (rank[srcRoot.id] < rank[dstRoot.id]) {
+            parent.put(srcRoot, dstRoot);
+        } else {
+            parent.put(srcRoot, dstRoot);
+            rank[srcRoot.id]++;
+        }
+    }
+
+
     @Override
-    public void printKrushkalMST() {
+    public List<Edge<T>> printKrushkalMST() {
+
+        List<Edge<T>> edges = getAllEdges();
+        edges.sort((e1, e2) -> e1.getCost() - e2.getCost());
+
+
+        List<Edge<T>> result = new ArrayList<>();
+
+        int[] rank = new int[numberOfNode];
+
+        HashMap<Node<T>, Node<T>> parent = new HashMap<>();
+
+        for (Edge<T> edge : edges) {
+            parent.put(edge.getStart(), edge.getStart());
+            parent.put(edge.getEnd(), edge.getEnd());
+        }
+
+
+        int e = 0;
+        int i = 0;
+        while (e < numberOfNode - 1) {
+            Edge<T> edge = edges.get(i);
+            Node<T> srcRoot = find(edge.getStart(), parent);
+            Node<T> dstRoot = find(edge.getEnd(), parent);
+
+            if (srcRoot != dstRoot) {
+                result.add(edge);
+                union(edge.getStart(), edge.getEnd(), parent, rank);
+                e++;
+            }
+            i++;
+        }
+
+        for (Edge<T> edge : result) {
+            System.out.println(edge);
+        }
+
+
+        return result;
+
 
     }
+
+
+    public List<Edge<T>> printKrushkalMST_M2() {
+
+        PriorityQueue<Edge<T>> edges = new PriorityQueue<>((e1, e2) -> e1.getCost() - e2.getCost());
+        edges.addAll(getAllEdges());
+
+        List<Edge<T>> result = new ArrayList<>();
+
+        int[] rank = new int[numberOfNode];
+
+        HashMap<Node<T>, Node<T>> parent = new HashMap<>();
+
+        for (Edge<T> edge : edges) {
+            parent.put(edge.getStart(), edge.getStart());
+            parent.put(edge.getEnd(), edge.getEnd());
+        }
+
+
+        int e = 0;
+        while (e < numberOfNode - 1) {
+            Edge<T> edge = edges.poll();
+            Node<T> srcRoot = find(edge.getStart(), parent);
+            Node<T> dstRoot = find(edge.getEnd(), parent);
+
+            if (srcRoot != dstRoot) {
+                result.add(edge);
+                union(edge.getStart(), edge.getEnd(), parent, rank);
+                e++;
+            }
+
+        }
+
+        for (Edge<T> edge : result) {
+            System.out.println(edge);
+        }
+
+
+        return result;
+
+
+    }
+
 
     private void processNode(Node<T> node) {
         System.out.print(node.data.toString() + "  ");

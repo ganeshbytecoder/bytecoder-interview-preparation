@@ -36,10 +36,12 @@ public interface Graph<T> {
 
     boolean isTopologicalSortingValid(Node<T> [] sorting);
 
+
+
 //    prims algorithms for minimum/max spanning tree (
     void printPrimMST();
 
-    void printKrushkalMST();
+    List<Edge<T>> printKrushkalMST();
 
 
 

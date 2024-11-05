@@ -159,6 +159,28 @@ class GraphAdjMatrixImplTest {
 
     @Test
     void implementBFSTopologicalSorting() {
+
+        matrix = new GraphAdjMatrixImpl<>(6, true);
+        String[] values = {"A", "B", "C", "D", "E", "F"};
+        for (int i = 0; i < 6; i++) {
+            matrix.addNode(new Node<>(i, values[i]));
+        }
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 5));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("D"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("D"), matrix.getNodeByName("F"), 7));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("E"), 10));
+//
+        matrix.addEdge(new Edge(matrix.getNodeByName("E"), matrix.getNodeByName("A"), 10));
+//
+//        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("A"), 10));
+
+        matrix.implementBFSTopologicalSorting();
     }
 
 
@@ -185,6 +207,25 @@ class GraphAdjMatrixImplTest {
 
     @Test
     void printKrushkalMST() {
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("B"), 5));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("A"), matrix.getNodeByName("D"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("D"), matrix.getNodeByName("F"), 7));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("B"), matrix.getNodeByName("C"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("E"), 10));
+
+        matrix.addEdge(new Edge(matrix.getNodeByName("C"), matrix.getNodeByName("A"), 10));
+
+        System.out.println("Using set");
+        matrix.printKrushkalMST();
+
+        System.out.println("Using priority queue");
+
+        matrix.printKrushkalMST_M2();
     }
 
     @Test

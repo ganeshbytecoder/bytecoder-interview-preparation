@@ -178,9 +178,6 @@ public static void main(String[] args) {
    - Treat each word as a node and edges between words that differ by one character.
    - Use BFS to find the shortest transformation sequence from the start word to the end word.
 
-### 12. **Dijkstra’s Algorithm**
-   - Use a priority queue (min-heap) to keep track of the shortest path to each node.
-   - Greedily expand the shortest known path to reach all nodes in a weighted graph.
 
 -----
 
@@ -194,8 +191,19 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 ```
 ![img_1.png](img_1.png)
 #### implementations: 
-   - **DFS:** Use a stack to store the finish time of each node. if(stack.size == no. of nodes)
-   - **Kahn’s Algorithm:** Use BFS and maintain an in-degree array to identify nodes with no incoming edges.
+### **DFS:**
+   - perform a dfs traversal of the graph
+   - for every vertex, after visiting all its adjacent vertices, push it onto stack
+   - once all the vertices are visited, pop vertices from the stack to get the topological sort order
+   -  if(stack.size != no. of nodes) :  graph contains a cycle or topological sort is not possible
+
+### **Kahn’s Algorithm:**
+   - compute the in-degree (number of incoming edges) for each vertex
+   - initialise the queue with all vertices with an in-degree of 0
+   - Dequeue a vertex, add it to topological order & reduce in-degree of its adjacent vertices
+   - if the on-degree of an adjacent vertex become 0, enqueue it 
+   - continue this process until the queue is empty 
+   - Note - if count != vertices : graph contains a cycle or topological sort is not possible
 
 ### 14. **Minimum Time Taken by Each Job in a DAG**
    - Perform topological sorting and calculate the time taken for each job by relaxing edges according to the topological order.
@@ -252,11 +260,16 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 
 ## Shorted Path algorithms
 
+### 22. **Shorted Path algorithms for unweighted or undirected graph**
+
+### 12. **Dijkstra’s Algorithm**
+   - Use a priority queue (min-heap) to keep track of the shortest path to each node.
+   - Greedily expand the shortest known path to reach all nodes in a weighted graph.
+
+
 ### 21. **Bellman-Ford Algorithm**
    - Use dynamic programming to relax edges repeatedly. Detect negative weight cycles by checking for changes after `V-1` iterations.
 
-### 22. **Floyd-Warshall Algorithm**
-   - Dynamic programming approach to compute shortest paths between all pairs of nodes in `O(V^3)` time.
 
 ### 23. **Travelling Salesman Problem**
    - Use dynamic programming or backtracking to find the minimum cost of visiting all cities once and returning to the start.
@@ -270,8 +283,6 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 ### 26. **Find Bridge in a Graph**
    - Use DFS and track discovery and low values of each node to detect bridges (edges whose removal increases the number of connected components).
 
-### 27. **Count Strongly Connected Components (Kosaraju's Algorithm)**
-   - Use two DFS traversals: one to fill the stack by finish time, and the second on the transposed graph to identify SCCs.
 
 ### 28. **Check if a Graph is Bipartite**
    - Use BFS or DFS to try and color the graph using two colors. If adjacent nodes end up with the same color, the graph is not bipartite.
@@ -318,13 +329,12 @@ Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
 ### 42. **Minimize Cash Flow among Friends**
    - Use a graph where vertices represent people and edges represent the net balance between pairs, then minimize cash flow using a greedy approach.
 
-https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
 
+
+https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
 https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY
 https://leetcode.com/problems/course-schedule-ii/submissions/1431168360/
-
 https://leetcode.com/problems/redundant-connection/submissions/1433882713/?envType=problem-list-v2&envId=graph
-
 https://leetcode.com/problems/all-paths-from-source-to-target/description/

@@ -855,3 +855,42 @@ These methods make `StringBuilder` the preferred choice for scenarios where you 
     - Converts the string to a character array.
     - This method is not available in `StringBuilder`.
 
+
+----
+
+For `int[]` arrays (primitive type arrays) in Java, the conversion process differs slightly since `Arrays.asList()` and `List.of()` only work directly with objects like `Integer[]` but not `int[]`. Here’s how you can handle conversions for `int[]` to `List<Integer>` and vice versa:
+
+### 1. `int[]` Array to `List<Integer>`
+To convert a primitive `int[]` array to a `List<Integer>`, you need to use a loop or Java Streams (Java 8+):
+
+#### Using Java Streams (Java 8+)
+```java
+int[] intArray = {1, 2, 3, 4, 5};
+
+// Convert int[] to List<Integer>
+List<Integer> list = Arrays.stream(intArray)
+                           .boxed()
+                           .collect(Collectors.toList());
+
+System.out.println("List: " + list);
+```
+
+### 2. `List<Integer>` to `int[]` Array
+To convert a `List<Integer>` to an `int[]` array, you can use a loop or Java Streams:
+
+#### Using Java Streams (Java 8+)
+```java
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+// Convert List<Integer> to int[]
+int[] intArray = list.stream()
+                     .mapToInt(Integer::intValue)
+                     .toArray();
+
+System.out.println("Array: " + Arrays.toString(intArray));
+```
+
+
+
+
+

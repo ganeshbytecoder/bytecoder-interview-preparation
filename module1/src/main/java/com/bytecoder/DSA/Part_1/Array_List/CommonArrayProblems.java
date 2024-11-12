@@ -37,16 +37,29 @@ public class CommonArrayProblems {
         Map<Integer, Integer> map = new HashMap<>();
 
         for (int a : numbers) {
-            if(map.get(a)!= null){
+            if (map.get(a) != null) {
                 int b = map.get(a);
-                System.out.printf( "(%d,%d) \n " ,a, b);
-            }else {
-                map.put((Integer) k-a, a);
+                System.out.printf("(%d,%d) \n ", a, b);
+            } else {
+                map.put((Integer) k - a, a);
             }
 
 
         }
 
+    }
+
+//    Find Largest Sum Contiguous Subarray (Kadane's Algorithm)
+    public int maxSubArray(int[] nums) {
+        int max = nums[0], sum = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, sum);
+            if (sum < 0) {
+                sum = 0;
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {

@@ -1,3 +1,161 @@
+### Notes on Greedy Algorithm in DSA (Data Structures and Algorithms)
+
+**Definition:**
+A greedy algorithm is a problem-solving technique that makes the optimal choice at each step with the hope of finding the global optimum. It builds up a solution piece by piece, always choosing the next piece that offers the most immediate benefit without considering future consequences.
+
+**Key Characteristics:**
+1. **Greedy Choice Property**: The algorithm makes a choice that seems best at the moment and moves forward without reconsidering previous choices.
+
+**General Approach:**
+1. **Initialize**: Start from an initial state. question is asking for min or max solution
+2. **Choose**: Sort and select the locally optimal choice.
+3. **Feasibility Check**: Ensure the current choice leads to a feasible solution.
+4. **Repeat**: Continue making choices until a complete solution is found.
+5. **Solution Construction**: Collect the selected choices to form the final result.
+
+
+
+## examples
+### **Min/Max number of Coin Change Problem**
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+```text
+Example 1:
+Input: coins = [1,2,5], amount = 11
+Output: 3
+
+Example 2:
+Input: coins = [2], amount = 3
+Output: -1
+
+```
+
+
+````java
+    //  greedy
+// descending of coins , ans = max  
+    int greedy_solution(int[] coins, int amount, int ans) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return 100000;
+        }
+
+        for (int  i=coins.length-1 ; i>=0 ; i-- ) {
+            if (amount - coins[i] >= 0) {
+                ans = Math.min(ans, 1 + greedy_solution(coins, amount - coins[i], ans));
+            }
+        }
+        return ans;
+    }
+````
+
+```java
+
+```
+
+
+**N Meetings in One room**
+
+**Maximum Length of Pair Chain**
+
+problem : You are given an array of n pairs pairs where pairs[i] = [lefti, righti] and lefti < righti.
+Example 1:
+Input: pairs = [[1,2],[2,3],[3,4]]
+Output: 2
+Explanation: The longest chain is [1,2] -> [3,4].
+
+similarly n meetings in one room will be done 
+
+```java
+    public int findLongestChain(int[][] pairs) {
+
+        Arrays.sort(pairs, (p1, p2)-> p1[1]-p2[1]);
+        int min=Integer.MIN_VALUE;
+        int count=0;
+         for (int i = 0; i <pairs.length; i++) {
+            if(pairs[i][0] > min){
+                count++;
+                min=pairs[i][1];
+                System.out.println(pairs[i][1]);
+            }
+        }
+        return count;
+    }
+```
+
+
+### Minimum Number of Arrows to Burst Balloons:
+
+```java
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a,b) -> Integer.compare(a[0],b[0]));
+        int end= points[0][1];
+        int count=1;
+
+         for (int i = 1; i < points.length; i++) {
+            if(points[i][0] <= end){
+                end = Math.min(end,points[i][1]);
+            }else{
+                end = points[i][1];
+                count++;
+            }
+        }
+
+        return count;
+    }
+```
+
+
+
+**Max Meetings in One Room**
+
+
+
+Activity Selection Problem:
+
+You are given n activities with their start and finish times. Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time. 
+
+Input: start[]  =  {10, 12, 20}, finish[] =  {20, 25, 30}
+Output: 0
+Explanation: A person can perform at most one activities.
+
+
+Input: start[]  =  {1, 3, 0, 5, 8, 5}, finish[] =  {2, 4, 6, 7, 9, 9};
+Output: 0 1 3 4
+Explanation: A person can perform at most four activities. The 
+maximum set of activities that can be executed 
+is {0, 1, 3, 4} [ These are indexes in start[] and finish[]
+
+The greedy choice is to always pick the next activity whose finish time is the least among the remaining activities and the start time is more than or equal to the finish time of the previously selected activity. We can sort the activities according to their finishing time so that we always consider the next activity as the minimum finishing time activity
+
+
+
+
+Shop Candy Problem:
+
+
+
+Chocolate Distribution Problem:
+
+Min Cost of Ropes:
+
+Huffman Encoding / merge files into one problem 1111111111111111:
+
+0/1 Knapsack problem 
+
+Fractional Knapsack:
+
+Job Sequencing Problem:
+
+rope merge fir min cost 
+
+huffman codding 
+
+number of railway platforms 
+
 
 ### **Greedy Problems:**
 
@@ -113,3 +271,14 @@
    - Use a greedy approach to reduce the height of the largest stack until all three stacks have equal height.
 
 
+
+
+https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/
+
+https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/solutions/5950330/more-simpler-java-solution/
+
+
+https://leetcode.com/problems/non-overlapping-intervals/description/
+
+
+https://leetcode.com/problems/min-cost-to-connect-all-points/description/

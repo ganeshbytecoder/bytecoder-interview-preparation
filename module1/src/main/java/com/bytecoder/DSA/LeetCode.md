@@ -29,4 +29,7 @@
 * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/submissions/1328063250/
 * https://leetcode.com/problems/sum-root-to-leaf-numbers/submissions/1328155077/
 * https://leetcode.com/problems/unique-binary-search-trees-ii/?envType=problem-list-v2&envId=binary-tree
+* https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/
+* https://leetcode.com/problems/jump-game-ii/description/
 * https://leetcode.com/problems/number-of-1-bits/submissions/1423436038/?envType=problem-list-v2&envId=divide-and-conquer&difficulty=EASY
+* https://leetcode.com/problems/word-break/?envType=problem-list-v2&envId=dynamic-programming

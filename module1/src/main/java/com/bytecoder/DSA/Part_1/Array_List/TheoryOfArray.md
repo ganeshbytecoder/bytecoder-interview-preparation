@@ -1,33 +1,3 @@
-### 1. **Reverse the Array**
-   - **Hint**:
-   - In-Place Reversal with Loop: This is the most efficient way to reverse an array in terms of both time and space complexity. It only requires O(n) time and O(1) space. 
-   - New Array Method: This approach is simpler but requires additional space (O(n)). 
-   - Using Collections API: Suitable for object arrays, not for primitive arrays.
-   - Use two pointers, one at the beginning and one at the end, and swap the elements until the pointers meet in the middle.
-
-
-### 2. **Find the Maximum and Minimum Element in an Array**
-   - **Hint**: Traverse the array while maintaining two variables for the maximum and minimum values.
-
-### 3. **Find the "Kth" Max and Min Element of an Array**
-**Hint**:
-   -  Sort the array, and the Kth max will be at `arr[n-k]`, and the Kth min will be at `arr[k-1]`. 
-   -  use a min-heap or max-heap for better performance.
-
-### 4. **Sort the Array Consisting of Only 0s, 1s, and 2s**
-**Hint**: 
-   - Use the Dutch National Flag algorithm with three pointers (low, mid, high) to partition the array into three segments.
-   - use hashmap and count 
-   - count array
-   - sorting api (Arrays.sort())
-
-### 5. **Move All Negative Elements to One Side of the Array**
-   - **Hint**: 
-   - any sorting algorithm
-   - two pointers since sorted order is not required 
-   - two array (-ve and +ve) and concat them into one 
-   - use one new array and start filling from back and front 
-   - Use the partition process from the quicksort algorithm to move negative elements to one side.
 
 ### 6. **Find the Union and Intersection of Two Sorted Arrays**
 **Hint**: 
@@ -51,22 +21,32 @@
    - **Hint**: Use Floyd's Tortoise and Hare (Cycle Detection) method to find the duplicate.
 
 ### 12. **Merge Two Sorted Arrays Without Using Extra Space**
-   - **Hint**: Use the gap method, where you gradually reduce the gap between elements and compare corresponding elements across the two arrays.
+    Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+    Output: [1,2,2,3,5,6]
 
-### 13. **Kadane's Algorithm**
-   - **Hint**: Track the maximum subarray sum by iterating through the array and maintaining a current sum that resets if it becomes negative.
 
 ### 14. **Merge Intervals**
    - **Hint**: Sort intervals by their start times, then merge overlapping intervals by checking if the end of one interval is greater than or equal to the start of the next.
+    
+>
+> Example 1:
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
 
-### 15. **Next Permutation**
-   - **Hint**: Find the first decreasing element from the right, swap it with the next largest element, and reverse the subsequent part of the array.
+>Example 2:
+Input: intervals = [[1,4],[4,5]]
+Output: [[1,5]]
+Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+     
 
-### 16. **Count Inversions**
-   - **Hint**: Use a modified merge sort algorithm that counts inversions while merging the subarrays.
 
-### 17. **Best Time to Buy and Sell Stock**
+
+
+
+### 17. Best Time to Buy and Sell Stock (https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/)
    - **Hint**: Track the minimum price encountered so far and calculate the maximum profit by comparing it with the current price.
+   - dp : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
 
 ### 18. **Find All Pairs on Integer Array Whose Sum is Equal to Given Number**
    - **Hint**: Use a hash map to store the complement of each number as you traverse the array, and check if the complement exists in the map.
@@ -135,3 +115,9 @@
      - Case 1: m+n is odd, the median is at (m+n)/2th index in the array obtained after merging both the arrays. 
      - Case 2: m+n is even, the median will be the average of elements at index ((m+n)/2 – 1) and (m+n)/2 in the array obtained after merging both the arrays
 
+### 15. **Next Permutation**
+   - **Hint**: Find the first decreasing element from the right, swap it with the next largest element, and reverse the subsequent part of the array.
+
+
+### 16. **Count Inversions**
+   - **Hint**: Use a modified merge sort algorithm that counts inversions while merging the subarrays.

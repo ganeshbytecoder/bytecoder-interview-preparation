@@ -9,13 +9,13 @@ package com.bytecoder.java17;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaTips {
+
+
+    
 
     public static void hashmapSorting(){
         Map<String, Integer> map = new HashMap<>();
@@ -109,8 +109,43 @@ public class JavaTips {
 
     }
 
+    public static int sortArray (int[][] events){
+//        Arrays.sort(pair, (p1, p2)->( p1[1] - p1[0]) - (p2[1]-p2[0]));
+//        return pair;
+
+          Arrays.sort(events, (p1, p2)-> p1[1]-p2[1]);
+        HashMap<Integer, Integer> days = new HashMap<>();
+
+            for (int i = 0; i <events.length; i++) {
+            int temp= events[i][1];
+            while(days.get(temp) != null && temp >= events[i][0] && temp > 1){
+                temp--;
+                if(temp==0){
+                    break;
+                }
+            }
+            if(days.get(temp) == null){
+                System.out.println("temp " + temp) ;
+                System.out.println(events[i][1]);
+                days.put(temp, events[i][1]);
+            }
+        }
+        return days.size();
+    }
+
 
     public static void main(String[] args) {
+
+        int [][] pairs = {{-2147483646,-2147483645},{2147483646,2147483647}};
+//        sortArray(pairs);
+
+        Arrays.sort(pairs, (p1, p2)->Math.abs(p1[0]) - Math.abs(p2[0]));
+        for (int i = 0; i <pairs.length; i++) {
+            System.out.println(pairs[i][0] + " " +  pairs[i][1]);
+        }
+
+
+
 //        reverseString("ganesh");
 //        hashmapSorting();
 //
@@ -139,6 +174,7 @@ public class JavaTips {
 
 
     }
+
 
 
     public static boolean solve(String s,String t, int i, int j){

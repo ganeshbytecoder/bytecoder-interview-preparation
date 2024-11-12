@@ -65,12 +65,12 @@ public class MaxFrequency {
         System.out.println("max c  " + c);
     }
 
-    public static void getMaxCharFrequencyInString(String str){
+    public static void getMaxCharFrequencyInString(String str) {
         List<Character> characters = new ArrayList<>();
         for (char c : str.toLowerCase().toCharArray()) {
             characters.add(c);
         }
-        Map.Entry<Character, Long> entry =  characters.stream()
+        Map.Entry<Character, Long> entry = characters.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue())
@@ -79,10 +79,20 @@ public class MaxFrequency {
     }
 
 
-
     public static void main(String[] args) {
         getMaxOccurredInt(new int[]{1, 2, 3, 4, 133, 4, 2});
         getMaxCharFrequencyInString("ganeshSinghChoudhary");
+
+
+        List.of(1, 2, 34, 4).stream().forEach(System.out::println);
+        Arrays.asList(1, 2, 34, 2).stream().forEach(System.out::println);
+        Integer[] arr = new Integer[]{1, 2, 3, 4, 133, 4, 2};
+        List.of(arr).stream().forEach(System.out::println);
+
+        String[] array = {"one", "two", "three"};
+        List<String> list = List.of(array);
+
+        System.out.println("Immutable List: " + list);
 
     }
 }

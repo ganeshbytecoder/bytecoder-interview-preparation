@@ -35,6 +35,8 @@ Output: -1.
 Explanation: There is no occurrence of “practice” in “geeksforgeeks”
 ```
 
+get all possible substrings 
+
 https://www.geeksforgeeks.org/roman-number-to-integer/
 
 https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/ 
@@ -54,3 +56,5 @@ https://www.geeksforgeeks.org/longest-substring-with-no-pair-of-adjacent-charact
 https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-at-least-k-times-set-3/?ref=asr25
 
 https://www.geeksforgeeks.org/longest-prefix-also-suffix/
+
+https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1 

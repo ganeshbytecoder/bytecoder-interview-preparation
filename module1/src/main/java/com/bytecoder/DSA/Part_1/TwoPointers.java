@@ -67,4 +67,8 @@ public class TwoPointers {
 
 //    question : https://leetcode.com/problems/find-the-duplicate-number/description/
 
+//    https://leetcode.com/problems/3sum/description/?envType=problem-list-v2&envId=array
+
+//    https://leetcode.com/problems/container-with-most-water/description/?envType=problem-list-v2&envId=array&status=TO_DO
+
 }

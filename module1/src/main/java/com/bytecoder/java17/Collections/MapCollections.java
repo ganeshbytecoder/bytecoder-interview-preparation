@@ -4,7 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MapCollections {
-
+//        Queue<Integer> queue = new LinkedList<>()
 //    List.of(1,2,3)
-//            Collectors.
+//
+        PriorityQueue priorityQueue = new PriorityQueue<>();
 }

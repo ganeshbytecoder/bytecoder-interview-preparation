@@ -4,4 +4,6 @@
 
 https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/ 
 
+https://leetcode.com/problems/jump-game/description/ 
+
 recursion -> tabulation -> memoization 

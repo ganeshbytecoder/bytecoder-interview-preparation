@@ -33,3 +33,4 @@
 * https://leetcode.com/problems/jump-game-ii/description/
 * https://leetcode.com/problems/number-of-1-bits/submissions/1423436038/?envType=problem-list-v2&envId=divide-and-conquer&difficulty=EASY
 * https://leetcode.com/problems/word-break/?envType=problem-list-v2&envId=dynamic-programming
+* https://leetcode.com/problems/odd-even-linked-list/description/

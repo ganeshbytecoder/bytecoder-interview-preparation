@@ -164,8 +164,37 @@ We can delete a node in a circular linked list in three ways:
 ### 33. **Delete Nodes with Greater Value on Right Side**
    - **Hint**: Reverse the list, track the max value as you traverse, and delete nodes that are smaller than the max. Reverse the list back.
 
-### 34. **Segregate Even and Odd Nodes in a Linked List**
+### 34. **Segregate Even and Odd Nodes in a Linked List ** 
+Note that the relative order inside both the even and odd groups should remain as it was in the input.
+
+Input: head = [1,2,3,4,5] \
+Output: [1,3,5,2,4]
+
+Input: head = [2,1,3,5,6,4,7] \
+Output: [2,3,6,7,1,5,4]
+
    - **Hint**: Create two separate lists for even and odd nodes, then concatenate them.
+```java
+    public ListNode oddEvenList(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode odd = head;
+        ListNode even = head.next;
+        ListNode evenHead = even;
+        while(even != null && even.next != null){
+            odd.next= even.next;
+            odd = odd.next;
+
+            even.next = odd.next;
+            even= even.next;
+         
+        }
+        odd.next = evenHead;
+        return head;
+        
+    }
+```
 
 ### 35. **Find the N’th Node from the End of a Linked List**
    - **Hint**: Use two pointers. Move one pointer `n` nodes ahead, then move both until the first pointer reaches the end.
@@ -176,3 +205,5 @@ We can delete a node in a circular linked list in three ways:
 
 * https://leetcode.com/problems/merge-two-sorted-lists/submissions/1415980375/?envType=problem-list-v2&envId=recursion
 * https://leetcode.com/problems/remove-linked-list-elements/submissions/1416013441/?envType=problem-list-v2&envId=recursion&difficulty=EASY
+* https://leetcode.com/problems/remove-linked-list-elements/description/?envType=problem-list-v2&envId=linked-list&difficulty=EASY
+* https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/description/ 

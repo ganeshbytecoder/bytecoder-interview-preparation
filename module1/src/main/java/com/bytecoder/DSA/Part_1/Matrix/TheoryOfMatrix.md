@@ -28,3 +28,10 @@
 ### 10. **Common Elements in All Rows of a Given Matrix**
    - **Hint**: Use a hash map to count the frequency of each element across rows. Traverse the matrix row by row, and only update the count for elements present in all previous rows.
 
+
+
+https://leetcode.com/problems/01-matrix/description/ 
+
+https://leetcode.com/problems/rotting-oranges/description/
+
+https://leetcode.com/problems/word-search/?envType=problem-list-v2&envId=array&status=TO_DO 

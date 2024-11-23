@@ -8,4 +8,5 @@ public class MapCollections {
 //    List.of(1,2,3)
 //
         PriorityQueue priorityQueue = new PriorityQueue<>();
+
 }

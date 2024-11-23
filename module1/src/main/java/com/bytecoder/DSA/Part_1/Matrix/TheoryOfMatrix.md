@@ -35,3 +35,10 @@ https://leetcode.com/problems/01-matrix/description/
 https://leetcode.com/problems/rotting-oranges/description/
 
 https://leetcode.com/problems/word-search/?envType=problem-list-v2&envId=array&status=TO_DO 
+
+https://leetcode.com/problems/number-of-islands/description/?envType=problem-list-v2&envId=matrix 
+
+https://leetcode.com/problems/01-matrix/description/
+
+
+https://leetcode.com/problems/unique-paths/ 

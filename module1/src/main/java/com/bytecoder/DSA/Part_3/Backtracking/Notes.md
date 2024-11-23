@@ -61,6 +61,32 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] n
 }
 ```
 
+* Method 2 solution
+```java
+    public void solution(int[] nums, int index,  List<Integer> output, List<List<Integer>> ans ){
+        if(index == nums.length){
+            ans.add(new ArrayList<>(output));
+            return;
+        }
+        
+        solution(nums, index+1, output, ans);
+        output.add(nums[index]);
+        solution(nums, index+1, output, ans);
+        output.remove(Integer.valueOf(nums[index]));
+    }
+
+
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> output = new ArrayList<>();
+        solution(nums, 0,output, ans);
+        return ans;
+
+        
+    }
+```
+
 2. **Subsets II**:
    - Generate subsets but avoid duplicates.
    - Key Technique: Sort the array and skip duplicate elements.
@@ -129,7 +155,7 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
         list.add(new ArrayList<>(tempList));
     } else{
         for(int i = 0; i < nums.length; i++){
-            if(used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1]) continue;
+            if(used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i - 1])) continue;
             used[i] = true; 
             tempList.add(nums[i]);
             backtrack(list, tempList, nums, used);

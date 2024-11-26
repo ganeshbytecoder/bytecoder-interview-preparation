@@ -26,6 +26,11 @@ https://leetcode.com/problems/custom-sort-string/description/
    - *Problem*: Check if two strings are anagrams of each other.  
    - *Concept*: Use a HashMap to count character frequencies.  
    - [LeetCode](https://leetcode.com/problems/valid-anagram/)
+    
+```python
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s)==sorted(t)
+```
 
 4. **First Unique Character in a String**  
    - *Problem*: Find the first non-repeating character in a string.  
@@ -59,6 +64,41 @@ https://leetcode.com/problems/custom-sort-string/description/
    - *Problem*: Find the length of the longest sequence of consecutive integers.  
    - *Concept*: Use a HashSet (or HashMap) to store numbers and check neighbors.  
    - [LeetCode](https://leetcode.com/problems/longest-consecutive-sequence/)
+
+```java
+    public int longestConsecutive(int[] nums) {
+        if(nums.length ==0 ){
+            return 0;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+
+        for(int i : nums){
+            queue.add(i);
+        }
+        int prev = queue.poll();
+        int ans = 0;
+        int l =1;
+        while(!queue.isEmpty()){
+            int temp = queue.poll();
+            System.out.println("prev " + prev + "  "  + temp + " " + l);
+            if(temp==prev){
+                continue;
+            }
+            if(temp-prev==1 ){
+                l++;
+            }else{
+                ans = Math.max(ans, l);
+                l=1;
+            }
+            prev = temp;
+        }
+
+        ans = Math.max(ans, l);
+
+        return ans;
+        
+    }
+```
 
 10. **Intersection of Two Arrays II**  
     - *Problem*: Find the intersection of two arrays, allowing duplicate elements.  

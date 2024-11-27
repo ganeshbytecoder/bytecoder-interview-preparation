@@ -1,6 +1,6 @@
 # Tree -
 a tree is a data structure similar to a linked list but instead of each node pointing simply to the next node in a linear fashion, each node
-points to a number of nodes. 
+points to a number of nodes. it's non-linear and non-cyclic data structure. we will study binary tree, BST( Binary Search Tree) and Nary Tree
 
 ```java
 public static class Node<T extends Comparable<T>> {
@@ -15,6 +15,7 @@ public static class Node<T extends Comparable<T>> {
 }
 
 ```
+
 
 * In tree ADT, the order of  the elements  is not important. tree is a graph with special conditions
 * **Level / depth of a node:** The count of edges on the path from the root node to that node. The root node has level 0.
@@ -45,13 +46,6 @@ public static class Node<T extends Comparable<T>> {
 * finding the height of the tree
 * level of node 
 
-### note: in-order with any other combination can form a tree
 
-|     |   |   |   |   |
-|-----|---|---|---|---|
-|     |   |   |   |   |
-|     |   |   |   |   |
-|     |   |   |   |   |
-|     |   |   |   |   |
-|     |   |   |   |   |
 
+https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2 

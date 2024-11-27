@@ -1,6 +1,6 @@
 package com.bytecoder.DSA.Trees;
 
-import com.bytecoder.DSA.Part_2.Trees.BinarySearchTree;
+import com.bytecoder.DSA.Part_2.Trees.BST.BinarySearchTree;
 import com.bytecoder.DSA.Part_2.Trees.TraversalType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

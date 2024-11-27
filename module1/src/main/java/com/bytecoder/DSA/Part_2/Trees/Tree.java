@@ -32,7 +32,6 @@ public interface Tree<T extends Comparable<T>> {
     boolean searchData(T data);
 
 
-
     void delete(T data);
 
 

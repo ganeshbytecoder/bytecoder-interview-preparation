@@ -1,9 +1,13 @@
-package com.bytecoder.DSA.Part_2.Trees;
+package com.bytecoder.DSA.Part_2.Trees.NaryTree;
+
+import com.bytecoder.DSA.Part_2.Trees.Node;
+import com.bytecoder.DSA.Part_2.Trees.TraversalType;
+import com.bytecoder.DSA.Part_2.Trees.Tree;
 
 import java.util.Collections;
 import java.util.List;
 
-public class NaryTree<T extends Comparable<T>> implements Tree<T> {
+public class NaryTreeWithoutRecusion<T extends Comparable<T>> implements Tree<T> {
     @Override
     public Node<T> getRoot() {
         return null;

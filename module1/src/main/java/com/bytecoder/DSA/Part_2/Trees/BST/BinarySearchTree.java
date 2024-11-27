@@ -1,5 +1,8 @@
-package com.bytecoder.DSA.Part_2.Trees;
+package com.bytecoder.DSA.Part_2.Trees.BST;
 
+import com.bytecoder.DSA.Part_2.Trees.Node;
+import com.bytecoder.DSA.Part_2.Trees.TraversalType;
+import com.bytecoder.DSA.Part_2.Trees.Tree;
 import lombok.Getter;
 
 import java.util.Collections;

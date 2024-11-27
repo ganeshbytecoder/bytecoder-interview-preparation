@@ -1,20 +1,22 @@
-https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2 
 
+
+* https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+* https://leetcode.com/problems/path-sum/description/
+* https://leetcode.com/problems/merge-two-binary-trees/
+* https://leetcode.com/problems/increasing-order-search-tree/description/
+* https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
+* https://leetcode.com/problems/invert-binary-tree/description/
+* https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
+* https://leetcode.com/problems/balanced-binary-tree/submissions/1327991003/
+* https://leetcode.com/problems/sum-root-to-leaf-numbers/submissions/1339140254/?envType=study-plan-v2&envId=top-interview-150
+* https://leetcode.com/problems/populating-next-right-pointers-in-each-node/submissions/1328063250/
+* https://leetcode.com/problems/sum-root-to-leaf-numbers/submissions/1328155077/
 
 
 ### 4. **Diameter of a Tree**
    - The diameter is the longest path between two nodes.
    - Use DFS to calculate the diameter as `max(left_height + right_height + 1)` at each node.
    - Keep track of the maximum diameter during traversal.
-
-### 5. **Mirror of a Tree**
-   - **Recursive Approach:** Swap the left and right children of each node recursively.
-   - **Iterative Approach:** Use level order traversal and swap children at each level.
-
-### 6. **Inorder/Preorder/Postorder Traversal (Recursive & Iterative)**
-   - **Recursive:** Traverse left subtree, visit node, traverse right subtree.
-   - **Iterative:** Use a stack to simulate recursion. Push nodes, go left, pop nodes when left is exhausted.
-
 
 ### 9. **Left View of a Tree**
    - Use level order traversal and track the first node at each level.
@@ -28,8 +30,6 @@ https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2
 ### 12. **Bottom View of a Tree**
    - Similar to top view but track the last node at each horizontal distance.
 
-### 13. **Zig-Zag Traversal of a Binary Tree**
-   - Use two stacks to alternate between left-to-right and right-to-left traversals at each level.
 
 ### 14. **Check if a Tree is Balanced**
    - A tree is balanced if the height difference between the left and right subtree is at most 1 for all nodes.
@@ -42,7 +42,6 @@ https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2
 
    - Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
    - To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
-
 
 
 ### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
@@ -107,47 +106,3 @@ https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2
 ### 35. **Tree Isomorphism Problem**
    - Check if two trees can be transformed into each other by flipping subtrees.
 
-### 40. **Check if a Tree is a BST**
-   - Perform in-order traversal and check if the sequence is sorted.
-
-### 41. **Populate Inorder Successor of All Nodes**
-   - Traverse the tree in reverse in-order and link each node to its successor.
-
-### 42. **Find LCA of Two Nodes in a BST**
-   - Use binary search to find the split point where the two nodes diverge in the tree.
-
-### 43. **Construct BST from Preorder Traversal**
-   - Use recursion or a stack to build the BST by inserting nodes in preorder sequence.
-
-### 44. **Convert Binary Tree into BST**
-   - Extract the in-order traversal of the binary tree, sort it, and reconstruct the tree to follow BST properties.
-
-### 45. **Convert a Normal BST into a Balanced BST**
-   - Extract the in-order traversal of the BST, then use a recursive method to build a balanced BST from the sorted list.
-
-### 46. **Merge Two BSTs**
-   - In-order traverse both trees, merge the two sorted arrays, and build a new BST from the merged list.
-
-### 47. **Find Kth Largest Element in a BST**
-   - Perform reverse in-order traversal and count nodes until you reach the `Kth` largest node.
-
-### 48. **Find Kth Smallest Element in a BST**
-   - Perform in-order traversal and count nodes until you reach the `Kth` smallest node.
-
-### 49. **Count Pairs from Two BSTs Whose Sum is Equal to Given Value X**
-   - Use two stacks for in-order and reverse in-order traversal to find pairs.
-
-### 50. **Find the Median of a BST in O(n) Time and O(1) Space**
-   - Use Morris in-order traversal to find the median without using extra space.
-
-### 51. **Count BST Nodes that Lie in a Given Range**
-   - Perform a modified in-order traversal and count nodes within the range.
-
-### 52. **Replace Every Element with the Least Greater Element on Its Right**
-   - Traverse the array from right to left, using a BST to keep track of seen elements and find the least greater element for each node.
-
-### 53. **Given “n” Appointments, Find the Conflicting Appointments**
-   - Sort appointments by start time and use a min-heap to track overlapping appointments.
-
-### 54. **Check if Preorder is Valid for a BST**
-   - Use a stack and

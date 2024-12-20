@@ -54,6 +54,8 @@ public class StreamsApplication {
              employeeList) {
             System.out.println(e);
         }
+
+
        List<Employee> employees =  Arrays.stream(arrayOfEmps)
                .sorted(Comparator.comparing(a-> a.getAge()))
                .collect(Collectors.toList());

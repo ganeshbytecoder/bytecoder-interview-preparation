@@ -10,7 +10,7 @@ public class BackTracking {
         if(index== arr.length){
             return 0;
         }
-        int l1 = 1+  allSubArrayCount(arr, index+1);
+        int l1 = 1 +  allSubArrayCount(arr, index+1);
         int l2 = allSubArrayCount(arr, index+1);
         return l1+l2;
     }
@@ -61,6 +61,8 @@ public class BackTracking {
 
 
     public static void main(String[] args) {
+
+
         BackTracking backTracking = new BackTracking();
                 int ans =Integer.MIN_VALUE;
 

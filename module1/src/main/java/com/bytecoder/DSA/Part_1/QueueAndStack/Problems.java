@@ -6,7 +6,7 @@ public class Problems {
 
     public static int reverseStack(Stack<Integer> stack){
         if(stack.isEmpty()){
-            return;
+            return 0;
         }
         int temp = stack.pop();
         int ans  = reverseStack(stack);

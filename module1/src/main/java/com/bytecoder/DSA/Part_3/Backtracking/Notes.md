@@ -10,6 +10,7 @@ https://leetcode.com/problems/permutations/?envType=problem-list-v2&envId=backtr
 * word search in matrix 
 * all possible permutations of string or array
 * all possible subsets of array 
+* all possible combinations of string or array
 
 
 
@@ -110,6 +111,38 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] n
 } 
 ```
 
+
+method-2
+
+```java
+public void solution(int[] nums, int index,  List<Integer> output, List<List<Integer>> ans ){
+        if(index == nums.length){
+            ans.add(new ArrayList<>(output));
+            return;
+        }
+        
+        solution(nums, index+1, output, ans);
+        output.add(nums[index]);
+        solution(nums, index+1, output, ans);
+        output.remove(Integer.valueOf(nums[index]));
+    }
+
+    
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> output = new ArrayList<>();
+        solution(nums, 0,output, ans);
+        List<List<Integer>> result = ans.stream().map(sub->{
+            List<Integer> sortedSublist = new ArrayList<>(sub);
+            Collections.sort(sortedSublist);
+            return sortedSublist;
+        }).distinct().collect(Collectors.toList());
+
+        return result;
+        
+    }
+```
+
 3. **Permutations**:
    - Generate all permutations of a given list.
    - Avoid duplicates using a `used` array.
@@ -166,6 +199,45 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 }
 ```
 
+
+
+method-2
+
+```java
+class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+
+    public void solve(int [] nums, List<Integer> list, int index, boolean[] used){
+
+        if(nums.length == index){
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+
+        for(int i = 0 ; i < nums.length ; i++){
+            if(used[i] ) continue;
+            used[i] = true; 
+            list.add(nums[i]);
+            solve(nums, list, index+1, used);
+            list.remove(list.size()-1);
+            used[i] = false; 
+        }
+
+    }
+
+
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        boolean [] used = new boolean[nums.length];
+        Arrays.sort(nums);
+        solve(nums, list, 0, used);
+        List<List<Integer>> result = ans.stream().distinct().collect(Collectors.toList());
+        return result;
+    }
+}
+```
+
 5. **Combination Sum**:
    - Find all unique combinations that sum to a target, with unlimited use of elements.
    - Link: [Combination Sum](https://leetcode.com/problems/combination-sum/)
@@ -190,6 +262,56 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
     }
 }
 ```
+
+method-2
+
+```java
+class Solution {
+
+    List<List<Integer>> ans = new ArrayList<>();
+    
+    public void backtracking(int[] candidates, int target, List<Integer> sum){
+
+        if(target==0){
+            ans.add(new ArrayList<>(sum));
+            return;        
+        }
+        if(target<0){
+            return;
+        }
+
+
+        for(int i =0; i< candidates.length; i++){
+            if (candidates[i] > target) break;
+
+            sum.add(candidates[i]);
+            backtracking(candidates, target-candidates[i], sum);
+            sum.remove(sum.size()-1);
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        Arrays.sort(candidates);
+        backtracking(candidates, target, new ArrayList<>());
+        List<List<Integer>> result = ans.stream()
+            // Sort each sublist
+            .map(sublist -> {
+                List<Integer> sortedSublist = new ArrayList<>(sublist);
+                Collections.sort(sortedSublist);
+                return sortedSublist;
+            })
+            // Remove duplicates by using a Set
+            .distinct()
+            // Collect the result as a list
+            .collect(Collectors.toList());
+
+        return result;
+        
+    }
+}
+```
+
 
 6. **Combination Sum II**:
    - Same as Combination Sum, but elements cannot be reused.
@@ -470,6 +592,11 @@ private void backtrack(List<String> result, String s, String current, int start,
 
 ```
 
+
+
+
+
+
 ---
 
 
@@ -479,8 +606,6 @@ private void backtrack(List<String> result, String s, String current, int start,
 1. **Rat in a Maze Problem**
    - Use backtracking to explore all possible paths from the start to the destination, marking visited paths and backtracking if a path leads to a dead end.
 
-2. **Printing All Solutions in N-Queen Problem**
-   - Use backtracking to place queens on the board. Ensure that no two queens threaten each other before placing the next queen.
 
 3. **Word Break Problem Using Backtracking**
    - Use backtracking to check all possible partitions of the string and see if each partition is a valid word in the dictionary.
@@ -494,12 +619,7 @@ private void backtrack(List<String> result, String s, String current, int start,
 6. **m Coloring Problem**
    - Use backtracking to assign colors to each vertex, ensuring no two adjacent vertices share the same color.
 
-7. **Print All Palindromic Partitions of a String**
-   - Use backtracking to explore all possible partitions of the string and check if each partition is a palindrome.
-
-8. **Subset Sum Problem**
-   - Use backtracking to explore all subsets of the array, and track the subsets that sum to a given value.
-
+   
 9. **The Knight’s Tour Problem**
    - Use backtracking to move the knight on the chessboard, ensuring each move is valid and backtracking if no further moves are possible.
 

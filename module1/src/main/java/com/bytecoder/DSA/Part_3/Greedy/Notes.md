@@ -61,7 +61,7 @@ Output: -1
 
 **Maximum Length of Pair Chain**
 
-problem : You are given an array of n pairs pairs where pairs[i] = [lefti, righti] and lefti < righti.
+problem : You are given an array of n pairs where pairs[i] = [lefti, righti] and lefti < righti.
 Example 1:
 Input: pairs = [[1,2],[2,3],[3,4]]
 Output: 2

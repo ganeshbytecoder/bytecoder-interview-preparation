@@ -13,7 +13,7 @@ public class MaxFrequency {
     public static void getMaxOccurredInt(Integer[] array) {
 
 
-        Map<Integer, Long> map = Arrays.stream(array).collect(Collectors.groupingBy(Function.identity(),  Collectors.counting()));
+        Map<Integer, Long> map = Arrays.stream(array).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(map);
 
         Map.Entry<Integer, Long> maxEntry = Collections.max(map.entrySet(), (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
@@ -48,9 +48,35 @@ public class MaxFrequency {
         System.out.println("max occurrence of char  " + c);
 //max occurrence of char  3
         System.out.println(map2.entrySet().stream().collect(Collectors.counting()));
+
+
     }
 
     public static void main(String[] args) {
-        getMaxOccurredInt(new Integer[]{1, 2, 3, 4, 133, 4, 2});
+//        getMaxOccurredInt(new Integer[]{1, 2, 3, 4, 133, 4, 2});
+
+        String[] arr =  Arrays.stream("TEST".split("")).map(te -> te.toUpperCase()).toArray(size -> new String[size]);
+
+        Arrays.stream(arr).peek(e -> System.out.println("Filtered value: " + e)).sorted().forEach(System.out::println);
+
+
+
+        List<String> list = Arrays.stream("TEST".split("")).map(te -> te.toUpperCase()).collect(Collectors.toList());
+
+        list.stream().peek(e -> System.out.println("Filtered value: " + e)).sorted().forEach(System.out::println);
+
+
+        Integer[] numbers = new Integer[] { 1, 2, 3 };
+        List<Integer> l = Arrays.asList(numbers);
+        l.stream().forEach(System.out::println);
+        Arrays.stream(l.toArray(new Integer[0])).forEach(System.out::println);
+
+
+        List<String> stringList = List.of("apple", "banana", "cherry");
+
+        // Convert List to Array
+        String[] stringArray = stringList.toArray(new String[0]);
+        stringArray = stringList.stream().toArray(String[]::new);
+
     }
 }

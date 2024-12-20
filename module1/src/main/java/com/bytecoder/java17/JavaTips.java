@@ -218,3 +218,7 @@ public class JavaTips {
 // Java does not have a direct mechanism for Returning multiple values in functions, as languages like Python do. a,b= function(args)
 // Java does not have built-in support for *args and **kwargs like Python does.
 // In Python, you can easily swap two variables in a single line using the syntax a, b = b, a. However, in Java, there's no direct syntax for swapping values like this.
+
+
+
+// java utils classes

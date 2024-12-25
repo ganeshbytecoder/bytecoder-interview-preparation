@@ -3,47 +3,33 @@ package com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GraphAdjMatrixImpl<T> implements Graph<T> {
+public class GraphProblemsAdjMatrixImpl<T> implements GraphProblems<T> {
 
-    private final List<Node<T>> vertices = new ArrayList<>();
+    private final Graph<T> graph;
 
-    private final int[][] matrix;
-
-    private final int numberOfNode;
-
-    private final boolean directed;
-
-    GraphAdjMatrixImpl(int n, boolean directed) {
-        this.numberOfNode = n;
-        this.matrix = new int[n][n];
-        this.directed = directed;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-//                it can be 0 as well
-                matrix[i][j] = -1;
-            }
-        }
+    public GraphProblemsAdjMatrixImpl(Graph<T> graph){
+        this.graph= graph;
     }
 
 
     @Override
-    public void addNode(Node node) {
-        vertices.add(node);
+    public void addNode(Node<T> node) {
+        graph.getVertices().add(node);
     }
 
 
     @Override
-    public void removeNode(Node node) {
-        for (int i = 0; i < matrix.length; i++) {
-            matrix[node.id][i] = -1;
+    public void removeNode(Node<T> node) {
+        for (int i = 0; i < graph.getMatrix().length; i++) {
+            graph.getMatrix()[node.id][i] = -1;
         }
-        vertices.remove(node);
+        graph.getVertices().remove(node);
 
     }
 
     @Override
     public List<Node<T>> getAllNodes() {
-        return vertices;
+        return graph.getVertices();
     }
 
 
@@ -51,21 +37,21 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     public void addEdge(Edge edge) {
         int i = edge.start.id;
         int j = edge.end.id;
-        matrix[i][j] = edge.cost;
+        graph.getMatrix()[i][j] = edge.cost;
 
-        if (!this.directed) {
-            matrix[j][i] = edge.cost;
+        if (!this.graph.isDirected()) {
+            graph.getMatrix()[j][i] = edge.cost;
         }
     }
 
     @Override
-    public void removeEdge(Edge edge) {
+    public void removeEdge(Edge<T> edge) {
         int i = edge.start.id;
         int j = edge.end.id;
-        matrix[i][j] = -1;
+        graph.getMatrix()[i][j] = -1;
 
-        if (!this.directed) {
-            matrix[j][i] = -1;
+        if (!this.graph.isDirected()) {
+            graph.getMatrix()[j][i] = -1;
         }
     }
 
@@ -73,11 +59,11 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     public List<Edge<T>> getAllEdges() {
         List<Edge<T>> edges = new ArrayList<>();
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
+        for (int i = 0; i < graph.getMatrix().length; i++) {
+            for (int j = 0; j < graph.getMatrix()[0].length; j++) {
 
-                if (matrix[i][j] != -1) {
-                    edges.add(new Edge<>(getNodeById(i), getNodeById(j), matrix[i][j]));
+                if (graph.getMatrix()[i][j] != -1) {
+                    edges.add(new Edge<>(getNodeById(i), getNodeById(j), graph.getMatrix()[i][j]));
                 }
             }
         }
@@ -88,15 +74,15 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     @Override
     public void printGraph() {
-        for (Node<T> node : vertices) {
+        for (Node<T> node : graph.getVertices()) {
             System.out.print("  " + node.data.toString() + " ");
         }
         System.out.println();
-        for (int i = 0; i < matrix.length; i++) {
-            System.out.print(vertices.get(i).data.toString() + " ");
+        for (int i = 0; i < graph.getMatrix().length; i++) {
+            System.out.print(graph.getVertices().get(i).data.toString() + " ");
 
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.print(matrix[i][j] + " ");
+            for (int j = 0; j < graph.getMatrix().length; j++) {
+                System.out.print(graph.getMatrix()[i][j] + " ");
             }
             System.out.println();
         }
@@ -104,12 +90,12 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         System.out.println("Printing adjacency list graph");
 
-        for (int i = 0; i < numberOfNode; i++) {
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
 
             System.out.print("\n " + getNodeById(i).getData() + " -> ");
 
-            for (int j = 0; j < numberOfNode; j++) {
-                if (matrix[i][j] != -1) {
+            for (int j = 0; j < graph.getNumberOfNode(); j++) {
+                if (graph.getMatrix()[i][j] != -1) {
                     System.out.print(getNodeById(j).getData() + " ,");
                 }
 
@@ -125,27 +111,27 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     public void dfs() {
         System.out.println("Traversing DFS");
 
-        vertices.forEach(vertex -> vertex.setVisited(false));
+        graph.getVertices().forEach(vertex -> vertex.setVisited(false));
         // or
         boolean[] visited = new boolean[getAllNodes().size()];
 
-        for (int i = 0; i < numberOfNode; i++) {
-            if (!vertices.get(i).visited) {
-                dfsTraversal(vertices.get(i));
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            if (!graph.getVertices().get(i).visited) {
+                dfsTraversal(graph.getVertices().get(i));
             }
         }
 
 
 //        using stack
         Stack<Node<T>> stack = new Stack<>();
-        stack.add(vertices.get(0));
+        stack.add(graph.getVertices().get(0));
 
         while (!stack.empty()) {
             Node<T> node = stack.pop();
             System.out.println(" " + node);
             visited[node.id] = true;
-            for (int i = 0; i < numberOfNode; i++) {
-                if (!visited[i] && matrix[node.id][i] != -1) {
+            for (int i = 0; i < graph.getNumberOfNode(); i++) {
+                if (!visited[i] && graph.getMatrix()[node.id][i] != -1) {
                     stack.add(getNodeById(i));
                 }
             }
@@ -161,25 +147,25 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         Queue<Node<T>> queue = new LinkedList<>();
         boolean[] visited = new boolean[getAllNodes().size()];
 
-        queue.add(vertices.get(0));
+        queue.add(graph.getVertices().get(0));
         System.out.println();
         while (!queue.isEmpty()) {
             Node<T> node = queue.poll();
             System.out.println(" " + node);
             visited[node.id] = true;
-            for (int i = 0; i < numberOfNode; i++) {
-                if (!visited[i] && matrix[node.id][i] != -1) {
+            for (int i = 0; i < graph.getNumberOfNode(); i++) {
+                if (!visited[i] && graph.getMatrix()[node.id][i] != -1) {
                     queue.add(getNodeById(i));
                 }
             }
         }
 
         System.out.println(" \n Traversing BFS");
-        vertices.forEach(vertex -> vertex.setVisited(false));
+        graph.getVertices().forEach(vertex -> vertex.setVisited(false));
         queue = new LinkedList<>();
         queue.add(getNodeById(0));
-        for (int i = 0; i < numberOfNode; i++) {
-            if (!vertices.get(i).visited) {
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            if (!graph.getVertices().get(i).visited) {
                 bfsTraversal(queue);
             }
         }
@@ -192,8 +178,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         node.setVisited(true);
         boolean ans = false;
-        for (int i = 0; i < numberOfNode; i++) {
-            int connect = matrix[node.getId()][i];
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            int connect = graph.getMatrix()[node.getId()][i];
             if (connect != -1) {
                 if (getNodeById(i).isVisited() && getNodeById(i) != parent) {
                     return true;
@@ -217,8 +203,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         node.setVisited(true);
         recCallStack.add(node);
         boolean ans = false;
-        for (int neighbourId = 0; neighbourId < numberOfNode; neighbourId++) {
-            int connect = matrix[node.getId()][neighbourId];
+        for (int neighbourId = 0; neighbourId < graph.getNumberOfNode(); neighbourId++) {
+            int connect = graph.getMatrix()[node.getId()][neighbourId];
             if (connect != -1) {
                 if (getNodeById(neighbourId).isVisited() && recCallStack.contains(getNodeById(neighbourId))) {
                     return true;
@@ -247,8 +233,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             Node<T> curr_node = queue.poll();
             curr_node.setVisited(true);
             System.out.println("parent - " + curr_node);
-            for (int i = 0; i < numberOfNode; i++) {
-                if (matrix[curr_node.id][i] != -1) {
+            for (int i = 0; i < graph.getNumberOfNode(); i++) {
+                if (graph.getMatrix()[curr_node.id][i] != -1) {
                     System.out.println(getNodeById(i));
                     if (getNodeById(i).isVisited() && getNodeById(i) != curr_node) {
                         return true;
@@ -281,8 +267,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             recCallStack.add(curr_node);
 
             System.out.println("parent - " + curr_node);
-            for (int i = 0; i < numberOfNode; i++) {
-                if (matrix[curr_node.id][i] != -1) {
+            for (int i = 0; i < graph.getNumberOfNode(); i++) {
+                if (graph.getMatrix()[curr_node.id][i] != -1) {
                     System.out.println(getNodeById(i));
                     if (getNodeById(i).isVisited() && recCallStack.contains(getNodeById(i))) {
                         return true;
@@ -305,12 +291,12 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         boolean dfs = false;
         boolean ans = false;
 
-        if (directed) {
+        if (graph.isDirected()) {
 
             System.out.println("directed graphs");
 
             if (dfs) {
-//        Detect Cycle in Undirected Graph using BFS/DFS Algorithm
+//        Detect Cycle in Undirected GraphProblems using BFS/DFS Algorithm
                 for (Node<T> node : getAllNodes()) {
                     if (!node.isVisited()) {
                         ans = detectCycleForDirectedWithDFS(node, new ArrayList<>());
@@ -343,7 +329,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         } else {
             if (dfs) {
-//        Detect Cycle in Undirected Graph using BFS/DFS Algorithm
+//        Detect Cycle in Undirected GraphProblems using BFS/DFS Algorithm
                 for (Node<T> node : getAllNodes()) {
                     if (!node.isVisited()) {
                         ans = detectCycleForUndirectedWithDFS(node, null);
@@ -383,8 +369,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         node.setVisited(true);
 
-        for (int i = 0; i < numberOfNode; i++) {
-            if (matrix[node.id][i] != -1) {
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            if (graph.getMatrix()[node.id][i] != -1) {
                 if (!getNodeById(i).isVisited()) {
                     implementDFSTopologicalSortingUtil(getNodeById(i), stack);
                 }
@@ -412,17 +398,17 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     @Override
     public void implementBFSTopologicalSorting() {
 
-        int[] in_degree = new int[numberOfNode];
+        int[] in_degree = new int[graph.getNumberOfNode()];
 
         for(Node<T> vertex : getAllNodes()){
-            for(int neighbour_index =0; neighbour_index< numberOfNode ; neighbour_index++ ){
-                if(matrix[vertex.id][neighbour_index] != -1)
+            for(int neighbour_index =0; neighbour_index< graph.getNumberOfNode() ; neighbour_index++ ){
+                if(graph.getMatrix()[vertex.id][neighbour_index] != -1)
                     in_degree[neighbour_index]+=1;
             }
         }
 
         Queue<Node<T>> queue = new LinkedList<>();
-        for(int i =0 ; i< numberOfNode ; i++){
+        for(int i =0 ; i< graph.getNumberOfNode() ; i++){
             if(in_degree[i]==0){
                 queue.add(getNodeById(i));
             }
@@ -435,8 +421,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             Node<T> node = queue.poll();
             result.add(node);
 
-            for(int neighbour_index =0; neighbour_index< numberOfNode ; neighbour_index++ ){
-                if(matrix[node.id][neighbour_index] != -1){
+            for(int neighbour_index =0; neighbour_index< graph.getNumberOfNode() ; neighbour_index++ ){
+                if(graph.getMatrix()[node.id][neighbour_index] != -1){
                     if(--in_degree[neighbour_index] ==0) {
                         queue.add(getNodeById(neighbour_index));
                     }
@@ -445,7 +431,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
             count++;
         }
 
-        if(count == numberOfNode){
+        if(count == graph.getNumberOfNode()){
             for (Node<T> node : result){
                 System.out.println(node);
             }
@@ -528,7 +514,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         List<Edge<T>> result = new ArrayList<>();
 
-        int[] rank = new int[numberOfNode];
+        int[] rank = new int[graph.getNumberOfNode()];
 
         HashMap<Node<T>, Node<T>> parent = new HashMap<>();
 
@@ -540,7 +526,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         int e = 0;
         int i = 0;
-        while (e < numberOfNode - 1) {
+        while (e < graph.getNumberOfNode() - 1) {
             Edge<T> edge = edges.get(i);
             Node<T> srcRoot = find(edge.getStart(), parent);
             Node<T> dstRoot = find(edge.getEnd(), parent);
@@ -563,6 +549,16 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     }
 
+    @Override
+    public void findShortestPathUsingDijkstra() {
+
+    }
+
+    @Override
+    public void findShortestPathUsingBellmanFord() {
+
+    }
+
 
     public List<Edge<T>> printKrushkalMST_M2() {
 
@@ -571,7 +567,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
         List<Edge<T>> result = new ArrayList<>();
 
-        int[] rank = new int[numberOfNode];
+        int[] rank = new int[graph.getNumberOfNode()];
 
         HashMap<Node<T>, Node<T>> parent = new HashMap<>();
 
@@ -582,7 +578,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
 
         int e = 0;
-        while (e < numberOfNode - 1) {
+        while (e < graph.getNumberOfNode() - 1) {
             Edge<T> edge = edges.poll();
             Node<T> srcRoot = find(edge.getStart(), parent);
             Node<T> dstRoot = find(edge.getEnd(), parent);
@@ -614,8 +610,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     private void dfsTraversal(Node<T> node) {
         node.setVisited(true);
-        for (int i = 0; i < numberOfNode; i++) {
-            if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            if (graph.getMatrix()[node.id][i] != -1 && !getNodeById(i).isVisited()) {
                 dfsTraversal(getNodeById(i));
             }
         }
@@ -632,8 +628,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
         processNode(node);
         node.setVisited(true);
 
-        for (int i = 0; i < numberOfNode; i++) {
-            if (matrix[node.id][i] != -1 && !getNodeById(i).isVisited()) {
+        for (int i = 0; i < graph.getNumberOfNode(); i++) {
+            if (graph.getMatrix()[node.id][i] != -1 && !getNodeById(i).isVisited()) {
                 queue.add(getNodeById(i));
             }
         }
@@ -645,7 +641,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     private Node<T> getNodeById(int id) {
 
-        List<Node<T>> nodes = vertices.stream().filter(node -> node.getId() == id).collect(Collectors.toList());
+        List<Node<T>> nodes = graph.getVertices().stream().filter(node -> node.getId() == id).collect(Collectors.toList());
         if (nodes.size() != 1) {
             throw new RuntimeException("ID either does not exists or duplicate");
         }
@@ -655,7 +651,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     public Node<T> getNodeByName(T data) {
 
-        List<Node<T>> nodes = vertices.stream().filter(node -> node.getData() == data).collect(Collectors.toList());
+        List<Node<T>> nodes = graph.getVertices().stream().filter(node -> node.getData() == data).collect(Collectors.toList());
         if (nodes.size() != 1) {
             throw new RuntimeException("ID either does not exists or duplicate");
         }
@@ -674,7 +670,7 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
 
     @Override
     public boolean hasEdge(Node src, Node end) {
-        return matrix[src.id][end.id] != -1 || matrix[end.id][src.id] != -1;
+        return graph.getMatrix()[src.id][end.id] != -1 || graph.getMatrix()[end.id][src.id] != -1;
     }
 
 
@@ -682,8 +678,8 @@ public class GraphAdjMatrixImpl<T> implements Graph<T> {
     public List<Node<T>> getAllAdjacent(Node<T> node) {
         List<Node<T>> neighbours = new ArrayList<>();
 
-        for (int j = 0; j < matrix[node.getId()].length; j++) {
-            if (matrix[node.getId()][j] != -1) {
+        for (int j = 0; j < graph.getMatrix()[node.getId()].length; j++) {
+            if (graph.getMatrix()[node.getId()][j] != -1) {
                 neighbours.add(getNodeById(j));
             }
         }

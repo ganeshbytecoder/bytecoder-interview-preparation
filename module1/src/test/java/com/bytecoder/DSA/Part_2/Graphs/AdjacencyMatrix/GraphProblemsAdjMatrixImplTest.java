@@ -3,13 +3,13 @@ package com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class GraphAdjMatrixImplTest {
-    GraphAdjMatrixImpl<String> matrix;
+class GraphProblemsAdjMatrixImplTest {
+    GraphProblemsAdjMatrixImpl<String> matrix;
 
 
     @BeforeEach
     void setUp() {
-        matrix = new GraphAdjMatrixImpl<>(6, false);
+        matrix = new GraphProblemsAdjMatrixImpl<>(new Graph<>(6, false));
         String[] values = {"A", "B", "C", "D", "E", "F"};
         for (int i = 0; i < 6; i++) {
             matrix.addNode(new Node<>(i, values[i]));
@@ -160,7 +160,7 @@ class GraphAdjMatrixImplTest {
     @Test
     void implementBFSTopologicalSorting() {
 
-        matrix = new GraphAdjMatrixImpl<>(6, true);
+        matrix = new GraphProblemsAdjMatrixImpl<>(new Graph<>(6, false));
         String[] values = {"A", "B", "C", "D", "E", "F"};
         for (int i = 0; i < 6; i++) {
             matrix.addNode(new Node<>(i, values[i]));

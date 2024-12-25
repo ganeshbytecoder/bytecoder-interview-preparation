@@ -5,9 +5,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        GraphImpl<String> graphImpl = new GraphImpl<>(4, true);
 
+        Graph<String> adjGraph = new Graph<>( false);
 
+        GraphProblemsImpl<String> graphImpl = new GraphProblemsImpl<>(adjGraph);
 
         String[] values = {"A", "B", "C", "D"};
 
@@ -16,13 +17,13 @@ public class Main {
             graphImpl.addNode(new Node<>(i, values[i]));
         }
 
-        graphImpl.getAllNodes().stream().forEach(System.out::println);
+        graphImpl.getAllNodes().forEach(System.out::println);
 
-        graphImpl.getAllEdges().stream().forEach(System.out::println);
+        graphImpl.getAllEdges().forEach(System.out::println);
 
-        graphImpl.addEdge(new Edge(graphImpl.getNodeByName("A"), graphImpl.getNodeByName("B"), 10));
-        graphImpl.addEdge(new Edge(graphImpl.getNodeByName("B"), graphImpl.getNodeByName("A"), 1));
-        graphImpl.addEdge(new Edge(graphImpl.getNodeByName("B"), graphImpl.getNodeByName("D"), 11));
+        graphImpl.addEdge(new Edge<>(graphImpl.getNodeByData("A"), graphImpl.getNodeByData("B"), 10));
+        graphImpl.addEdge(new Edge<>(graphImpl.getNodeByData("B"), graphImpl.getNodeByData("A"), 1));
+        graphImpl.addEdge(new Edge<>(graphImpl.getNodeByData("B"), graphImpl.getNodeByData("D"), 11));
 
         graphImpl.getAllEdges().forEach(System.out::println);
 

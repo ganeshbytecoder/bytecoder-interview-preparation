@@ -1,46 +1,19 @@
 package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 
+import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Graph<T> {
+@Data
+public class Graph<T> {
 
+    private  boolean directed;
 
-    void addNode(Node node);
+//    Note for weighted graph is will be hashMap
+    private  List<Node<T>> vertices = new ArrayList<>();
 
-    void removeNode(Node<T> node);
-
-    List<Node<T>> getAllNodes();
-
-    void addEdge(Edge edge);
-
-    void removeEdge(Edge edge);
-
-    List<Edge> getAllEdges();
-
-    boolean hasEdge(Node<T> src, Node<T> end);
-
-    void dfs();
-
-    void bfs();
-
-    boolean isCyclic();
-
-    void implementDFSTopologicalSorting();
-
-    void implementBFSTopologicalSorting();
-
-    void allTopologicalSorting();
-
-    boolean isTopologicalSortingValid(Node<T>[] sorting);
-
-    //    prims algorithms for minimum/max spanning tree (
-    void printPrimMST();
-
-    void printKrushkalMST();
-
-//    shortest path between two nodes
-
-
-    void printGraph();
-
+    public Graph(boolean directed) {
+        this.directed = directed;
+    }
 }

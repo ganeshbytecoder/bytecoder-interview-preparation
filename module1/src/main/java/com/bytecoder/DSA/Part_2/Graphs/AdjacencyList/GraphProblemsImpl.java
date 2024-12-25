@@ -1,0 +1,152 @@
+package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+class GraphProblemsImpl<T> implements GraphProblems<T> {
+
+
+    private final Graph<T> graph;
+
+    public GraphProblemsImpl(Graph<T> graph) {
+        this.graph = graph;
+    }
+
+
+    @Override
+    public void addNode(Node<T> node) {
+        graph.getVertices().add(node);
+    }
+
+    @Override
+    public void removeNode(Node<T> node) {
+        graph.getVertices().remove(node);
+
+        for (Node<T> node1 : graph.getVertices()) {
+            if (node1.getNeighbors().get(node) != null) {
+                node1.getNeighbors().remove(node);
+            }
+        }
+    }
+
+    @Override
+    public List<Node<T>> getAllNodes() {
+        return graph.getVertices();
+    }
+
+
+    @Override
+    public void addEdge(Edge<T> edge) {
+        if (graph.getVertices().contains(edge.getStart()) && graph.getVertices().contains(edge.getEnd())) {
+            edge.getStart().addNeighbor(edge.getEnd(), edge.getCost());
+            if (!graph.isDirected()) {
+                edge.getEnd().addNeighbor(edge.getStart(), edge.getCost());
+            }
+        }
+    }
+
+    @Override
+    public void removeEdge(Edge<T> edge) {
+
+    }
+
+    @Override
+    public List<Edge<T>> getAllEdges() {
+        List<Edge<T>> edges = new ArrayList<>();
+
+        for (Node<T> node : graph.getVertices()) {
+            for (Map.Entry<Node<T>, Integer> neighbor : node.getNeighbors().entrySet()) {
+                edges.add(new Edge<>(node, neighbor.getKey(), neighbor.getValue()));
+            }
+        }
+
+        return edges;
+    }
+
+    @Override
+    public boolean hasEdge(Node src, Node end) {
+        return src.getNeighbors().get(end) != null;
+    }
+
+    @Override
+    public void dfs() {
+
+    }
+
+    @Override
+    public void bfs() {
+
+    }
+
+    @Override
+    public boolean isCyclic() {
+        return false;
+    }
+
+    @Override
+    public void printGraph() {
+        for (Node<T> node : getAllNodes()) {
+            System.out.println(node.data.toString() + "   ");
+
+            for (Map.Entry<Node<T>, Integer> neighbor : node.getNeighbors().entrySet()) {
+                System.out.println(node.data + " -> " + neighbor.getKey().getData() + " " + neighbor.getValue());
+            }
+            System.out.println();
+        }
+    }
+
+
+    @Override
+    public void implementDFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void implementBFSTopologicalSorting() {
+
+    }
+
+    @Override
+    public void allTopologicalSorting() {
+
+    }
+
+    @Override
+    public boolean isTopologicalSortingValid(Node<T>[] sorting) {
+        return false;
+    }
+
+    @Override
+    public void printPrimMST() {
+
+    }
+
+    @Override
+    public void printKrushkalMST() {
+
+    }
+
+
+    public Node<T> getNodeByData(T data) {
+
+        List<Node<T>> nodes = graph.getVertices().stream().filter(node -> node.getData() == data).collect(Collectors.toList());
+        if (nodes.size() != 1) {
+            throw new RuntimeException("ID either does not exists or duplicate");
+        }
+        return nodes.get(0);
+    }
+
+    @Override
+    public void findShortestPathUsingDijkstra() {
+
+    }
+
+    @Override
+    public void findShortestPathUsingBellmanFord() {
+
+    }
+
+
+}

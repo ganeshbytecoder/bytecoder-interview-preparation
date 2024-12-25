@@ -1,31 +1,27 @@
 package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
+// we can call this as vertex as well
 class Node<T> {
-
-    int id;
 
     T data;
 
     boolean visited;
 
+//    we can call it adjacencyList as well
     @ToString.Exclude
     private Map<Node<T>, Integer> neighbors = new HashMap<>();
 
-    public Node(int index) {
-        this.id = index;
-        this.visited = false;
-    }
-
-
     public Node(int index, T data) {
-        this.id = index;
         this.data = data;
         this.visited = false;
     }

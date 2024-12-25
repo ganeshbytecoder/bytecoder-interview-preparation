@@ -1,17 +1,17 @@
-package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
+package com.bytecoder.DSA.Part_2.IntegerGraph.AdjacencyList;
 
 import lombok.Data;
 
 @Data
-public class Edge<T> {
-    private Node<T> start;
+public class Edge {
+    private int start;
 
-    private Node<T> end;
+    private int end;
 
     private int cost;
 
 
-    Edge(Node<T> start, Node<T> end, int cost) {
+    Edge(int start, int end, int cost) {
         this.start = start;
         this.end = end;
         this.cost = cost;
@@ -22,8 +22,8 @@ public class Edge<T> {
     public String toString() {
         return "Edge{" +
                 "cost=" + cost +
-                ", start=" + start.getData() +
-                ", end=" + end.getData() +
+                ", start=" + start +
+                ", end=" + end +
                 '}';
     }
 }

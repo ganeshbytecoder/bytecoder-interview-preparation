@@ -46,15 +46,46 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
         return this;
     }
 
+    private Node<T> minNode(Node<T> node){
+        if(node.getLeftChild() == null){
+            return node;
+        }
+        return minNode(node.getLeftChild());
+    }
+
+
+    private Node<T> delete(Node<T> node, T key){
+        if(node== null){
+            return null;
+        }
+        if(node.getData() == key){
+            if(node.getLeftChild() == null || node.getRightChild()==null){
+                if(node.getLeftChild() == null){
+                    return  node.getRightChild();
+
+                }else{
+                    return node.getLeftChild();
+
+                }
+            }else{
+                Node<T> temp = minNode(node.getRightChild());
+                node.setData(temp.getData());
+                node.setRightChild(delete(node.getRightChild(), temp.getData()));
+            }
+        }
+
+        if(node.getData().compareTo(key)>0){
+            node.setLeftChild(delete(node.getLeftChild(), key));
+        }else{
+            node.setRightChild(delete(node.getRightChild(), key));
+        }
+        return node;
+    }
+
 
     @Override
     public void delete(T data) {
-
-//        find the node with this data
-//        find the right/left most leaf
-//        replace the value and delete leaf
-
-
+        this.root = delete(root, data);
     }
 
 

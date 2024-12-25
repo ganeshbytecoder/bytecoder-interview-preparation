@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_1.ArrayLinkedList;
+package com.bytecoder.DSA.Part_2.ArrayLinkedList;
 
 import lombok.Data;
 

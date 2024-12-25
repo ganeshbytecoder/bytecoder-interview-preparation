@@ -15,8 +15,18 @@ A greedy algorithm is a problem-solving technique that makes the optimal choice 
 
 
 
-## examples
-### **Min/Max number of Coin Change Problem**
+## Greedy Problems:
+
+9. **Buy Maximum Stocks if i Stocks Can be Bought on i-th Day**
+   - Sort the stocks by price and buy as many stocks as you can starting with the cheapest, up to the limit on each day.
+
+10. **Find the Minimum and Maximum Amount to Buy All N Candies**
+   - Sort the prices of candies. To minimize cost, buy the cheapest candies and get the most expensive free; to maximize, buy the most expensive and get the cheapest free.
+
+
+* problems - https://leetcode.com/problems/minimum-cost-of-buying-candies-with-discount/
+
+#### **Min/Max number of Coin Change Problem**
 
 Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
 
@@ -52,14 +62,42 @@ Output: -1
     }
 ````
 
-```java
+----
+## Activity Selection Problem
+1. **Activity Selection Problem**
+   - Sort activities by their finish times.
+   - Always pick the next activity with the earliest finish time that starts after the last selected activity.
 
+7. **Maximum Trains for Which Stoppage Can be Provided**
+   - Sort the trains by their arrival times and use a greedy approach to provide platforms to trains while avoiding overlaps.
+
+
+#### **Max Meetings in One Room** / N Meetings in One room
+
+
+#### Minimum Number of Arrows to Burst Balloons:
+
+```java
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a,b) -> Integer.compare(a[0],b[0]));
+        int end= points[0][1];
+        int count=1;
+
+         for (int i = 1; i < points.length; i++) {
+            if(points[i][0] <= end){
+                end = Math.min(end,points[i][1]);
+            }else{
+                end = points[i][1];
+                count++;
+            }
+        }
+
+        return count;
+    }
 ```
 
 
-**N Meetings in One room**
-
-**Maximum Length of Pair Chain**
+#### Maximum Length of Pair Chain 
 
 problem : You are given an array of n pairs where pairs[i] = [lefti, righti] and lefti < righti.
 Example 1:
@@ -87,112 +125,71 @@ similarly n meetings in one room will be done
 ```
 
 
-### Minimum Number of Arrows to Burst Balloons:
+----
 
-```java
-    public int findMinArrowShots(int[][] points) {
-        Arrays.sort(points, (a,b) -> Integer.compare(a[0],b[0]));
-        int end= points[0][1];
-        int count=1;
-
-         for (int i = 1; i < points.length; i++) {
-            if(points[i][0] <= end){
-                end = Math.min(end,points[i][1]);
-            }else{
-                end = points[i][1];
-                count++;
-            }
-        }
-
-        return count;
-    }
-```
-
-
-
-**Max Meetings in One Room**
-
-
-
-Activity Selection Problem:
-
-You are given n activities with their start and finish times. Select the maximum number of activities that can be performed by a single person, assuming that a person can only work on a single activity at a time. 
-
-Input: start[]  =  {10, 12, 20}, finish[] =  {20, 25, 30}
-Output: 0
-Explanation: A person can perform at most one activities.
-
-
-Input: start[]  =  {1, 3, 0, 5, 8, 5}, finish[] =  {2, 4, 6, 7, 9, 9};
-Output: 0 1 3 4
-Explanation: A person can perform at most four activities. The 
-maximum set of activities that can be executed 
-is {0, 1, 3, 4} [ These are indexes in start[] and finish[]
-
-The greedy choice is to always pick the next activity whose finish time is the least among the remaining activities and the start time is more than or equal to the finish time of the previously selected activity. We can sort the activities according to their finishing time so that we always consider the next activity as the minimum finishing time activity
-
-
-
-
-Shop Candy Problem:
-
-
-
-Chocolate Distribution Problem:
-
-Min Cost of Ropes:
-
-Huffman Encoding / merge files into one problem 1111111111111111:
-
-0/1 Knapsack problem 
-
-Fractional Knapsack:
-
-Job Sequencing Problem:
-
-rope merge fir min cost 
-
-huffman codding 
-
-number of railway platforms 
-
-
-### **Greedy Problems:**
-
-1. **Activity Selection Problem**
-   - Sort activities by their finish times.
-   - Always pick the next activity with the earliest finish time that starts after the last selected activity.
-
-2. **Job Sequencing Problem**
-   - Sort jobs in decreasing order of profit.
-   - Use a greedy approach to assign the highest-profit jobs to the latest available slots before their deadlines.
-
+## huffman codding 
 3. **Huffman Coding**
    - Use a priority queue (min-heap) to build a binary tree where the most frequent characters are closer to the root.
    - The Huffman tree minimizes the overall coding length for characters.
 
-4. **Water Connection Problem**
-   - Use a union-find (or DFS) approach to identify connected components, and then determine the minimum pipe diameter for each component.
+32. **Minimum Cost of Ropes**
+   - Use a min-heap to connect the ropes. Combine the two smallest ropes, and repeat the process while minimizing total cost.
+
+
+
+## 0/1 Knapsack problem  
 
 5. **Fractional Knapsack Problem**
    - Sort items by value/weight ratio in descending order.
    - Take as much as possible of the item with the highest ratio until the knapsack is full.
 
-6. **Greedy Algorithm to Find Minimum Number of Coins**
-   - Use the largest denomination first, then the next largest, and so on until you reach the total amount.
 
-7. **Maximum Trains for Which Stoppage Can be Provided**
-   - Sort the trains by their arrival times and use a greedy approach to provide platforms to trains while avoiding overlaps.
+2. **Job Sequencing Problem**
+   - Sort jobs in decreasing order of profit.
+   - Use a greedy approach to assign the highest-profit jobs to the latest available slots before their deadlines.
+
+
+
+
+
+4. **Water Connection Problem**
+   - Use a union-find (or DFS) approach to identify connected components, and then determine the minimum pipe diameter for each component.
+
+
+
 
 8. **Minimum Platforms Problem**
    - Sort arrival and departure times separately.
    - Use a two-pointer approach to count the number of platforms required at any time by comparing arrivals and departures.
 
-9. **Buy Maximum Stocks if i Stocks Can be Bought on i-th Day**
-   - Sort the stocks by price and buy as many stocks as you can starting with the cheapest, up to the limit on each day.
+```java
+    // Function to find the minimum number of platforms required at the
+    // railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[]) {
+        
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        int plat_needed = 0, result = 0;
+        int i = 0, j = 0;
+        
+        while(j<arr.length && i<arr.length){
+            if(arr[i] <= dep[j]){
+                plat_needed++;
+                i++;
+            }
+            else{
+                plat_needed--;
+                j++;
+            }
+            
+            if(result<plat_needed){
+                result = plat_needed;
+            }
+            }
+    return result;
+}
+```
 
-10. **Find the Minimum and Maximum Amount to Buy All N Candies**
-   - Sort the prices of candies. To minimize cost, buy the cheapest candies and get the most expensive free; to maximize, buy the most expensive and get the cheapest free.
 
 11. **Minimize Cash Flow Among Friends Who Have Borrowed Money**
    - Use a greedy approach to settle debts by always settling the largest net debt first.
@@ -258,8 +255,6 @@ number of railway platforms
 31. **K Centers Problem**
    - Use a greedy approach to select `K` centers such that the maximum distance between any point and its nearest center is minimized.
 
-32. **Minimum Cost of Ropes**
-   - Use a min-heap to connect the ropes. Combine the two smallest ropes, and repeat the process while minimizing total cost.
 
 33. **Find Smallest Number with Given Number of Digits and Sum of Digits**
    - Use a greedy approach to allocate the sum across the digits, starting from the most significant digit.

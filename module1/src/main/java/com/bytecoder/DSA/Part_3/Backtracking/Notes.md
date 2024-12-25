@@ -1,22 +1,3 @@
-all possible sub-array and sub-sequence 
-
-all possible sub-string and sub-sequence of string
-https://leetcode.com/problems/sum-of-all-subset-xor-totals/submissions/1423540720/?envType=problem-list-v2&envId=backtracking&difficulty=EASY
-
-https://leetcode.com/problems/permutations/?envType=problem-list-v2&envId=backtracking 
-
-
-
-* word search in matrix 
-* all possible permutations of string or array
-* all possible subsets of array 
-* all possible combinations of string or array
-
-
-
-### **Notes on Backtracking**
-
-
 #### **General Structure of Backtracking**
 1. **Base Case**: Check if the solution is complete or valid. If yes, add it to the result.
 2. **Recursive Exploration**:
@@ -24,7 +5,22 @@ https://leetcode.com/problems/permutations/?envType=problem-list-v2&envId=backtr
    - Add a candidate to the current path.
    - Explore further with recursive backtracking.
    - Remove the candidate (backtrack) and move to the next option.
+```java
 
+void backtrack(parameters) {
+    if (base case condition met) {
+        // Process result
+        return;
+    }
+
+    for (each option in choices) {
+        // Make a choice
+        backtrack(next parameters);
+        // Undo the choice
+    }
+}
+
+```
 
 ### **Key Insights for Backtracking**
 1. **Use Sorting**: Helps in skipping duplicates and optimizing decisions. \
@@ -92,6 +88,8 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] n
    - Generate subsets but avoid duplicates.
    - Key Technique: Sort the array and skip duplicate elements.
    - Link: [Subsets II](https://leetcode.com/problems/subsets-ii/)
+   - other Question - https://leetcode.com/problems/sum-of-all-subset-xor-totals/submissions/1423540720/?envType=problem-list-v2&envId=backtracking&difficulty=EASY
+
 ```java
 public List<List<Integer>> subsetsWithDup(int[] nums) {
     List<List<Integer>> list = new ArrayList<>();
@@ -606,15 +604,11 @@ private void backtrack(List<String> result, String s, String current, int start,
 1. **Rat in a Maze Problem**
    - Use backtracking to explore all possible paths from the start to the destination, marking visited paths and backtracking if a path leads to a dead end.
 
-
 3. **Word Break Problem Using Backtracking**
    - Use backtracking to check all possible partitions of the string and see if each partition is a valid word in the dictionary.
 
 4. **Remove Invalid Parentheses**
    - Use backtracking to generate all possible expressions by removing invalid parentheses, then check if they are valid.
-
-5. **Sudoku Solver**
-   - Use backtracking to fill empty cells with digits while ensuring that the current placement does not violate Sudoku rules.
 
 6. **m Coloring Problem**
    - Use backtracking to assign colors to each vertex, ensuring no two adjacent vertices share the same color.
@@ -629,8 +623,6 @@ private void backtrack(List<String> result, String s, String current, int start,
 11. **Find Shortest Safe Route in a Path with Landmines**
    - Use backtracking to explore all possible routes, ensuring that no landmines are encountered.
 
-12. **Combinational Sum**
-   - Use backtracking to generate all combinations of numbers that sum to the target value, allowing repeated use of elements.
 
 13. **Find Maximum Number Possible by Doing At-Most K Swaps**
    - Use backtracking to explore all possible digit swaps, keeping track of the maximum number formed.

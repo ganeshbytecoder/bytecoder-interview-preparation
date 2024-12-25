@@ -12,5 +12,4 @@ public class Node<T extends Comparable<T>> {
         this.data = data;
     }
 
-
 }

@@ -34,3 +34,8 @@
 * https://leetcode.com/problems/number-of-1-bits/submissions/1423436038/?envType=problem-list-v2&envId=divide-and-conquer&difficulty=EASY
 * https://leetcode.com/problems/word-break/?envType=problem-list-v2&envId=dynamic-programming
 * https://leetcode.com/problems/odd-even-linked-list/description/
+
+* https://leetcode.com/problems/find-subsequence-of-length-k-with-the-largest-sum/description/
+* https://leetcode.com/problems/check-whether-two-strings-are-almost-equivalent/
+* https://leetcode.com/problems/count-vowel-substrings-of-a-string/description/
+* https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/description/

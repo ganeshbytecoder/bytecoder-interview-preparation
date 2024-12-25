@@ -1,4 +1,8 @@
+* https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
+* https://leetcode.com/problems/increasing-order-search-tree/description/
 
+
+* https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
 
 ### **40. Check if a Tree is a BST**
 Perform an in-order traversal and ensure the sequence is sorted.

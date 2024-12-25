@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2.String;
+package com.bytecoder.DSA.Part_1.String;
 
 import java.util.Arrays;
 import java.util.List;

@@ -54,66 +54,100 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
+    public void traverseInOrder(Node<T> node) {
+
+        if (node == null) {
+            return;
+        }
+        traverseInOrder(node.getLeftChild());
+        System.out.print(String.format(" %s", node.getData()));
+        traverseInOrder(node.getRightChild());
+    }
+
+    public void traverseLevelOrder(Node<T> node) {
+
+        if (node == null) {
+            return;
+        }
+        Node<T> curr = node;
+        List<List<T>> lists = new ArrayList<>();
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(curr);
+        while (!queue.isEmpty()) {
+            int h = queue.size();
+            List<T> tempResult = new ArrayList<>();
+            while (h > 0) {
+                Node<T> temp = queue.poll();
+                tempResult.add(temp.getData());
+                if (temp.getLeftChild() != null) {
+                    queue.add(temp.getLeftChild());
+                }
+
+                if (temp.getRightChild() != null) {
+                    queue.add(temp.getRightChild());
+                }
+                h--;
+            }
+            lists.add(tempResult);
+
+        }
+        System.out.println(lists);
+    }
+
     @Override
     public void traverse(TraversalType traversalType) {
         System.out.println("\n Solving using recursion");
         System.out.println(traversalType);
         if ((traversalType.equals(TraversalType.IN_ORDER))) {
-            traverseInOrder(this.root);
-
-        }
-        if (traversalType.equals(TraversalType.POST_ORDER)) {
-            traversePostOrder(this.root);
-
-
-        }
-        if (traversalType.equals(TraversalType.PRE_ORDER)) {
-            traversePreOrder(this.root);
-
+            traverseInOrder(this.getRoot());
 
         }
         if (traversalType.equals(TraversalType.LEVEL_ORDER)) {
-            traverseLevelOrder(this.root);
+            traverseLevelOrder(this.getRoot());
 
         }
     }
 
 
-    private void delete(Node<T> root, T data) {
 
-        Node<T> node = searchData(root, data).orElseThrow(() -> new RuntimeException(String.format("There is no node with {0}", data)));
-
-        //       single child or no child
-        if (node.getRightChild() == null || node.getLeftChild() == null) {
-            if (node.getLeftChild() != null) {
-                node = node.getLeftChild();
-
-            } else if (node.getRightChild() != null) {
-                node = node.getRightChild();
-
-            } else {
-                node = null;
-            }
-        } else {
-            Node<T> temp = getRightMostNode(node);
-            System.out.println("right mode " + temp.getData());
-            node.setData(temp.getData());
-            delete(node.getRightChild(), temp.getData());
-        }
-
-
-    }
-
-    private Node<T> getRightMostNode(Node<T> node) {
-        if (node.getLeftChild() == null && node.getRightChild() == null) {
+    private Node<T> minNode(Node<T> node) {
+        if (node.getLeftChild() == null) {
             return node;
         }
-        return getRightMostNode(node.getRightChild());
+        return minNode(node.getLeftChild());
+    }
+
+
+    private Node<T> delete(Node<T> node, T key) {
+        if (node == null) {
+            return null;
+        }
+        if (node.getData() == key) {
+            if (node.getLeftChild() == null || node.getRightChild() == null) {
+                if (node.getLeftChild() == null) {
+                    return node.getRightChild();
+
+                } else {
+                    return node.getLeftChild();
+
+                }
+            } else {
+                Node<T> temp = minNode(node.getRightChild());
+                node.setData(temp.getData());
+                node.setRightChild(delete(node.getRightChild(), temp.getData()));
+            }
+        }
+
+        node.setLeftChild(delete(node.getLeftChild(), key));
+        node.setRightChild(delete(node.getRightChild(), key));
+
+        return node;
     }
 
     @Override
     public void delete(T data) {
-        delete(getRoot(), data);
+
+        this.root = delete(root, data);
     }
 
 
@@ -198,8 +232,8 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
 
     private void getNodesAtLevel(Node<T> node, int currentLevel, List<Node<T>> list, int level) {
 
-        if(node == null){
-            return ;
+        if (node == null) {
+            return;
         }
         if (currentLevel == level) {
             list.add(node);
@@ -220,86 +254,31 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private Optional<Node<T>> searchData(Node<T> node, T data) {
-        if(node==null){
-            return Optional.empty();
+
+    private Node<T> searchDataNode(T data) {
+        Stack<Node<T>> stack = new Stack<>();
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            Node<T> temp = stack.pop();
+
+            if (temp.getData() == data) {
+                return temp;
+            }
+
+            if (temp.getRightChild() != null) {
+                stack.add(temp.getRightChild());
+            }
+            if (temp.getLeftChild() != null) {
+                stack.add(temp.getLeftChild());
+            }
         }
-        if (node.getData().equals(data)) {
-            return Optional.of(node);
-        }
-       Optional<Node<T>> result =  searchData(node.getLeftChild(), data);
-        if(result.isPresent()){
-            return result;
-        }
-        return searchData(node.getRightChild(), data);
+        return null;
     }
 
     @Override
     public boolean searchData(T data) {
-        return searchData(getRoot(), data).map(node -> true).orElse(false);
+        return searchDataNode(data) != null? true : false;
     }
 
-
-    private void traversePreOrder(Node<T> node) {
-
-        if (node == null) {
-            return;
-        }
-        System.out.print(String.format(" %s", node.getData()));
-        traversePreOrder(node.getLeftChild());
-        traversePreOrder(node.getRightChild());
-    }
-
-    private void traversePostOrder(Node<T> node) {
-
-        if (node == null) {
-            return;
-        }
-        traversePostOrder(node.getLeftChild());
-        traversePostOrder(node.getRightChild());
-        System.out.print(String.format(" %s", node.getData()));
-
-    }
-
-
-    private void traverseInOrder(Node<T> node) {
-
-        if (node == null) {
-            return;
-        }
-        traverseInOrder(node.getLeftChild());
-        System.out.print(String.format(" %s", node.getData()));
-        traverseInOrder(node.getRightChild());
-    }
-
-    private void traverseLevelOrder(Node<T> node) {
-
-        if (node == null) {
-            return;
-        }
-        Node<T> curr = node;
-        List<List<Integer>> lists = new ArrayList<>();
-        Queue<Node<T>> queue = new LinkedList<>();
-        queue.add(curr);
-        while (!queue.isEmpty()) {
-            int h = queue.size();
-            List<Integer> tem = new ArrayList<>();
-            while (h > 0) {
-                Node<T> temp = queue.poll();
-                tem.add((Integer) temp.getData());
-                if (temp.getLeftChild() != null) {
-                    queue.add(temp.getLeftChild());
-                }
-
-                if (temp.getRightChild() != null) {
-                    queue.add(temp.getRightChild());
-                }
-                h--;
-            }
-            lists.add(tem);
-
-        }
-        System.out.println(lists);
-    }
 
 }

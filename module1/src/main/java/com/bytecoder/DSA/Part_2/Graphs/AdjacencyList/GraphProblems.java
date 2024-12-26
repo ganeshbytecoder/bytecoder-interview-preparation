@@ -42,8 +42,7 @@ public interface GraphProblems<T> {
 
     void printKrushkalMST();
 
-    //    shortest path between two nodes
-
+    //  shortest path between two nodes
     void findShortestPathUsingDijkstra();
 
     void findShortestPathUsingBellmanFord();

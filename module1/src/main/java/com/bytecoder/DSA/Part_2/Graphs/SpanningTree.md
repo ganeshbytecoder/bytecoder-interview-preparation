@@ -25,8 +25,8 @@
 ### 19. **Kruskal’s Algorithm**
    - Sort edges by weight and use the union-find data structure to form the minimum spanning tree by avoiding cycles.
 
-### 20. **Total Number of Spanning Trees**
-   - Cayley’s formula for complete graphs, or Kirchhoff's Matrix-Tree Theorem for general graphs.
 
+### important question 
+https://leetcode.com/problems/min-cost-to-connect-all-points/description/?envType=problem-list-v2&envId=minimum-spanning-tree
 
 ----

@@ -3,6 +3,7 @@ package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 class GraphProblemsImpl<T> implements GraphProblems<T> {
@@ -120,6 +121,28 @@ class GraphProblemsImpl<T> implements GraphProblems<T> {
 
     @Override
     public void printPrimMST() {
+
+        List<Node<T>> vertices = getAllNodes();
+
+        PriorityQueue<Edge<T>> queue =  new PriorityQueue<>((e1,e2)-> e1.getCost()-e2.getCost());
+
+        queue.add(new Edge<>(vertices.get(0), vertices.get(0), 0));
+        int minCost = 0;
+        while(!queue.isEmpty()){
+          Edge<T> edge = queue.poll();
+          if(edge.getEnd().isVisited()){
+              continue;
+          }
+
+          minCost+=edge.getCost();
+           for( Map.Entry<Node<T>, Integer> entry:  edge.getEnd().getNeighbors().entrySet()){
+               if(!entry.getKey().isVisited()){
+                   queue.add(new Edge<>(edge.getEnd(), entry.getKey(), entry.getValue()));
+               }
+
+           }
+        }
+
 
     }
 

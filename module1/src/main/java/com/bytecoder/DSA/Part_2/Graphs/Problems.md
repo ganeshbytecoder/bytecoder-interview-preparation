@@ -1,15 +1,5 @@
-### 6. **Search in a Maze**
-   - Model the maze as a graph where each cell is a node.
-   - Use BFS for the shortest path, or DFS to explore all possible paths.
-   - Walls and obstacles can be represented as non-existing edges.
 
-### 7. **Minimum Step by Knight**
-   - Treat the chessboard as a graph with each square as a node.
-   - Use BFS starting from the knight’s position to calculate the minimum number of moves to the destination.
 
-### 8. **Flood Fill Algorithm**
-   - Similar to DFS/BFS in a 2D grid. Traverse each connected component starting from the given node.
-   - Used in scenarios like the "paint fill" feature in image editing.
 
 ### 9. **Clone a Graph**
    - Use BFS or DFS to traverse the graph and create a deep copy.

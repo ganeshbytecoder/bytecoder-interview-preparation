@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 class Node<T> {
+
     int id;
 
     T data;

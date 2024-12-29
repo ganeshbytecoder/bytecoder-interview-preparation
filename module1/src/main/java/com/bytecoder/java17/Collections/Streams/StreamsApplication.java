@@ -1,4 +1,4 @@
-package com.bytecoder.java17.Streams;
+package com.bytecoder.java17.Collections.Streams;
 
 import lombok.*;
 

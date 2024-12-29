@@ -1,9 +1,6 @@
 package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class GraphProblemsImpl<T> implements GraphProblems<T> {
@@ -98,9 +95,30 @@ class GraphProblemsImpl<T> implements GraphProblems<T> {
         }
     }
 
+    private void topologicalSortUtil(Node<T> node, Stack<Node<T>> stack){
+        node.setVisited(true);
+        for(Map.Entry<Node<T>, Integer> entry : node.getNeighbors().entrySet()){
+            if(!entry.getKey().isVisited()){
+              topologicalSortUtil(entry.getKey(), stack);
+            }
+        }
+        stack.add(node);
+    }
 
     @Override
     public void implementDFSTopologicalSorting() {
+
+        Stack<Node<T>> stack= new Stack<>();
+
+        for(Node<T> node : getAllNodes()){
+            if(!node.isVisited()){
+                topologicalSortUtil(node, stack);
+            }
+        }
+
+        while (!stack.isEmpty()){
+            System.out.println(stack.pop());
+        }
 
     }
 

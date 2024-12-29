@@ -267,9 +267,9 @@ This makes `Deque` suitable for use cases where elements need to be processed in
 ```
                      Collection
                           |
-       ---------------------------------------------------
-       |                  |                  |            |
-      List               Set               Queue         Deque
+       ------------------------------------------------------------------------
+       |                  |                  |            |                    |
+      List               Set               Queue         Deque               Stack
        |                  |                  |             |
    ArrayList           HashSet            LinkedList      ArrayDeque
    LinkedList         LinkedHashSet       PriorityQueue   LinkedList

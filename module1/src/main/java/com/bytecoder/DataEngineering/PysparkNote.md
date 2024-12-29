@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 To distribute memory and cores effectively for load testing on a Spark standalone cluster with nodes having **16 cores** and **60GB RAM each**, we need to balance resources between executors and the driver, while leaving enough overhead for the operating system and Spark daemons.
 
 Here’s a step-by-step plan:
@@ -288,4 +297,4 @@ spark-submit \
 
 ---
 
-Would you like help writing a sample shuffle-heavy Spark job or interpreting shuffle metrics in the Spark UI?
+

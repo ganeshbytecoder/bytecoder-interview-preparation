@@ -97,6 +97,10 @@ public class Employee {
         employees.add(new Employee(2, "Bob"));
 
         // Custom comparator to sort by name
+        Comparator<Employee> nameComparator = (e1, e2) -> e1.name.compareTo(e2.name);
+        
+        Comparator<Employee> nameComparator = Comparator.comparing(e -> e.name);
+        
         Comparator<Employee> nameComparator = new Comparator<Employee>() {
             @Override
             public int compare(Employee e1, Employee e2) {

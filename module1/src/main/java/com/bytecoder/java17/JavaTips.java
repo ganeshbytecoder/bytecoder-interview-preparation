@@ -191,7 +191,41 @@ public class JavaTips {
             return solve(s,t,i,j+1);
         }
     }
+// Java Program to Demonstrate conversion of List to Array
+// Using stream
 
+
+    // Main class
+    class GFG {
+
+        // Main driver method
+        public static void main(String[] args)
+        {
+            PriorityQueue<Integer> q = new PriorityQueue<>(Comparator.comparing(Collectors.));
+            q.remove(a)
+            // Creating an empty LinkedList of string type
+            List<String> list = new LinkedList<String>();
+
+            // Adding elements to above LinkedList
+            // using add() method
+            list.add("Geeks");
+            list.add("for");
+            list.add("Geeks");
+            list.add("Practice");
+
+            // Storing size of List
+            int n = list.size();
+
+            // Converting List to array via scope resolution
+            // operator using streams
+            String[] arr = (String[]) list.toArray();
+
+            // Printing elements of array
+            // using enhanced for loop
+            for (String x : arr)
+                System.out.print(x + " ");
+        }
+    }
 
     private static void handleDateTime2() {
            // LocalDateTime.now() does not take the zone from the system's default or any other zone context. Instead, LocalDateTime is specifically designed to represent date and time without any time zone information. When you call LocalDateTime.now(), it retrieves the current date and time from the system clock

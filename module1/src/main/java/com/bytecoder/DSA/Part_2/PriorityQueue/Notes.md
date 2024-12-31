@@ -11,7 +11,7 @@ Here are hints and strategies for solving various priority queue (heap) related 
    - Then, repeatedly extract the maximum element from the heap, swapping it with the last element in the array, and heapify the reduced heap.
    - Time complexity is `O(n log n)`.
 
-### 3. **Maximum of all subarrays of size k**
+### 3. **Maximum of all subarrays of size k** https://leetcode.com/problems/sliding-window-maximum/ 
    - Use a **sliding window with a max heap**. Insert elements into the heap, and slide the window to remove elements no longer in the window.
    - Alternatively, use a deque to maintain the max element at each window in `O(n)` time.
 
@@ -25,17 +25,151 @@ Here are hints and strategies for solving various priority queue (heap) related 
    - Another approach: use the **quickselect** algorithm with average `O(n)` time complexity.
 
 ### 6. **Merge “K” sorted arrays**
-   - Use a **min-heap** to merge `k` sorted arrays.
-   - Insert the first element of each array into the heap, and repeatedly extract the smallest element and insert the next element from the corresponding array into the heap.
-   - Time complexity: `O(N log k)` where `N` is the total number of elements.
+#### **Approach-1**:
+* Divide and Conquer:
+
+
+* **use brute-force approach** :
+  * create new list with all elements and sort it
+  
+* **Priority Queue**:
+  * create a pair ([data, listIndex, dataIndex]) or node
+  * add all list first element in priority queue
+  * poll data for PQ and add next element from respective list
+  
+
+
+### merge k sorted LinkedList (https://leetcode.com/problems/merge-k-sorted-lists/description/)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+ class Node {
+    int data;
+    int li;
+    ListNode di;
+    public Node(int data,int li, ListNode di){
+        this.data = data;
+        this.li= li;
+        this.di=di;
+    }
+ }
+ class Solution {
+      public ListNode mergeKLists_m1(ListNode[] lists) {
+          PriorityQueue<Node> queue = new PriorityQueue<>((n1,n2)-> n1.data - n2.data);
+
+          for(int i =0; i< lists.length; i++){
+              if(lists[i] != null)
+                  queue.add(new Node(lists[i].val, i , lists[i]));
+          }
+          List<Integer> ans = new ArrayList<>();
+
+          while(!queue.isEmpty()){
+              Node temp = queue.poll();
+              ans.add(temp.data);
+              if( temp.di != null && temp.di.next != null){
+                  queue.add(new Node(temp.di.next.val, temp.li , temp.di.next));   
+              }
+            
+          }
+
+          ListNode head = null;
+          ListNode curr = null;
+
+          for(int i =0; i<ans.size(); i++){
+              if(head==null){
+                  head=new ListNode(ans.get(i));
+                  curr=head;
+                  continue;
+              }
+              curr.next= new ListNode(ans.get(i));
+              curr=curr.next;
+          }
+          return head;
+
+
+      }
+
+      public ListNode mergeKLists(ListNode[] lists) {
+          PriorityQueue<Node> queue = new PriorityQueue<>((n1,n2)-> n1.data - n2.data);
+
+          for(int i =0; i< lists.length; i++){
+              if(lists[i] != null)
+                  queue.add(new Node(lists[i].val, i , lists[i]));
+          }
+        
+          ListNode head = null;
+          ListNode curr = null;
+
+          while(!queue.isEmpty()){
+              Node temp = queue.poll();
+              if( temp.di != null && temp.di.next != null){
+                  queue.add(new Node(temp.di.next.val, temp.li , temp.di.next));   
+              }
+              if(head==null){
+                  head=new ListNode(temp.data);
+                  curr=head;
+                  continue;
+              }
+              curr.next= new ListNode(temp.data);
+              curr=curr.next;
+          }
+
+    
+          return head;
+
+
+      }
+ }
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
+        }
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        return divideAndConquer(lists, 0, lists.length - 1);
+    }
+
+    private ListNode divideAndConquer(ListNode[] lists, int left, int right) {
+        if (left == right) return lists[left];
+
+        int mid = left + (right - left) / 2;
+        ListNode l1 = divideAndConquer(lists, left, mid);
+        ListNode l2 = divideAndConquer(lists, mid + 1, right);
+        return mergeTwoLists(l1, l2);
+    }
+}
+```
+
+### 8. **Kth largest sum of continuous subarrays**
+- Use a **min-heap** to store the sums of subarrays.
+- Iterate over all possible subarrays, and if the heap size exceeds `k`, remove the smallest element.
+
 
 ### 7. **Merge 2 Binary Max Heaps**
    - Concatenate both heaps into a single array and perform a build-heap operation.
    - Alternatively, insert each element of the second heap into the first heap while maintaining heap properties.
 
-### 8. **Kth largest sum of continuous subarrays**
-   - Use a **min-heap** to store the sums of subarrays.
-   - Iterate over all possible subarrays, and if the heap size exceeds `k`, remove the smallest element.
 
 ### 9. **Leetcode: Reorganize Strings**
    - Use a **max-heap** to arrange characters by frequency.

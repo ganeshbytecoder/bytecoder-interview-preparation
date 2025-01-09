@@ -201,8 +201,7 @@ public class JavaTips {
         // Main driver method
         public static void main(String[] args)
         {
-            PriorityQueue<Integer> q = new PriorityQueue<>(Comparator.comparing(Collectors.));
-            q.remove(a)
+//            PriorityQueue<Integer> q = new PriorityQueue<>(Comparator.comparing(Collectors.toList()));
             // Creating an empty LinkedList of string type
             List<String> list = new LinkedList<String>();
 

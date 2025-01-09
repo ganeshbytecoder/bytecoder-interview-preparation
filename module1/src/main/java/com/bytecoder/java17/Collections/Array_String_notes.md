@@ -409,6 +409,15 @@ The `Arrays` class in Java is a utility class in the `java.util` package that pr
 
 Java's `String` class provides a wide range of methods to manipulate and interact with strings. Here’s an in-depth explanation of all important `String` methods:
 
+```java
+    
+    String name = "Alice";
+    int age = 25;
+    String message = String.format("Hello, my name is %s and I am %d years old.", name, age);
+    System.out.println(message);
+
+```
+
 ### String Creation Methods:
 
 1. **`String()`**

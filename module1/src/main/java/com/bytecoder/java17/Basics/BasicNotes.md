@@ -1,3 +1,115 @@
+## 1. SOLID Principles
+
+### Single Responsibility Principle (SRP)
+
+- A class should have only one reason to change
+- Each class should focus on doing one thing well
+- Example: Separating data access, business logic, and presentation layers
+
+### Open/Closed Principle (OCP)
+
+- Software entities should be open for extension but closed for modification
+- Use abstractions and interfaces to allow new functionality through inheritance/implementation
+- Example: Plugin architectures, Strategy pattern
+
+### Liskov Substitution Principle (LSP)
+
+- Subtypes must be substitutable for their base types without altering program correctness
+- Inheritance should ensure that the child class can replace its parent class without breaking functionality
+- Common violations: Breaking contracts, throwing unexpected exceptions
+
+### Interface Segregation Principle (ISP)
+
+- Clients should not be forced to depend on interfaces they don't use
+- Prefer multiple specific interfaces over one general-purpose interface
+- Example: Splitting large interfaces into smaller, focused ones
+
+### Dependency Inversion Principle (DIP)
+
+- High-level modules should not depend on low-level modules; both should depend on abstractions
+- Abstractions should not depend on details; details should depend on abstractions
+- Example: Dependency injection, IoC containers
+
+## 4. Best Practices and Common Pitfalls
+
+### Immutability
+
+- Benefits of immutable objects
+- Implementing immutable classes
+- Performance considerations
+- Collections.unmodifiableXXX vs truly immutable collections
+
+### Thread Safety
+
+- Synchronization mechanisms
+- Volatile keyword
+- Atomic classes
+- Thread-safe collections
+- Lock-free programming
+
+### Performance Optimization
+
+- Object creation and pooling
+- Memory management
+- Lazy initialization
+- Caching strategies
+
+### Common Anti-patterns
+
+- God Object
+- Golden Hammer
+- Premature Optimization
+- Circular Dependencies
+- Tight Coupling
+
+## 5. Testing and Maintainability
+
+### Testing OOP Code
+
+- Unit testing best practices
+- Mocking and stubbing
+- Test doubles (Mock vs Stub vs Spy)
+- Integration testing
+
+### Code Quality
+
+- Code smells and refactoring
+- Clean code principles
+- Documentation best practices
+- Code reviews
+
+### Maintainability
+
+- Package structure
+- Naming conventions
+- Error handling
+- Logging best practices
+
+## 6. Modern Java OOP Features
+
+### Records
+
+- Immutable data classes
+- Compact constructors
+- Pattern matching with records
+
+### Sealed Classes
+
+- Controlling inheritance
+- Pattern matching with sealed classes
+- Combining with records
+
+### Pattern Matching
+
+- instanceof pattern matching
+- Switch expressions with patterns
+- Future developments
+
+### Text Blocks
+
+- Multiline string literals
+- String templates (Java 21)
+- Formatting and indentation
 
 ### **Complete List of Java Keywords**
 
@@ -69,14 +181,11 @@ Here is the full list of **Java keywords**:
 
 ---
 
-
 ## datatypes
 
 ## Difference between JDK, JRE, and JVM
 
-
-
-## list of string to one string 
+## list of string to one string
 
 ```java
 
@@ -107,56 +216,57 @@ public class ConcatStrings {
 }
 ```
 
-
 Here is the full list of **Java keywords**:
 
 1. `abstract`
 2. `assert`
-10. `const` (reserved)
-11. `continue`
-12. `default`
-13. `do`
-16. `enum`
-17. `extends`
-18. `final`
-19. `finally`
-22. `goto` (reserved)
-24. `implements`
-25. `import`
-26. `instanceof`
-32. `new`
-33. `null`
-34. `open` (Java 9)
-35. `opens` (Java 9)
-37. `permits` (Java 17)
-40. `provides` (Java 9)
-42. `requires` (Java 9)
-44. `sealed` (Java 15)
-46. `static`
-48. `super`
-49. `switch`
-50. `synchronized`
-54. `to` (reserved)
-55. `transient`
-60. `volatile`
-62. `with` (reserved)
-63. `yield` (Java 13)
-
+3. `const` (reserved)
+4. `continue`
+5. `default`
+6. `do`
+7. `enum`
+8. `extends`
+9. `final`
+10. `finally`
+11. `goto` (reserved)
+12. `implements`
+13. `import`
+14. `instanceof`
+15. `new`
+16. `null`
+17. `open` (Java 9)
+18. `opens` (Java 9)
+19. `permits` (Java 17)
+20. `provides` (Java 9)
+21. `requires` (Java 9)
+22. `sealed` (Java 15)
+23. `static`
+24. `super`
+25. `switch`
+26. `synchronized`
+27. `to` (reserved)
+28. `transient`
+29. `volatile`
+30. `with` (reserved)
+31. `yield` (Java 13)
 
 I'll provide key use cases for important Java keywords that often come up in senior engineering interviews:
 
 `abstract`:
+
 - Abstract classes that can't be instantiated
 - Abstract methods in interfaces/abstract classes
 - Template method pattern implementation
 
 `final`:
+
 - Immutable variables/references
 - Preventing method overriding
 - Classes that can't be inherited
 - Performance optimization (JVM)
 
 `static`:
+
 - Class-level members/methods
 - Static initialization blocks
 - Static factory methods
@@ -165,6 +275,7 @@ I'll provide key use cases for important Java keywords that often come up in sen
 - Memory management
 
 `synchronized`:
+
 - Method-level thread synchronization
 - Block-level synchronization
 - Double-checked locking pattern
@@ -172,42 +283,46 @@ I'll provide key use cases for important Java keywords that often come up in sen
 - Collection synchronization
 
 `volatile`:
+
 - Thread-safe variable updates
 - Double-checked locking
 - Flag variables in multi-threaded code
 - Ensuring memory visibility
 
 `transient`:
+
 - Excluding fields from serialization
 - Security-sensitive data
 - Caching implementations
 - Resource handles
 
 `throws`:
+
 - Exception propagation
 - Checked exception handling
 - API contract definition
 - Method overriding rules
 
 `sealed` (Java 15+):
+
 - Restricting class inheritance
 - Domain model enforcement
 - API design control
 - Framework development
 
 `instanceof`:
+
 - Type checking
 - Safe casting
 - Pattern matching (Java 16+)
 - Polymorphic behavior
-
-
 
 Here's a focused breakdown for senior Java interviews:
 
 **Thread Safety Implications**
 
 Key Concepts:
+
 - Race conditions
 - Memory visibility
 - Atomic operations
@@ -215,6 +330,7 @@ Key Concepts:
 - Thread confinement
 
 Implementation Mechanisms:
+
 ```java
 // 1. Synchronized Methods
 public synchronized void method() {}
@@ -236,6 +352,7 @@ ConcurrentHashMap<K,V> concurrentMap = new ConcurrentHashMap<>();
 ```
 
 Common Interview Questions:
+
 1. Double-checked locking problems
 2. Singleton thread-safety
 3. ConcurrentModificationException causes
@@ -245,7 +362,9 @@ Common Interview Questions:
 **Performance Considerations**
 
 Key Areas:
+
 1. Memory Access
+
 ```java
 // Cache-friendly code
 // Contiguous memory access
@@ -255,6 +374,7 @@ for(int i = 0; i < array.length; i++) {
 ```
 
 2. Lock Contention
+
 ```java
 // Fine-grained locking
 private final Object[] locks = new Object[16];
@@ -265,6 +385,7 @@ synchronized(locks[segment]) {
 ```
 
 3. GC Impact
+
 ```java
 // Object pooling for heavy objects
 class ObjectPool<T> {
@@ -277,7 +398,9 @@ class ObjectPool<T> {
 **Memory Management**
 
 Key Concepts:
+
 1. Heap vs Stack
+
 ```java
 // Stack: primitives, references
 int x = 5;
@@ -286,6 +409,7 @@ Object obj = new Object();
 ```
 
 2. Memory Leaks
+
 ```java
 // Common causes
 // 1. Static Collections
@@ -301,11 +425,13 @@ private static class StaticInnerClass {} // prevents memory leaks
 ```
 
 3. Garbage Collection
+
 - Young/Old Generation
 - GC Algorithms (CMS, G1, ZGC)
 - GC Tuning Parameters
 
 Interview Focus Points:
+
 1. OutOfMemoryError handling
 2. Memory leak detection
 3. GC tuning experience
@@ -317,6 +443,7 @@ Need specific details on any of these areas?
 Here's a detailed breakdown of key interview focus points for senior Java developers:
 
 1. OutOfMemoryError Handling
+
 ```java
 // Prevention strategies
 -XX:HeapDumpOnOutOfMemoryError // JVM argument
@@ -335,18 +462,19 @@ try {
 ```
 
 2. Memory Leak Detection
+
 ```java
 // Common patterns
 class LeakExample {
     // 1. Static collections growing unbounded
     static List<Object> leakyList = new ArrayList<>();
-    
+  
     // 2. Unclosed resources
     void leakyMethod() {
         Connection conn = getConnection();
         // Missing conn.close()
     }
-    
+  
     // 3. Event listener not removed
     class LeakyListener implements ActionListener {
         // Not removed when parent is destroyed
@@ -360,6 +488,7 @@ class LeakExample {
 ```
 
 3. GC Tuning Experience
+
 ```bash
 # Key JVM flags
 -XX:NewRatio=2
@@ -374,6 +503,7 @@ jmap -heap <pid>
 ```
 
 4. Heap Dump Analysis
+
 ```java
 // Key metrics to analyze
 1. Dominator tree
@@ -390,6 +520,7 @@ Eclipse MAT commands:
 ```
 
 5. Performance Optimization
+
 ```java
 // 1. Code level
 final StringBuilder sb = new StringBuilder(expectedSize); // Pre-sizing
@@ -416,6 +547,7 @@ public void batchInsert(List<Entity> entities) {
 ```
 
 Common Interview Questions:
+
 1. How do you identify memory leaks in production?
 2. What GC algorithm would you choose for low-latency applications?
 3. How do you handle OutOfMemoryError in microservices?

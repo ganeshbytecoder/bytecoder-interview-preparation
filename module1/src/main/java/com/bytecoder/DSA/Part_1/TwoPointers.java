@@ -62,7 +62,7 @@ public class TwoPointers {
 
 
 
-//    Question: Middle of the Linked List
+//    Question: Middle of the Linked List in O(n)
 
 
 //    question : https://leetcode.com/problems/find-the-duplicate-number/description/

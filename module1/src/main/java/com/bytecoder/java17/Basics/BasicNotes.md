@@ -115,6 +115,9 @@
 
 Here is the full list of **Java keywords**:
 
+
+a instance of C var -> print(var)
+
 1. `abstract`
 2. `assert`
 3. `boolean`

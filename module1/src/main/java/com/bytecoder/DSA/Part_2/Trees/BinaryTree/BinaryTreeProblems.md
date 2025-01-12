@@ -921,3 +921,31 @@ void zigZagTraversal(Node<T> root) {
 }
 ```
 
+Examples: -
+
+```python
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        if root is None:
+            return None
+        root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
+        return root
+```
+
+
+```java
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+
+        if(root == null){
+            return null;
+        }
+        TreeNode left=invertTree(root.left);
+        TreeNode right =invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+}
+```

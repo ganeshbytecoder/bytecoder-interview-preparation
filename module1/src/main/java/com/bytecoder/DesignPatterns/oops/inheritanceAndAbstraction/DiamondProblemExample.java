@@ -1,4 +1,4 @@
-package com.bytecoder.java17.oops.inheritanceAndAbstraction;
+package com.bytecoder.DesignPatterns.oops.inheritanceAndAbstraction;
 
 /**
  * how to have multiple inheritance in java through interfaces

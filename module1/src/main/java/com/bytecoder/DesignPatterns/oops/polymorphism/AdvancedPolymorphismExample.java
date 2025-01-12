@@ -1,4 +1,4 @@
-package com.bytecoder.java17.oops.polymorphism;
+package com.bytecoder.DesignPatterns.oops.polymorphism;
 
 import java.util.List;
 import java.util.ArrayList;

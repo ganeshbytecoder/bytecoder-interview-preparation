@@ -1,4 +1,4 @@
-package com.bytecoder.java17.oops.solid;
+package com.bytecoder.DesignPatterns.solid;
 
 import java.math.BigDecimal;
 
@@ -151,5 +151,19 @@ class PaymentService {
     public boolean processPayment(Payment payment) {
         PaymentProcessor processor = factory.createProcessor(payment.method());
         return processor.processPayment(payment);
+    }
+}
+
+
+// Main class to demonstrate payment processing
+public class PaymentApp {
+    public static void main(String[] args) {
+        PaymentService paymentService = new PaymentService();
+
+        Payment payment1 = new Payment("TXN123", new BigDecimal("100.50"), "USD", PaymentMethod.CREDIT_CARD);
+        Payment payment2 = new Payment("TXN124", new BigDecimal("250.75"), "EUR", PaymentMethod.BANK_TRANSFER);
+
+        System.out.println("Processing Credit Card Payment: " + paymentService.processPayment(payment1));
+        System.out.println("Processing Bank Transfer Payment: " + paymentService.processPayment(payment2));
     }
 }

@@ -1,12 +1,18 @@
 package com.bytecoder.DesignPatterns.creational;
 
+
 public class Person {
-    private String name;
 
-    private String college;
+    private final String name;
 
-    private Person(String name, String college) {
+// this is option field so we can set we need it from builder only
+    private  String college;
+
+    private Person(String name) {
         this.name = name;
+    }
+
+    private void setCollege(String college){
         this.college = college;
     }
 
@@ -22,10 +28,22 @@ public class Person {
         return new PersonBuilder();
     }
 
+
+    public static PersonBuilder builder(String name) {
+        return new PersonBuilder(name);
+    }
+
     public static class PersonBuilder {
         private String name;
 
         private String college;
+
+        public PersonBuilder(){}
+
+        public PersonBuilder(String name) {
+            this.name = name;
+        }
+
 
         public PersonBuilder setName(String name) {
             this.name = name;
@@ -38,7 +56,10 @@ public class Person {
         }
 
         public Person build() {
-            return new Person(this.name, this.college);
+            Person person =  new Person(this.name);
+            person.setCollege(this.college);
+            return person;
+
         }
     }
 

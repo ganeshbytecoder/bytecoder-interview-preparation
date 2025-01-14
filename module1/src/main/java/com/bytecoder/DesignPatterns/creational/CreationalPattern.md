@@ -744,8 +744,6 @@ public class DynamicFactoryExample {
 ## **Would you like solutions for more advanced architecture questions?** 🚀
 
 
-
-
 # **🚀 Factory Pattern - Senior-Level Interview Questions & Answers**
 
 ## **📌 Conceptual Questions**
@@ -986,9 +984,7 @@ public class PaymentTest {
 
 ---
 
-
-
-
+------
 
 # **📌 Chapter 5: Singleton Pattern**
 
@@ -1125,173 +1121,6 @@ class BillPughSingleton {
 ❌ If **global state leads to hidden dependencies**  
 ❌ If **it reduces testability due to static instance**
 
----
-
-
-
-# **📌 Chapter 6: Builder Pattern**
-
-### **1. Overview of Builder Pattern**
-The **Builder Pattern** is a **creational design pattern** that **separates the construction of a complex object from its representation**. It allows **step-by-step construction** of an object.
-
-✅ **Solves the problem of too many constructor parameters**  
-✅ **Makes object creation more readable and maintainable**  
-✅ **Follows the Fluent Interface pattern**
-
----
-
-### **2. Builder Pattern Implementation in Java**
-
-#### **🔹 Without Builder (Telescoping Constructor Problem)**
-```java
-class Car {
-    private String engine;
-    private int seats;
-    private boolean sunroof;
-    
-    public Car(String engine) {
-        this.engine = engine;
-    }
-
-    public Car(String engine, int seats) {
-        this.engine = engine;
-        this.seats = seats;
-    }
-
-    public Car(String engine, int seats, boolean sunroof) {
-        this.engine = engine;
-        this.seats = seats;
-        this.sunroof = sunroof;
-    }
-}
-```
-❌ **Issues:** Too many constructors, hard to maintain.
-
----
-
-#### **🔹 Using Builder Pattern**
-```java
-
-
-package com.bytecoder.DesignPatterns.creational;
-
-
-public class Person {
-
-    private final String name;
-
-    // this is option field so we can set we need it from builder only
-    private  String college;
-
-    private Person(String name) {
-        this.name = name;
-    }
-
-    private void setCollege(String college){
-        this.college = college;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", college='" + college + '\'' +
-                '}';
-    }
-
-    public static PersonBuilder builder() {
-        return new PersonBuilder();
-    }
-
-
-    public static PersonBuilder builder(String name) {
-        return new PersonBuilder(name);
-    }
-
-    public static class PersonBuilder {
-        private String name;
-
-        private String college;
-
-        public PersonBuilder(){}
-
-        public PersonBuilder(String name) {
-            this.name = name;
-        }
-
-
-        public PersonBuilder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public PersonBuilder setCollege(String college) {
-            this.college = college;
-            return this;
-        }
-
-        public Person build() {
-            Person person =  new Person(this.name);
-            person.setCollege(this.college);
-            return person;
-
-        }
-    }
-
-}
-
-
-public class BuilderPatternExample {
-    public static void main(String[] args) {
-        Person person1 = Person.builder()
-                .setName("John Doe")
-                .setCollege("MIT")
-                .build();
-
-        Person person2 = Person.builder()
-                .setName("Alice Johnson")
-                .build(); // No college specified, demonstrating flexibility
-
-        System.out.println(person1);  // Output: Person{name='John Doe', college='MIT'}
-        System.out.println(person2);  // Output: Person{name='Alice Johnson', college='null'}
-    }
-}
-
-```
-
-
-✅ **Pros:**
-- Readable, maintainable, extensible object creation.
-- Avoids **telescoping constructor** issue.
-
----
-
-### **3. When to Use Builder Pattern?**
-✔ **When an object has multiple optional parameters.**  
-✔ **When the object creation process is complex.**  
-✔ **When you need a more readable and flexible way of building objects.**
-
----
-
-### **4. Differences Between Factory and Builder Patterns**
-| Feature | Factory Pattern | Builder Pattern |
-|---------|---------------|----------------|
-| **Purpose** | Used to create objects of a single family | Used for complex object creation |
-| **Object Complexity** | Simple object creation | Handles complex object creation |
-| **Method Calls** | Single method call (`createObject()`) | Step-by-step method calls (`setFeature().build()`) |
-| **Example Use** | Database connections, Payment Gateways | Configuring UI components, Game characters |
-
----
-
-## **🚀 Summary**
-| Pattern | Use Case | Pros | Cons |
-|---------|---------|------|------|
-| **Singleton** | **Global instance management** | Saves memory, Thread safety (if done right) | Hard to test, Can introduce global state issues |
-| **Builder** | **Complex object creation** | Fluent interface, Readable, Avoids telescoping constructor | More classes required, Slightly more boilerplate |
-
----
-
-# **🚀 Senior-Level Interview Questions & Answers for Singleton and Builder Patterns**
 
 ## **📌 Singleton Pattern Interview Questions**
 
@@ -1381,27 +1210,6 @@ The Singleton pattern **combines two responsibilities**:
 
 ---
 
-### **6. How do you prevent reflection from breaking Singleton?**
-✅ **Answer:** Add a **check in the constructor**:
-```java
-class Singleton {
-    private static final Singleton INSTANCE = new Singleton();
-
-    private Singleton() {
-        if (INSTANCE != null) {
-            throw new RuntimeException("Use getInstance() method");
-        }
-    }
-
-    public static Singleton getInstance() {
-        return INSTANCE;
-    }
-}
-```
-✔ **Prevents multiple instances via Reflection.**
-
----
-
 ### **7. How do you prevent Singleton from breaking during serialization?**
 ✅ **Answer:** Implement `readResolve()` to return the existing instance:
 ```java
@@ -1453,120 +1261,7 @@ enum SingletonEnum {
 
 ---
 
-## **📌 Builder Pattern Interview Questions**
-
-### **10. Why is the Builder Pattern useful?**
-✅ **Answer:**  
-📌 **Builder Pattern** is used when a class has **too many optional parameters**, making **constructor calls complex (Telescoping Constructor Problem)**.  
-📌 **Key Benefits:**  
-✔ **Improves readability**  
-✔ **Allows step-by-step object creation**  
-✔ **Encapsulates complex object construction logic**
-
 ---
-
-### **11. How would you implement the Builder Pattern in Java?**
-✅ **Answer:**
-```java
-class Car {
-    private final String engine;
-    private final int seats;
-    private final boolean sunroof;
-
-    private Car(CarBuilder builder) {
-        this.engine = builder.engine;
-        this.seats = builder.seats;
-        this.sunroof = builder.sunroof;
-    }
-
-    public static class CarBuilder {
-        private final String engine;  
-        private int seats = 4;        
-        private boolean sunroof = false; 
-
-        public CarBuilder(String engine) {
-            this.engine = engine;
-        }
-
-        public CarBuilder setSeats(int seats) {
-            this.seats = seats;
-            return this;
-        }
-
-        public CarBuilder setSunroof(boolean sunroof) {
-            this.sunroof = sunroof;
-            return this;
-        }
-
-        public Car build() {
-            return new Car(this);
-        }
-    }
-}
-
-// Usage
-Car car = new Car.CarBuilder("V8 Engine")
-        .setSeats(5)
-        .setSunroof(true)
-        .build();
-```
-✔ **Encapsulates object construction.**  
-✔ **Avoids multiple constructor overloads.**
-
----
-
-### **12. When should you use Builder instead of Factory?**
-| Feature | Builder Pattern | Factory Pattern |
-|---------|----------------|----------------|
-| **Object Complexity** | Best for complex objects with multiple configurations | Best for object families |
-| **Flexibility** | Step-by-step creation | Single method call |
-| **Readability** | Fluent API, easy to read | Not as expressive |
-| **Example Use** | Configurable objects (e.g., Cars, HTTP Requests) | Database connections, Payment Processing |
-
-📌 **Rule of Thumb:**  
-✔ Use **Factory** for simple object creation.  
-✔ Use **Builder** for objects with **many optional parameters**.
-
----
-
-### **13. How can you make a Builder immutable?**
-✅ **Answer:** Declare all fields as `final` and avoid setters.
-```java
-class ImmutableCar {
-    private final String engine;
-    private final int seats;
-    
-    private ImmutableCar(CarBuilder builder) {
-        this.engine = builder.engine;
-        this.seats = builder.seats;
-    }
-
-    public static class CarBuilder {
-        private final String engine;
-        private final int seats;
-
-        public CarBuilder(String engine, int seats) {
-            this.engine = engine;
-            this.seats = seats;
-        }
-
-        public ImmutableCar build() {
-            return new ImmutableCar(this);
-        }
-    }
-}
-```
-✔ Ensures **immutable objects** with no modifications after creation.
-
----
-
-## **🚀 Final Thoughts**
-| **Pattern** | **Use Case** | **Best Practice** |
-|------------|-------------|------------------|
-| **Singleton** | Shared global instance | Use **Enum Singleton** |
-| **Builder** | Object with many optional parameters | Use **Fluent API** for better readability |
-
-# **🚀 System Design Questions on Singleton & Builder Patterns (Senior Role)**
 
 ## **📌 Singleton Pattern - System Design Questions**
 
@@ -1632,6 +1327,160 @@ class ImmutableCar {
 
 ✅ **Example:**
 - A **ride-sharing system (Uber, Lyft)** uses a Singleton **API Gateway** to route requests to different microservices.
+
+---
+
+# **📌 Chapter 6: Builder Pattern**
+
+### **1. Overview of Builder Pattern**
+The **Builder Pattern** is a **creational design pattern** that **separates the construction of a complex object from its representation**. It allows **step-by-step construction** of an object.
+
+✅ **Solves the problem of too many constructor parameters**  
+✅ **Makes object creation more readable and maintainable**  
+✅ **Follows the Fluent Interface pattern**
+
+---
+
+### **2. Builder Pattern Implementation in Java**
+
+#### **🔹 Using Builder Pattern**
+```java
+public class Person {
+
+    private final String name;
+
+    // this is option field so we can set we need it from builder only
+    private  String college;
+
+    private Person(String name) {
+        this.name = name;
+    }
+
+    private void setCollege(String college){
+        this.college = college;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", college='" + college + '\'' +
+                '}';
+    }
+
+    public static PersonBuilder builder() {
+        return new PersonBuilder();
+    }
+
+
+    public static PersonBuilder builder(String name) {
+        return new PersonBuilder(name);
+    }
+
+    public static class PersonBuilder {
+        private String name;
+
+        private String college;
+
+        public PersonBuilder(){}
+
+        public PersonBuilder(String name) {
+            this.name = name;
+        }
+        public PersonBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public PersonBuilder setCollege(String college) {
+            this.college = college;
+            return this;
+        }
+
+        public Person build() {
+            Person person =  new Person(this.name);
+            person.setCollege(this.college);
+            return person;
+
+        }
+    }
+
+}
+
+
+public class BuilderPatternExample {
+    public static void main(String[] args) {
+        Person person1 = Person.builder()
+                .setName("John Doe")
+                .setCollege("MIT")
+                .build();
+
+        Person person2 = Person.builder()
+                .setName("Alice Johnson")
+                .build(); // No college specified, demonstrating flexibility
+
+        System.out.println(person1);  // Output: Person{name='John Doe', college='MIT'}
+        System.out.println(person2);  // Output: Person{name='Alice Johnson', college='null'}
+    }
+}
+
+```
+
+
+✅ **Pros:**
+- Readable, maintainable, extensible object creation.
+- Avoids **telescoping constructor** issue.
+
+---
+
+### **3. When to Use Builder Pattern?**
+✔ **When an object has multiple optional parameters.**  
+✔ **When the object creation process is complex.**  
+✔ **When you need a more readable and flexible way of building objects.**
+
+---
+
+### **4. Differences Between Factory and Builder Patterns**
+| Feature | Factory Pattern | Builder Pattern |
+|---------|---------------|----------------|
+| **Purpose** | Used to create objects of a single family | Used for complex object creation |
+| **Object Complexity** | Simple object creation | Handles complex object creation |
+| **Method Calls** | Single method call (`createObject()`) | Step-by-step method calls (`setFeature().build()`) |
+| **Example Use** | Database connections, Payment Gateways | Configuring UI components, Game characters |
+
+---
+
+## **🚀 Summary**
+| Pattern | Use Case | Pros | Cons |
+|---------|---------|------|------|
+| **Singleton** | **Global instance management** | Saves memory, Thread safety (if done right) | Hard to test, Can introduce global state issues |
+| **Builder** | **Complex object creation** | Fluent interface, Readable, Avoids telescoping constructor | More classes required, Slightly more boilerplate |
+
+---
+## **📌 Builder Pattern Interview Questions**
+
+### **10. Why is the Builder Pattern useful?**
+✅ **Answer:**  
+📌 **Builder Pattern** is used when a class has **too many optional parameters**, making **constructor calls complex (Telescoping Constructor Problem)**.  
+📌 **Key Benefits:**  
+✔ **Improves readability**  
+✔ **Allows step-by-step object creation**  
+✔ **Encapsulates complex object construction logic**
+
+---
+
+
+### **12. When should you use Builder instead of Factory?**
+| Feature | Builder Pattern | Factory Pattern |
+|---------|----------------|----------------|
+| **Object Complexity** | Best for complex objects with multiple configurations | Best for object families |
+| **Flexibility** | Step-by-step creation | Single method call |
+| **Readability** | Fluent API, easy to read | Not as expressive |
+| **Example Use** | Configurable objects (e.g., Cars, HTTP Requests) | Database connections, Payment Processing |
+
+📌 **Rule of Thumb:**  
+✔ Use **Factory** for simple object creation.  
+✔ Use **Builder** for objects with **many optional parameters**.
 
 ---
 
@@ -1796,7 +1645,7 @@ Button button = new Button.Builder()
 📌 **Would you like me to design a complete system architecture using these patterns?** 🚀
 
 
-# **Prototype Design Pattern - Detailed Notes**
+# ** Chapter -7 Prototype Design Pattern - Detailed Notes**
 
 ## **📌 Overview**
 The **Prototype Pattern** is a **creational design pattern** that allows **cloning objects** instead of creating new instances. This is useful when **object creation is costly** or **complex**, and a copy of an existing object is sufficient.
@@ -2022,7 +1871,6 @@ Employee deepCloned = DeepCopyUtil.deepCopy(original);
 ## **📌 Final Thoughts**
 The **Prototype Pattern** is a powerful technique **to optimize object creation**. It is **highly useful in performance-critical applications** like **gaming, databases, and real-time analytics**. However, **deep cloning complexity** should be handled carefully.
 
-# **Prototype Pattern - Senior-Level Interview Questions & Answers**
 
 ## **📌 Conceptual Questions**
 
@@ -2247,9 +2095,4 @@ public class DatabaseRecord implements Cloneable {
 - Implement **distributed object cloning** using **microservices**.
 
 ---
-
-## **📌 Final Thoughts**
-The **Prototype Pattern** is a powerful technique for **optimizing object creation**.
-- It is **ideal for performance-critical applications** like **game engines, database systems, and real-time analytics**.
-- **Deep cloning should be handled carefully** to prevent **memory leaks and shared references**.
 

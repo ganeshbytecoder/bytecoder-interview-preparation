@@ -15,6 +15,15 @@ public class MapCollections {
                 String message = String.format("Hello, my name is %s and I am %d years old.", name, age);
                 System.out.println(message);
 
+                String [] arr = {"arr", "dd"};
+                String arrStr = Arrays.toString(arr);
+                System.out.println(arrStr);
+
+                List<String> list = Arrays.asList(arr);
+//              list.toArray(new T[0]) to convert array
+                String[] a = list.toArray(new String[0]);
+
         }
+
 
 }

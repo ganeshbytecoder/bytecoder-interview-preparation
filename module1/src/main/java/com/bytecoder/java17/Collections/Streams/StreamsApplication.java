@@ -46,6 +46,11 @@ public class StreamsApplication {
 
     public static void main(String[] args) {
 
+
+//        all functions of Collectors class ?
+
+
+
 //        creation of streams -> from collections, file io,
        Stream<Integer> integerStream =  Stream.of(1,2,3,4);
         Stream<Employee> employeeStream = Arrays.stream(arrayOfEmps);

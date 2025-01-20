@@ -1,3 +1,61 @@
+# Database Performance Optimization and Scaling
+
+## **2. ACID Properties**
+### ✅ **Atomicity (A)**
+- **Atomic** means something that cannot be broken down.
+- Atomicity ensures that a transaction with multiple write operations either **completes fully** or **not at all**.
+- Transactions move data between two states (A → B) with **no intermediate states allowed**.
+- If an error occurs mid-transaction, the **entire transaction is aborted**.
+- **Example Use Case:**
+    - A banking transaction where a withdrawal and deposit must happen together.
+    - If a failure occurs during one operation, the entire transaction rolls back.
+- Without atomicity, mid-way failures can cause data inconsistency and duplication issues.
+
+---
+
+### ✅ **Consistency (C)**
+- Ensures that **data remains valid** before and after a transaction.
+- Your application defines what consistency means (e.g., **debits and credits must balance in a banking system**).
+- A **consistent transaction** maintains data integrity throughout execution.
+- **Example Use Case:**
+    - Enforcing business rules like ensuring **email uniqueness** in a user table.
+- **Key Point:** A database cannot ensure consistency **if the application logic is flawed**.
+
+---
+
+### ✅ **Isolation (I)**
+- Ensures that concurrently executing transactions do not **interfere** with each other.
+- If multiple clients try to modify the same data simultaneously, concurrency issues may arise (e.g., **race conditions**).
+- **Example Issue:**
+    - Two clients increment a counter simultaneously, but due to concurrency issues, the counter only increments by 1 instead of 2.
+- **Isolation Levels (Weak → Strong):**
+    1. **Read Uncommitted** – Allows dirty reads (least isolation).
+    2. **Read Committed** – Ensures only committed data is read.
+    3. **Repeatable Read** – Prevents non-repeatable reads within a transaction.
+    4. **Serializable** – Strongest isolation; transactions execute as if sequential.
+- **Use Case:** Online ticket booking systems where multiple users shouldn't book the same seat simultaneously.
+
+---
+
+### ✅ **Durability (D)**
+- Guarantees **data persistence** even in cases of **hardware failure or crashes**.
+- Ensures that once a transaction is **committed**, it remains **permanently stored**.
+- **How Databases Ensure Durability:**
+    - **Write-Ahead Logs (WAL)** – Ensures data is written to disk before committing.
+    - **Replication** – Stores multiple copies of data across different nodes.
+- **Use Case:**
+    - Banking transactions where once money is transferred, it cannot be lost due to a crash.
+- **Limitation:** No database provides **perfect durability**, but mechanisms like **RAID storage, backups, and failover strategies** help.
+
+---
+
+
+
+
+
+
+
+
 
 ### **PostgreSQL vs. MySQL: Major Differences & Best Use Cases**
 Both **PostgreSQL** and **MySQL** are popular open-source **relational databases (RDBMS)**, but they cater to different needs.

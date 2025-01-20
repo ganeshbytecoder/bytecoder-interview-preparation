@@ -1,34 +1,4 @@
-## 1. SOLID Principles
 
-### Single Responsibility Principle (SRP)
-
-- A class should have only one reason to change
-- Each class should focus on doing one thing well
-- Example: Separating data access, business logic, and presentation layers
-
-### Open/Closed Principle (OCP)
-
-- Software entities should be open for extension but closed for modification
-- Use abstractions and interfaces to allow new functionality through inheritance/implementation
-- Example: Plugin architectures, Strategy pattern
-
-### Liskov Substitution Principle (LSP)
-
-- Subtypes must be substitutable for their base types without altering program correctness
-- Inheritance should ensure that the child class can replace its parent class without breaking functionality
-- Common violations: Breaking contracts, throwing unexpected exceptions
-
-### Interface Segregation Principle (ISP)
-
-- Clients should not be forced to depend on interfaces they don't use
-- Prefer multiple specific interfaces over one general-purpose interface
-- Example: Splitting large interfaces into smaller, focused ones
-
-### Dependency Inversion Principle (DIP)
-
-- High-level modules should not depend on low-level modules; both should depend on abstractions
-- Abstractions should not depend on details; details should depend on abstractions
-- Example: Dependency injection, IoC containers
 
 ## 4. Best Practices and Common Pitfalls
 
@@ -120,65 +90,23 @@ a instance of C var -> print(var)
 
 1. `abstract`
 2. `assert`
-3. `boolean`
-4. `break`
-5. `byte`
-6. `case`
-7. `catch`
-8. `char`
-9. `class`
-10. `const` (reserved)
-11. `continue`
-12. `default`
-13. `do`
-14. `double`
-15. `else`
-16. `enum`
-17. `extends`
-18. `final`
-19. `finally`
-20. `float`
-21. `for`
-22. `goto` (reserved)
-23. `if`
-24. `implements`
-25. `import`
 26. `instanceof`
-27. `int`
-28. `interface`
-29. `long`
-30. `module` (Java 9)
-31. `native`
-32. `new`
-33. `null`
-34. `open` (Java 9)
-35. `opens` (Java 9)
 36. `package`
 37. `permits` (Java 17)
-38. `private`
-39. `protected`
+
 40. `provides` (Java 9)
 41. `public`
 42. `requires` (Java 9)
-43. `return`
 44. `sealed` (Java 15)
-45. `short`
 46. `static`
-47. `strictfp`
 48. `super`
-49. `switch`
 50. `synchronized`
 51. `this`
 52. `throw`
 53. `throws`
-54. `to` (reserved)
 55. `transient`
 56. `try`
-57. `uses` (Java 9)
-58. `var` (Java 10)
-59. `void`
 60. `volatile`
-61. `while`
 62. `with` (reserved)
 63. `yield` (Java 13)
 
@@ -219,39 +147,7 @@ public class ConcatStrings {
 }
 ```
 
-Here is the full list of **Java keywords**:
 
-1. `abstract`
-2. `assert`
-3. `const` (reserved)
-4. `continue`
-5. `default`
-6. `do`
-7. `enum`
-8. `extends`
-9. `final`
-10. `finally`
-11. `goto` (reserved)
-12. `implements`
-13. `import`
-14. `instanceof`
-15. `new`
-16. `null`
-17. `open` (Java 9)
-18. `opens` (Java 9)
-19. `permits` (Java 17)
-20. `provides` (Java 9)
-21. `requires` (Java 9)
-22. `sealed` (Java 15)
-23. `static`
-24. `super`
-25. `switch`
-26. `synchronized`
-27. `to` (reserved)
-28. `transient`
-29. `volatile`
-30. `with` (reserved)
-31. `yield` (Java 13)
 
 I'll provide key use cases for important Java keywords that often come up in senior engineering interviews:
 
@@ -366,26 +262,6 @@ Common Interview Questions:
 
 Key Areas:
 
-1. Memory Access
-
-```java
-// Cache-friendly code
-// Contiguous memory access
-for(int i = 0; i < array.length; i++) {
-    // sequential access pattern
-}
-```
-
-2. Lock Contention
-
-```java
-// Fine-grained locking
-private final Object[] locks = new Object[16];
-int segment = hash % locks.length;
-synchronized(locks[segment]) {
-    // reduced contention
-}
-```
 
 3. GC Impact
 

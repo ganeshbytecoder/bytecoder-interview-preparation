@@ -1,7 +1,8 @@
 ### Notes on Greedy Algorithm in DSA (Data Structures and Algorithms)
 
 **Definition:**
-A greedy algorithm is a problem-solving technique that makes the optimal choice at each step with the hope of finding the global optimum. It builds up a solution piece by piece, always choosing the next piece that offers the most immediate benefit without considering future consequences.
+A greedy algorithm is a problem-solving technique that makes the optimal choice at each step with the hope of finding the global optimum. 
+It builds up a solution piece by piece, always choosing the next piece that offers the most immediate benefit without considering future consequences.
 
 **Key Characteristics:**
 1. **Greedy Choice Property**: The algorithm makes a choice that seems best at the moment and moves forward without reconsidering previous choices.

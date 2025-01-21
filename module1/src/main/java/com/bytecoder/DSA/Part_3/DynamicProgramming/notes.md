@@ -1,7 +1,9 @@
+* top - bottom approach -> how many variables are used create a dp array 
+* bottom top approach analysis the base condition
 
 
-## jump problems 
-2. **[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)**
+
+### **[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)**
    - Problem: You can climb 1 or 2 steps. How many distinct ways can you reach the top of a staircase with `n` steps?
 
    - **Recursion**:
@@ -40,9 +42,7 @@
      }
      ```
 
-  
-4. ** [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) **
-##### **Problem Statement**
+### ** [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) **
 You are given an integer array `cost` where `cost[i]` is the cost of the `i-th` step. Once you pay the cost, you can either climb one or two steps. You can start from step 0 or step 1. Return the minimum cost to reach the top.
 
 - **Solution Approaches**
@@ -127,56 +127,49 @@ public int minCostClimbingStairs(int[] cost) {
 
 
 3. **[House Robber](https://leetcode.com/problems/house-robber/)**
-   - Problem: Maximize the amount of money you can rob without robbing adjacent houses.
-   - **Recursion**:
-     ```java
-     public int rob(int[] nums) {
-         return robHelper(nums, nums.length - 1);
-     }
+    - Problem: Maximize the amount of money you can rob without robbing adjacent houses.
+    - **Recursion**:
+      ```java
+      public int rob(int[] nums) {
+          return robHelper(nums, nums.length - 1);
+      }
+ 
+      private int robHelper(int[] nums, int i) {
+          if (i < 0) return 0;
+          return Math.max(robHelper(nums, i - 2) + nums[i], robHelper(nums, i - 1));
+      }
+      ```
+    - **Memoization**:
+      ```java
+      public int rob(int[] nums) {
+          int[] memo = new int[nums.length];
+          Arrays.fill(memo, -1);
+          return robHelper(nums, nums.length - 1, memo);
+      }
+ 
+      private int robHelper(int[] nums, int i, int[] memo) {
+          if (i < 0) return 0;
+          if (memo[i] != -1) return memo[i];
+          return memo[i] = Math.max(robHelper(nums, i - 2, memo) + nums[i], robHelper(nums, i - 1, memo));
+      }
+      ```
+    - **Tabulation**:
+      ```java
+      public int rob(int[] nums) {
+          if (nums.length == 0) return 0;
+          if (nums.length == 1) return nums[0];
+          int[] dp = new int[nums.length];
+          dp[0] = nums[0];
+          dp[1] = Math.max(nums[0], nums[1]);
+          for (int i = 2; i < nums.length; i++) {
+              dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+          }
+          return dp[nums.length - 1];
+      }
+      ```
 
-     private int robHelper(int[] nums, int i) {
-         if (i < 0) return 0;
-         return Math.max(robHelper(nums, i - 2) + nums[i], robHelper(nums, i - 1));
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int rob(int[] nums) {
-         int[] memo = new int[nums.length];
-         Arrays.fill(memo, -1);
-         return robHelper(nums, nums.length - 1, memo);
-     }
-
-     private int robHelper(int[] nums, int i, int[] memo) {
-         if (i < 0) return 0;
-         if (memo[i] != -1) return memo[i];
-         return memo[i] = Math.max(robHelper(nums, i - 2, memo) + nums[i], robHelper(nums, i - 1, memo));
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int rob(int[] nums) {
-         if (nums.length == 0) return 0;
-         if (nums.length == 1) return nums[0];
-         int[] dp = new int[nums.length];
-         dp[0] = nums[0];
-         dp[1] = Math.max(nums[0], nums[1]);
-         for (int i = 2; i < nums.length; i++) {
-             dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-         }
-         return dp[nums.length - 1];
-     }
-     ```
-   
-
-### **[Jump Game](https://leetcode.com/problems/jump-game/)**
-
-#### **Problem Statement**
+### ** [Jump Game](https://leetcode.com/problems/jump-game/) **
 You are given an integer array `nums`. You are initially positioned at the first index, and each element in the array represents your maximum jump length at that position. Determine if you can reach the last index.
-
----
-
-### **Solution Approaches**
 
 #### 1. **Recursive Solution**
 The recursive approach explores all possible jumps from the current position. It uses the current index and determines if reaching the last index is possible.
@@ -200,10 +193,6 @@ public boolean canJump(int[] nums) {
 
 ```
 
-**Time Complexity**: \(O(2^n)\) (Exponential)  
-**Space Complexity**: \(O(n)\) (Call stack)
-
----
 
 #### 2. **Memoization Solution**
 The memoized approach stores the results of previously computed indices to avoid redundant calculations.
@@ -231,10 +220,6 @@ private boolean canJumpMemo(int[] nums, int index, int[] memo) {
 }
 ```
 
-**Time Complexity**: \(O(n^2)\)  
-**Space Complexity**: \(O(n)\)
-
----
 
 #### 3. **Tabulation Solution**
 The tabulation approach uses an array to track whether each index is reachable. It iterates through the array, updating the reachable states.
@@ -277,15 +262,6 @@ public boolean canJump(int[] nums) {
 ```
 
 * https://leetcode.com/problems/find-number-of-ways-to-reach-the-k-th-stair/description/
-
-
-
-
-
-
-## sub-array / subsequence problems 
-
-
 
 ### 1. **[Longest Increasing Subsequence II](https://leetcode.com/problems/longest-increasing-subsequence-ii/description/)**
    - Problem: Find the length of the longest increasing subsequence within a limited difference range.
@@ -411,7 +387,6 @@ public boolean canJump(int[] nums) {
      ```
 
 ---
-
 
 ### 3. **[Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/description/)**
    - Problem: Find the number of longest increasing subsequences.
@@ -558,8 +533,6 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
      ```
 
 ---
-
-
 
 ### 5. **[Find the Maximum Length of Valid Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-ii/description/)**
    - Problem: Find the maximum length of a valid subsequence based on specific conditions.
@@ -749,8 +722,6 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
      ```
 
 ---
-
-
 
 ### 8. **[Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/description/)**
    - Problem: Find the longest chain of pairs such that each pair's second value is less than the next pair's first value.
@@ -960,6 +931,7 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
 
 
 ---
+
 
 
 

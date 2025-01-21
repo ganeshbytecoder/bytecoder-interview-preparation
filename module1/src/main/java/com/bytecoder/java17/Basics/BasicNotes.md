@@ -110,6 +110,8 @@ a instance of C var -> print(var)
 62. `with` (reserved)
 63. `yield` (Java 13)
 
+
+how to do lower/upper case in character  
 ---
 
 ## datatypes
@@ -302,7 +304,7 @@ try (FileInputStream fis = new FileInputStream(file)) {
 // 3. Inner Class References
 private static class StaticInnerClass {} // prevents memory leaks
 ```
-
+# how memory management works?
 3. Garbage Collection
 
 - Young/Old Generation

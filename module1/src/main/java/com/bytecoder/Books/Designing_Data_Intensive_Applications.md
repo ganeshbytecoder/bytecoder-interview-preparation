@@ -1,8 +1,6 @@
 ## Detailed Summary of Chapter 1: *Reliable, Scalable, and Maintainable Applications*
 
-Chapter 1 introduces the fundamental principles for designing robust, data-intensive applications. These principles—**reliability**, **scalability**, and **maintainability**—form the foundation for understanding the challenges and trade-offs in building modern software systems. The chapter also establishes key terminology and a conceptual framework for the rest of the book.
-
----
+# Chapter 1 introduces the fundamental principles for designing robust, data-intensive applications. These principles—**reliability**, **scalability**, and **maintainability**—form the foundation for understanding the challenges and trade-offs in building modern software systems. The chapter also establishes key terminology and a conceptual framework for the rest of the book.
 
 ### **1. What Are Data-Intensive Applications?**
 - Modern applications often deal with **large volumes of data** and prioritize efficient data management over computational tasks.

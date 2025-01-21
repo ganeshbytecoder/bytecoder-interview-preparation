@@ -1,4 +1,19 @@
 
+```java
+//    Find Largest Sum Contiguous Subarray (Kadane's Algorithm)
+    public int maxSubArray(int[] nums) {
+        int max = nums[0], sum = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, sum);
+            if (sum < 0) {
+                sum = 0;
+            }
+        }
+        return max;
+    }
+```
+
 ### 6. **Find the Union and Intersection of Two Sorted Arrays**
 **Hint**: 
    - brute force

@@ -350,13 +350,15 @@ The `String` class in Java provides a rich set of methods for various operations
    System.out.println(sb);  // Output: "Hello Java"
    ```
 
-6. **`reverse()`**  
+6. **`reverse()`**  important while reverse the string 
    Reverses the sequence of characters in the `StringBuilder`.
 
    ```java
    StringBuilder sb = new StringBuilder("Hello");
    sb.reverse();
    System.out.println(sb);  // Output: "olleH"
+   String s = "test";
+   return s.equals(new StringBuilder(s).reverse().toString()); 
    ```
 
 7. **`setCharAt()`**  

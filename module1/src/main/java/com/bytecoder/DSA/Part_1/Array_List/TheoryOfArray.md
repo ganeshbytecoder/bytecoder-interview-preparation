@@ -23,8 +23,11 @@
 ### 7. **Cyclically Rotate an Array by One**
    - **Hint**: Store the last element in a temporary variable, then shift all other elements to the right, and place the last element at the first position.
 
-### 8. **Find Largest Sum Contiguous Subarray (Kadane's Algorithm)**
-   - **Hint**: Use Kadane's algorithm by maintaining a running sum and a global maximum. Reset the running sum to zero if it becomes negative.
+### 12. **Merge Two Sorted Arrays Without Using Extra Space**
+    Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+    Output: [1,2,2,3,5,6]
+
+
 
 ### 9. **Minimize the Maximum Difference Between Heights**
    - **Hint**: Sort the array, then consider adding or subtracting `k` from the minimum and maximum heights to minimize the difference.

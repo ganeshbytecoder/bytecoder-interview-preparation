@@ -22,6 +22,15 @@ public class MapCollections {
                 List<String> list = Arrays.asList(arr);
 //              list.toArray(new T[0]) to convert array
                 String[] a = list.toArray(new String[0]);
+                HashSet<Integer> set = new HashSet<>();
+
+                set= Collections.sort(set);
+
+                List<Integer> l = map.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue().reversed())
+                        .map(Map.Entry::getValue)          // Map to values
+                        .collect(Collectors.toList());
 
         }
 

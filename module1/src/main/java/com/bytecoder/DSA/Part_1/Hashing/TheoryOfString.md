@@ -47,12 +47,14 @@ https://leetcode.com/problems/custom-sort-string/description/
 ### **Medium Problems**
 6. **Subarray Sum Equals K**  
    - *Problem*: Find the number of subarrays whose sum equals a given `k`.  
-   - *Concept*: Use a HashMap to store cumulative sums and their frequencies.  
+   - *Concept*: Use a HashMap to store cumulative sums and their frequencies
    - [LeetCode](https://leetcode.com/problems/subarray-sum-equals-k/)
 
 7. **Longest Substring Without Repeating Characters**  
    - *Problem*: Find the length of the longest substring with unique characters.  
-   - *Concept*: Use a sliding window and HashMap to track indices of characters.  
+   - *Concept*:
+     - Use a sliding window and HashMap to track indices of characters. 
+     - use sliding window
    - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 8. **Top K Frequent Elements**  
@@ -62,43 +64,10 @@ https://leetcode.com/problems/custom-sort-string/description/
 
 9. **Longest Consecutive Sequence**  
    - *Problem*: Find the length of the longest sequence of consecutive integers.  
-   - *Concept*: Use a HashSet (or HashMap) to store numbers and check neighbors.  
+   - *Concept*: Use a HashSet (or HashMap) to store numbers and check neighbors. 
+   - use sorted set and priority queue check previous element
    - [LeetCode](https://leetcode.com/problems/longest-consecutive-sequence/)
 
-```java
-    public int longestConsecutive(int[] nums) {
-        if(nums.length ==0 ){
-            return 0;
-        }
-        PriorityQueue<Integer> queue = new PriorityQueue<>();
-
-        for(int i : nums){
-            queue.add(i);
-        }
-        int prev = queue.poll();
-        int ans = 0;
-        int l =1;
-        while(!queue.isEmpty()){
-            int temp = queue.poll();
-            System.out.println("prev " + prev + "  "  + temp + " " + l);
-            if(temp==prev){
-                continue;
-            }
-            if(temp-prev==1 ){
-                l++;
-            }else{
-                ans = Math.max(ans, l);
-                l=1;
-            }
-            prev = temp;
-        }
-
-        ans = Math.max(ans, l);
-
-        return ans;
-        
-    }
-```
 
 10. **Intersection of Two Arrays II**  
     - *Problem*: Find the intersection of two arrays, allowing duplicate elements.  
@@ -108,9 +77,10 @@ https://leetcode.com/problems/custom-sort-string/description/
 
 - ** https://leetcode.com/problems/fraction-to-recurring-decimal/description/ 
 
-https://leetcode.com/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=top-interview-150 
----
+- https://leetcode.com/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=top-interview-150 
 
+
+---
 ### **Hard Problems**
 11. **Four Sum II**  
     - *Problem*: Given four lists of integers, count all tuples `(i, j, k, l)` such that `A[i] + B[j] + C[k] + D[l] = 0`.  

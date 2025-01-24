@@ -449,3 +449,47 @@ while not pq.empty():
 # Priority: 5,  Data: Medium priority
 # Priority: 1,  Data: Low priority
 ```
+
+
+
+
+---
+
+# Python examples
+
+```python 
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        seen = {}
+
+        for i, val in enumerate(nums):
+            if val in seen and i - seen[val] <= k:
+                return True
+            else:
+                seen[val] = i
+        
+        return False
+```
+
+
+```python
+
+class Solution(object):
+    def wordPattern(self, pattern, s):
+        word_list = s.split()
+
+        memo_ps = {}
+        memo_sp = {}
+
+
+        if len(pattern) != len(word_list):
+            return False
+
+        for c1,c2 in zip(pattern, word_list):
+            if (c1 in memo_ps and memo_ps[c1] != c2) or (c2 in memo_sp and memo_sp[c2] != c1):
+                return False
+
+            memo_ps[c1] = c2
+            memo_sp[c2] = c1
+
+        return True
+```

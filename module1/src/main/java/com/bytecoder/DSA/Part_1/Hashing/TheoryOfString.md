@@ -77,8 +77,24 @@ https://leetcode.com/problems/custom-sort-string/description/
 
 - ** https://leetcode.com/problems/fraction-to-recurring-decimal/description/ 
 
-- https://leetcode.com/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=top-interview-150 
+- https://leetcode.com/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=top-interview-150
 
+```python
+
+def isIsomorphic(self, s: str, t: str) -> bool:
+    if(len(s)!= len(t)):
+        return False
+    s1 =list(s)
+    t1 =list(t)
+    memo={}
+    for i in range(len(s)):
+        if(memo.get(s[i]) is None and t[i] not in t[:i] ):
+            memo[s[i]]=t[i]
+        elif(memo.get(s[i]) != t[i]):
+            return False
+    return True 
+
+```
 
 ---
 ### **Hard Problems**

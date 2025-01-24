@@ -34,3 +34,21 @@ public class MathProblems {
 
 
 }
+
+//https://leetcode.com/problems/sqrtx/description/?envType=study-plan-v2&envId=top-interview-150
+//class Solution:
+//
+//    def sqrt_newton(self, num, precision=0.9):
+//        if num < 0:
+//            return None  # Square root of negative numbers is not real
+//        if num == 0 or num == 1:
+//            return num
+//
+//        guess = num / 2.0  # Initial guess
+//        while abs(guess * guess - num) > precision:
+//            guess = (guess + num / guess) / 2.0  # Refine the guess
+//        return int(guess)
+//
+//    def mySqrt(self, x: int) -> int:
+//        return self.sqrt_newton(x)
+

@@ -328,7 +328,7 @@ This makes `Deque` suitable for use cases where elements need to be processed in
       a comparator.
 
    ```java
-   PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+import java.util.Comparator;    PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
    priorityQueue.add(10);
    ```
 

@@ -14,7 +14,7 @@ public class MapCollections {
                 int age = 25;
                 String message = String.format("Hello, my name is %s and I am %d years old.", name, age);
                 System.out.println(message);
-
+                Comparator.reverseOrder();
                 String [] arr = {"arr", "dd"};
                 String arrStr = Arrays.toString(arr);
                 System.out.println(arrStr);

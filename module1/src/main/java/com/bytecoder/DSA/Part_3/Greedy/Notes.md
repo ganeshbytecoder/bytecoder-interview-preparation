@@ -271,7 +271,6 @@ similarly n meetings in one room will be done
 
 https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/
 
-https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/solutions/5950330/more-simpler-java-solution/
 
 
 https://leetcode.com/problems/non-overlapping-intervals/description/

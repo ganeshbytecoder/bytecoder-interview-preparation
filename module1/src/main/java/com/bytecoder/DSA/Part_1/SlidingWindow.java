@@ -1,5 +1,8 @@
 package com.bytecoder.DSA.Part_1;
 
+//https://leetcode.com/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=top-interview-150
+
+//https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan-v2&envId=top-interview-150
 public class SlidingWindow {
 
 //    Given a string S which represents DNA sequence, the task is to find all the 10-letter long substring that are repeated more than once. Returning the sequence can be done in any order.

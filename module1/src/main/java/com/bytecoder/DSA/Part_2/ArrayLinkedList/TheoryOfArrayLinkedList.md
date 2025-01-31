@@ -1,34 +1,18 @@
 * https://leetcode.com/problems/remove-nodes-from-linked-list/description/
+
 * https://leetcode.com/problems/add-two-numbers-ii/ 
+
 * https://leetcode.com/problems/copy-list-with-random-pointer/description/?envType=study-plan-v2&envId=top-interview-150
+
 * https://leetcode.com/problems/reverse-linked-list-ii/description/?envType=study-plan-v2&envId=top-interview-150
+
+* https://leetcode.com/problems/swap-nodes-in-pairs/submissions/1423121266/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
 
 
 
 ### 31. **19. Remove Nth Node From End of List**
-   - brute force.
+   - brute force (using length )
    - two pointer
-```java
-   public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode slow = head;
-        ListNode fast = head;
-
-        for(int i=1; i<n; i++){
-            fast=fast.next;
-        }
-        ListNode prev = null;
-        while(fast.next != null){
-            prev = slow;
-            slow=slow.next;
-            fast=fast.next;
-        }
-        if(prev ==null){
-            return slow.next;
-        }
-        prev.next=slow.next;
-        return head;
-    }
-```
 
 ### 31. **Merge K Sorted Linked Lists**
    - **Hint**: Use a min-heap to efficiently merge the `k` lists.

@@ -1,18 +1,18 @@
-package com.bytecoder.DSA.Part_3.a_recursion;
+package com.bytecoder.DSA.Part_2.a_recursion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+//
+//Bubble sort and Merge and quick sort
 
-//[01:44, 17/10/2024] Ganesh Choudhary: 1.
-//2. Sum of array using recursion
-//[01:44, 17/10/2024] Ganesh Choudhary: Linear search in unsorted array find a value
-//[01:44, 17/10/2024] Ganesh Choudhary: Binary search
-//[01:44, 17/10/2024] Ganesh Choudhary: Reverse string or array
-//[01:44, 17/10/2024] Ganesh Choudhary: Check palindrome
-//[01:44, 17/10/2024] Ganesh Choudhary: A to the power b . A n b is inputs
-//[01:44, 17/10/2024] Ganesh Choudhary: Bubble sort
+
+//https://leetcode.com/problems/swap-nodes-in-pairs/submissions/1423121266/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
+//https://leetcode.com/problems/predict-the-winner/submissions/1423638042/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
+// Bubble sort
 // Merge and quick sort
+// https://leetcode.com/problems/decode-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+//https://leetcode.com/problems/different-ways-to-add-parentheses/description/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
 public class RecursionProblems {
 
 
@@ -36,7 +36,6 @@ public class RecursionProblems {
         return nums[k] + sumOfArray(nums, k + 1);
     }
 
-
     //     Linear search in unsorted array find a value
     public static boolean searchTarget(int[] nums, int k, int target) {
         if (k == nums.length) {
@@ -47,7 +46,6 @@ public class RecursionProblems {
         }
         return searchTarget(nums, k + 1, target);
     }
-
 
     //    Reverse string or array
     public static int[] reverseArray(int[] nums, int i, int j) {
@@ -71,7 +69,6 @@ public class RecursionProblems {
             return false;
         }
     }
-
 
     //    power of a on b
     public static long powerOfa(int a, int b) {
@@ -129,6 +126,20 @@ public class RecursionProblems {
         output.remove(Integer.valueOf(nums[index]));
     }
 
+
+//  //https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/?envType=problem-list-v2&envId=recursion&difficulty=EASY
+    public static char findKthChar(String word, int k){
+        if(word.length() >= k){
+            return word.charAt(k-1);
+        }
+        StringBuilder temp = new StringBuilder();
+        char[] arr = word.toCharArray();
+        for(char c : arr){
+            c +=1;
+            temp.append(c);
+        }
+        return findKthChar(word+temp.toString(), k);
+    }
 
     public static void main(String[] args) {
         int[] nums = {1, 2, 0, 2, 1};

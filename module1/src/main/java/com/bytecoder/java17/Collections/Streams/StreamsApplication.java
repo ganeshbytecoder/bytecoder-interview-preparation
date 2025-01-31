@@ -1,6 +1,5 @@
 package com.bytecoder.java17.Collections.Streams;
 
-import lombok.*;
 
 import java.util.*;
 import java.util.function.BinaryOperator;

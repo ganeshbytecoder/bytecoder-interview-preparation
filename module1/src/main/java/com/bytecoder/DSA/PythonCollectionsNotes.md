@@ -5,6 +5,110 @@ Here are detailed notes on **`is`**, **`in`**, **`not in`**, and **`is not`** in
 
 ---
 
+```python
+e,f = c = [a,b] =[1,2]
+print(a,b, c, e,f)
+# 1 2 [1, 2] 1 2
+d = {'a': 1}
+d.setdefault('b', 2)
+name = "ganesh"
+
+print(f'name {name} {d}')
+# name ganesh {'a': 1, 'b': 2}
+
+```
+
+## The **`enumerate()`** function in Python is a built-in function that adds a counter to an iterable and returns it as an `enumerate` object. This is especially useful when you need both the index and the value of elements in a loop.
+
+### **Syntax**
+```python
+enumerate(iterable, start=0)
+```
+
+- **`iterable`**: The object you want to enumerate (e.g., list, tuple, string, etc.).
+- **`start`** *(optional)*: The starting value of the counter. Defaults to `0`.
+
+---
+
+### **Returns**
+An **`enumerate` object**, which is an iterable of tuples. Each tuple contains:
+1. The index (starting from `start`).
+2. The corresponding item from the iterable.
+
+---
+
+### **Examples**
+
+#### 1. Enumerating a List
+```python
+fruits = ["apple", "banana", "cherry"]
+for index, fruit in enumerate(fruits):
+    print(index, fruit)
+```
+
+**Output**:
+```
+0 apple
+1 banana
+2 cherry
+```
+
+---
+
+#### 2. Custom Starting Index
+```python
+fruits = ["apple", "banana", "cherry"]
+for index, fruit in enumerate(fruits, start=1):
+    print(index, fruit)
+```
+
+**Output**:
+```
+1 apple
+2 banana
+3 cherry
+```
+
+---
+
+#### 3. Enumerating a String
+```python
+word = "Python"
+for index, char in enumerate(word):
+    print(index, char)
+```
+
+**Output**:
+```
+0 P
+1 y
+2 t
+3 h
+4 o
+5 n
+```
+
+---
+
+
+---
+
+#### 5. Using `enumerate()` with `list()`
+You can convert the `enumerate` object into a list of tuples.
+```python
+fruits = ["apple", "banana", "cherry"]
+result = list(enumerate(fruits))
+print(result)
+```
+
+**Output**:
+```
+[(0, 'apple'), (1, 'banana'), (2, 'cherry')]
+```
+
+
+```
+
 ### 1. **`is`**
 - The `is` operator checks if **two variables refer to the same object in memory** (i.e., it compares their identities).
 - It does **not compare the values** of the objects, only their memory locations.
@@ -132,7 +236,7 @@ print(a is c)  # True (same object in memory)
 ---
 
 ### Common DSA Use Cases:
-1. **`is` and `is not`**:
+1. **`is` and `is not`**: checks for reference equality (`==`)
     - Checking for `None`:
       ```python
       if node is None:
@@ -141,7 +245,7 @@ print(a is c)  # True (same object in memory)
 2. **`in`**:
     - Searching for a key in a dictionary:
       ```python
-      if key in hashmap:
+      if key in hashmap/set/list:
           print("Key exists")
       ```
     - Membership checks in sets (e.g., for duplicates or visited elements).
@@ -158,20 +262,25 @@ print(a is c)  # True (same object in memory)
 
 
 [//]: # (priorty queue, arrays , Collections)
-* sum(): Retuns sum the elements of an iterable.
-* max(): Finds the maximum value in an iterable.
-* min(): Finds the minimum value in an iterable.
+
 * len(): Returns the number of elements in an iterable.
 * abs()
 * pow()
-* 
+
 * filter(function, iterable)-> filteredObject: Filters an iterable based on a given function.
 * map(function, iterable) : Applies a function to each element of an iterable.
+
+
+* sum(iterable, key): Retuns sum the elements of an iterable.
+* max(iterable, key): Finds the maximum value in an iterable.
+* min(iterable, key): Finds the minimum value in an iterable.
 * sorted(iterable, key, reverse) -> list: Returns a sorted list of the elements of an iterable.
-* 
-* enumerate(): Adds a counter to each element in an iterable, returning tuples of (index, element).
 
 
+* range(5) - give list of items (from, to , gap) - don't use as indexing use while to change index 
+* enumerate(iterable, start=0): Adds a counter to each element in an iterable, returning tuples of (index, element).
+
+* l = [[-1]*(5)]*10 not good idea since it's copy of references 
 ---
 
 ## 1. List
@@ -270,282 +379,6 @@ print(my_list[::-2])  # [9, 7, 5, 3, 1]
     ```python
     new_list = my_list.copy()
     ```
-
----
-
-
-### 1. **`append()`**
-Adds a single element to the end of the list.
-
-#### Example:
-```python
-lst = [1, 2]
-lst.append(3)
-lst  # [1, 2, 3]
-```
-
-#### Use in DSA:
-Efficiently grow a list element by element.
-
----
-
-### 2. **`extend()`**
-Adds multiple elements from an iterable to the end of the list.
-
-#### Example:
-```python
-lst = [1, 2]
-lst.extend([3, 4])
-lst  # [1, 2, 3, 4]
-```
-
-#### Use in DSA:
-Combine lists or append multiple elements in one step.
-
----
-
-### 3. **`insert()`**
-Inserts an element at a specified index.
-
-#### Example:
-```python
-lst = [1, 3]
-lst.insert(1, 2)
-lst  # [1, 2, 3]
-```
-
-#### Use in DSA:
-Insert elements at specific positions, like in custom sorting.
-
----
-
-### 4. **`remove()`**
-Removes the first occurrence of a specific value. Raises `ValueError` if not found.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst.remove(2)
-lst  # [1, 3]
-```
-
-#### Use in DSA:
-Use for value-based removal.
-
----
-
-### 5. **`pop()`**
-Removes and returns an element by index. If no index is specified, removes and returns the last element.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst.pop()  # 3
-lst  # [1, 2]
-lst.pop(0)  # 1
-lst  # [2]
-```
-
-#### Use in DSA:
-Efficient stack operations (LIFO).
-
----
-
-### 6. **`index()`**
-Finds the index of the first occurrence of a value. Raises `ValueError` if not found.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst.index(2)  # 1
-```
-
-#### Use in DSA:
-Locate specific elements in lists.
-
----
-
-### 7. **`count()`**
-Counts the occurrences of a specific value in the list.
-
-#### Example:
-```python
-lst = [1, 2, 2, 3]
-lst.count(2)  # 2
-```
-
-#### Use in DSA:
-Count frequencies of elements (useful in frequency-based problems).
-
----
-
-### 8. **`reverse()`**
-Reverses the list in place.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst.reverse()
-lst  # [3, 2, 1]
-```
-
-#### Use in DSA:
-Quickly reverse lists for processing from the back.
-
----
-
-### 9. **`sort()`**
-Sorts the list in ascending (default) or descending order. Can use a custom `key` function.
-
-#### Example:
-```python
-lst = [3, 1, 2]
-lst.sort()
-lst  # [1, 2, 3]
-lst.sort(reverse=True)
-lst  # [3, 2, 1]
-```
-
-#### Use in DSA:
-Efficient sorting for numerical or custom orders.
-
----
-
-### 10. **`sorted()`**
-Returns a new sorted list without modifying the original.
-
-#### Example:
-```python
-lst = [3, 1, 2]
-sorted(lst)  # [1, 2, 3]
-lst  # [3, 1, 2]
-```
-
-#### Use in DSA:
-Maintain original list while creating sorted copies.
-
----
-
-### 11. **`copy()`**
-Returns a shallow copy of the list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst_copy = lst.copy()
-lst_copy  # [1, 2, 3]
-```
-
-#### Use in DSA:
-Create independent copies to avoid unintended modifications.
-
----
-
-### 12. **`clear()`**
-Removes all elements from the list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-lst.clear()
-lst  # []
-```
-
-#### Use in DSA:
-Reset lists during iterative algorithms.
-
----
-
-### 13. **`max()` and `min()`**
-Finds the maximum and minimum values in a list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-max(lst)  # 3
-min(lst)  # 1
-```
-
-#### Use in DSA:
-Quickly find extreme values.
-
----
-
-### 14. **`sum()`**
-Returns the sum of all elements in a list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-sum(lst)  # 6
-```
-
-#### Use in DSA:
-Calculate cumulative sums or totals.
-
----
-
-### 15. **`len()`**
-Returns the number of elements in the list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-len(lst)  # 3
-```
-
-#### Use in DSA:
-Get the size of a list.
-
----
-
-### 16. **`enumerate()`**
-Returns both the index and the value during iteration.
-
-#### Example:
-```python
-lst = [10, 20, 30]
-for i, value in enumerate(lst):
-    print(i, value)
-# Output:
-# 0 10
-# 1 20
-# 2 30
-```
-
-#### Use in DSA:
-Useful in index-based operations.
-
----
-
-### 17. **`filter()`**
-Filters elements of a list based on a condition.
-
-#### Example:
-```python
-lst = [1, 2, 3, 4]
-filtered = list(filter(lambda x: x % 2 == 0, lst))  # [2, 4]
-```
-
-#### Use in DSA:
-Select elements meeting specific criteria.
-
----
-
-### 18. **`map()`**
-Applies a function to each element of the list.
-
-#### Example:
-```python
-lst = [1, 2, 3]
-squared = list(map(lambda x: x**2, lst))  # [1, 4, 9]
-```
-
-#### Use in DSA:
-Transform elements in a list.
-
----
-
 ### 19. **`zip()`**
 Combines multiple lists into tuples of corresponding elements.
 
@@ -618,6 +451,8 @@ flat = list(chain.from_iterable(nested))  # [1, 2, 3, 4]
 
 #### Use in DSA:
 Simplify nested data structures.
+
+
 
 ## 2. Tuple
 
@@ -746,317 +581,7 @@ A **set** is an **unordered**, **mutable** collection of **unique** items. No du
     new_set = my_set.copy()
     ```
 
----
 
-### 1. **`add()`**
-Adds a single element to the set. If the element already exists, no changes are made.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s.add(4)
-s  # {1, 2, 3, 4}
-```
-
-#### Use in DSA:
-Efficiently build sets dynamically during processing.
-
----
-
-### 2. **`update()`**
-Adds multiple elements (from an iterable) to the set.
-
-#### Example:
-```python
-s = {1, 2}
-s.update([3, 4, 5])
-s  # {1, 2, 3, 4, 5}
-```
-
-#### Use in DSA:
-Quickly add multiple elements to a set (e.g., during union operations).
-
----
-
-### 3. **`remove()`**
-Removes a specific element from the set. Raises `KeyError` if the element is not found.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s.remove(2)
-s  # {1, 3}
-```
-
-#### Use in DSA:
-Use when you need strict element removal.
-
----
-
-### 4. **`discard()`**
-Removes a specific element from the set but does not raise an error if the element is missing.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s.discard(4)  # No error
-s  # {1, 2, 3}
-```
-
-#### Use in DSA:
-Safer alternative to `remove()` when dealing with uncertain elements.
-
----
-
-### 5. **`pop()`**
-Removes and returns an arbitrary element from the set. Raises `KeyError` if the set is empty.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s.pop()  # Removes and returns an element, e.g., 1
-```
-
-#### Use in DSA:
-Useful when you need to process and discard elements.
-
----
-
-### 6. **`union()` / `|`**
-Returns a new set containing all unique elements from both sets.
-
-#### Example:
-```python
-a = {1, 2}
-b = {2, 3}
-a.union(b)  # {1, 2, 3}
-# or
-a | b  # {1, 2, 3}
-```
-
-#### Use in DSA:
-Combine sets efficiently without duplicates.
-
----
-
-### 7. **`intersection()` / `&`**
-Returns a new set containing elements common to both sets.
-
-#### Example:
-```python
-a = {1, 2, 3}
-b = {2, 3, 4}
-a.intersection(b)  # {2, 3}
-# or
-a & b  # {2, 3}
-```
-
-#### Use in DSA:
-Find common elements efficiently.
-
----
-
-### 8. **`difference()` / `-`**
-Returns a new set containing elements in the first set but not in the second.
-
-#### Example:
-```python
-a = {1, 2, 3}
-b = {2, 3, 4}
-a.difference(b)  # {1}
-# or
-a - b  # {1}
-```
-
-#### Use in DSA:
-Identify unique elements in one set compared to another.
-
----
-
-### 9. **`symmetric_difference()` / `^`**
-Returns a new set containing elements in either set but not in both (exclusive OR).
-
-#### Example:
-```python
-a = {1, 2, 3}
-b = {2, 3, 4}
-a.symmetric_difference(b)  # {1, 4}
-# or
-a ^ b  # {1, 4}
-```
-
-#### Use in DSA:
-Find non-overlapping elements between two sets.
-
----
-
-### 10. **`issubset()` / `<=`**
-Checks if one set is a subset of another.
-
-#### Example:
-```python
-a = {1, 2}
-b = {1, 2, 3}
-a.issubset(b)  # True
-# or
-a <= b  # True
-```
-
-#### Use in DSA:
-Check if all elements of one set are in another.
-
----
-
-### 11. **`issuperset()` / `>=`**
-Checks if one set is a superset of another.
-
-#### Example:
-```python
-a = {1, 2, 3}
-b = {1, 2}
-a.issuperset(b)  # True
-# or
-a >= b  # True
-```
-
-#### Use in DSA:
-Validate that a set contains all elements of another.
-
----
-
-### 12. **`isdisjoint()`**
-Checks if two sets have no elements in common.
-
-#### Example:
-```python
-a = {1, 2}
-b = {3, 4}
-a.isdisjoint(b)  # True
-```
-
-#### Use in DSA:
-Determine if two sets are completely independent.
-
----
-
-### 13. **`frozenset`**
-Creates an immutable set that cannot be modified after creation.
-
-#### Example:
-```python
-fs = frozenset([1, 2, 3])
-# fs.add(4)  # Error: frozenset is immutable
-```
-
-#### Use in DSA:
-Use as a dictionary key or when immutability is required.
-
----
-
-### 14. **`len()`**
-Returns the number of elements in the set.
-
-#### Example:
-```python
-s = {1, 2, 3}
-len(s)  # 3
-```
-
-#### Use in DSA:
-Quickly determine the size of a set.
-
----
-
-### 15. **`clear()`**
-Removes all elements from the set.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s.clear()
-s  # set()
-```
-
-#### Use in DSA:
-Reset sets during iterative algorithms.
-
----
-
-### 16. **`enumerate()`**
-Used with sets to return both an index and the set element.
-
-#### Example:
-```python
-s = {10, 20, 30}
-for index, value in enumerate(s):
-    print(index, value)
-# Output: (order may vary)
-# 0 10
-# 1 20
-# 2 30
-```
-
-#### Use in DSA:
-Index-based iteration for unique elements.
-
----
-
-### 17. **`sorted()`**
-Returns a sorted list of the elements in the set.
-
-#### Example:
-```python
-s = {3, 1, 2}
-sorted(s)  # [1, 2, 3]
-```
-
-#### Use in DSA:
-Sort sets for comparisons or specific operations.
-
----
-
-### 18. **`copy()`**
-Returns a shallow copy of the set.
-
-#### Example:
-```python
-s = {1, 2, 3}
-s_copy = s.copy()
-s_copy  # {1, 2, 3}
-```
-
-#### Use in DSA:
-Create independent copies of sets.
-
----
-
-### 19. **`filter()` with Sets**
-Filters elements in a set based on a condition.
-
-#### Example:
-```python
-s = {1, 2, 3, 4, 5}
-filtered = set(filter(lambda x: x % 2 == 0, s))  # {2, 4}
-```
-
-#### Use in DSA:
-Quickly extract elements meeting specific criteria.
-
----
-
-### 20. **`map()` with Sets**
-Applies a function to each element in the set and creates a new set.
-
-#### Example:
-```python
-s = {1, 2, 3}
-mapped = set(map(lambda x: x * 2, s))  # {2, 4, 6}
-```
-
-#### Use in DSA:
-Transform set elements efficiently.
-
----
 
 ## 4. Dictionary
 
@@ -1169,7 +694,7 @@ Avoids `KeyError` while accessing keys and allows handling missing keys graceful
 
 ---
 
-### 2. **`setdefault()`**
+### 2. **`setdefault()`** there no set method to add (use map[key] = value)
 Returns the value of a key if it exists; otherwise, inserts the key with a specified default value and returns it.
 
 #### Example:
@@ -1318,57 +843,7 @@ sorted(d.items(), key=lambda x: x[1])  # [('b', 1), ('c', 2), ('a', 3)] (sort by
 #### Use in DSA:
 Sort based on custom criteria.
 
----
 
-### 12. **`defaultdict` (from `collections`)**
-A dictionary that automatically initializes missing keys with a default value.
-
-#### Example:
-```python
-from collections import defaultdict
-d = defaultdict(int)  # Default value is 0
-d['a'] += 1
-d['b'] += 2
-d  # {'a': 1, 'b': 2}
-```
-
-#### Use in DSA:
-Eliminate the need to check for key existence while updating.
-
----
-
-### 13. **`Counter` (from `collections`)**
-A specialized dictionary for counting hashable objects.
-
-#### Example:
-```python
-from collections import Counter
-arr = [1, 2, 2, 3, 3, 3]
-Counter(arr)  # Counter({3: 3, 2: 2, 1: 1})
-```
-
-#### Use in DSA:
-Efficient frequency counting.
-
----
-
-### 14. **`chainmap` (from `collections`)**
-Combines multiple dictionaries into one view.
-
-#### Example:
-```python
-from collections import ChainMap
-d1 = {'a': 1}
-d2 = {'b': 2}
-cm = ChainMap(d1, d2)
-cm['a']  # 1
-cm['b']  # 2
-```
-
-#### Use in DSA:
-Merge multiple scopes or configurations.
-
----
 
 ### 15. **`dict comprehension`**
 Quickly create dictionaries using comprehensions.
@@ -1603,6 +1078,20 @@ Normalize strings with tabs before processing.
 
 ---
 
+### 16. upper() and lower()
+
+```python 
+print("ganesh".lower())
+print('a'.upper())
+print("ganesh".upper())
+
+# ganesh
+# A
+# GANESH
+```
+
+---
+
 ### 10. **`capitalize()`**
 Capitalizes the first character of a string and makes the rest lowercase.
 
@@ -1662,6 +1151,8 @@ Formats strings dynamically with placeholders.
 ```python
 "Hello, {}!".format("World")  # "Hello, World!"
 "{0} + {1} = {2}".format(2, 3, 5)  # "2 + 3 = 5"
+
+f'name {variable}'
 ```
 
 #### Use in DSA:
@@ -1680,15 +1171,7 @@ Splits a string into a list at line breaks.
 #### Use in DSA:
 Efficiently parse multiline input.
 
----
 
-
-
-
-
-
-
-## Python Iterators
 
 
 ## PriorityQueue

@@ -55,6 +55,34 @@ To keep track of no of connections or isVisited you can have array or map for ex
 ### 1. **Create a Graph, Print it**
    - Use adjacency matrix or adjacency list to store the graph.
    - Print the graph by iterating over the matrix/list and displaying connections.
+```java
+public class Graph<T> {
+    private final HashMap<T, List<T>> adjList;
+    private final boolean bidirection;
+
+    public HashMap<T, List<T>> getAdjList() {
+        return adjList;
+    }
+
+    public Graph(boolean bidirection) {
+        adjList = new HashMap<>();
+        this.bidirection = bidirection;
+    }
+
+    public void addVertex(T v){
+        adjList.put(v, new ArrayList<T>());
+    }
+
+    public void addEdge(T source, T destination){
+        if(!adjList.containsKey(source))
+            addVertex(source);
+        if (!adjList.containsKey(destination))
+            addVertex(destination);
+        adjList.get(source).add(destination);
+        if (bidirection)
+            adjList.get(destination).add(source);
+    }
+```
 
 ### 2. **Implement BFS Algorithm**
    - Use a queue for BFS traversal.
@@ -65,6 +93,73 @@ To keep track of no of connections or isVisited you can have array or map for ex
    - Use a stack (or recursion) for DFS traversal.
    - Track visited nodes to avoid infinite loops.
    - DFS is useful for exploring deeper paths first.
+
+```java
+import java.util.HashMap;
+
+/*                             DFS Iterative Method
+-------------------------------------------------------------------------------------*/
+private static void dfs(Graph<String> graph, String source) {
+    Stack<String> stack = new Stack<>();
+    stack.push(source);
+    Map<String, Boolean> visited = new HashMap<>();
+
+    while (!stack.empty()) {
+        String curr = stack.pop();
+        System.out.println(curr);
+
+        for (String neighbour : graph.getAdjList().get(curr)) {
+            if (visited.get(neighbour) == null){
+                stack.push(neighbour);
+                visited.put(neighbour, false);
+            }
+        }
+    }
+}
+/*-----------------------------------------------------------------------------------*/
+
+/*                           DFS Recursive Method
+-------------------------------------------------------------------------------------*/
+private static void dfs(Graph<String> graph, String source) {
+    System.out.println(source);
+
+    for (String neighbour : graph.getAdjList().get(source)) {
+        if (visited.get(neighbour) == null) {
+            visited.put(neighbour, false);
+            dfs(graph, neighbour);
+        }
+    }
+}
+/*-----------------------------------------------------------------------------------*/
+```
+
+Start DFS from nodes at boundary:
+* https://leetcode.com/problems/surrounded-regions/
+* https://leetcode.com/problems/number-of-enclaves/
+* https://leetcode.com/problems/time-needed-to-inform-all-employees/
+* https://leetcode.com/problems/find-eventual-safe-states/description/
+
+DFS from each unvisited node/Island problems
+* https://leetcode.com/problems/number-of-closed-islands/
+* https://leetcode.com/problems/number-of-islands/
+* https://leetcode.com/problems/keys-and-rooms/
+* https://leetcode.com/problems/max-area-of-island/
+* https://leetcode.com/problems/flood-fill/
+
+BFS:
+
+BFS for shortest path:
+* https://leetcode.com/problems/01-matrix/
+* https://leetcode.com/problems/as-far-from-land-as-possible/
+* https://leetcode.com/problems/rotting-oranges/
+* https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+Graph coloring:
+* https://leetcode.com/problems/possible-bipartition/
+* https://leetcode.com/problems/is-graph-bipartite/
+
+
+
 
 ### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
    - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
@@ -78,18 +173,19 @@ To keep track of no of connections or isVisited you can have array or map for ex
 ### 5. **All possible paths from scr to dst using BFS/DFS Algorithm**
 
 ### 5. **All possible paths from scr to dst using BFS/DFS Algorithm with at most k stops** 
-    **important** - https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
+* https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
  
 
 
-## Disjoint set:
+## Disjoint set: Union Find:
+
 Two sets are called disjoint sets if they don’t have any element in common, the intersection of sets is a null set.
 
 
     - Find - Finding representative (root) of a disjoint set using Find operation.
     - union : Merging disjoint sets to a single disjoint set using Union operation.
 
-subsetMap[rootDest].parent : this will get / update parent of rootDest 
+subsetMap[rootDest].parent : this will get / update parent of rootDest
 
 ```java
 import java.util.HashMap;
@@ -150,4 +246,51 @@ public static void main(String[] args) {
 }
 ```
 
-  
+
+* https://leetcode.com/problems/friend-circles/
+* https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/
+* https://leetcode.com/problems/number-of-operations-to-make-network-connected/
+* https://leetcode.com/problems/satisfiability-of-equality-equations/
+* https://leetcode.com/problems/accounts-merge/
+
+### https://leetcode.com/problems/redundant-connection/
+
+```java
+class Solution {
+
+        private int[] parent;
+
+    private int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        return parent[x] = find(parent[x]); // Path compression
+    }
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        parent = new int[n + 1];
+
+        // Initialize the parent array
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+
+        int[] res = new int[2];
+        for (int[] edge : edges) {
+            int x = find(edge[0]);
+            int y = find(edge[1]);
+            if (x != y) {
+                parent[y] = x; // Union operation
+            } else {
+                res[0] = edge[0];
+                res[1] = edge[1];
+            }
+        }
+
+        return res;
+    }
+   
+}
+```
+

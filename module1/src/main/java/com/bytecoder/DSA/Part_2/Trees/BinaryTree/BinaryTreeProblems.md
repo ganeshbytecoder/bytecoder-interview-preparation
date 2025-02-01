@@ -23,15 +23,14 @@ public static class Node<T extends Comparable<T>> {
 * **Height of tree :** is the max height among all the nodes
 
 ## Type of binary tree
-1. **full binary tree:** if each node has exactly two children and all leaf nodes are at the same level. total nodes at height h will be 2^(h+1)-1.
-2. **balanced binary tree:**
-3. **complete binary tree :** if all leaf nodes are at height h or h-1. 
-4. **perfect binary tree:** 
+1. **full binary tree:** if each node has exactly two children and height does not matter
+2. **complete binary tree :** fill tree from left to right and level should be filled like complete tree
+4. **perfect binary tree:** same height + full = perfect. total nodes at height h will be 2^(h+1)-1.
+2. **balanced binary tree:** 
 
 
 ## Operations on binary tree
-* Create – create a tree in the data structure.
-* Insert − Inserts data in a tree.
+
 * Search − Searches specific data in a tree to check whether it is present or not.
 * 
 * Traversal:
@@ -41,11 +40,14 @@ public static class Node<T extends Comparable<T>> {
     * post-order
   * Breadth-First-Search Traversal
     * level order 
-    * 
+  
 * finding the size of the tree 
 * finding the height of the tree
 * level of node 
 
+
+* Create – create a tree in the data structure.
+* Insert − Inserts data in a tree.
 
 
 ## problems

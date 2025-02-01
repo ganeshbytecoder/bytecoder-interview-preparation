@@ -1,5 +1,9 @@
 
 ## Shorted Path algorithms
+Shortest Path:
+https://leetcode.com/problems/network-delay-time/
+https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/
+https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
 ### 22. **Shorted Path algorithms for unweighted or undirected graph**
 

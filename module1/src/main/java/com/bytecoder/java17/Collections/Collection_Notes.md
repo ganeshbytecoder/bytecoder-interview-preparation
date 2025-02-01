@@ -465,5 +465,3 @@ The `Collections` class in Java provides various static utility methods for oper
 
 
 
-
-## **concurrent collections**

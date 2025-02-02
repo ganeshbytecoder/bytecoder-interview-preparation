@@ -89,6 +89,68 @@ public class Graph<T> {
    - Track visited nodes to avoid cycles and repetition.
    - BFS is ideal for finding the shortest path in unweighted graphs.
 
+```java
+/*                                   BFS Method
+-------------------------------------------------------------------------------------*/
+    private static void bfs(Graph<String> graph, String source ){
+        Queue<String> queue = new LinkedList<>();
+        queue.add(source);
+        int level = 0;
+        
+        while (!queue.isEmpty()){
+			int sz = queue.size();          // level size    
+			for(int i = 0; i < sz; i++){
+				String curr = queue.poll();
+				System.out.println(curr);
+
+				for (String neighbour: graph.getAdjList().get(curr))
+					queue.add(neighbour);
+            }
+            level++;
+        }
+    }
+/*-----------------------------------------------------------------------------------*/
+```
+
+
+BFS for shortest path:
+* https://leetcode.com/problems/01-matrix/
+* https://leetcode.com/problems/as-far-from-land-as-possible/
+* https://leetcode.com/problems/rotting-oranges/
+* https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+Graph coloring:
+* https://leetcode.com/problems/possible-bipartition/
+* https://leetcode.com/problems/is-graph-bipartite/
+
+
+```java
+/*                                  Number of Connected Components
+----------------------------------------------------------------------------------------------------------*/
+    public static int ConnectedComponents(Graph<Integer> graph){
+        HashSet<Integer> visited = new HashSet<>();
+        int count = 0;
+        for (int node: graph.getAdjList().keySet()){
+            if(explore(graph, node, visited))
+                count++;
+        }
+        return count;
+    }
+
+    private static boolean explore(Graph<Integer> graph, int current, HashSet<Integer> visited) {
+        if (visited.contains(current))
+            return false;
+
+        visited.add(current);
+        for (int neighbour: graph.getAdjList().get(current)){
+            explore(graph, neighbour, visited);
+        }
+        return true;
+    }
+/*--------------------------------------------------------------------------------------------------------*/
+```
+
+
 ### 3. **Implement DFS Algorithm**
    - Use a stack (or recursion) for DFS traversal.
    - Track visited nodes to avoid infinite loops.
@@ -146,151 +208,118 @@ DFS from each unvisited node/Island problems
 * https://leetcode.com/problems/max-area-of-island/
 * https://leetcode.com/problems/flood-fill/
 
-BFS:
-
-BFS for shortest path:
-* https://leetcode.com/problems/01-matrix/
-* https://leetcode.com/problems/as-far-from-land-as-possible/
-* https://leetcode.com/problems/rotting-oranges/
-* https://leetcode.com/problems/shortest-path-in-binary-matrix/
-
-Graph coloring:
-* https://leetcode.com/problems/possible-bipartition/
-* https://leetcode.com/problems/is-graph-bipartite/
-
-
-
 
 ### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
    - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
    - **BFS:** Use a queue and track parent nodes similarly to DFS.
+
+```java
+/*                                 Detect cycle in an undirected graph
+---------------------------------------------------------------------------------------------------------------*/
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        HashSet<Integer> visited = new HashSet<>();
+
+        for (int i = 0; i < V; i++) {
+            if (!visited.contains(i)){
+                if (dfs(adj, i, -1, visited))
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src, int parent, HashSet<Integer> visited)
+    {
+        visited.add(src);
+
+        for (int neighbour : adj.get(src)){
+            if (!visited.contains(neighbour)) {
+                if (dfs(adj, neighbour, src, visited))
+                    return true;
+            } else if (parent != neighbour) {
+                return true;
+            }
+        }
+        return false;
+    }
+/*-------------------------------------------------------------------------------------------------------------*/
+
+```
 
 
 ### 5. **Detect Cycle in Directed Graph using BFS/DFS Algorithm**
    - **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
    - **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
 
+```java
+/*                                      Detect cycle in Directed graph
+----------------------------------------------------------------------------------------------------------------*/
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean[] visited = new boolean[V];
+        boolean[] recstack = new boolean[V];
+
+        for (int i = 0; i < V; i++){
+            if (dfs(adj, i, visited, recstack))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src, boolean[] visited, boolean[] recstack) {
+        if (recstack[src])
+            return true;
+        if (visited[src])
+            return false;
+
+        visited[src] = true;
+        recstack[src] = true;
+
+        for (int neighbour : adj.get(src)){
+            if (dfs(adj, neighbour, visited, recstack))
+                return true;
+        }
+        recstack[src] = false;
+        return false;
+    }
+/*--------------------------------------------------------------------------------------------------------------*/
+```
+
+M2
+```java
+
+public boolean isCyclic(int V, Map<Integer, List<Integer>> adj) {
+    int[] state = new int[V]; // 0 = unvisited, 1 = visiting, 2 = visited
+
+    for (int i = 0; i < V; i++) {
+        if (state[i] == 0 && checkCycle(adj, i, state)) {
+            return true;  // Cycle detected
+        }
+    }
+    return false;
+}
+
+private boolean checkCycle(Map<Integer, List<Integer>> adj, int src, int[] state) {
+    if (state[src] == 1) return true;  // Cycle detected
+    if (state[src] == 2) return false; // Already processed
+
+    state[src] = 1; // Mark as visiting
+
+    for (int neighbour : adj.getOrDefault(src, new ArrayList<>())) {
+        if (checkCycle(adj, neighbour, state)) {
+            return true;  // Cycle found
+        }
+    }
+
+    state[src] = 2; // Mark as visited (fully processed)
+    return false;
+}
+
+```
+
+
 ### 5. **All possible paths from scr to dst using BFS/DFS Algorithm**
 
 ### 5. **All possible paths from scr to dst using BFS/DFS Algorithm with at most k stops** 
 * https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
  
-
-
-## Disjoint set: Union Find:
-
-Two sets are called disjoint sets if they don’t have any element in common, the intersection of sets is a null set.
-
-
-    - Find - Finding representative (root) of a disjoint set using Find operation.
-    - union : Merging disjoint sets to a single disjoint set using Union operation.
-
-subsetMap[rootDest].parent : this will get / update parent of rootDest
-
-```java
-import java.util.HashMap;
-
-class Subset {
-    Node parent;
-    int rank;
-}
-
-
-Node find(Map<Node, Subset> subsets, Node node){
-    if(subsets.get(node) != node){
-      subsets[node].parent = find(subsets, subsets[node].parent);  
-    }
-    return subsets[node].parent;
-}
-
-public void union(Map<Node, Subset> subsetMap, Node src, Node dest){
-    
-    Node rootSrc = find(subsetMap, src);
-    
-    Node rootDest = find(subsetMap, dest);
-    
-    if(subsetMap.get(rootSrc).rank < subsetMap.get(rootDest)){
-//    this will update parent of rootSrc with rootDest
-        subsetMap[rootSrc].parent = rootDest;
-    } else if (subsetMap.get(rootSrc).rank > subsetMap.get(rootDest)) {
-//        this will update parent of rootDest with rootSrc
-        subsetMap[rootDest].parent = rootSrc;
-    }else {
-//        this will update parent of rootDest with rootSrc and increase rootSrc rank
-        subsetMap[rootDest].parent = rootSrc;
-        subsetMap[rootSrc].rank++;
-    }
-}
-
-
-public static void main(String[] args) {
-    Map<Node, Subset> subsets = new HashMap<>();
-
-    for (Node node : vertices) {
-        subsets[node] = new Subset(node, 0);
-    }
-    
-    
-//    we can use array is all nodes are numbers
-    
-//    parent[i] -> mean parent of i is the value node
-    int[] parents = new int[n];
-    
-//    rank[i] - rank of i 
-    int[] rank = new int[n];
-
-    for (int i : vertices) {
-        parents[i] = i;
-        rank[i] = 0;
-    }
-}
-```
-
-
-* https://leetcode.com/problems/friend-circles/
-* https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/
-* https://leetcode.com/problems/number-of-operations-to-make-network-connected/
-* https://leetcode.com/problems/satisfiability-of-equality-equations/
-* https://leetcode.com/problems/accounts-merge/
-
-### https://leetcode.com/problems/redundant-connection/
-
-```java
-class Solution {
-
-        private int[] parent;
-
-    private int find(int x) {
-        if (parent[x] == x) {
-            return x;
-        }
-        return parent[x] = find(parent[x]); // Path compression
-    }
-
-    public int[] findRedundantConnection(int[][] edges) {
-        int n = edges.length;
-        parent = new int[n + 1];
-
-        // Initialize the parent array
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-        }
-
-        int[] res = new int[2];
-        for (int[] edge : edges) {
-            int x = find(edge[0]);
-            int y = find(edge[1]);
-            if (x != y) {
-                parent[y] = x; // Union operation
-            } else {
-                res[0] = edge[0];
-                res[1] = edge[1];
-            }
-        }
-
-        return res;
-    }
-   
-}
-```
 

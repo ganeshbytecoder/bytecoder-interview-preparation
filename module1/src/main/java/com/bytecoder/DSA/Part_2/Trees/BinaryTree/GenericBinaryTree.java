@@ -7,11 +7,11 @@ import com.bytecoder.DSA.Part_2.Trees.Tree;
 import java.util.*;
 
 
-public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
+public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
     private Node<T> root;
 
-    public BinaryTree() {
+    public GenericBinaryTree() {
     }
 
     @Override
@@ -108,6 +108,43 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
         }
     }
 
+    @Override
+    public int size() {
+        if(getRoot()== null){
+            return 0;
+        }
+
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(root);
+        int counter=0;
+        while(!queue.isEmpty()){
+            Node<T> temp =queue.poll();
+            counter++;
+            if(temp.getLeftChild() != null){
+                queue.add(temp.getLeftChild());
+            }
+            if(temp.getRightChild() != null){
+                queue.add(temp.getRightChild());
+            }
+        }
+
+        return counter;
+    }
+
+    public int size(Node<T> node) {
+        if(node== null){
+            return 0;
+        }
+        return 1 + size(node.getLeftChild()) + size(node.getRightChild());
+    }
+
+
+//    private int minNode(Node<T> node) {
+//        if (node.getLeftChild() == null) {
+//            return Integer.MIN_VALUE;
+//        }
+//        return Math.min((int) node.getData(), Math.min(minNode(node.getRightChild()), minNode(node.getRightChild())));
+//    }
 
 
     private Node<T> minNode(Node<T> node) {
@@ -175,18 +212,11 @@ public class BinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private int min_value = Integer.MIN_VALUE;
-
-    private int get_min(Node node) {
+    private int get_min(Node<T> node) {
         if (node == null) {
-            return min_value;
+            return Integer.MIN_VALUE;
         }
-        if (node.getData().compareTo(min_value) > 0) {
-            min_value = (int) node.getData();
-        }
-        get_max(node.getLeftChild());
-        get_max(node.getRightChild());
-        return min_value;
+        return Math.min((Integer) node.getData(), Math.min(get_min(node.getLeftChild()), get_min(node.getRightChild())));
     }
 
     @Override

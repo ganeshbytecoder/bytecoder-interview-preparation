@@ -28,6 +28,11 @@ public class NaryTree<T extends Comparable<T>> implements Tree<T> {
 
     }
 
+    @Override
+    public int size() {
+        return 0;
+    }
+
 
     @Override
     public int getMax() {

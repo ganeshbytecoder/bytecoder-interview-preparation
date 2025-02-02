@@ -23,6 +23,18 @@ public interface GraphProblems<T> {
 
     void bfs();
 
+    //  using DFS and BFS
+    boolean searchData(T data);
+
+    //  using DFS and BFS
+    int getLevel(T data);
+
+    //  using DFS and BFS
+    int getMax();
+
+    //  using DFS and BFS
+    int getMin();
+
     boolean isCyclic();
 
 

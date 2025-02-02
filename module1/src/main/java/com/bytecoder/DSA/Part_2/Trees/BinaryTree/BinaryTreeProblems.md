@@ -164,8 +164,8 @@ class Solution {
 
 * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/submissions/1328063250/
 
-
-
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/submissions/1528053859/ 
 ---
 
 ### **4. Diameter of a Tree**

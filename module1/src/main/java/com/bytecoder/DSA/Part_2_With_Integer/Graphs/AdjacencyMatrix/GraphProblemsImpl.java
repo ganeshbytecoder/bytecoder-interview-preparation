@@ -249,11 +249,9 @@ public class GraphProblemsImpl implements GraphProblems {
 
         for (int i = 1; i < graph.getVertexCount(); i++) {
             if (parent[i] != -1) {
-                mst.add(new int[]{
-                    graph.getVertices().get(parent[i]).getData(),
-                    graph.getVertices().get(i).getData(),
-                    graph.getAdjacencyMatrix()[parent[i]][i]
-                });
+                Node sourceNode = graph.getVertices().get(parent[i]);
+                Node destNode = graph.getVertices().get(i);
+                mst.add(new Edge(sourceNode, destNode, graph.getAdjacencyMatrix()[parent[i]][i]));
             }
         }
         return mst;
@@ -447,5 +445,121 @@ public class GraphProblemsImpl implements GraphProblems {
     @Override
     public String printGraph() {
         return graph.toString();
+    }
+
+    @Override
+    public List<Edge> findMinimumSpanningTree_UsingKurukal() {
+        List<Edge> result = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>();
+        int[][] matrix = graph.getAdjacencyMatrix();
+        
+        // Collect all edges from adjacency matrix
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            for (int j = i + 1; j < graph.getVertexCount(); j++) {
+                if (matrix[i][j] != Integer.MAX_VALUE) {
+                    Node source = graph.getVertices().get(i);
+                    Node destination = graph.getVertices().get(j);
+                    edges.add(new Edge(source, destination, matrix[i][j]));
+                }
+            }
+        }
+        
+        // Sort edges by weight (cost)
+        edges.sort(Comparator.comparingInt(Edge::getCost));
+        
+        // Initialize disjoint set for each vertex
+        Map<Integer, Integer> parent = new HashMap<>();
+        Map<Integer, Integer> rank = new HashMap<>();
+        
+        // Initialize each vertex as its own parent
+        for (Node vertex : graph.getVertices()) {
+            parent.put(vertex.getData(), vertex.getData());
+            rank.put(vertex.getData(), 0);
+        }
+        
+        // Process edges in ascending order of weight
+        for (Edge edge : edges) {
+            int sourceRoot = find(edge.getStart().getData(), parent);
+            int destRoot = find(edge.getEnd().getData(), parent);
+            
+            // If including this edge doesn't create a cycle
+            if (sourceRoot != destRoot) {
+                result.add(edge);
+                union(sourceRoot, destRoot, parent, rank);
+            }
+        }
+        
+        return result;
+    }
+    
+    // Helper method for Kruskal's algorithm to find the root of a set
+    private int find(int vertex, Map<Integer, Integer> parent) {
+        if (parent.get(vertex) != vertex) {
+            parent.put(vertex, find(parent.get(vertex), parent));
+        }
+        return parent.get(vertex);
+    }
+    
+    // Helper method for Kruskal's algorithm to merge two sets
+    private void union(int x, int y, Map<Integer, Integer> parent, Map<Integer, Integer> rank) {
+        int rootX = find(x, parent);
+        int rootY = find(y, parent);
+        
+        if (rank.get(rootX) < rank.get(rootY)) {
+            parent.put(rootX, rootY);
+        } else if (rank.get(rootX) > rank.get(rootY)) {
+            parent.put(rootY, rootX);
+        } else {
+            parent.put(rootY, rootX);
+            rank.put(rootX, rank.get(rootX) + 1);
+        }
+    }
+
+    @Override
+    public List<Integer> topologicalSort_UsingKahns() {
+        List<Integer> result = new ArrayList<>();
+        int[][] matrix = graph.getAdjacencyMatrix();
+        int vertices = graph.getVertexCount();
+        
+        // Calculate in-degree for each vertex
+        int[] inDegree = new int[vertices];
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                if (matrix[j][i] != Integer.MAX_VALUE) {
+                    inDegree[i]++;
+                }
+            }
+        }
+        
+        // Add vertices with 0 in-degree to queue
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < vertices; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        
+        // Process vertices in topological order
+        while (!queue.isEmpty()) {
+            int vertex = queue.poll();
+            result.add(graph.getVertices().get(vertex).getData());
+            
+            // Reduce in-degree of adjacent vertices
+            for (int i = 0; i < vertices; i++) {
+                if (matrix[vertex][i] != Integer.MAX_VALUE) {
+                    inDegree[i]--;
+                    if (inDegree[i] == 0) {
+                        queue.offer(i);
+                    }
+                }
+            }
+        }
+        
+        // If result size is less than total vertices, graph has a cycle
+        if (result.size() != vertices) {
+            return new ArrayList<>(); // Return empty list for cyclic graph
+        }
+        
+        return result;
     }
 }

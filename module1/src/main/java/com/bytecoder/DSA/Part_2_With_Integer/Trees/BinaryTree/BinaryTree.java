@@ -4,11 +4,12 @@ import com.bytecoder.DSA.Part_2_With_Integer.Trees.Node;
 import com.bytecoder.DSA.Part_2_With_Integer.Trees.TraversalType;
 import com.bytecoder.DSA.Part_2_With_Integer.Trees.Tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
+/**
+ * Comprehensive Binary Tree implementation with common FAANG interview questions.
+ * Time and Space complexity provided for each operation.
+ */
 public class BinaryTree implements Tree {
     private Node root;
 
@@ -28,12 +29,9 @@ public class BinaryTree implements Tree {
             root = new Node(data);
         } else {
             insertNode_BFS(data);
-//            insertNode_DFS(root, data);
         }
         return this;
     }
-
-
 
     private void insertNode_DFS(Node current, int data) {
         if (current.getLeftChild() == null) {
@@ -50,88 +48,222 @@ public class BinaryTree implements Tree {
         }
     }
 
-    public BinaryTree insertNode_BFS(int data) {
-        if (root == null) {
-            root = new Node(data);
-            return this;
-        }
-
+    // Time: O(n), Space: O(w) where w is max width
+    private void insertNode_BFS(int data) {
         Queue<Node> queue = new LinkedList<>();
-        queue.add(root);
+        queue.offer(root);
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
 
             if (current.getLeftChild() == null) {
-                current.leftChild = new Node(data);
-                break;
-            } else {
-                queue.add(current.leftChild);
+                current.setLeftChild(new Node(data));
+                return;
+            }
+            if (current.getRightChild() == null) {
+                current.setRightChild(new Node(data));
+                return;
             }
 
-            if (current.rightChild == null) {
-                current.rightChild = new Node(data);
-                break;
-            } else {
-                queue.add(current.rightChild);
-            }
-        }
-
-        return this;
-    }
-
-    @Override
-    public void traverse(TraversalType traversalType) {
-        switch (traversalType) {
-            case PRE_ORDER -> preOrderTraversal(root);
-            case IN_ORDER -> inOrderTraversal(root);
-            case POST_ORDER -> postOrderTraversal(root);
-            case LEVEL_ORDER -> levelOrderTraversal(root);
+            queue.add(current.getLeftChild());
+            queue.add(current.getRightChild());
         }
     }
 
-    private void preOrderTraversal(Node node) {
-        if (node != null) {
-            System.out.print(node.getData() + " ");
-            preOrderTraversal(node.getLeftChild());
-            preOrderTraversal(node.getRightChild());
-        }
+    // FAANG Question 1: Check if tree is balanced
+    // Time: O(n), Space: O(h) where h is height
+    public boolean isBalanced() {
+        return checkBalance(root) != -1;
     }
 
-    private void inOrderTraversal(Node node) {
-        if (node != null) {
-            inOrderTraversal(node.getLeftChild());
-            System.out.print(node.getData() + " ");
-            inOrderTraversal(node.getRightChild());
-        }
+    private int checkBalance(Node node) {
+        if (node == null) return 0;
+        
+        int leftHeight = checkBalance(node.getLeftChild());
+        if (leftHeight == -1) return -1;
+        
+        int rightHeight = checkBalance(node.getRightChild());
+        if (rightHeight == -1) return -1;
+        
+        if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+        
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    private void postOrderTraversal(Node node) {
-        if (node != null) {
-            postOrderTraversal(node.getLeftChild());
-            postOrderTraversal(node.getRightChild());
-            System.out.print(node.getData() + " ");
-        }
+    // FAANG Question 2: Serialize and Deserialize Binary Tree
+    // Time: O(n), Space: O(n)
+    public String serialize() {
+        if (root == null) return "null";
+        StringBuilder sb = new StringBuilder();
+        serializeHelper(root, sb);
+        return sb.toString().trim();
     }
 
-    private void levelOrderTraversal(Node node) {
-        int height = getHeight();
-        for (int i = 1; i <= height; i++) {
-            printLevel(node, i);
-            System.out.println();
+    private void serializeHelper(Node node, StringBuilder sb) {
+        if (node == null) {
+            sb.append("null ");
+            return;
         }
+        sb.append(node.getData()).append(" ");
+        serializeHelper(node.getLeftChild(), sb);
+        serializeHelper(node.getRightChild(), sb);
     }
 
-    private void printLevel(Node node, int level) {
+    public void deserialize(String data) {
+        if (data == null || data.equals("null")) {
+            root = null;
+            return;
+        }
+        Queue<String> nodes = new LinkedList<>(Arrays.asList(data.split(" ")));
+        root = deserializeHelper(nodes);
+    }
+
+    private Node deserializeHelper(Queue<String> nodes) {
+        String val = nodes.poll();
+        if (val == null || val.equals("null")) return null;
+        Node node = new Node(Integer.parseInt(val));
+        node.setLeftChild(deserializeHelper(nodes));
+        node.setRightChild(deserializeHelper(nodes));
+        return node;
+    }
+
+    // FAANG Question 3: Lowest Common Ancestor
+    // Time: O(n), Space: O(h)
+    public Node lowestCommonAncestor(Node p, Node q) {
+        if (root == null || p == null || q == null) return null;
+        return findLCA(root, p, q);
+    }
+
+    private Node findLCA(Node node, Node p, Node q) {
+        if (node == null || node == p || node == q) return node;
+        
+        Node left = findLCA(node.getLeftChild(), p, q);
+        Node right = findLCA(node.getRightChild(), p, q);
+        
+        if (left != null && right != null) return node;
+        return left != null ? left : right;
+    }
+
+    // FAANG Question 4: Maximum Path Sum
+    // Time: O(n), Space: O(h)
+    private int maxSum;
+    
+    public int maxPathSum() {
+        maxSum = Integer.MIN_VALUE;
+        maxPathSumHelper(root);
+        return maxSum;
+    }
+
+    private int maxPathSumHelper(Node node) {
+        if (node == null) return 0;
+        
+        int leftGain = Math.max(maxPathSumHelper(node.getLeftChild()), 0);
+        int rightGain = Math.max(maxPathSumHelper(node.getRightChild()), 0);
+        
+        maxSum = Math.max(maxSum, node.getData() + leftGain + rightGain);
+        
+        return node.getData() + Math.max(leftGain, rightGain);
+    }
+
+    // FAANG Question 5: Right Side View -> bfs as well
+    // Time: O(n), Space: O(h)
+    public List<Integer> rightSideView() {
+        List<Integer> result = new ArrayList<>();
+        rightView(root, result, 0);
+        return result;
+    }
+
+    private void rightView(Node node, List<Integer> result, int level) {
         if (node == null) return;
-        if (level == 1) {
-            System.out.print(node.getData() + " ");
-        } else if (level > 1) {
-            printLevel(node.getLeftChild(), level - 1);
-            printLevel(node.getRightChild(), level - 1);
+        
+        if (level == result.size()) {
+            result.add(node.getData());
         }
+        
+        rightView(node.getRightChild(), result, level + 1);
+        rightView(node.getLeftChild(), result, level + 1);
     }
 
+    // FAANG Question 6: Diameter of Binary Tree -> Q2 - max width of BT (level order )
+    // Time: O(n), Space: O(h)
+    private int maxDiameter;
+    
+    public int diameterOfBinaryTree() {
+        maxDiameter = 0;
+        calculateHeight(root);
+        return maxDiameter;
+    }
+
+    private int calculateHeight(Node node) {
+        if (node == null) return 0;
+        
+        int leftHeight = calculateHeight(node.getLeftChild());
+        int rightHeight = calculateHeight(node.getRightChild());
+        
+        maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
+        
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    // FAANG Question 7: Check if Binary Tree is Symmetric -> Q2 two tree are same or not or mirror or symmetric ?
+    // Time: O(n), Space: O(h)
+    public boolean isSymmetric() {
+        if (root == null) return true;
+        return isMirror(root.getLeftChild(), root.getRightChild());
+    }
+
+    private boolean isMirror(Node left, Node right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+        
+        return left.getData() == right.getData()
+            && isMirror(left.getLeftChild(), right.getRightChild())
+            && isMirror(left.getRightChild(), right.getLeftChild());
+    }
+
+    // FAANG Question 8: Vertical Order Traversal
+    // Time: O(n log n), Space: O(n)
+    public List<List<Integer>> verticalOrder() {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+        
+        Map<Integer, List<Integer>> columnTable = new TreeMap<>();
+        Queue<Pair<Node, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+        
+        while (!queue.isEmpty()) {
+            Pair<Node, Integer> p = queue.poll();
+            Node node = p.getKey();
+            int column = p.getValue();
+            
+            columnTable.computeIfAbsent(column, k -> new ArrayList<>()).add(node.getData());
+            
+            if (node.getLeftChild() != null) {
+                queue.offer(new Pair<>(node.getLeftChild(), column - 1));
+            }
+            if (node.getRightChild() != null) {
+                queue.offer(new Pair<>(node.getRightChild(), column + 1));
+            }
+        }
+        
+        result.addAll(columnTable.values());
+        return result;
+    }
+
+    private static class Pair<K, V> {
+        private final K key;
+        private final V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() { return key; }
+        public V getValue() { return value; }
+    }
+
+    // Original Tree Interface Methods
     @Override
     public int size() {
         return calculateSize(root);
@@ -168,16 +300,6 @@ public class BinaryTree implements Tree {
         int leftMin = findMin(node.getLeftChild());
         int rightMin = findMin(node.getRightChild());
         return Math.min(min, Math.min(leftMin, rightMin));
-    }
-
-    @Override
-    public int getHeight() {
-        return getHeight(root);
-    }
-
-    private int getHeight(Node node) {
-        if (node == null) return 0;
-        return 1 + Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild()));
     }
 
     @Override
@@ -242,7 +364,7 @@ public class BinaryTree implements Tree {
             
             // Case 3: Node with two children
             // Find the minimum value in right subtree (successor)
-            Node successor = findMinToBeDeleted(node.getRightChild());
+            Node successor = findMinNode(node.getRightChild());
             node.setData(successor.getData());
             node.setRightChild(deleteNode(node.getRightChild(), successor.getData()));
             return node;
@@ -253,10 +375,77 @@ public class BinaryTree implements Tree {
         return node;
     }
 
-    private Node findMinToBeDeleted(Node node) {
+    private Node findMinNode(Node node) {
         while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }
         return node;
+    }
+
+    // Standard traversals
+    @Override
+    public void traverse(TraversalType type) {
+        List<Integer> result = new ArrayList<>();
+        switch (type) {
+            case INORDER:
+                inorderTraversal(root, result);
+                break;
+            case PREORDER:
+                preorderTraversal(root, result);
+                break;
+            case POSTORDER:
+                postorderTraversal(root, result);
+                break;
+            case LEVELORDER:
+                levelOrderTraversal(result);
+                break;
+        }
+        // Print the result
+        System.out.println(type + " traversal: " + result);
+    }
+
+    private void inorderTraversal(Node node, List<Integer> result) {
+        if (node == null) return;
+        inorderTraversal(node.getLeftChild(), result);
+        result.add(node.getData());
+        inorderTraversal(node.getRightChild(), result);
+    }
+
+    private void preorderTraversal(Node node, List<Integer> result) {
+        if (node == null) return;
+        result.add(node.getData());
+        preorderTraversal(node.getLeftChild(), result);
+        preorderTraversal(node.getRightChild(), result);
+    }
+
+    private void postorderTraversal(Node node, List<Integer> result) {
+        if (node == null) return;
+        postorderTraversal(node.getLeftChild(), result);
+        postorderTraversal(node.getRightChild(), result);
+        result.add(node.getData());
+    }
+
+    private void levelOrderTraversal(List<Integer> result) {
+        if (root == null) return;
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            result.add(node.getData());
+            
+            if (node.getLeftChild() != null) queue.offer(node.getLeftChild());
+            if (node.getRightChild() != null) queue.offer(node.getRightChild());
+        }
+    }
+
+    // Helper methods
+    public int getHeight() {
+        return getHeight(root);
+    }
+
+    private int getHeight(Node node) {
+        if (node == null) return 0;
+        return Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild())) + 1;
     }
 }

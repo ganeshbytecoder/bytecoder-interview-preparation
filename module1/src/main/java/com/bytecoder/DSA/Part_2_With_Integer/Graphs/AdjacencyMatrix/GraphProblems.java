@@ -36,11 +36,13 @@ public interface GraphProblems {
     List<Integer> findShortestPath(int source, int destination);
     Map<Integer, Integer> findAllShortestPaths(int source);
     
-    // Minimum Spanning Tree
-    List<int[]> findMinimumSpanningTree();
-    
+    // Minimum Spanning Tree using prim's and  kuruskal's algorithm
+    List<Edge> findMinimumSpanningTree();
+    List<Edge> findMinimumSpanningTree_UsingKurukal();
+
     // Topological Sort (for directed acyclic graphs)
     List<Integer> topologicalSort();
+    List<Integer> topologicalSort_UsingKahns();
     
     // Component analysis
     List<List<Integer>> findConnectedComponents();

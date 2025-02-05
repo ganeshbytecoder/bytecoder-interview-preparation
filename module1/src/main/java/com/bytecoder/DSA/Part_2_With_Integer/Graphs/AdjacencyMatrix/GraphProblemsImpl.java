@@ -221,10 +221,10 @@ public class GraphProblemsImpl implements GraphProblems {
     }
 
     @Override
-    public List<int[]> findMinimumSpanningTree() {
+    public List<Edge> findMinimumSpanningTree() {
         if (graph.getVertices().isEmpty()) return new ArrayList<>();
 
-        List<int[]> mst = new ArrayList<>();
+        List<Edge> mst = new ArrayList<>();
         boolean[] visited = new boolean[graph.getVertexCount()];
         int[] key = new int[graph.getVertexCount()];
         int[] parent = new int[graph.getVertexCount()];

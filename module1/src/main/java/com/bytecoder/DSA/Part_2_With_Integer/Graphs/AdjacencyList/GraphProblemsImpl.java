@@ -264,7 +264,57 @@ public class GraphProblemsImpl implements GraphProblems {
 
     @Override
     public List<Edge> findMinimumSpanningTree_UsingKurukal() {
-        return List.of();
+        List<Edge> result = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>(getAllEdges());
+        
+        // Sort edges by weight
+        edges.sort(Comparator.comparingInt(e -> e.getWeight()));
+        
+        // Initialize disjoint set for each vertex
+        Map<Integer, Integer> parent = new HashMap<>();
+        Map<Integer, Integer> rank = new HashMap<>();
+        
+        // Initialize each vertex as its own parent
+        for (Node vertex : getAllVertices()) {
+            parent.put(vertex.getData(), vertex.getData());
+            rank.put(vertex.getData(), 0);
+        }
+        
+        for (Edge edge : edges) {
+            int sourceRoot = find(edge.getSource().getData(), parent);
+            int destRoot = find(edge.getDestination().getData(), parent);
+            
+            // If including this edge doesn't create a cycle
+            if (sourceRoot != destRoot) {
+                result.add(edge);
+                union(sourceRoot, destRoot, parent, rank);
+            }
+        }
+        
+        return result;
+    }
+    
+    // Helper method for Kruskal's algorithm to find the root of a set
+    private int find(int vertex, Map<Integer, Integer> parent) {
+        if (parent.get(vertex) != vertex) {
+            parent.put(vertex, find(parent.get(vertex), parent));
+        }
+        return parent.get(vertex);
+    }
+    
+    // Helper method for Kruskal's algorithm to merge two sets
+    private void union(int x, int y, Map<Integer, Integer> parent, Map<Integer, Integer> rank) {
+        int rootX = find(x, parent);
+        int rootY = find(y, parent);
+        
+        if (rank.get(rootX) < rank.get(rootY)) {
+            parent.put(rootX, rootY);
+        } else if (rank.get(rootX) > rank.get(rootY)) {
+            parent.put(rootY, rootX);
+        } else {
+            parent.put(rootY, rootX);
+            rank.put(rootX, rank.get(rootX) + 1);
+        }
     }
 
     @Override
@@ -289,7 +339,52 @@ public class GraphProblemsImpl implements GraphProblems {
 
     @Override
     public List<Integer> topologicalSort_UsingKahns() {
-        return List.of();
+        List<Integer> result = new ArrayList<>();
+        Map<Integer, Integer> inDegree = new HashMap<>();
+        Queue<Integer> queue = new LinkedList<>();
+        
+        // Initialize in-degree for all vertices
+        for (Node vertex : getAllVertices()) {
+            inDegree.put(vertex.getData(), 0);
+        }
+        
+        // Calculate in-degree for each vertex
+        for (Edge edge : getAllEdges()) {
+            inDegree.put(edge.getDestination().getData(), 
+                        inDegree.get(edge.getDestination().getData()) + 1);
+        }
+        
+        // Add vertices with 0 in-degree to queue
+        for (Node vertex : getAllVertices()) {
+            if (inDegree.get(vertex.getData()) == 0) {
+                queue.offer(vertex.getData());
+            }
+        }
+        
+        // Process vertices in topological order
+        while (!queue.isEmpty()) {
+            int vertex = queue.poll();
+            result.add(vertex);
+            
+            // Reduce in-degree of adjacent vertices
+            Node currentNode = graph.findNodeByData(vertex);
+            for (Node neighbour : currentNode.neighbors.keySet()) {
+                int dest = neighbour.getData();
+                inDegree.put(dest, inDegree.get(dest) - 1);
+                
+                // If in-degree becomes 0, add to queue
+                if (inDegree.get(dest) == 0) {
+                    queue.offer(dest);
+                }
+            }
+        }
+        
+        // If result size is less than total vertices, graph has a cycle
+        if (result.size() != getAllVertices().size()) {
+            return new ArrayList<>(); // Return empty list for cyclic graph
+        }
+        
+        return result;
     }
 
     private void topologicalSortUtil(Node node, Set<Node> visited, Stack<Node> stack) {

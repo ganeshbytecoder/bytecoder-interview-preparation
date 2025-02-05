@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2_With_Integer.Trees.BST;
+package com.bytecoder.DSA.Part_2_With_Integer.Trees.BinaryTree;
 
 import com.bytecoder.DSA.Part_2_With_Integer.Trees.Node;
 import com.bytecoder.DSA.Part_2_With_Integer.Trees.TraversalType;
@@ -7,7 +7,7 @@ import com.bytecoder.DSA.Part_2_With_Integer.Trees.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinarySearchTree implements Tree {
+public class BinaryTree implements Tree {
     private Node root;
 
     @Override
@@ -22,22 +22,29 @@ public class BinarySearchTree implements Tree {
 
     @Override
     public Tree insert(int data) {
-        root = insertRec(root, data);
+        if (isEmpty()) {
+            root = new Node(data);
+        } else {
+            insertNode(root, data);
+        }
         return this;
     }
 
-    private Node insertRec(Node node, int data) {
-        if (node == null) {
-            return new Node(data);
-        }
 
-        if (data < node.getData()) {
-            node.setLeftChild(insertRec(node.getLeftChild(), data));
-        } else if (data > node.getData()) {
-            node.setRightChild(insertRec(node.getRightChild(), data));
-        }
 
-        return node;
+    private void insertNode(Node current, int data) {
+        if (current.getLeftChild() == null) {
+            current.setLeftChild(new Node(data));
+        } else if (current.getRightChild() == null) {
+            current.setRightChild(new Node(data));
+        } else {
+            // Insert in the shortest subtree
+            if (getHeight(current.getLeftChild()) <= getHeight(current.getRightChild())) {
+                insertNode(current.getLeftChild(), data);
+            } else {
+                insertNode(current.getRightChild(), data);
+            }
+        }
     }
 
     @Override
@@ -105,31 +112,39 @@ public class BinarySearchTree implements Tree {
     @Override
     public int getMax() {
         if (isEmpty()) return Integer.MIN_VALUE;
-        Node current = root;
-        while (current.getRightChild() != null) {
-            current = current.getRightChild();
-        }
-        return current.getData();
+        return findMax(root);
+    }
+
+    private int findMax(Node node) {
+        if (node == null) return Integer.MIN_VALUE;
+        int max = node.getData();
+        int leftMax = findMax(node.getLeftChild());
+        int rightMax = findMax(node.getRightChild());
+        return Math.max(max, Math.max(leftMax, rightMax));
     }
 
     @Override
     public int getMin() {
         if (isEmpty()) return Integer.MAX_VALUE;
-        Node current = root;
-        while (current.getLeftChild() != null) {
-            current = current.getLeftChild();
-        }
-        return current.getData();
+        return findMin(root);
+    }
+
+    private int findMin(Node node) {
+        if (node == null) return Integer.MAX_VALUE;
+        int min = node.getData();
+        int leftMin = findMin(node.getLeftChild());
+        int rightMin = findMin(node.getRightChild());
+        return Math.min(min, Math.min(leftMin, rightMin));
     }
 
     @Override
     public int getHeight() {
-        return calculateHeight(root);
+        return getHeight(root);
     }
 
-    private int calculateHeight(Node node) {
+    private int getHeight(Node node) {
         if (node == null) return 0;
-        return 1 + Math.max(calculateHeight(node.getLeftChild()), calculateHeight(node.getRightChild()));
+        return 1 + Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild()));
     }
 
     @Override
@@ -141,11 +156,10 @@ public class BinarySearchTree implements Tree {
         if (node == null) return -1;
         if (node.getData() == data) return level;
         
-        if (data < node.getData()) {
-            return findLevel(node.getLeftChild(), data, level + 1);
-        } else {
-            return findLevel(node.getRightChild(), data, level + 1);
-        }
+        int leftLevel = findLevel(node.getLeftChild(), data, level + 1);
+        if (leftLevel != -1) return leftLevel;
+        
+        return findLevel(node.getRightChild(), data, level + 1);
     }
 
     @Override
@@ -173,44 +187,40 @@ public class BinarySearchTree implements Tree {
     private boolean search(Node node, int data) {
         if (node == null) return false;
         if (node.getData() == data) return true;
-        
-        if (data < node.getData()) {
-            return search(node.getLeftChild(), data);
-        } else {
-            return search(node.getRightChild(), data);
-        }
+        return search(node.getLeftChild(), data) || search(node.getRightChild(), data);
     }
 
     @Override
     public void delete(int data) {
-        root = deleteRec(root, data);
+        root = deleteNode(root, data);
     }
 
-    private Node deleteRec(Node node, int data) {
+    private Node deleteNode(Node node, int data) {
         if (node == null) return null;
-
-        if (data < node.getData()) {
-            node.setLeftChild(deleteRec(node.getLeftChild(), data));
-        } else if (data > node.getData()) {
-            node.setRightChild(deleteRec(node.getRightChild(), data));
-        } else {
+        
+        if (node.getData() == data) {
             // Case 1: Leaf node
             if (node.getLeftChild() == null && node.getRightChild() == null) {
                 return null;
             }
-            // Case 2: One child
+            // Case 2: Node with one child
             if (node.getLeftChild() == null) return node.getRightChild();
             if (node.getRightChild() == null) return node.getLeftChild();
-
-            // Case 3: Two children
-            Node successor = findMin(node.getRightChild());
+            
+            // Case 3: Node with two children
+            // Find the minimum value in right subtree (successor)
+            Node successor = findMinToBeDeleted(node.getRightChild());
             node.setData(successor.getData());
-            node.setRightChild(deleteRec(node.getRightChild(), successor.getData()));
+            node.setRightChild(deleteNode(node.getRightChild(), successor.getData()));
+            return node;
         }
+        
+        node.setLeftChild(deleteNode(node.getLeftChild(), data));
+        node.setRightChild(deleteNode(node.getRightChild(), data));
         return node;
     }
 
-    private Node findMin(Node node) {
+    private Node findMinToBeDeleted(Node node) {
         while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }

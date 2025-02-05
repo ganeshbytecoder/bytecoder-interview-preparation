@@ -1,77 +1,80 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Trees.NaryTree;
 
-import com.bytecoder.DSA.Part_2.Trees.Node;
-import com.bytecoder.DSA.Part_2.Trees.TraversalType;
-import com.bytecoder.DSA.Part_2.Trees.Tree;
+import com.bytecoder.DSA.Part_2_With_Integer.Trees.Node;
+import com.bytecoder.DSA.Part_2_With_Integer.Trees.TraversalType;
+import com.bytecoder.DSA.Part_2_With_Integer.Trees.Tree;
 
 import java.util.Collections;
 import java.util.List;
 
-public class NaryTree<T extends Comparable<T>> implements Tree<T> {
+public class NaryTree implements Tree {
+    private Node root;
+
     @Override
-    public Node<T> getRoot() {
-        return null;
+    public Node getRoot() {
+        return root;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return root == null;
     }
 
     @Override
-    public Tree<T> insert(T data) {
-        return null;
+    public Tree insert(int data) {
+        // TODO: Implement N-ary tree insertion
+        return this;
     }
 
     @Override
     public void traverse(TraversalType traversalType) {
-
+        // TODO: Implement traversal based on type
     }
 
     @Override
     public int size() {
+        // TODO: Implement size calculation
         return 0;
     }
-
 
     @Override
     public int getMax() {
-        return 0;
+        // TODO: Implement finding maximum value
+        return Integer.MIN_VALUE;
     }
-
 
     @Override
     public int getMin() {
-        return 0;
+        // TODO: Implement finding minimum value
+        return Integer.MAX_VALUE;
     }
 
     @Override
     public int getHeight() {
+        // TODO: Implement height calculation
         return 0;
     }
 
-
     @Override
-    public int getLevel(T data) {
-        return 0;
+    public int getLevel(int data) {
+        // TODO: Implement level finding
+        return -1;
     }
 
-
     @Override
-    public List<Node<T>> getNodesAtLevel(int level) {
+    public List<Node> getNodesAtLevel(int level) {
+        // TODO: Implement getting nodes at specific level
         return Collections.emptyList();
     }
 
-
     @Override
-    public boolean searchData(T data) {
+    public boolean searchData(int data) {
+        // TODO: Implement search
         return false;
     }
 
-
     @Override
-    public void delete(T data) {
-
+    public void delete(int data) {
+        // TODO: Implement deletion
     }
-
 }

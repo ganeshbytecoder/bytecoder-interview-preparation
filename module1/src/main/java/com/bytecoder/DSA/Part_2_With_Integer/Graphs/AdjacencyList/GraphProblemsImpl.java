@@ -118,7 +118,6 @@ public class GraphProblemsImpl implements GraphProblems {
                 return true;
             }
         }
-
         recursionStack.remove(node);
         return false;
     }
@@ -234,7 +233,7 @@ public class GraphProblemsImpl implements GraphProblems {
         List<Edge> mst = new ArrayList<>();
         Set<Node> visited = new HashSet<>();
         PriorityQueue<Edge> pq = new PriorityQueue<>(
-            Comparator.comparingInt(Edge::getWeight)
+            Comparator.comparing(Edge::getWeight)
         );
 
         // Start with the first vertex
@@ -264,6 +263,11 @@ public class GraphProblemsImpl implements GraphProblems {
     }
 
     @Override
+    public List<Edge> findMinimumSpanningTree_UsingKurukal() {
+        return List.of();
+    }
+
+    @Override
     public List<Integer> topologicalSort() {
         if (!graph.isDirected() || isCyclic()) return new ArrayList<>();
 
@@ -281,6 +285,11 @@ public class GraphProblemsImpl implements GraphProblems {
             result.add(stack.pop().getData());
         }
         return result;
+    }
+
+    @Override
+    public List<Integer> topologicalSort_UsingKahns() {
+        return List.of();
     }
 
     private void topologicalSortUtil(Node node, Set<Node> visited, Stack<Node> stack) {

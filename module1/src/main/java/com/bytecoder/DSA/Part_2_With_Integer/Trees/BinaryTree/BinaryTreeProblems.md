@@ -216,6 +216,60 @@ class Solution {
 * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/submissions/1328063250/
 
 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+```python
+
+def lowestCommonAncestor(root, p, q):
+    def dfs(node):
+        if not node:
+            return None
+        
+        if node == p or node == q:
+            return node
+        
+        left = dfs(node.left)
+        right = dfs(node.right)
+        
+        if left and right:
+            return node  # node is LCA if p and q are found on different sides
+        
+        return left if left else right
+    
+    return dfs(root)
+
+```
+
+p = 7 (node with value 7)
+q = 4 (node with value 4)
+
+* example
+
+---
+
+            3
+           / \
+          5   1
+         / \  / \
+        6  2 0  8
+          / \
+         7   4
+
+```css
+dfs(3)
+ ├─ dfs(5)
+ │   ├─ dfs(6) -> returns None
+ │   └─ dfs(2)
+ │       ├─ dfs(7) -> returns 7 (p)
+ │       └─ dfs(4) -> returns 4 (q)
+ │       └─ returns 2 (because both sides had p & q)
+ │   └─ returns 2
+ └─ dfs(1)
+     ├─ dfs(0) -> returns None
+     └─ dfs(8) -> returns None
+     └─ returns None
+ └─ returns 2
+
+```
+
 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/submissions/1528053859/ 
 ---
 

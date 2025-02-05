@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface GraphProblems {
-    // Basic graph operations
+    // Basic graph operations - are part of graph only
     void addVertex(int data);
     void removeVertex(int data);
     void addEdge(int source, int destination, int weight);
@@ -27,12 +27,14 @@ public interface GraphProblems {
     List<Integer> findShortestPath(int source, int destination);
     Map<Integer, Integer> findAllShortestPaths(int source);
     
-    // Minimum Spanning Tree
+    // Minimum Spanning Tree using prim's and  kuruskal's algorithm
     List<Edge> findMinimumSpanningTree();
-    
+    List<Edge> findMinimumSpanningTree_UsingKurukal();
+
     // Topological Sort (for directed acyclic graphs)
     List<Integer> topologicalSort();
-    
+    List<Integer> topologicalSort_UsingKahns();
+
     // Component analysis
     List<List<Integer>> findConnectedComponents();
     boolean hasBridge();

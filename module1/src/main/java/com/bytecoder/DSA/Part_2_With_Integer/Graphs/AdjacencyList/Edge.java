@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Edge {
-    private Node source;
-    private Node destination;
-    private int weight;
+    public Node source;
+    public Node destination;
+    public int weight;
 
     public Edge(Node source, Node destination, int weight) {
         this.source = source;

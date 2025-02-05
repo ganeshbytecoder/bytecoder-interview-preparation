@@ -3,12 +3,20 @@ package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyList;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 public class Graph {
     private final boolean directed;
     private final List<Node> vertices;
+
+//    or
+//    used to create graph as well
+    private final Map<Node, List<Node>> graph = new HashMap<>();
+
+
 
     public Graph(boolean directed) {
         this.directed = directed;

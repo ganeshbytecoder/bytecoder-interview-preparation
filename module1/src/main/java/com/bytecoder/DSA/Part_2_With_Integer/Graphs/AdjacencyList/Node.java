@@ -10,11 +10,12 @@ import java.util.Map;
 @Getter
 @Setter
 public class Node {
-    private int data;
-    private boolean visited;
+    public int data;
+    public boolean visited;
 
+//    weighted graph
     @ToString.Exclude
-    private Map<Node, Integer> neighbors;
+    public Map<Node, Integer> neighbors;
 
     public Node(int data) {
         this.data = data;

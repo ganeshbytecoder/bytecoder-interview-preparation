@@ -5,7 +5,9 @@ import com.bytecoder.DSA.Part_2_With_Integer.Trees.TraversalType;
 import com.bytecoder.DSA.Part_2_With_Integer.Trees.Tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class BinaryTree implements Tree {
     private Node root;
@@ -25,14 +27,15 @@ public class BinaryTree implements Tree {
         if (isEmpty()) {
             root = new Node(data);
         } else {
-            insertNode(root, data);
+            insertNode_BFS(data);
+//            insertNode_DFS(root, data);
         }
         return this;
     }
 
 
 
-    private void insertNode(Node current, int data) {
+    private void insertNode_DFS(Node current, int data) {
         if (current.getLeftChild() == null) {
             current.setLeftChild(new Node(data));
         } else if (current.getRightChild() == null) {
@@ -40,11 +43,41 @@ public class BinaryTree implements Tree {
         } else {
             // Insert in the shortest subtree
             if (getHeight(current.getLeftChild()) <= getHeight(current.getRightChild())) {
-                insertNode(current.getLeftChild(), data);
+                insertNode_DFS(current.getLeftChild(), data);
             } else {
-                insertNode(current.getRightChild(), data);
+                insertNode_DFS(current.getRightChild(), data);
             }
         }
+    }
+
+    public BinaryTree insertNode_BFS(int data) {
+        if (root == null) {
+            root = new Node(data);
+            return this;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            if (current.getLeftChild() == null) {
+                current.leftChild = new Node(data);
+                break;
+            } else {
+                queue.add(current.leftChild);
+            }
+
+            if (current.rightChild == null) {
+                current.rightChild = new Node(data);
+                break;
+            } else {
+                queue.add(current.rightChild);
+            }
+        }
+
+        return this;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2.Trees.BinaryTree;
+package com.bytecoder.DSA.Part_2_With_Integer.Trees.BinaryTree;
 
 import com.bytecoder.DSA.Part_2.Trees.Node;
 import com.bytecoder.DSA.Part_2.Trees.TraversalType;

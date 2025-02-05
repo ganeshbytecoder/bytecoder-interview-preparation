@@ -1,5 +1,5 @@
-package com.bytecoder.DSA.Part_2.Trees.BinaryTree;
-
+package com.bytecoder.DSA.Part_2_With_Integer.Trees.BinaryTree;
+import java.lang.*;
 import com.bytecoder.DSA.Part_2.Trees.Node;
 import com.bytecoder.DSA.Part_2.Trees.TraversalType;
 import com.bytecoder.DSA.Part_2.Trees.Tree;
@@ -7,15 +7,15 @@ import com.bytecoder.DSA.Part_2.Trees.Tree;
 import java.util.*;
 
 
-public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
+public class IntegerBinaryTree implements Tree<Integer> {
 
-    private Node<T> root;
+    private Node<Integer> root;
 
-    public GenericBinaryTree() {
+    public IntegerBinaryTree() {
     }
 
     @Override
-    public Node<T> getRoot() {
+    public Node<Integer> getRoot() {
         return root;
     }
 
@@ -26,15 +26,15 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
 
     @Override
-    public Tree<T> insert(T data) {
+    public IntegerBinaryTree insert(Integer data) {
         if (this.isEmpty()) {
-            root = new Node<T>(data);
+            root = new Node<Integer>(data);
             return this;
         }
-        Queue<Node<T>> queue = new LinkedList<>();
+        Queue<Node<Integer>> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
-            Node<T> temp = queue.poll();
+            Node<Integer> temp = queue.poll();
 
             if (temp.getLeftChild() == null) {
                 temp.setLeftChild(new Node<>(data));
@@ -54,7 +54,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    public void traverseInOrder(Node<T> node) {
+    public void traverseInOrder(Node<Integer> node) {
 
         if (node == null) {
             return;
@@ -64,20 +64,21 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
         traverseInOrder(node.getRightChild());
     }
 
-    public void traverseLevelOrder(Node<T> node) {
+    public void traverseLevelOrder(Node<Integer> node) {
 
         if (node == null) {
             return;
         }
-        Node<T> curr = node;
-        List<List<T>> lists = new ArrayList<>();
-        Queue<Node<T>> queue = new LinkedList<>();
+        int height =0 ;
+        Node<Integer> curr = node;
+        List<List<Integer>> lists = new ArrayList<>();
+        Queue<Node<Integer>> queue = new LinkedList<>();
         queue.add(curr);
         while (!queue.isEmpty()) {
             int h = queue.size();
-            List<T> tempResult = new ArrayList<>();
+            List<Integer> tempResult = new ArrayList<>();
             while (h > 0) {
-                Node<T> temp = queue.poll();
+                Node<Integer> temp = queue.poll();
                 tempResult.add(temp.getData());
                 if (temp.getLeftChild() != null) {
                     queue.add(temp.getLeftChild());
@@ -88,6 +89,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
                 }
                 h--;
             }
+            h++;
             lists.add(tempResult);
 
         }
@@ -114,11 +116,11 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
             return 0;
         }
 
-        Queue<Node<T>> queue = new LinkedList<>();
+        Queue<Node<Integer>> queue = new LinkedList<>();
         queue.add(root);
         int counter=0;
         while(!queue.isEmpty()){
-            Node<T> temp =queue.poll();
+            Node<Integer> temp =queue.poll();
             counter++;
             if(temp.getLeftChild() != null){
                 queue.add(temp.getLeftChild());
@@ -131,7 +133,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
         return counter;
     }
 
-    public int size(Node<T> node) {
+    public int size(Node<Integer> node) {
         if(node== null){
             return 0;
         }
@@ -139,23 +141,16 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-//    private int minNode(Node<T> node) {
-//        if (node.getLeftChild() == null) {
-//            return Integer.MIN_VALUE;
-//        }
-//        return Math.min((int) node.getData(), Math.min(minNode(node.getRightChild()), minNode(node.getRightChild())));
-//    }
-
-
-    private Node<T> minNode(Node<T> node) {
+    private Node<Integer> minNode(Node<Integer> node) {
         if (node.getLeftChild() == null) {
             return node;
         }
+
         return minNode(node.getLeftChild());
     }
 
 
-    private Node<T> delete(Node<T> node, T key) {
+    private Node<Integer> delete(Node<Integer> node, Integer key) {
         if (node == null) {
             return null;
         }
@@ -169,7 +164,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
                 }
             } else {
-                Node<T> temp = minNode(node.getRightChild());
+                Node<Integer> temp = minNode(node.getRightChild());
                 node.setData(temp.getData());
                 node.setRightChild(delete(node.getRightChild(), temp.getData()));
             }
@@ -182,75 +177,44 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
     @Override
-    public void delete(T data) {
+    public void delete(Integer data) {
 
         this.root = delete(root, data);
     }
 
 
-    private Node<T> findLeft(Node<T> node){
-
-
-        if(node.getRightChild() != null){
-            return findLeft(node.getRightChild());
-        }else {
-            return node;
-        }
-
-    }
-
-
-    private Node<T> deleteDfs(Node<T> node, T data ){
-
-        if(node == null){
-            return null;
-        }
-
-        if(node.getData().equals(data)){
-
-           if(node.getRightChild() == null || node.getLeftChild()==null){
-               if(node.getLeftChild() == null){
-                   return node.getRightChild();
-               }else {
-                   return node.getLeftChild();
-               }
-            }
-            else{
-
-                Node<T> temp = findLeft(node.getLeftChild());
-                node.setData(temp.getData());
-                node.setLeftChild(deleteDfs(node.getLeftChild(), temp.getData()));
-
-            }
-
-
-        }
-
-
-
-        node.setRightChild(deleteDfs(node.getRightChild(), data));
-        node.setLeftChild(deleteDfs(node.getLeftChild(), data));
-
-        return node;
-
-    }
-
-
-
-
-    private int max_value = Integer.MIN_VALUE;
 
     private int get_max(Node node) {
         if (node == null) {
-            return max_value;
+            return Integer.MIN_VALUE;
         }
-        if (node.getData().compareTo(max_value) > 0) {
-            max_value = (int) node.getData();
-        }
-        get_max(node.getLeftChild());
-        get_max(node.getRightChild());
-        return max_value;
+        return Math.max((Integer) node.getData(), Math.max(get_max(node.getLeftChild()),get_max(node.getRightChild())));
     }
+
+    private int getMaxUsingBFS(Node<Integer> node) {
+        int maxValue = Integer.MIN_VALUE;
+        if (node == null) {
+            return maxValue;
+        }
+        Queue<Node<Integer>> queue = new LinkedList<>();
+        queue.add(node);
+
+        while(!queue.isEmpty()){
+            Node<Integer> temp = queue.poll();
+
+            maxValue = Math.max(maxValue, temp.getData());
+
+            if(temp.getLeftChild() != null){
+                queue.add(temp.getLeftChild());
+            }
+
+            if(temp.getRightChild() != null){
+                queue.add(temp.getRightChild());
+            }
+        }
+        return maxValue;
+    }
+
 
 
     @Override
@@ -262,11 +226,35 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private int get_min(Node<T> node) {
+    private int get_min(Node<Integer> node) {
         if (node == null) {
             return Integer.MIN_VALUE;
         }
-        return Math.min((Integer) node.getData(), Math.min(get_min(node.getLeftChild()), get_min(node.getRightChild())));
+        return Math.min( node.getData(), Math.min(get_min(node.getLeftChild()), get_min(node.getRightChild())));
+    }
+
+    private int getMinUsingBFS(Node<Integer> node) {
+        int minValue = Integer.MAX_VALUE;
+        if (node == null) {
+            return minValue;
+        }
+        Queue<Node<Integer>> queue = new LinkedList<>();
+        queue.add(node);
+
+        while(!queue.isEmpty()){
+            Node<Integer> temp = queue.poll();
+
+            minValue = Math.min(minValue, temp.getData());
+
+            if(temp.getLeftChild() != null){
+                queue.add(temp.getLeftChild());
+            }
+
+            if(temp.getRightChild() != null){
+                queue.add(temp.getRightChild());
+            }
+        }
+        return minValue;
     }
 
     @Override
@@ -274,17 +262,39 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
         if (isEmpty()) {
             return -1;
         }
-
         return get_min(root);
     }
 
 
-    private int getHeight(Node<T> node) {
-
+    private int getHeight(Node<Integer> node) {
         if (node == null) {
             return 0;
         }
         return 1 + Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild()));
+    }
+
+    private int getHeightUsinBfs(Node<Integer> node) {
+        if (node == null) {
+            return 0;
+        }
+        Queue<Node<Integer>> queue = new LinkedList<>();
+        queue.add(node);
+        int height =0;
+        while(!queue.isEmpty()){
+            int level = queue.size();
+            while(level > 0){
+                Node<Integer> temp = queue.poll();
+                if(temp.getLeftChild() != null){
+                    queue.add(temp.getLeftChild());
+                }
+                if(temp.getRightChild() != null){
+                    queue.add(temp.getRightChild());
+                }
+                level--;
+            }
+            height++;
+        }
+        return height;
     }
 
     @Override
@@ -293,7 +303,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
 
-    private int getLevel(Node<T> node, T data, int level) {
+    private int getLevel(Node<Integer> node, Integer data, int level) {
         if (node == null) {
             return -1;
         }
@@ -305,12 +315,12 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
 
     @Override
-    public int getLevel(T data) {
+    public int getLevel(Integer data) {
         return getLevel(root, data, 0);
     }
 
 
-    private void getNodesAtLevel(Node<T> node, int currentLevel, List<Node<T>> list, int level) {
+    private void getNodesAtLevel(Node<Integer> node, int currentLevel, List<Node<Integer>> list, int level) {
 
         if (node == null) {
             return;
@@ -323,10 +333,42 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
     }
 
+    private Queue<Node<Integer>> getNodesAtLevel(Node<Integer> node, int currentLevel) {
+        int height  = 0 ;
+        if (node == null) {
+            return new LinkedList<>();
+        }
+        Queue<Node<Integer>> queue = new LinkedList<>();
+        queue.add(node);
+        while(!queue.isEmpty()){
+            int level = queue.size();
+            while(level>0){
+                Node<Integer> temp = queue.poll();
+
+                if(temp.getLeftChild() != null){
+                    queue.add(temp.getLeftChild());
+                }
+
+                if(temp.getRightChild() != null){
+                    queue.add(temp.getRightChild());
+                }
+                level--;
+            }
+            height++;
+            if(height == currentLevel){
+                return queue;
+            }
+
+        }
+        return queue;
+
+    }
+
+
 
     @Override
-    public List<Node<T>> getNodesAtLevel(int level) {
-        List<Node<T>> list = new ArrayList<>();
+    public List<Node<Integer>> getNodesAtLevel(int level) {
+        List<Node<Integer>> list = new ArrayList<>();
 
         getNodesAtLevel(root, 0, list, level);
 
@@ -335,11 +377,11 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
 
 
 
-    private Node<T> searchDataNode(T data) {
-        Stack<Node<T>> stack = new Stack<>();
+    private Node<Integer> searchDataNode(Integer data) {
+        Stack<Node<Integer>> stack = new Stack<>();
         stack.add(root);
         while (!stack.isEmpty()) {
-            Node<T> temp = stack.pop();
+            Node<Integer> temp = stack.pop();
 
             if (temp.getData() == data) {
                 return temp;
@@ -356,7 +398,7 @@ public class GenericBinaryTree<T extends Comparable<T>> implements Tree<T> {
     }
 
     @Override
-    public boolean searchData(T data) {
+    public boolean searchData(Integer data) {
         return searchDataNode(data) != null? true : false;
     }
 

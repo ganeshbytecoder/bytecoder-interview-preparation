@@ -1,17 +1,16 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
 
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node;
 import lombok.Data;
 
 @Data
-public class Edge<T> {
-    Node<T> start;
+public class Edge {
+    Node start;
 
-    Node<T> end;
+    Node end;
 
     int cost;
 
-    Edge(Node<T> start, Node<T> end, int cost) {
+    Edge(Node start, Node end, int cost) {
         this.start = start;
         this.end = end;
         this.cost = cost;

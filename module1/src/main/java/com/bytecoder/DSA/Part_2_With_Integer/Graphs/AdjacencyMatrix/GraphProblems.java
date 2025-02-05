@@ -1,60 +1,62 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
 
-
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge;
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node;
-
 import java.util.List;
+import java.util.Map;
 
-public interface GraphProblems<T> {
-
-
-    void addNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node);
-
-    void removeNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node);
-
-    List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> getAllNodes();
-
-    void addEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge);
-
-    void removeEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge);
-
-    List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> getAllEdges();
-
-    boolean hasEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> src, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> end);
-
-    void dfs();
-
-    void bfs();
-
+/**
+ * Interface defining graph operations using Adjacency Matrix representation.
+ * This provides a standard set of operations that can be performed on a graph.
+ * 
+ * Time Complexity Analysis:
+ * - Basic Operations (addVertex, addEdge): O(1)
+ * - Graph Traversal (DFS, BFS): O(V^2)
+ * - Shortest Path (Dijkstra's): O(V^2)
+ * - MST (Prim's): O(V^2)
+ * where V is the number of vertices
+ */
+public interface GraphProblems {
+    // Basic graph operations
+    void addVertex(int data);
+    void addEdge(int source, int destination, int weight);
+    void removeEdge(int source, int destination);
+    boolean hasEdge(int source, int destination);
+    List<Node> getAllVertices();
+    
+    // Graph traversal
+    List<Integer> depthFirstSearch(int startVertex);
+    List<Integer> breadthFirstSearch(int startVertex);
+    
+    // Graph properties
     boolean isCyclic();
-
-    void printGraph();
-
-
-    void implementDFSTopologicalSorting();
-
-    void implementBFSTopologicalSorting();
-
-    void allTopologicalSorting();
-
-    boolean isTopologicalSortingValid(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>[] sorting);
-
-
-//    prims algorithms for minimum/max spanning tree (
-    void printPrimMST();
-
-    List<Edge<T>> printKrushkalMST();
-
-//    shortest path between two nodes
-
-    void findShortestPathUsingDijkstra();
-
-    void findShortestPathUsingBellmanFord();
-
-
-
-
-
-
+    boolean isConnected();
+    int getVertexCount();
+    int getEdgeCount();
+    
+    // Path finding
+    List<Integer> findShortestPath(int source, int destination);
+    Map<Integer, Integer> findAllShortestPaths(int source);
+    
+    // Minimum Spanning Tree
+    List<int[]> findMinimumSpanningTree();
+    
+    // Topological Sort (for directed acyclic graphs)
+    List<Integer> topologicalSort();
+    
+    // Component analysis
+    List<List<Integer>> findConnectedComponents();
+    boolean hasBridge();
+    List<int[]> findBridges();
+    
+    // Graph metrics
+    int getDiameter();
+    double getAveragePathLength();
+    int getVertexDegree(int vertex);
+    
+    // Matrix-specific operations
+    int[][] getAdjacencyMatrix();
+    List<Node> getNeighbors(int vertex);
+    
+    // Utility methods
+    void resetGraph();
+    String printGraph();
 }

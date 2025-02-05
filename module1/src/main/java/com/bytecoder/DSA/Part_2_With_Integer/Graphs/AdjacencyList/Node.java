@@ -1,6 +1,5 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyList;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,32 +9,37 @@ import java.util.Map;
 
 @Getter
 @Setter
-// we can call this as vertex as well
-class Node<T> {
+public class Node {
+    private int data;
+    private boolean visited;
 
-    T data;
-
-    boolean visited;
-
-//    we can call it adjacencyList as well
     @ToString.Exclude
-    private Map<Node<T>, Integer> neighbors = new HashMap<>();
+    private Map<Node, Integer> neighbors;
 
-    public Node(int index, T data) {
+    public Node(int data) {
         this.data = data;
         this.visited = false;
+        this.neighbors = new HashMap<>();
     }
 
-    public void addNeighbor(Node<T> node, int cost) {
-        neighbors.put(node, cost);
+    public void addNeighbor(Node node, int weight) {
+        neighbors.put(node, weight);
     }
 
+    public void removeNeighbor(Node node) {
+        neighbors.remove(node);
+    }
+
+    public Integer getEdgeWeight(Node node) {
+        return neighbors.get(node);
+    }
+
+    public boolean hasNeighbor(Node node) {
+        return neighbors.containsKey(node);
+    }
 
     @Override
     public String toString() {
-        return "Node{" +
-                "data=" + data +
-                ", visited=" + visited +
-                '}';
+        return Integer.toString(data);
     }
 }

@@ -1,697 +1,459 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
 
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge;
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Graph;
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.GraphProblems;
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GraphProblemsAdjMatrixImpl<T> implements GraphProblems<T> {
+/**
+ * Implementation of graph algorithms using Adjacency Matrix representation.
+ * Optimized for dense graphs where most vertices are connected.
+ * 
+ * Time Complexity Analysis:
+ * - Basic Operations: O(1)
+ * - Graph Traversal: O(V^2)
+ * - Shortest Path: O(V^2)
+ * - MST: O(V^2)
+ * where V is the number of vertices
+ */
+public class GraphProblemsAdjMatrixImpl implements GraphProblems {
+    private final Graph graph;
 
-    private final com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Graph<T> graph;
-
-    public GraphProblemsAdjMatrixImpl(Graph<T> graph){
-        this.graph= graph;
-    }
-
-
-    @Override
-    public void addNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-        graph.getVertices().add(node);
-    }
-
-
-    @Override
-    public void removeNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-        for (int i = 0; i < graph.getMatrix().length; i++) {
-            graph.getMatrix()[node.id][i] = -1;
-        }
-        graph.getVertices().remove(node);
-
+    public GraphProblemsAdjMatrixImpl(Graph graph) {
+        this.graph = graph;
     }
 
     @Override
-    public List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> getAllNodes() {
+    public void addVertex(int data) {
+        graph.addVertex(data);
+    }
+
+    @Override
+    public void addEdge(int source, int destination, int weight) {
+        graph.addEdge(source, destination, weight);
+    }
+
+    @Override
+    public void removeEdge(int source, int destination) {
+        graph.removeEdge(source, destination);
+    }
+
+    @Override
+    public boolean hasEdge(int source, int destination) {
+        return graph.hasEdge(source, destination);
+    }
+
+    @Override
+    public List<Node> getAllVertices() {
         return graph.getVertices();
     }
 
-
     @Override
-    public void addEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge edge) {
-        int i = edge.start.id;
-        int j = edge.end.id;
-        graph.getMatrix()[i][j] = edge.cost;
+    public List<Integer> depthFirstSearch(int startVertex) {
+        List<Integer> result = new ArrayList<>();
+        Node start = graph.findNodeByData(startVertex);
+        if (start == null) return result;
 
-        if (!this.graph.isDirected()) {
-            graph.getMatrix()[j][i] = edge.cost;
-        }
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        dfsUtil(start.getId(), visited, result);
+        return result;
     }
 
-    @Override
-    public void removeEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge) {
-        int i = edge.start.id;
-        int j = edge.end.id;
-        graph.getMatrix()[i][j] = -1;
+    private void dfsUtil(int vertex, boolean[] visited, List<Integer> result) {
+        visited[vertex] = true;
+        result.add(graph.getVertices().get(vertex).getData());
 
-        if (!this.graph.isDirected()) {
-            graph.getMatrix()[j][i] = -1;
-        }
-    }
-
-    @Override
-    public List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> getAllEdges() {
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> edges = new ArrayList<>();
-
-        for (int i = 0; i < graph.getMatrix().length; i++) {
-            for (int j = 0; j < graph.getMatrix()[0].length; j++) {
-
-                if (graph.getMatrix()[i][j] != -1) {
-                    edges.add(new com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<>(getNodeById(i), getNodeById(j), graph.getMatrix()[i][j]));
-                }
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (!visited[i] && graph.getAdjacencyMatrix()[vertex][i] != Integer.MAX_VALUE) {
+                dfsUtil(i, visited, result);
             }
         }
-
-        return edges;
-    }
-
-
-    @Override
-    public void printGraph() {
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : graph.getVertices()) {
-            System.out.print("  " + node.data.toString() + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < graph.getMatrix().length; i++) {
-            System.out.print(graph.getVertices().get(i).data.toString() + " ");
-
-            for (int j = 0; j < graph.getMatrix().length; j++) {
-                System.out.print(graph.getMatrix()[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-
-        System.out.println("Printing adjacency list graph");
-
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-
-            System.out.print("\n " + getNodeById(i).getData() + " -> ");
-
-            for (int j = 0; j < graph.getNumberOfNode(); j++) {
-                if (graph.getMatrix()[i][j] != -1) {
-                    System.out.print(getNodeById(j).getData() + " ,");
-                }
-
-            }
-        }
-        System.out.println();
-
-        getAllEdges().stream().forEach(System.out::println);
-    }
-
-
-    @Override
-    public void dfs() {
-        System.out.println("Traversing DFS");
-
-        graph.getVertices().forEach(vertex -> vertex.setVisited(false));
-        // or
-        boolean[] visited = new boolean[getAllNodes().size()];
-
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            if (!graph.getVertices().get(i).visited) {
-                dfsTraversal(graph.getVertices().get(i));
-            }
-        }
-
-
-//        using stack
-        Stack<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> stack = new Stack<>();
-        stack.add(graph.getVertices().get(0));
-
-        while (!stack.empty()) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node = stack.pop();
-            System.out.println(" " + node);
-            visited[node.id] = true;
-            for (int i = 0; i < graph.getNumberOfNode(); i++) {
-                if (!visited[i] && graph.getMatrix()[node.id][i] != -1) {
-                    stack.add(getNodeById(i));
-                }
-            }
-        }
-
-
     }
 
     @Override
-    public void bfs() {
+    public List<Integer> breadthFirstSearch(int startVertex) {
+        List<Integer> result = new ArrayList<>();
+        Node start = graph.findNodeByData(startVertex);
+        if (start == null) return result;
 
-        //        using queue
-        Queue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> queue = new LinkedList<>();
-        boolean[] visited = new boolean[getAllNodes().size()];
-
-        queue.add(graph.getVertices().get(0));
-        System.out.println();
-        while (!queue.isEmpty()) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node = queue.poll();
-            System.out.println(" " + node);
-            visited[node.id] = true;
-            for (int i = 0; i < graph.getNumberOfNode(); i++) {
-                if (!visited[i] && graph.getMatrix()[node.id][i] != -1) {
-                    queue.add(getNodeById(i));
-                }
-            }
-        }
-
-        System.out.println(" \n Traversing BFS");
-        graph.getVertices().forEach(vertex -> vertex.setVisited(false));
-        queue = new LinkedList<>();
-        queue.add(getNodeById(0));
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            if (!graph.getVertices().get(i).visited) {
-                bfsTraversal(queue);
-            }
-        }
-
-
-    }
-
-    private boolean detectCycleForUndirectedWithDFS(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> parent) {
-        System.out.println(node + " - " + parent);
-
-        node.setVisited(true);
-        boolean ans = false;
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            int connect = graph.getMatrix()[node.getId()][i];
-            if (connect != -1) {
-                if (getNodeById(i).isVisited() && getNodeById(i) != parent) {
-                    return true;
-                }
-                if (!getNodeById(i).isVisited()) {
-                    ans = detectCycleForUndirectedWithDFS(getNodeById(i), node);
-                }
-
-            }
-            if (ans) {
-                return true;
-            }
-        }
-        return ans;
-
-    }
-
-
-    private boolean detectCycleForDirectedWithDFS(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node, List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> recCallStack) {
-
-        node.setVisited(true);
-        recCallStack.add(node);
-        boolean ans = false;
-        for (int neighbourId = 0; neighbourId < graph.getNumberOfNode(); neighbourId++) {
-            int connect = graph.getMatrix()[node.getId()][neighbourId];
-            if (connect != -1) {
-                if (getNodeById(neighbourId).isVisited() && recCallStack.contains(getNodeById(neighbourId))) {
-                    return true;
-                }
-                if (!getNodeById(neighbourId).isVisited()) {
-                    ans = detectCycleForUndirectedWithDFS(getNodeById(neighbourId), node);
-                }
-
-            }
-            if (ans) {
-                return true;
-            }
-        }
-        recCallStack.remove(node);
-        return ans;
-
-    }
-
-
-    private boolean detectCycleForUndirectedGraphWithBFS(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-
-
-        Queue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> queue = new LinkedList<>();
-        queue.add(node);
-        while (!queue.isEmpty()) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> curr_node = queue.poll();
-            curr_node.setVisited(true);
-            System.out.println("parent - " + curr_node);
-            for (int i = 0; i < graph.getNumberOfNode(); i++) {
-                if (graph.getMatrix()[curr_node.id][i] != -1) {
-                    System.out.println(getNodeById(i));
-                    if (getNodeById(i).isVisited() && getNodeById(i) != curr_node) {
-                        return true;
-                    } else if (!getNodeById(i).isVisited()) {
-                        queue.add(getNodeById(i));
-                    }
-                }
-            }
-        }
-
-        return false;
-
-    }
-
-
-    private boolean detectCycleForDirectedGraphWithBFS(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-
-        System.out.println("Calling detectCycleForDirectedGraphWithBFS");
-
-
-        Queue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> queue = new LinkedList<>();
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> recCallStack = new ArrayList<>();
-
-        queue.add(node);
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        Queue<Integer> queue = new LinkedList<>();
+        
+        queue.add(start.getId());
+        visited[start.getId()] = true;
 
         while (!queue.isEmpty()) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> curr_node = queue.poll();
-            curr_node.setVisited(true);
-            recCallStack.add(curr_node);
+            int vertex = queue.poll();
+            result.add(graph.getVertices().get(vertex).getData());
 
-            System.out.println("parent - " + curr_node);
-            for (int i = 0; i < graph.getNumberOfNode(); i++) {
-                if (graph.getMatrix()[curr_node.id][i] != -1) {
-                    System.out.println(getNodeById(i));
-                    if (getNodeById(i).isVisited() && recCallStack.contains(getNodeById(i))) {
-                        return true;
-                    } else if (!getNodeById(i).isVisited()) {
-                        queue.add(getNodeById(i));
-                    }
+            for (int i = 0; i < graph.getVertexCount(); i++) {
+                if (!visited[i] && graph.getAdjacencyMatrix()[vertex][i] != Integer.MAX_VALUE) {
+                    visited[i] = true;
+                    queue.add(i);
                 }
             }
-
         }
-
-
-        return false;
-
+        return result;
     }
-
 
     @Override
     public boolean isCyclic() {
-        boolean dfs = false;
-        boolean ans = false;
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        boolean[] recursionStack = new boolean[graph.getVertexCount()];
 
-        if (graph.isDirected()) {
-
-            System.out.println("directed graphs");
-
-            if (dfs) {
-//        Detect Cycle in Undirected GraphProblems using BFS/DFS Algorithm
-                for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : getAllNodes()) {
-                    if (!node.isVisited()) {
-                        ans = detectCycleForDirectedWithDFS(node, new ArrayList<>());
-                    }
-                    if (ans) {
-                        System.out.println("Cycle is detected with detectCycleForDirectedWithDFS");
-                        return true;
-                    }
-                }
-
-                System.out.println("Cycle is not detected with detectCycleForDirectedWithDFS");
-                return false;
-            } else {
-                getAllNodes().stream().forEach(node -> node.setVisited(false));
-                for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : getAllNodes()) {
-                    if (!node.isVisited()) {
-                        ans = detectCycleForDirectedGraphWithBFS(node);
-                        if (ans) {
-                            System.out.println("Cycle is detected with detectCycleForDirectedGraphWithBFS");
-                            return true;
-                        }
-                    }
-
-                }
-
-                System.out.println("Cycle is not detected with detectCycleForDirectedGraphWithBFS");
-
-
-            }
-
-        } else {
-            if (dfs) {
-//        Detect Cycle in Undirected GraphProblems using BFS/DFS Algorithm
-                for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : getAllNodes()) {
-                    if (!node.isVisited()) {
-                        ans = detectCycleForUndirectedWithDFS(node, null);
-                    }
-                    if (ans) {
-                        System.out.println("Cycle is detected with DFS");
-                        return true;
-                    }
-                }
-
-                System.out.println("Cycle is not detected");
-                return false;
-            } else {
-
-                getAllNodes().stream().forEach(node -> node.setVisited(false));
-                for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : getAllNodes()) {
-                    if (!node.isVisited()) {
-                        ans = detectCycleForUndirectedGraphWithBFS(node);
-                        if (ans) {
-                            System.out.println("Cycle is detected with detectCycleForUndirectedGraphWithBFS");
-                            return true;
-                        }
-                    }
-
-                }
-
-                System.out.println("Cycle is not detected with detectCycleForUndirectedGraphWithBFS");
-
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (isCyclicUtil(i, visited, recursionStack)) {
+                return true;
             }
         }
-
-
         return false;
     }
 
-    private void implementDFSTopologicalSortingUtil(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node, Stack<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> stack) {
+    private boolean isCyclicUtil(int vertex, boolean[] visited, boolean[] recursionStack) {
+        if (recursionStack[vertex]) return true;
+        if (visited[vertex]) return false;
 
-        node.setVisited(true);
+        visited[vertex] = true;
+        recursionStack[vertex] = true;
 
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            if (graph.getMatrix()[node.id][i] != -1) {
-                if (!getNodeById(i).isVisited()) {
-                    implementDFSTopologicalSortingUtil(getNodeById(i), stack);
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (graph.getAdjacencyMatrix()[vertex][i] != Integer.MAX_VALUE) {
+                if (isCyclicUtil(i, visited, recursionStack)) {
+                    return true;
                 }
             }
         }
-        stack.push(node);
 
+        recursionStack[vertex] = false;
+        return false;
     }
 
     @Override
-    public void implementDFSTopologicalSorting() {
-        Stack<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> stack = new Stack<>();
+    public boolean isConnected() {
+        if (graph.getVertices().isEmpty()) return true;
 
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : getAllNodes()) {
-            if (!node.isVisited()) {
-                implementDFSTopologicalSortingUtil(node, stack);
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        dfsUtil(0, visited, new ArrayList<>());
+
+        for (boolean v : visited) {
+            if (!v) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int getVertexCount() {
+        return graph.getVertexCount();
+    }
+
+    @Override
+    public int getEdgeCount() {
+        int count = 0;
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            for (int j = 0; j < graph.getVertexCount(); j++) {
+                if (graph.getAdjacencyMatrix()[i][j] != Integer.MAX_VALUE) {
+                    count++;
+                }
+            }
+        }
+        return graph.isDirected() ? count : count / 2;
+    }
+
+    @Override
+    public List<Integer> findShortestPath(int source, int destination) {
+        Node sourceNode = graph.findNodeByData(source);
+        Node destNode = graph.findNodeByData(destination);
+        if (sourceNode == null || destNode == null) return new ArrayList<>();
+
+        int[] distances = new int[graph.getVertexCount()];
+        int[] previous = new int[graph.getVertexCount()];
+        Arrays.fill(distances, Integer.MAX_VALUE);
+        Arrays.fill(previous, -1);
+        distances[sourceNode.getId()] = 0;
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+            Comparator.comparingInt(v -> distances[v])
+        );
+        pq.add(sourceNode.getId());
+
+        while (!pq.isEmpty()) {
+            int current = pq.poll();
+            if (current == destNode.getId()) break;
+
+            for (int i = 0; i < graph.getVertexCount(); i++) {
+                if (graph.getAdjacencyMatrix()[current][i] != Integer.MAX_VALUE) {
+                    int newDist = distances[current] + graph.getAdjacencyMatrix()[current][i];
+                    if (newDist < distances[i]) {
+                        distances[i] = newDist;
+                        previous[i] = current;
+                        pq.add(i);
+                    }
+                }
+            }
+        }
+
+        if (distances[destNode.getId()] == Integer.MAX_VALUE) return new ArrayList<>();
+
+        List<Integer> path = new ArrayList<>();
+        for (int at = destNode.getId(); at != -1; at = previous[at]) {
+            path.add(0, graph.getVertices().get(at).getData());
+        }
+        return path;
+    }
+
+    @Override
+    public Map<Integer, Integer> findAllShortestPaths(int source) {
+        Node sourceNode = graph.findNodeByData(source);
+        if (sourceNode == null) return new HashMap<>();
+
+        int[][] distances = new int[graph.getVertexCount()][graph.getVertexCount()];
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            System.arraycopy(graph.getAdjacencyMatrix()[i], 0, distances[i], 0, graph.getVertexCount());
+        }
+
+        // Floyd-Warshall Algorithm
+        for (int k = 0; k < graph.getVertexCount(); k++) {
+            for (int i = 0; i < graph.getVertexCount(); i++) {
+                for (int j = 0; j < graph.getVertexCount(); j++) {
+                    if (distances[i][k] != Integer.MAX_VALUE && 
+                        distances[k][j] != Integer.MAX_VALUE && 
+                        distances[i][k] + distances[k][j] < distances[i][j]) {
+                        distances[i][j] = distances[i][k] + distances[k][j];
+                    }
+                }
+            }
+        }
+
+        Map<Integer, Integer> result = new HashMap<>();
+        int sourceId = sourceNode.getId();
+        for (Node node : graph.getVertices()) {
+            result.put(node.getData(), distances[sourceId][node.getId()]);
+        }
+        return result;
+    }
+
+    @Override
+    public List<int[]> findMinimumSpanningTree() {
+        List<int[]> mst = new ArrayList<>();
+        if (graph.getVertices().isEmpty()) return mst;
+
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        int[] key = new int[graph.getVertexCount()];
+        int[] parent = new int[graph.getVertexCount()];
+        
+        Arrays.fill(key, Integer.MAX_VALUE);
+        Arrays.fill(parent, -1);
+        key[0] = 0;
+
+        for (int count = 0; count < graph.getVertexCount() - 1; count++) {
+            int u = minKey(key, visited);
+            visited[u] = true;
+
+            for (int v = 0; v < graph.getVertexCount(); v++) {
+                if (graph.getAdjacencyMatrix()[u][v] != Integer.MAX_VALUE && 
+                    !visited[v] && 
+                    graph.getAdjacencyMatrix()[u][v] < key[v]) {
+                    parent[v] = u;
+                    key[v] = graph.getAdjacencyMatrix()[u][v];
+                }
+            }
+        }
+
+        for (int i = 1; i < graph.getVertexCount(); i++) {
+            if (parent[i] != -1) {
+                mst.add(new int[]{
+                    graph.getVertices().get(parent[i]).getData(),
+                    graph.getVertices().get(i).getData(),
+                    graph.getAdjacencyMatrix()[parent[i]][i]
+                });
+            }
+        }
+        return mst;
+    }
+
+    private int minKey(int[] key, boolean[] visited) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+
+        for (int v = 0; v < graph.getVertexCount(); v++) {
+            if (!visited[v] && key[v] < min) {
+                min = key[v];
+                minIndex = v;
+            }
+        }
+        return minIndex;
+    }
+
+    @Override
+    public List<Integer> topologicalSort() {
+        if (!graph.isDirected() || isCyclic()) return new ArrayList<>();
+
+        List<Integer> result = new ArrayList<>();
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (!visited[i]) {
+                topologicalSortUtil(i, visited, stack);
             }
         }
 
         while (!stack.isEmpty()) {
-            System.out.println(stack.pop());
+            result.add(graph.getVertices().get(stack.pop()).getData());
+        }
+        return result;
+    }
+
+    private void topologicalSortUtil(int v, boolean[] visited, Stack<Integer> stack) {
+        visited[v] = true;
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (graph.getAdjacencyMatrix()[v][i] != Integer.MAX_VALUE && !visited[i]) {
+                topologicalSortUtil(i, visited, stack);
+            }
+        }
+        stack.push(v);
+    }
+
+    @Override
+    public List<List<Integer>> findConnectedComponents() {
+        List<List<Integer>> components = new ArrayList<>();
+        boolean[] visited = new boolean[graph.getVertexCount()];
+
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (!visited[i]) {
+                List<Integer> component = new ArrayList<>();
+                dfsForComponents(i, visited, component);
+                components.add(component);
+            }
+        }
+        return components;
+    }
+
+    private void dfsForComponents(int v, boolean[] visited, List<Integer> component) {
+        visited[v] = true;
+        component.add(graph.getVertices().get(v).getData());
+
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (graph.getAdjacencyMatrix()[v][i] != Integer.MAX_VALUE && !visited[i]) {
+                dfsForComponents(i, visited, component);
+            }
         }
     }
 
     @Override
-    public void implementBFSTopologicalSorting() {
+    public boolean hasBridge() {
+        return !findBridges().isEmpty();
+    }
 
-        int[] in_degree = new int[graph.getNumberOfNode()];
+    @Override
+    public List<int[]> findBridges() {
+        List<int[]> bridges = new ArrayList<>();
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        int[] disc = new int[graph.getVertexCount()];
+        int[] low = new int[graph.getVertexCount()];
+        int[] parent = new int[graph.getVertexCount()];
+        Arrays.fill(parent, -1);
 
-        for(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> vertex : getAllNodes()){
-            for(int neighbour_index =0; neighbour_index< graph.getNumberOfNode() ; neighbour_index++ ){
-                if(graph.getMatrix()[vertex.id][neighbour_index] != -1)
-                    in_degree[neighbour_index]+=1;
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (!visited[i]) {
+                bridgeUtil(i, visited, disc, low, parent, bridges, new int[]{0});
             }
         }
+        return bridges;
+    }
 
-        Queue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> queue = new LinkedList<>();
-        for(int i =0 ; i< graph.getNumberOfNode() ; i++){
-            if(in_degree[i]==0){
-                queue.add(getNodeById(i));
-            }
-        }
+    private void bridgeUtil(int u, boolean[] visited, int[] disc, int[] low, int[] parent,
+                          List<int[]> bridges, int[] time) {
+        visited[u] = true;
+        disc[u] = low[u] = ++time[0];
 
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> result = new ArrayList<>();
-        int count =0;
-        while (!queue.isEmpty()){
+        for (int v = 0; v < graph.getVertexCount(); v++) {
+            if (graph.getAdjacencyMatrix()[u][v] != Integer.MAX_VALUE) {
+                if (!visited[v]) {
+                    parent[v] = u;
+                    bridgeUtil(v, visited, disc, low, parent, bridges, time);
+                    low[u] = Math.min(low[u], low[v]);
 
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node = queue.poll();
-            result.add(node);
-
-            for(int neighbour_index =0; neighbour_index< graph.getNumberOfNode() ; neighbour_index++ ){
-                if(graph.getMatrix()[node.id][neighbour_index] != -1){
-                    if(--in_degree[neighbour_index] ==0) {
-                        queue.add(getNodeById(neighbour_index));
+                    if (low[v] > disc[u]) {
+                        bridges.add(new int[]{
+                            graph.getVertices().get(u).getData(),
+                            graph.getVertices().get(v).getData(),
+                            graph.getAdjacencyMatrix()[u][v]
+                        });
                     }
+                } else if (v != parent[u]) {
+                    low[u] = Math.min(low[u], disc[v]);
                 }
             }
-            count++;
         }
-
-        if(count == graph.getNumberOfNode()){
-            for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node : result){
-                System.out.println(node);
-            }
-        }else {
-            System.out.println("Not possible");
-        }
-
     }
 
     @Override
-    public void allTopologicalSorting() {
+    public int getDiameter() {
+        if (graph.getVertices().isEmpty()) return 0;
 
+        int maxDistance = 0;
+        for (Node node : graph.getVertices()) {
+            Map<Integer, Integer> distances = findAllShortestPaths(node.getData());
+            int maxDist = distances.values().stream()
+                .filter(d -> d != Integer.MAX_VALUE)
+                .mapToInt(Integer::intValue)
+                .max()
+                .orElse(0);
+            maxDistance = Math.max(maxDistance, maxDist);
+        }
+        return maxDistance;
     }
 
     @Override
-    public boolean isTopologicalSortingValid(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>[] sorting) {
-        return false;
+    public double getAveragePathLength() {
+        if (graph.getVertices().size() <= 1) return 0.0;
+
+        long totalDistance = 0;
+        long pathCount = 0;
+
+        for (Node source : graph.getVertices()) {
+            Map<Integer, Integer> distances = findAllShortestPaths(source.getData());
+            for (int distance : distances.values()) {
+                if (distance != Integer.MAX_VALUE && distance > 0) {
+                    totalDistance += distance;
+                    pathCount++;
+                }
+            }
+        }
+
+        return pathCount > 0 ? (double) totalDistance / pathCount : 0.0;
     }
 
     @Override
-    public void printPrimMST() {
+    public int getVertexDegree(int vertex) {
+        Node node = graph.findNodeByData(vertex);
+        if (node == null) return 0;
 
-        Comparator<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> comparator = (edge1, edge2) -> edge1.getCost() - edge2.getCost();
-        PriorityQueue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> priorityQueue = new PriorityQueue<>(comparator);
-
-//         pick start node
-        priorityQueue.add(new com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<>(getNodeById(0), getNodeById(0), 0));
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> ansEdges = new ArrayList<>();
-
-        while (!priorityQueue.isEmpty()) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge = priorityQueue.poll();
-
-            if (edge.getEnd().isVisited()) {
-                continue;
-            }
-            edge.getEnd().setVisited(true);
-            ansEdges.add(edge);
-
-            for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> neighbour : getAllAdjacent(edge.getEnd())) {
-                priorityQueue.add(getEdgeBetween(edge.getEnd(), neighbour));
+        int degree = 0;
+        for (int i = 0; i < graph.getVertexCount(); i++) {
+            if (graph.getAdjacencyMatrix()[node.getId()][i] != Integer.MAX_VALUE) {
+                degree++;
             }
         }
-
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge : ansEdges) {
-            System.out.println(edge);
-        }
-
-
-    }
-
-    com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> find(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node, HashMap<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> parent) {
-        if (node == parent.get(node)) {
-            return parent.get(node);
-        }
-        return find(parent.get(node), parent);
-    }
-
-    void union(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> src, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> dst, HashMap<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> parent, int[] rank) {
-        com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> srcRoot = find(src, parent);
-        com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> dstRoot = find(dst, parent);
-
-        if (rank[srcRoot.id] > rank[dstRoot.id]) {
-            parent.put(dstRoot, srcRoot);
-        } else if (rank[srcRoot.id] < rank[dstRoot.id]) {
-            parent.put(srcRoot, dstRoot);
-        } else {
-            parent.put(srcRoot, dstRoot);
-            rank[srcRoot.id]++;
-        }
-    }
-
-
-    @Override
-    public List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> printKrushkalMST() {
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> edges = getAllEdges();
-        edges.sort((e1, e2) -> e1.getCost() - e2.getCost());
-
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> result = new ArrayList<>();
-
-        int[] rank = new int[graph.getNumberOfNode()];
-
-        HashMap<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> parent = new HashMap<>();
-
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge : edges) {
-            parent.put(edge.getStart(), edge.getStart());
-            parent.put(edge.getEnd(), edge.getEnd());
-        }
-
-
-        int e = 0;
-        int i = 0;
-        while (e < graph.getNumberOfNode() - 1) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge = edges.get(i);
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> srcRoot = find(edge.getStart(), parent);
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> dstRoot = find(edge.getEnd(), parent);
-
-            if (srcRoot != dstRoot) {
-                result.add(edge);
-                union(edge.getStart(), edge.getEnd(), parent, rank);
-                e++;
-            }
-            i++;
-        }
-
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge : result) {
-            System.out.println(edge);
-        }
-
-
-        return result;
-
-
+        return degree;
     }
 
     @Override
-    public void findShortestPathUsingDijkstra() {
-
+    public int[][] getAdjacencyMatrix() {
+        return graph.getAdjacencyMatrix();
     }
 
     @Override
-    public void findShortestPathUsingBellmanFord() {
-
-    }
-
-
-    public List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> printKrushkalMST_M2() {
-
-        PriorityQueue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> edges = new PriorityQueue<>((e1, e2) -> e1.getCost() - e2.getCost());
-        edges.addAll(getAllEdges());
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T>> result = new ArrayList<>();
-
-        int[] rank = new int[graph.getNumberOfNode()];
-
-        HashMap<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> parent = new HashMap<>();
-
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge : edges) {
-            parent.put(edge.getStart(), edge.getStart());
-            parent.put(edge.getEnd(), edge.getEnd());
-        }
-
-
-        int e = 0;
-        while (e < graph.getNumberOfNode() - 1) {
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge = edges.poll();
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> srcRoot = find(edge.getStart(), parent);
-            com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> dstRoot = find(edge.getEnd(), parent);
-
-            if (srcRoot != dstRoot) {
-                result.add(edge);
-                union(edge.getStart(), edge.getEnd(), parent, rank);
-                e++;
-            }
-
-        }
-
-        for (com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> edge : result) {
-            System.out.println(edge);
-        }
-
-
-        return result;
-
-
-    }
-
-
-    private void processNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-        System.out.print(node.data.toString() + "  ");
-        node.setVisited(true);
-
-    }
-
-    private void dfsTraversal(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-        node.setVisited(true);
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            if (graph.getMatrix()[node.id][i] != -1 && !getNodeById(i).isVisited()) {
-                dfsTraversal(getNodeById(i));
-            }
-        }
-        processNode(node);
-
-    }
-
-    private void bfsTraversal(Queue<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> queue) {
-        if (queue.isEmpty()) {
-            return;
-        }
-        com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node = queue.poll();
-
-        processNode(node);
-        node.setVisited(true);
-
-        for (int i = 0; i < graph.getNumberOfNode(); i++) {
-            if (graph.getMatrix()[node.id][i] != -1 && !getNodeById(i).isVisited()) {
-                queue.add(getNodeById(i));
-            }
-        }
-
-        bfsTraversal(queue);
-
-
-    }
-
-    private com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> getNodeById(int id) {
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> nodes = graph.getVertices().stream().filter(node -> node.getId() == id).collect(Collectors.toList());
-        if (nodes.size() != 1) {
-            throw new RuntimeException("ID either does not exists or duplicate");
-        }
-        return nodes.get(0);
-    }
-
-
-    public com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> getNodeByName(T data) {
-
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> nodes = graph.getVertices().stream().filter(node -> node.getData() == data).collect(Collectors.toList());
-        if (nodes.size() != 1) {
-            throw new RuntimeException("ID either does not exists or duplicate");
-        }
-        return nodes.get(0);
-    }
-
-
-    private com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Edge<T> getEdgeBetween(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> start, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> end) {
-
-        List<Edge<T>> edges = getAllEdges().stream().filter(edge -> edge.getStart().equals(start) && edge.getEnd().equals(end)).collect(Collectors.toList());
-        if (!edges.isEmpty()) {
-            return edges.get(0);
-        }
-        return null;
+    public List<Node> getNeighbors(int vertex) {
+        return graph.getNeighbors(vertex);
     }
 
     @Override
-    public boolean hasEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node src, com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node end) {
-        return graph.getMatrix()[src.id][end.id] != -1 || graph.getMatrix()[end.id][src.id] != -1;
+    public void resetGraph() {
+        graph.resetVisitedStatus();
     }
 
-
-    //    get all neighbours
-    public List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> getAllAdjacent(com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T> node) {
-        List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyMatrix.Node<T>> neighbours = new ArrayList<>();
-
-        for (int j = 0; j < graph.getMatrix()[node.getId()].length; j++) {
-            if (graph.getMatrix()[node.getId()][j] != -1) {
-                neighbours.add(getNodeById(j));
-            }
-        }
-
-
-        return neighbours;
+    @Override
+    public String printGraph() {
+        return graph.toString();
     }
-
-
 }

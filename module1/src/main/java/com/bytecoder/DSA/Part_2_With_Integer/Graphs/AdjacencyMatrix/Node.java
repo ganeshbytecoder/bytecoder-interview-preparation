@@ -3,11 +3,11 @@ package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
 import lombok.Data;
 
 @Data
-class Node<T> {
+class Node {
 
     int id;
 
-    T data;
+    int data;
 
     boolean visited;
 
@@ -16,7 +16,7 @@ class Node<T> {
         this.visited = false;
     }
 
-    public Node(int index, T data) {
+    public Node(int index, int data) {
         this.id = index;
         this.data = data;
         this.visited = false;

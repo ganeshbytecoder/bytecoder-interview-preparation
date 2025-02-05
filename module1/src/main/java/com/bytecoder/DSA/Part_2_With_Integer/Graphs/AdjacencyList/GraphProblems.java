@@ -1,66 +1,49 @@
 package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyList;
 
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Edge;
-import com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node;
-
 import java.util.List;
+import java.util.Map;
 
-public interface GraphProblems<T> {
-
-
-    void addNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T> node);
-
-    void removeNode(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T> node);
-
-    List<com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T>> getAllNodes();
-
-    void addEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Edge<T> edge);
-
-    void removeEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Edge<T> edge);
-
-    List<Edge<T>> getAllEdges();
-
-    boolean hasEdge(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T> src, com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T> end);
-
-    void dfs();
-
-    void bfs();
-
-    //  using DFS and BFS
-    boolean searchData(T data);
-
-    //  using DFS and BFS
-    int getLevel(T data);
-
-    //  using DFS and BFS
-    int getMax();
-
-    //  using DFS and BFS
-    int getMin();
-
+public interface GraphProblems {
+    // Basic graph operations
+    void addVertex(int data);
+    void removeVertex(int data);
+    void addEdge(int source, int destination, int weight);
+    void removeEdge(int source, int destination);
+    boolean hasEdge(int source, int destination);
+    List<Edge> getAllEdges();
+    List<Node> getAllVertices();
+    
+    // Graph traversal
+    List<Integer> depthFirstSearch(int startVertex);
+    List<Integer> breadthFirstSearch(int startVertex);
+    
+    // Graph properties
     boolean isCyclic();
-
-
-    void printGraph();
-
-
-    void implementDFSTopologicalSorting();
-
-    void implementBFSTopologicalSorting();
-
-    void allTopologicalSorting();
-
-    boolean isTopologicalSortingValid(com.bytecoder.DSA.Part_2.Graphs.AdjacencyList.Node<T>[] sorting);
-
-    //    prims algorithms for minimum/max spanning tree (
-    void printPrimMST();
-
-    void printKrushkalMST();
-
-    //  shortest path between two nodes
-    void findShortestPathUsingDijkstra();
-
-    void findShortestPathUsingBellmanFord();
-
-
+    boolean isConnected();
+    int getVertexCount();
+    int getEdgeCount();
+    
+    // Path finding
+    List<Integer> findShortestPath(int source, int destination);
+    Map<Integer, Integer> findAllShortestPaths(int source);
+    
+    // Minimum Spanning Tree
+    List<Edge> findMinimumSpanningTree();
+    
+    // Topological Sort (for directed acyclic graphs)
+    List<Integer> topologicalSort();
+    
+    // Component analysis
+    List<List<Integer>> findConnectedComponents();
+    boolean hasBridge();
+    List<Edge> findBridges();
+    
+    // Graph metrics
+    int getDiameter();
+    double getAveragePathLength();
+    int getVertexDegree(int vertex);
+    
+    // Utility methods
+    void resetGraph();
+    String printGraph();
 }

@@ -1,12 +1,47 @@
 * https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
 * https://leetcode.com/problems/increasing-order-search-tree/description/
-  https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-interview-150
-https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150 
+* https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-interview-150
+* https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150 
 * https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
 * https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150
+* https://leetcode.com/problems/recover-binary-search-tree/ 
 
+* https://leetcode.com/problems/validate-binary-search-tree/description/ 
 ### **40. Check if a Tree is a BST**
 Perform an in-order traversal and ensure the sequence is sorted.
+
+```java
+class Solution {
+    public int getMin(TreeNode node){
+        if(node.left == null){
+            return node.val;
+        }
+        return getMin(node.left);
+    }
+
+    public int getMax(TreeNode node){
+        if(node.right == null){
+            return node.val;
+        }
+        return getMax(node.right);
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        if(root == null || (root.left == null && root.right==null)){
+            return true;
+        }
+        if(root.left == null){
+            return  root.val < getMin(root.right) && (isValidBST(root.right));
+        }
+        if(root.right==null){
+            return (root.val> getMax(root.left)) &&  (isValidBST(root.left));
+        }
+
+        return (root.val> getMax(root.left) && root.val < getMin(root.right))  && (isValidBST(root.left))&&(isValidBST(root.right));
+        
+    }
+}
+```
 
 ```java
 boolean isBST(Node root) {

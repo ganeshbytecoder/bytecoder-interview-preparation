@@ -45,6 +45,7 @@ To keep track of no of connections or isVisited you can have array or map for ex
     int[] visited = new int[n];
 //    visited[i] = true; means i node id visited
 //    counter[i]++; means i nodes total connections with other nodes
+// visited = set()   use hashset as well for tracking visited 
 ```
 
 
@@ -118,6 +119,7 @@ BFS for shortest path:
 * https://leetcode.com/problems/as-far-from-land-as-possible/
 * https://leetcode.com/problems/rotting-oranges/
 * https://leetcode.com/problems/shortest-path-in-binary-matrix/
+* https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/
 
 Graph coloring:
 * https://leetcode.com/problems/possible-bipartition/
@@ -150,6 +152,95 @@ Graph coloring:
 /*--------------------------------------------------------------------------------------------------------*/
 ```
 
+
+```java
+/*                                   Number of island (DFS)
+-------------------------------------------------------------------------------------------------*/
+    public static int islandCount(char[][] grid){
+        HashSet<String> visited = new HashSet<>();
+        int count = 0;
+
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if(explore(grid, r, c, visited))
+                    count++;
+            }
+        }
+        return count;
+    }
+
+    private static boolean explore(char[][] grid, int r, int c, HashSet<String> visited) {
+        boolean rowInbounds = 0 <= r && r < grid.length;
+        boolean colInbounds = 0 <= c && c < grid[0].length;
+        if (!rowInbounds || !colInbounds)
+            return false;
+
+        if (grid[r][c] == 'W') // 'W' Means Water and 'L' Means Land
+            return false;
+
+        String pos = r + "," + c;
+        if (visited.contains(pos))
+            return false;
+
+        visited.add(pos);
+
+        explore(grid, r - 1, c, visited);
+        explore(grid, r + 1, c, visited);
+        explore(grid, r, c - 1, visited);
+        explore(grid, r, c + 1, visited);
+
+        return true;
+    }
+/*-------------------------------------------------------------------------------------------------*/
+```
+```java
+Practice Question : No of Islands , Rotting Oranges
+
+
+/*                             Rotting Oranges (BFS)
+-------------------------------------------------------------------------------------*/
+public int orangesRotting(int[][] grid) {
+        Queue<int[]> queue = new LinkedList<>();
+        int fresh = 0;
+        int time = 0;
+
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] == 2)
+                    queue.add(new int[]{r,c});
+                if (grid[r][c] == 1)
+                    fresh++;
+            }
+        }
+
+        int[][] direction = {{0,1},{0,-1},{1,0},{-1,0}};
+
+        while (!queue.isEmpty() && fresh > 0){
+            int sz = queue.size();
+            for (int i = 0; i < sz; i++) {
+                int[] rotten = queue.poll();
+                int row = rotten[0], col = rotten[1];
+
+                for (int[] drc : direction){
+                    int r = drc[0] + row, c = drc[1] + col;
+                    boolean rowbound = 0 <= r && r < grid.length;
+                    boolean colbound = 0 <= c && c < grid[0].length;
+
+                    if (rowbound && colbound && grid[r][c] == 1){
+                        grid[r][c] = 2;
+                        queue.add(new int[]{r,c});
+                        fresh--;
+                    }
+                }
+            }
+            time++;
+        }
+        if(fresh == 0)
+            return time;
+
+        return -1;    
+    }
+```
 
 ### 3. **Implement DFS Algorithm**
    - Use a stack (or recursion) for DFS traversal.
@@ -191,6 +282,8 @@ private static void dfs(Graph<String> graph, String source) {
             dfs(graph, neighbour);
         }
     }
+    String curr = stack.pop();
+    System.out.println(curr);
 }
 /*-----------------------------------------------------------------------------------*/
 ```
@@ -325,3 +418,59 @@ https://leetcode.com/problems/all-paths-from-source-to-target/description/
 
 https://leetcode.com/problems/snakes-and-ladders/solutions/?envType=study-plan-v2&envId=top-interview-150
 
+
+
+
+### 9. **Clone a Graph**
+- Use BFS or DFS to traverse the graph and create a deep copy.
+- Keep a hashmap of original nodes to their clones to avoid duplicate copies.
+
+### 10. **Making Wired Connections**
+- Use DFS/BFS to determine the minimum number of extra connections required to make the entire graph connected.
+
+### 11. **Word Ladder**
+- Treat each word as a node and edges between words that differ by one character.
+- Use BFS to find the shortest transformation sequence from the start word to the end word.
+
+
+### 26. **Find Bridge in a Graph**
+- Use DFS and track discovery and low values of each node to detect bridges (edges whose removal increases the number of connected components).
+
+### 31. **Journey to the Moon**
+- Treat each country as a connected component and count the ways to choose astronaut pairs from different countries using combination counting.
+
+
+### 33. **Oliver and the Game**
+- DFS-based problem that involves traversing a tree and managing game moves based on tree properties.
+
+### 34. **Water Jug Problem using BFS**
+- Treat each state (jug water levels) as a node and use BFS to find the shortest sequence of operations to reach the goal.
+
+### 35. **Find if Path of More than K Length Exists**
+- Use DFS to explore paths and prune those that exceed the required length early.
+
+### 36. **M-Coloring Problem**
+- Use backtracking to assign colors to nodes such that adjacent nodes don’t share the same color.
+
+### 37. **Minimum Edges to Reverse to Make Path from Source to Destination**
+- Use BFS/DFS to explore and count the number of edges that need to be reversed to form the path.
+
+### 38. **Paths to Travel Each Node Using Each Edge (Seven Bridges)**
+- This problem involves Eulerian paths and circuits. Use DFS to determine the number of Eulerian paths or circuits.
+
+### 39. **Vertex Cover Problem**
+- Use backtracking or approximation algorithms (greedy method) to find the minimum vertex cover.
+
+### 40. **Chinese Postman or Route Inspection**
+- Find an Eulerian circuit (or augment the graph to make it Eulerian) to minimize the traversal cost.
+
+### 41. **Number of Triangles in a Graph**
+- Count triangles using adjacency matrix or list, leveraging combinatorial methods.
+
+### 42. **Minimize Cash Flow among Friends**
+- Use a graph where vertices represent people and edges represent the net balance between pairs, then minimize cash flow using a greedy approach.
+
+
+https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY

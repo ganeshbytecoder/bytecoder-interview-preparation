@@ -226,6 +226,7 @@ public class GraphProblemsImpl implements GraphProblems {
             ));
     }
 
+//
     @Override
     public List<Edge> findMinimumSpanningTree() {
         if (graph.getVertices().isEmpty()) return new ArrayList<>();
@@ -262,6 +263,8 @@ public class GraphProblemsImpl implements GraphProblems {
         return mst;
     }
 
+//    find(x) with path compression: O(α(N)) ≈ O(1)
+//    union(x, y) with rank optimization: O(α(N)) ≈ O(1)
     @Override
     public List<Edge> findMinimumSpanningTree_UsingKurukal() {
         List<Edge> result = new ArrayList<>();
@@ -309,6 +312,7 @@ public class GraphProblemsImpl implements GraphProblems {
         
         if (rank.get(rootX) < rank.get(rootY)) {
             parent.put(rootX, rootY);
+//            meaning parent[x] = y -> x is added to y ->  // Attach smaller tree to larger tree
         } else if (rank.get(rootX) > rank.get(rootY)) {
             parent.put(rootY, rootX);
         } else {
@@ -317,6 +321,8 @@ public class GraphProblemsImpl implements GraphProblems {
         }
     }
 
+
+//    note -> make sure graph is DAG for this else use kahn's algorithm
     @Override
     public List<Integer> topologicalSort() {
         if (!graph.isDirected() || isCyclic()) return new ArrayList<>();
@@ -335,6 +341,16 @@ public class GraphProblemsImpl implements GraphProblems {
             result.add(stack.pop().getData());
         }
         return result;
+    }
+
+    private void topologicalSortUtil(Node node, Set<Node> visited, Stack<Node> stack) {
+        visited.add(node);
+        for (Node neighbor : node.getNeighbors().keySet()) {
+            if (!visited.contains(neighbor)) {
+                topologicalSortUtil(neighbor, visited, stack);
+            }
+        }
+        stack.push(node);
     }
 
     @Override
@@ -387,15 +403,7 @@ public class GraphProblemsImpl implements GraphProblems {
         return result;
     }
 
-    private void topologicalSortUtil(Node node, Set<Node> visited, Stack<Node> stack) {
-        visited.add(node);
-        for (Node neighbor : node.getNeighbors().keySet()) {
-            if (!visited.contains(neighbor)) {
-                topologicalSortUtil(neighbor, visited, stack);
-            }
-        }
-        stack.push(node);
-    }
+
 
     @Override
     public List<List<Integer>> findConnectedComponents() {

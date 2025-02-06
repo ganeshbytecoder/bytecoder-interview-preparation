@@ -184,6 +184,43 @@ public class BinaryTree implements Tree {
         rightView(node.getLeftChild(), result, level + 1);
     }
 
+
+    // FAANG Question 5: Right Side View using BFS
+    // Time: O(n), Space: O(h)
+    public List<Integer> rightSideView(Node root) {
+        List<Integer> result =  new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while(!queue.isEmpty()){
+
+
+            boolean flag= true;
+            int level = queue.size();
+            while(level >0){
+                Node temp = queue.poll();
+                if(flag){
+                    result.add(temp.data);
+                    flag= false;
+                }
+                if(temp.rightChild != null ){
+                    queue.add(temp.rightChild);
+                }
+                if(temp.leftChild != null){
+                    queue.add(temp.leftChild);
+                }
+                level--;
+            }
+        }
+
+        return result;
+    }
+
+
+
     // FAANG Question 6: Diameter of Binary Tree -> Q2 - max width of BT (level order )
     // Time: O(n), Space: O(h)
     private int maxDiameter;

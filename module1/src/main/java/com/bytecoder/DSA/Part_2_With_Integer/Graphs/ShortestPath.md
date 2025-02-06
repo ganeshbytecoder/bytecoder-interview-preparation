@@ -4,7 +4,7 @@ Shortest Path:
 https://leetcode.com/problems/network-delay-time/
 https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/
 https://leetcode.com/problems/cheapest-flights-within-k-stops/
-
+https://leetcode.com/problems/all-paths-from-source-to-target/description/
 ### 22. **Shorted Path algorithms for unweighted or undirected graph**
 
 ### 12. **Dijkstra’s Algorithm**
@@ -24,3 +24,13 @@ https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
 ### 25. **Snake and Ladders Problem**
    - Model the board as a graph with cells as nodes, use BFS to find the minimum dice throws to reach the final cell.
+
+
+### 29. **Detect Negative Cycle in a Graph**
+- Use Bellman-Ford algorithm to check for changes after `V-1` relaxations to detect negative cycles.
+
+### 30. **Longest Path in a DAG**
+- Topologically sort the graph and then relax the edges to find the longest path.
+
+### 32. **Cheapest Flights Within K Stops**
+- Use a variant of Dijkstra’s algorithm (or BFS) with an additional constraint on the number of stops allowed.

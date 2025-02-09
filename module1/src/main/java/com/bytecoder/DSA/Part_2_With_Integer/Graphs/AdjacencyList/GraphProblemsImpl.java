@@ -142,6 +142,16 @@ public class GraphProblemsImpl implements GraphProblems {
         return getAllEdges().size();
     }
 
+    class DistancePair {
+        Node node;
+        Integer distance;
+
+        public DistancePair(Node source, int distance) {
+            this.node = source;
+            this.distance = distance;
+        }
+    }
+
     @Override
     public List<Integer> findShortestPath(int source, int destination) {
         Node sourceNode = graph.findNodeByData(source);
@@ -149,36 +159,48 @@ public class GraphProblemsImpl implements GraphProblems {
         if (sourceNode == null || destNode == null) return new ArrayList<>();
 
         Map<Node, Node> previousMap = new HashMap<>();
+
         Map<Node, Integer> distances = new HashMap<>();
-        PriorityQueue<Node> pq = new PriorityQueue<>(
-            Comparator.comparingInt(n -> distances.getOrDefault(n, Integer.MAX_VALUE))
+
+        PriorityQueue<DistancePair> pq = new PriorityQueue<>(
+            Comparator.comparingInt(n -> n.distance)
         );
+        Set<Node> visited = new HashSet<>();
 
         // Initialize distances
         for (Node node : graph.getVertices()) {
             distances.put(node, Integer.MAX_VALUE);
         }
         distances.put(sourceNode, 0);
-        pq.add(sourceNode);
+
+        pq.add(new DistancePair(sourceNode, 0));
 
         while (!pq.isEmpty()) {
-            Node current = pq.poll();
-            if (current == destNode) break;
+            DistancePair current = pq.poll();
+            if (current.node == destNode) break;
 
-            for (Map.Entry<Node, Integer> entry : current.getNeighbors().entrySet()) {
+            if (visited.contains(current.node)) continue;
+
+            visited.add(current.node);
+
+            for (Map.Entry<Node, Integer> entry : current.node.getNeighbors().entrySet()) {
                 Node neighbor = entry.getKey();
-                int newDist = distances.get(current) + entry.getValue();
+                int newDist = current.distance + entry.getValue();
 
                 if (newDist < distances.get(neighbor)) {
+//                    updating (relaxing distance)
                     distances.put(neighbor, newDist);
-                    previousMap.put(neighbor, current);
-                    pq.add(neighbor);
+
+                    previousMap.put(neighbor, current.node);
+
+//                    adding in queue to precess next time
+                    pq.add(new DistancePair(entry.getKey(), newDist));
                 }
             }
         }
 
         if (!previousMap.containsKey(destNode)) return new ArrayList<>();
-
+// this is where path is discovered
         List<Integer> path = new ArrayList<>();
         Node current = destNode;
         while (current != null) {
@@ -226,7 +248,7 @@ public class GraphProblemsImpl implements GraphProblems {
             ));
     }
 
-//
+// start with 0 edge and priority queue -> using graph
     @Override
     public List<Edge> findMinimumSpanningTree() {
         if (graph.getVertices().isEmpty()) return new ArrayList<>();
@@ -265,6 +287,7 @@ public class GraphProblemsImpl implements GraphProblems {
 
 //    find(x) with path compression: O(α(N)) ≈ O(1)
 //    union(x, y) with rank optimization: O(α(N)) ≈ O(1)
+//    get all edges sorted and applied DSU -> using edges list
     @Override
     public List<Edge> findMinimumSpanningTree_UsingKurukal() {
         List<Edge> result = new ArrayList<>();
@@ -321,8 +344,8 @@ public class GraphProblemsImpl implements GraphProblems {
         }
     }
 
-
-//    note -> make sure graph is DAG for this else use kahn's algorithm
+//    MST -> PK -> P -> graph starts PriorityQueue 0 edge +  BFS and K -> PriorityQueue + all edges + DSU
+//    note -> use only if you know graph is DAG for this (stack and DFS) else use kahn's algorithm (in-degree and queue)
     @Override
     public List<Integer> topologicalSort() {
         if (!graph.isDirected() || isCyclic()) return new ArrayList<>();

@@ -419,22 +419,28 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
    - **Memoization**:
      ```java
      public int findNumberOfLIS(int[] nums) {
-         int[][] memo = new int[nums.length + 1][nums.length];
+         int[][] memo = new int[nums.length][nums.length + 1];
          for (int[] row : memo) Arrays.fill(row, -1);
-         return findLISHelper(nums, -1, 0, memo);
+         return findLISHelper(nums, -1, 0, 1, memo);
      }
 
-     private int findLISHelper(int[] nums, int prevIndex, int currIndex, int[][] memo) {
-         if (currIndex == nums.length) return 1;
+     private int findLISHelper(int[] nums, int prevIndex, int currIndex, int length, int[][] memo) {
+         if (currIndex == nums.length) return new int[]{1, length - 1};
          if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
 
-         int exclude = findLISHelper(nums, prevIndex, currIndex + 1, memo);
-         int include = 0;
+         int[] exclude = findLISHelper(nums, prevIndex, currIndex + 1, length, memo);
+         int[] include = {0, 0};
          if (prevIndex == -1 || nums[currIndex] > nums[prevIndex]) {
-             include = findLISHelper(nums, currIndex, currIndex + 1, memo);
+             include = findLISHelper(nums, currIndex, currIndex + 1, length + 1, memo);
          }
 
-         return memo[prevIndex + 1][currIndex] = include + exclude;
+         if (include[1] > exclude[1]) {
+             return memo[prevIndex + 1][currIndex] = include;
+         } else if (include[1] == exclude[1]) {
+             return memo[prevIndex + 1][currIndex] = new int[]{include[0] + exclude[0], include[1]};
+         } else {
+             return memo[prevIndex + 1][currIndex] = exclude;
+         }
      }
      ```
    - **Tabulation**:
@@ -475,7 +481,7 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
    - Problem: Find the maximum length of a valid subsequence from the input.
    - **Recursion**:
      ```java
-     public int maxLengthValidSubsequence(int[] nums, int k) {
+     public int maxLengthValidSubsequenceI(int[] nums, int k) {
          return validSubseqHelper(nums, -1, 0, k);
      }
 
@@ -493,7 +499,7 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
      ```
    - **Memoization**:
      ```java
-     public int maxLengthValidSubsequence(int[] nums, int k) {
+     public int maxLengthValidSubsequenceI(int[] nums, int k) {
          int[][] memo = new int[nums.length + 1][nums.length];
          for (int[] row : memo) Arrays.fill(row, -1);
          return validSubseqHelper(nums, -1, 0, k, memo);
@@ -514,7 +520,7 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
      ```
    - **Tabulation**:
      ```java
-     public int maxLengthValidSubsequence(int[] nums, int k) {
+     public int maxLengthValidSubsequenceI(int[] nums, int k) {
          int[] dp = new int[nums.length];
          Arrays.fill(dp, 1);
 
@@ -1146,13 +1152,13 @@ Find the contiguous subarray within an array (containing at least one number) wh
 ```java
 
 private int maxProductRecursive(int[] nums, int index, int currentProduct) {
-    if (index == 0) return currentProduct;
-    return Math.max(maxProductRecursive(nums, index - 1, currentProduct * nums[index - 1]),
-                    maxProductRecursive(nums, index - 1, nums[index - 1]));
+    if (index == nums.length) return currentProduct;
+    return Math.max(maxProductRecursive(nums, index + 1, currentProduct * nums[index]),
+                    maxProductRecursive(nums, index + 1, nums[index]));
 }
 
 public int maxProduct(int[] nums) {
-    return maxProductRecursive(nums, nums.length - 1, nums[nums.length - 1]);
+    return maxProductRecursive(nums, 0, 1);
 }
 
 
@@ -1301,18 +1307,15 @@ private int decodeMemo(String s, int index, int[] memo) {
 ##### 3. **Tabulation Solution**
 ```java
 public int numDecodings(String s) {
-    if (s.charAt(0) == '0') return 0;
-
     int n = s.length();
     int[] dp = new int[n + 1];
     dp[0] = 1;
-    dp[1] = 1;
 
-    for (int i = 2; i <= n; i++) {
+    for (int i = 1; i <= n; i++) {
         if (s.charAt(i - 1) != '0') {
             dp[i] += dp[i - 1];
         }
-        if (s.charAt(i - 2) != '0' && Integer.parseInt(s.substring(i - 2, i)) <= 26) {
+        if (i >= 2 && Integer.parseInt(s.substring(i - 2, i)) <= 26) {
             dp[i] += dp[i - 2];
         }
     }
@@ -1500,7 +1503,6 @@ public boolean isMatch(String s, String p) {
 
 ---
 
-
 ### **13. [Edit Distance](https://leetcode.com/problems/edit-distance/)**
 
 #### **Problem Statement**
@@ -1642,6 +1644,7 @@ public int maxCoins(int[] nums) {
 private int maxCoinsMemo(int[] nums, int left, int right, int[][] memo) {
     if (left > right) return 0;
     if (memo[left][right] != 0) return memo[left][right];
+
     int maxCoins = 0;
     for (int i = left; i <= right; i++) {
         int coins = nums[left - 1] * nums[i] * nums[right + 1]
@@ -1724,9 +1727,7 @@ private int eggDropMemo(int k, int n, int[][] memo) {
     int minAttempts = Integer.MAX_VALUE;
     for (int x = 1; x <= n; x++) {
         int attempts = 1 + Math.max(eggDropMemo(k - 1, x - 1, memo), 
-                                    eggDropMemo(k, n - x
-
-, memo));
+                                    eggDropMemo(k, n - x, memo));
         minAttempts = Math.min(minAttempts, attempts);
     }
     return memo[k][n] = minAttempts;
@@ -1749,184 +1750,111 @@ public int superEggDrop(int k, int n) {
 }
 ```
 
---- 
-
-
-
-
-
-
-
-
-### **15. [best-time-to-buy-and-sell-stock-ii](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/)**
-
- 
-
-## **0. Greedy Solution**
-
-```java
-   public int maxProfit(int[] prices) {
-        int n= prices.length;
-        int profit = 0;
-        // take into profit only those days for which the next day's price is greater.
-        for(int day=1;day<n;day++){
-            if(prices[day]>prices[day-1]){
-                profit +=(prices[day] - prices[day-1]);
-            }
-        }
-        return profit;
-    }
-```
-
-
-## **1. Recursive Solution**
-
-The recursive approach explores all possibilities (buy, sell, skip) for each day.
-
-### Code:
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        return calcProfit(prices, 0, 1); // Start with index 0 and option to buy (1)
-    }
-
-    private int calcProfit(int[] prices, int day, int canBuy) {
-        if (day >= prices.length) {
-            return 0; // Base case: no more days left
-        }
-
-        int maxProfit = 0;
-        if (canBuy == 1) {
-            // Option to buy or skip
-            int skipBuy = calcProfit(prices, day + 1, 1);
-            int buy = -prices[day] + calcProfit(prices, day + 1, 0);
-            maxProfit = Math.max(skipBuy, buy);
-        } else {
-            // Option to sell or skip
-            int skipSell = calcProfit(prices, day + 1, 0);
-            int sell = prices[day] + calcProfit(prices, day + 1, 1);
-            maxProfit = Math.max(skipSell, sell);
-        }
-
-        return maxProfit;
-    }
-}
-```
-
 ---
 
-## **2. Memoization Solution**
+Interview Tips and Problem Organization
 
-Memoization avoids redundant calculations by storing results for already-computed states.
+### 1. Problem Solving Steps
+1. **Identify Pattern**
+   - What changes in each subproblem?
+   - What information needs to be tracked?
 
-### Code:
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        // Initialize dp array with -1
-        int[][] dp = new int[n][2];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
-        }
-        return calcProfit(prices, dp, 0, 1);
-    }
+2. **Define States**
+   - What variables represent the state?
+   - How many dimensions needed?
 
-    private int calcProfit(int[] prices, int[][] dp, int day, int canBuy) {
-        if (day >= prices.length) {
-            return 0; // Base case
-        }
+3. **Write Recurrence**
+   - Base cases first
+   - Transition function
+   - Return value
 
-        // If result is already calculated, return it
-        if (dp[day][canBuy] != -1) {
-            return dp[day][canBuy];
-        }
+4. **Optimize**
+   - Can space be reduced?
+   - Any unnecessary calculations?
 
-        int maxProfit = 0;
-        if (canBuy == 1) {
-            int skipBuy = calcProfit(prices, dp, day + 1, 1);
-            int buy = -prices[day] + calcProfit(prices, dp, day + 1, 0);
-            maxProfit = Math.max(skipBuy, buy);
-        } else {
-            int skipSell = calcProfit(prices, dp, day + 1, 0);
-            int sell = prices[day] + calcProfit(prices, dp, day + 1, 1);
-            maxProfit = Math.max(skipSell, sell);
-        }
+### 2. Common Mistakes to Avoid
+1. **Base Cases**
+   - Missing edge cases
+   - Incorrect initialization
 
-        // Store result in dp array
-        dp[day][canBuy] = maxProfit;
-        return maxProfit;
-    }
-}
-```
+2. **State Definition**
+   - Too many state variables
+   - Missing crucial information
 
----
+3. **Transitions**
+   - Incorrect recurrence relation
+   - Missing some valid transitions
 
-## **3. Tabulation Solution**
+4. **Space Optimization**
+   - Not considering when possible
+   - Incorrect variable updates
 
-Tabulation builds the solution iteratively from the base case.
+## Must-Know Problems by Difficulty
 
-### Code:
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int[][] dp = new int[n + 1][2]; // dp[day][canBuy]
+### Easy (⭐)
+1. Climbing Stairs
+2. Min Cost Climbing Stairs
+3. Best Time to Buy and Sell Stock
+4. Maximum Subarray
+5. Range Sum Query - Immutable
 
-        // Base cases: no profit possible after the last day
-        dp[n][0] = 0;
-        dp[n][1] = 0;
+### Medium (⭐⭐)
+1. House Robber
+2. Jump Game
+3. Unique Paths
+4. Coin Change
+5. Longest Increasing Subsequence
 
-        for (int day = n - 1; day >= 0; day--) {
-            for (int canBuy = 0; canBuy <= 1; canBuy++) {
-                if (canBuy == 1) {
-                    int skipBuy = dp[day + 1][1];
-                    int buy = -prices[day] + dp[day + 1][0];
-                    dp[day][canBuy] = Math.max(skipBuy, buy);
-                } else {
-                    int skipSell = dp[day + 1][0];
-                    int sell = prices[day] + dp[day + 1][1];
-                    dp[day][canBuy] = Math.max(skipSell, sell);
-                }
-            }
-        }
+### Hard (⭐⭐⭐)
+1. Edit Distance
+2. Regular Expression Matching
+3. Burst Balloons
+4. Maximum Profit in Job Scheduling
+5. Longest Common Subsequence
 
-        return dp[0][1]; // Start with day 0 and the option to buy
-    }
-}
-```
+## Space Optimization Techniques
 
----
+### 1. 1D to Constant Space
+- Keep only last 2-3 values
+- Example: Fibonacci, House Robber
 
-## **4. Optimized Space Tabulation**
+### 2. 2D to 1D Space
+- Use rolling array
+- Only need previous row/column
 
-Since each state depends only on the next day's state, you can reduce space complexity to **O(1)**.
-
-### Code:
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int nextBuy = 0, nextSell = 0;
-
-        for (int day = n - 1; day >= 0; day--) {
-            int currBuy = Math.max(nextBuy, -prices[day] + nextSell);
-            int currSell = Math.max(nextSell, prices[day] + nextBuy);
-
-            nextBuy = currBuy;
-            nextSell = currSell;
-        }
-
-        return nextBuy; // Start with the option to buy
-    }
-}
-```
-
----
+### 3. Memory vs Speed
+- Consider problem constraints
+- Sometimes trading space for time is worth it
 
 
 
 
+~~## string problems 
 
+https://leetcode.com/problems/decode-string/description/
 
+https://www.geeksforgeeks.org/roman-number-to-integer/
 
+https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
+
+https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/
+
+https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/?ref=asr30
+
+https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/?ref=asr29
+
+https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/?ref=asr28
+
+https://www.geeksforgeeks.org/longest-substring-that-can-be-made-a-palindrome-by-swapping-of-characters/?ref=asr27
+
+https://www.geeksforgeeks.org/longest-substring-with-no-pair-of-adjacent-characters-are-adjacent-english-alphabets/?ref=asr26
+
+https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-at-least-k-times-set-3/?ref=asr25
+
+https://www.geeksforgeeks.org/longest-prefix-also-suffix/
+
+https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1
+
+https://leetcode.com/problems/longest-palindromic-substring/description/~~
+
+https://leetcode.com/problems/longest-palindromic-subsequence/

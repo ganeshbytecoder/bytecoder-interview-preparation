@@ -16,7 +16,7 @@ type of graphs:
 
 
 
-## Disjoint set: Union Find:
+## Disjoint set: Union Find: (DSU)
 
 Two sets are called disjoint sets if they don’t have any element in common, the intersection of sets is a null set.
 

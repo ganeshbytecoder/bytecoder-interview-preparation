@@ -18,7 +18,7 @@ public static void main(String[] args) {
 }
 ```
 
-## selection sort: 
+## selection sort (pick min from right): 
 we creates two index i and j where is used for current element and j is to find least element from right side of list.
 swap it with the value in the current position. 
 Repeat this process for all the elements until the entire array is sorted. 
@@ -42,7 +42,7 @@ public static void main(String[] args) {
 ```
 
 
-## Insertion sort: 
+## Insertion sort(taash pick and shift): 
 in this algorithm we pick a element and slide it till it satisfy the condition then swap it 
 
 ```java

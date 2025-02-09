@@ -60,3 +60,5 @@ https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-
 https://www.geeksforgeeks.org/longest-prefix-also-suffix/
 
 https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1 
+
+https://leetcode.com/problems/longest-palindromic-substring/description/

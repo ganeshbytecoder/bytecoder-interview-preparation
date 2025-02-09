@@ -3,16 +3,16 @@ Here’s the **Time and Space Complexity Chart** for **Sorting, Searching, Trees
 ---
 
 ## **1. Sorting Algorithms**
-| Algorithm        | Best Case  | Average Case | Worst Case  | Space Complexity |
-|-----------------|-----------|-------------|------------|-----------------|
-| **Bubble Sort**  | O(n)      | O(n²)       | O(n²)      | O(1) |
-| **Selection Sort** | O(n²) | O(n²) | O(n²) | O(1) |
-| **Insertion Sort** | O(n) | O(n²) | O(n²) | O(1) |
-| **Merge Sort** | O(n log n) | O(n log n) | O(n log n) | O(n) |
-| **Quick Sort** | O(n log n) | O(n log n) | O(n²) | O(log n) (recursive stack) |
-| **Heap Sort** | O(n log n) | O(n log n) | O(n log n) | O(1) |
-| **Counting Sort** | O(n + k) | O(n + k) | O(n + k) | O(k) |
-| **Radix Sort** | O(nk) | O(nk) | O(nk) | O(n + k) |
+| Algorithm        | Best Case  | Average Case | Worst Case  | Space Complexity | Logic |
+|-----------------|-----------|-------------|------------|-----------------|------------|
+| **Bubble Sort**  | O(n)      | O(n²)       | O(n²)      | O(1) | Repeatedly swaps adjacent elements if they are in the wrong order. Inefficient for large datasets. |
+| **Selection Sort** | O(n²) | O(n²) | O(n²) | O(1) | Finds the minimum element and swaps it with the first unsorted element. Always performs O(n²) comparisons. |
+| **Insertion Sort** | O(n) | O(n²) | O(n²) | O(1) | Builds the sorted array one element at a time by shifting elements. Efficient for nearly sorted data. |
+| **Merge Sort** | O(n log n) | O(n log n) | O(n log n) | O(n) | Divides the array into halves, sorts recursively, and merges them. Stable sorting with additional space usage. |
+| **Quick Sort** | O(n log n) | O(n log n) | O(n²) | O(log n) (recursive stack) | Picks a pivot, partitions elements, then recursively sorts the partitions. Fast but worst case occurs with poor pivot choice. |
+| **Heap Sort** | O(n log n) | O(n log n) | O(n log n) | O(1) | Uses a binary heap structure to extract the largest element repeatedly. Not stable but good for in-place sorting. |
+| **Counting Sort** | O(n + k) | O(n + k) | O(n + k) | O(k) | Counts occurrences of elements and reconstructs the sorted array. Efficient for small integer ranges but uses extra space. |
+| **Radix Sort** | O(nk) | O(nk) | O(nk) | O(n + k) | Sorts numbers digit by digit using Counting Sort as a subroutine. Works well for fixed-length integers. |
 
 ---
 

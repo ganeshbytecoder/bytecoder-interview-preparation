@@ -2,6 +2,7 @@
 * bottom top approach analysis the base condition
 
 
+### Fibonacci series 
 
 ### **[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)**
    - Problem: You can climb 1 or 2 steps. How many distinct ways can you reach the top of a staircase with `n` steps?
@@ -126,48 +127,6 @@ public int minCostClimbingStairs(int[] cost) {
 ---
 
 
-3. **[House Robber](https://leetcode.com/problems/house-robber/)**
-    - Problem: Maximize the amount of money you can rob without robbing adjacent houses.
-    - **Recursion**:
-      ```java
-      public int rob(int[] nums) {
-          return robHelper(nums, nums.length - 1);
-      }
- 
-      private int robHelper(int[] nums, int i) {
-          if (i < 0) return 0;
-          return Math.max(robHelper(nums, i - 2) + nums[i], robHelper(nums, i - 1));
-      }
-      ```
-    - **Memoization**:
-      ```java
-      public int rob(int[] nums) {
-          int[] memo = new int[nums.length];
-          Arrays.fill(memo, -1);
-          return robHelper(nums, nums.length - 1, memo);
-      }
- 
-      private int robHelper(int[] nums, int i, int[] memo) {
-          if (i < 0) return 0;
-          if (memo[i] != -1) return memo[i];
-          return memo[i] = Math.max(robHelper(nums, i - 2, memo) + nums[i], robHelper(nums, i - 1, memo));
-      }
-      ```
-    - **Tabulation**:
-      ```java
-      public int rob(int[] nums) {
-          if (nums.length == 0) return 0;
-          if (nums.length == 1) return nums[0];
-          int[] dp = new int[nums.length];
-          dp[0] = nums[0];
-          dp[1] = Math.max(nums[0], nums[1]);
-          for (int i = 2; i < nums.length; i++) {
-              dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-          }
-          return dp[nums.length - 1];
-      }
-      ```
-
 ### ** [Jump Game](https://leetcode.com/problems/jump-game/) **
 You are given an integer array `nums`. You are initially positioned at the first index, and each element in the array represents your maximum jump length at that position. Determine if you can reach the last index.
 
@@ -177,7 +136,7 @@ The recursive approach explores all possible jumps from the current position. It
 ```java
 
 private boolean canJumpRecursive(int[] nums, int index) {
-    if (index >= nums.length - 1) return true; // Reached the last index.
+if (index >= nums.length - 1) return true; // Reached the last index.
 
     int maxJump = nums[index];
     for (int step = 1; step <= maxJump; step++) {
@@ -187,10 +146,8 @@ private boolean canJumpRecursive(int[] nums, int index) {
 }
 
 public boolean canJump(int[] nums) {
-    return canJumpRecursive(nums, 0);
+return canJumpRecursive(nums, 0);
 }
-
-
 ```
 
 

@@ -12,16 +12,18 @@ public interface GraphProblems {
     boolean hasEdge(int source, int destination);
     List<Edge> getAllEdges();
     List<Node> getAllVertices();
-    
+
+
     // Graph traversal
     List<Integer> depthFirstSearch(int startVertex);
     List<Integer> breadthFirstSearch(int startVertex);
-    
+    int getVertexCount();
+    int getEdgeCount();
+
     // Graph properties
     boolean isCyclic();
     boolean isConnected();
-    int getVertexCount();
-    int getEdgeCount();
+
     
     // Path finding
     List<Integer> findShortestPath(int source, int destination);

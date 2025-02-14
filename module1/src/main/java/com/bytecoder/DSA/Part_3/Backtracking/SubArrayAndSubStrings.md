@@ -147,6 +147,193 @@ public class SubstringWithDuplicates {
     }
 ```
 
+### **8. [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)**
+
+#### **Problem Statement**
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+
+
+**Note** can be subsequence or sub-array for max/min sum/product elements or with length k
+---
+
+#### **Solution Approaches**
+
+##### 1. **Recursive Solution**
+```java
+
+private int maxProductRecursive(int[] nums, int index, int currentProduct) {
+    if (index == nums.length) return currentProduct;
+    return Math.max(maxProductRecursive(nums, index + 1, currentProduct * nums[index]),
+                    maxProductRecursive(nums, index + 1, nums[index]));
+}
+
+public int maxProduct(int[] nums) {
+    return maxProductRecursive(nums, 0, 1);
+}
+
+
+```
+**Note**: Recursive solutions for this problem are not ideal due to complexity. Use DP-based solutions below.
+
+---
+
+##### 2. **Tabulation Solution**
+```java
+public int maxProduct(int[] nums) {
+    int maxProduct = nums[0];
+    int currMax = nums[0], currMin = nums[0];
+
+    for (int i = 1; i < nums.length; i++) {
+        if (nums[i] < 0) {
+            int temp = currMax;
+            currMax = currMin;
+            currMin = temp;
+        }
+        currMax = Math.max(nums[i], currMax * nums[i]);
+        currMin = Math.min(nums[i], currMin * nums[i]);
+
+        maxProduct = Math.max(maxProduct, currMax);
+    }
+    return maxProduct;
+}
+```
+
+---
+
+### **9. [Word Break](https://leetcode.com/problems/word-break/)**
+
+#### **Problem Statement**
+Given a string `s` and a dictionary of strings `wordDict`, determine if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+---
+
+#### **Solution Approaches**
+
+##### 1. **Recursive Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakRecursive(s, new HashSet<>(wordDict), 0);
+}
+
+private boolean wordBreakRecursive(String s, Set<String> wordDict, int start) {
+    if (start == s.length()) return true;
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (wordDict.contains(s.substring(start, end)) && wordBreakRecursive(s, wordDict, end)) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+##### 2. **Memoization Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakMemo(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
+}
+
+private boolean wordBreakMemo(String s, Set<String> wordDict, int start, Boolean[] memo) {
+    if (start == s.length()) return true;
+    if (memo[start] != null) return memo[start];
+
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (wordDict.contains(s.substring(start, end)) && wordBreakMemo(s, wordDict, end, memo)) {
+            return memo[start] = true;
+        }
+    }
+    return memo[start] = false;
+}
+```
+
+##### 3. **Tabulation Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    Set<String> wordSet = new HashSet<>(wordDict);
+    boolean[] dp = new boolean[s.length() + 1];
+    dp[0] = true;
+
+    for (int i = 1; i <= s.length(); i++) {
+        for (int j = 0; j < i; j++) {
+            if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length()];
+}
+```
+
+### **[Decode Ways](https://leetcode.com/problems/decode-ways/)**
+
+#### **Problem Statement**
+Given a string `s` containing only digits, determine the total number of ways to decode it, where:
+- 'A' -> "1", 'B' -> "2", ..., 'Z' -> "26".
+
+---
+
+#### **Solution Approaches**
+
+##### 1. **Recursive Solution**
+```java
+public int numDecodings(String s) {
+    return decodeRecursive(s, 0);
+}
+
+private int decodeRecursive(String s, int index) {
+    if (index == s.length()) return 1;
+    if (s.charAt(index) == '0') return 0;
+
+    int ways = decodeRecursive(s, index + 1);
+    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
+        ways += decodeRecursive(s, index + 2);
+    }
+    return ways;
+}
+```
+
+##### 2. **Memoization Solution**
+```java
+public int numDecodings(String s) {
+    int[] memo = new int[s.length()];
+    Arrays.fill(memo, -1);
+    return decodeMemo(s, 0, memo);
+}
+
+private int decodeMemo(String s, int index, int[] memo) {
+    if (index == s.length()) return 1;
+    if (s.charAt(index) == '0') return 0;
+    if (memo[index] != -1) return memo[index];
+
+    int ways = decodeMemo(s, index + 1, memo);
+    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
+        ways += decodeMemo(s, index + 2, memo);
+    }
+    memo[index] = ways;
+    return ways;
+}
+```
+
+##### 3. **Tabulation Solution**
+```java
+public int numDecodings(String s) {
+    int n = s.length();
+    int[] dp = new int[n + 1];
+    dp[0] = 1;
+
+    for (int i = 1; i <= n; i++) {
+        if (s.charAt(i - 1) != '0') {
+            dp[i] += dp[i - 1];
+        }
+        if (i >= 2 && Integer.parseInt(s.substring(i - 2, i)) <= 26) {
+            dp[i] += dp[i - 2];
+        }
+    }
+    return dp[n];
+}
+```
+
+---
 
 Here are some **LeetCode problems** on **Subarrays** and **Substrings**, categorized by different conditions:
 

@@ -79,6 +79,26 @@ class GraphProblemsImpl<T> implements GraphProblems<T> {
     }
 
     @Override
+    public boolean searchData(T data) {
+        return false;
+    }
+
+    @Override
+    public int getLevel(T data) {
+        return 0;
+    }
+
+    @Override
+    public int getMax() {
+        return 0;
+    }
+
+    @Override
+    public int getMin() {
+        return 0;
+    }
+
+    @Override
     public boolean isCyclic() {
         return false;
     }

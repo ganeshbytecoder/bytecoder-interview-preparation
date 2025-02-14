@@ -3,8 +3,8 @@ package com.gschoudhary.design.patterns.bahavioral.ChainOfResponsibility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.workflow.Request;
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.workflow.UserService;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.workflow.Request;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.workflow.UserService;
 
 class UserServiceTest {
     @BeforeEach

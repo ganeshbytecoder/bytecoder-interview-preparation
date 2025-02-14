@@ -2,11 +2,11 @@ package com.gschoudhary.design.patterns.bahavioral.ChainOfResponsibility.request
 
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.requestHandler.AuthenticationHandler;
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.requestHandler.CustomHandler;
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.requestHandler.RequestController;
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.requestHandler.RequestHandler;
-import com.bytecoder.DesignPatterns.bahavioral.ChainOfResponsibility.requestHandler.RequestHandlerImpl;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.requestHandler.AuthenticationHandler;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.requestHandler.CustomHandler;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.requestHandler.RequestController;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.requestHandler.RequestHandler;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.ChainOfResponsibility.requestHandler.RequestHandlerImpl;
 
 class RequestControllerTest {
 

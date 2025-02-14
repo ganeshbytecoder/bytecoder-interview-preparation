@@ -1,5 +1,6 @@
 package com.gschoudhary.design.patterns.structural.composite;
 
+import com.bytecoder.DesignPatterns.LLD.structural.composite.staticLevel.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

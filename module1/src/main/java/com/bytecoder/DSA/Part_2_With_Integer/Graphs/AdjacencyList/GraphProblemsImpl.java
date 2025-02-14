@@ -106,6 +106,22 @@ public class GraphProblemsImpl implements GraphProblems {
         return false;
     }
 
+    private boolean isCyclicUndirected(Node node, Node parent, Set<Node> visited) {
+        visited.add(node);
+
+        for (Node neighbor : node.getNeighbors().keySet()) {
+            if (!visited.contains(neighbor)) {
+                if (isCyclicUndirected(neighbor, node, visited)) {
+                    return true;
+                }
+            } else if (!neighbor.equals(parent)) { // Ignore the immediate parent
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private boolean isCyclicUtil(Node node, Set<Node> visited, Set<Node> recursionStack) {
         if (recursionStack.contains(node)) return true;
         if (visited.contains(node)) return false;

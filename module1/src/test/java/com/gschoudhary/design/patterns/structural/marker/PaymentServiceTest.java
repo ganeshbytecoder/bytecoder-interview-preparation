@@ -1,5 +1,6 @@
 package com.gschoudhary.design.patterns.structural.marker;
 
+import com.bytecoder.DesignPatterns.LLD.structural.marker.*;
 import com.bytecoder.DesignPatterns.structural.marker.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

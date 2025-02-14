@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.DesignPatterns.creational.BankAccount;
-import com.bytecoder.DesignPatterns.creational.Person;
-import com.bytecoder.DesignPatterns.creational.Singleton.User;
-import com.bytecoder.DesignPatterns.creational.factorymethod.Bank;
-import com.bytecoder.DesignPatterns.creational.factorymethod.BankFactory;
-import com.bytecoder.DesignPatterns.creational.factorymethod.BankFactoryImpl;
-import com.bytecoder.DesignPatterns.creational.factorymethod.IciciBank;
+import com.bytecoder.DesignPatterns.LLD.creational.BankAccount;
+import com.bytecoder.DesignPatterns.LLD.creational.Person;
+import com.bytecoder.DesignPatterns.LLD.creational.Singleton.User;
+import com.bytecoder.DesignPatterns.LLD.creational.factorymethod.Bank;
+import com.bytecoder.DesignPatterns.LLD.creational.factorymethod.BankFactory;
+import com.bytecoder.DesignPatterns.LLD.creational.factorymethod.BankFactoryImpl;
+import com.bytecoder.DesignPatterns.LLD.creational.factorymethod.IciciBank;
 
 class CreationalDesignTest {
     @BeforeEach

@@ -126,699 +126,6 @@ public int minCostClimbingStairs(int[] cost) {
 
 ---
 
-
-### ** [Jump Game](https://leetcode.com/problems/jump-game/) **
-You are given an integer array `nums`. You are initially positioned at the first index, and each element in the array represents your maximum jump length at that position. Determine if you can reach the last index.
-
-#### 1. **Recursive Solution**
-The recursive approach explores all possible jumps from the current position. It uses the current index and determines if reaching the last index is possible.
-
-```java
-
-private boolean canJumpRecursive(int[] nums, int index) {
-if (index >= nums.length - 1) return true; // Reached the last index.
-
-    int maxJump = nums[index];
-    for (int step = 1; step <= maxJump; step++) {
-        if (canJumpRecursive(nums, index + step)) return true;
-    }
-    return false;
-}
-
-public boolean canJump(int[] nums) {
-return canJumpRecursive(nums, 0);
-}
-```
-
-
-#### 2. **Memoization Solution**
-The memoized approach stores the results of previously computed indices to avoid redundant calculations.
-
-```java
-public boolean canJump(int[] nums) {
-    int[] memo = new int[nums.length];
-    Arrays.fill(memo, -1); // -1: Not computed, 0: False, 1: True
-    return canJumpMemo(nums, 0, memo);
-}
-
-private boolean canJumpMemo(int[] nums, int index, int[] memo) {
-    if (index >= nums.length - 1) return true; // Reached the last index.
-    if (memo[index] != -1) return memo[index] == 1;
-
-    int maxJump = nums[index];
-    for (int step = 1; step <= maxJump; step++) {
-        if (canJumpMemo(nums, index + step, memo)) {
-            memo[index] = 1;
-            return true;
-        }
-    }
-    memo[index] = 0;
-    return false;
-}
-```
-
-
-#### 3. **Tabulation Solution**
-The tabulation approach uses an array to track whether each index is reachable. It iterates through the array, updating the reachable states.
-
-```java
-public boolean canJump(int[] nums) {
-    boolean[] dp = new boolean[nums.length];
-    dp[0] = true; // Start is always reachable.
-
-    for (int i = 0; i < nums.length; i++) {
-        if (!dp[i]) continue; // If this index is not reachable, skip.
-
-        int maxJump = nums[i];
-        for (int j = i + 1; j <= Math.min(i + maxJump, nums.length - 1); j++) {
-            dp[j] = true;
-        }
-    }
-    return dp[nums.length - 1];
-}
-```
-
-**Time Complexity**: \(O(n^2)\)  
-**Space Complexity**: \(O(n)\)
-
----
-
-#### 4. **Optimized Greedy Solution**
-A greedy approach tracks the farthest position reachable from each index and checks if the last index is within reach.
-
-```java
-public boolean canJump(int[] nums) {
-    int farthest = 0;
-
-    for (int i = 0; i < nums.length; i++) {
-        if (i > farthest) return false; // If current index is not reachable.
-        farthest = Math.max(farthest, i + nums[i]);
-    }
-    return true;
-}
-```
-
-* https://leetcode.com/problems/find-number-of-ways-to-reach-the-k-th-stair/description/
-
-### 1. **[Longest Increasing Subsequence II](https://leetcode.com/problems/longest-increasing-subsequence-ii/description/)**
-   - Problem: Find the length of the longest increasing subsequence within a limited difference range.
-   - **Recursion**:
-     ```java
-     public int lengthOfLIS(int[] nums, int k) {
-         return lisHelper(nums, -1, 0, k);
-     }
-
-     private int lisHelper(int[] nums, int prevIndex, int currIndex, int k) {
-         if (currIndex == nums.length) return 0;
-
-         int exclude = lisHelper(nums, prevIndex, currIndex + 1, k);
-         int include = 0;
-         if (prevIndex == -1 || (nums[currIndex] - nums[prevIndex] <= k && nums[currIndex] > nums[prevIndex])) {
-             include = 1 + lisHelper(nums, currIndex, currIndex + 1, k);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int lengthOfLIS(int[] nums, int k) {
-         int[][] memo = new int[nums.length][nums.length + 1];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return lisHelper(nums, -1, 0, k, memo);
-     }
-
-     private int lisHelper(int[] nums, int prevIndex, int currIndex, int k, int[][] memo) {
-         if (currIndex == nums.length) return 0;
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int exclude = lisHelper(nums, prevIndex, currIndex + 1, k, memo);
-         int include = 0;
-         if (prevIndex == -1 || (nums[currIndex] - nums[prevIndex] <= k && nums[currIndex] > nums[prevIndex])) {
-             include = 1 + lisHelper(nums, currIndex, currIndex + 1, k, memo);
-         }
-
-         return memo[prevIndex + 1][currIndex] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int lengthOfLIS(int[] nums, int k) {
-         int[] dp = new int[nums.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < nums.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (nums[i] > nums[j] && nums[i] - nums[j] <= k) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 2. **[Longest Ideal Subsequence](https://leetcode.com/problems/longest-ideal-subsequence/description/)**
-   - Problem: Find the longest ideal subsequence with a character difference limit.
-   - **Recursion**:
-     ```java
-     public int longestIdealString(String s, int k) {
-         return lisHelper(s, -1, 0, k);
-     }
-
-     private int lisHelper(String s, int prevIndex, int currIndex, int k) {
-         if (currIndex == s.length()) return 0;
-
-         int exclude = lisHelper(s, prevIndex, currIndex + 1, k);
-         int include = 0;
-         if (prevIndex == -1 || Math.abs(s.charAt(currIndex) - s.charAt(prevIndex)) <= k) {
-             include = 1 + lisHelper(s, currIndex, currIndex + 1, k);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int longestIdealString(String s, int k) {
-         int[][] memo = new int[s.length()][s.length + 1];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return lisHelper(s, -1, 0, k, memo);
-     }
-
-     private int lisHelper(String s, int prevIndex, int currIndex, int k, int[][] memo) {
-         if (currIndex == s.length()) return 0;
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int exclude = lisHelper(s, prevIndex, currIndex + 1, k, memo);
-         int include = 0;
-         if (prevIndex == -1 || Math.abs(s.charAt(currIndex) - s.charAt(prevIndex)) <= k) {
-             include = 1 + lisHelper(s, currIndex, currIndex + 1, k, memo);
-         }
-
-         return memo[prevIndex + 1][currIndex] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int longestIdealString(String s, int k) {
-         int[] dp = new int[128]; // ASCII range
-         int max = 0;
-
-         for (char c : s.toCharArray()) {
-             int currMax = 0;
-             for (int i = Math.max(0, c - k); i <= Math.min(127, c + k); i++) {
-                 currMax = Math.max(currMax, dp[i]);
-             }
-             dp[c] = currMax + 1;
-             max = Math.max(max, dp[c]);
-         }
-
-         return max;
-     }
-     ```
-
----
-
-### 3. **[Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/description/)**
-   - Problem: Find the number of longest increasing subsequences.
-   - **Recursion**:
-     ```java
-  public int findNumberOfLIS(int[] nums) {
-    return findLISHelper(nums, -1, 0, 1)[0];
-}
-
-private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length) {
-    if (currIndex == nums.length) return new int[]{1, length - 1};
-
-        int[] exclude = findLISHelper(nums, prevIndex, currIndex + 1, length);
-        int[] include = {0, 0};
-    
-        if (prevIndex == -1 || nums[currIndex] > nums[prevIndex]) {
-            include = findLISHelper(nums, currIndex, currIndex + 1, length + 1);
-        }
-    
-        if (include[1] > exclude[1]) {
-            return include;
-        } else if (include[1] == exclude[1]) {
-            return new int[]{include[0] + exclude[0], include[1]};
-        } else {
-            return exclude;
-        }
-    }
-
-     ```
-   - **Memoization**:
-     ```java
-     public int findNumberOfLIS(int[] nums) {
-         int[][] memo = new int[nums.length][nums.length + 1];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return findLISHelper(nums, -1, 0, 1, memo);
-     }
-
-     private int findLISHelper(int[] nums, int prevIndex, int currIndex, int length, int[][] memo) {
-         if (currIndex == nums.length) return new int[]{1, length - 1};
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int[] exclude = findLISHelper(nums, prevIndex, currIndex + 1, length, memo);
-         int[] include = {0, 0};
-         if (prevIndex == -1 || nums[currIndex] > nums[prevIndex]) {
-             include = findLISHelper(nums, currIndex, currIndex + 1, length + 1, memo);
-         }
-
-         if (include[1] > exclude[1]) {
-             return memo[prevIndex + 1][currIndex] = include;
-         } else if (include[1] == exclude[1]) {
-             return memo[prevIndex + 1][currIndex] = new int[]{include[0] + exclude[0], include[1]};
-         } else {
-             return memo[prevIndex + 1][currIndex] = exclude;
-         }
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int findNumberOfLIS(int[] nums) {
-         int n = nums.length;
-         int[] lengths = new int[n];
-         int[] counts = new int[n];
-         Arrays.fill(lengths, 1);
-         Arrays.fill(counts, 1);
-
-         int maxLength = 0, totalCount = 0;
-         for (int i = 0; i < n; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (nums[i] > nums[j]) {
-                     if (lengths[j] + 1 > lengths[i]) {
-                         lengths[i] = lengths[j] + 1;
-                         counts[i] = counts[j];
-                     } else if (lengths[j] + 1 == lengths[i]) {
-                         counts[i] += counts[j];
-                     }
-                 }
-             }
-             maxLength = Math.max(maxLength, lengths[i]);
-         }
-
-         for (int i = 0; i < n; i++) {
-             if (lengths[i] == maxLength) totalCount += counts[i];
-         }
-
-         return totalCount;
-     }
-     ```
-
----
-
-### 4. **[Find the Maximum Length of Valid Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-i/description/)**
-   - Problem: Find the maximum length of a valid subsequence from the input.
-   - **Recursion**:
-     ```java
-     public int maxLengthValidSubsequenceI(int[] nums, int k) {
-         return validSubseqHelper(nums, -1, 0, k);
-     }
-
-     private int validSubseqHelper(int[] nums, int prevIndex, int currIndex, int k) {
-         if (currIndex == nums.length) return 0;
-
-         int exclude = validSubseqHelper(nums, prevIndex, currIndex + 1, k);
-         int include = 0;
-         if (prevIndex == -1 || nums[currIndex] - nums[prevIndex] <= k) {
-             include = 1 + validSubseqHelper(nums, currIndex, currIndex + 1, k);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int maxLengthValidSubsequenceI(int[] nums, int k) {
-         int[][] memo = new int[nums.length + 1][nums.length];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return validSubseqHelper(nums, -1, 0, k, memo);
-     }
-
-     private int validSubseqHelper(int[] nums, int prevIndex, int currIndex, int k, int[][] memo) {
-         if (currIndex == nums.length) return 0;
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int exclude = validSubseqHelper(nums, prevIndex, currIndex + 1, k, memo);
-         int include = 0;
-         if (prevIndex == -1 || nums[currIndex] - nums[prevIndex] <= k) {
-             include = 1 + validSubseqHelper(nums, currIndex, currIndex + 1, k, memo);
-         }
-
-         return memo[prevIndex + 1][currIndex] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int maxLengthValidSubsequenceI(int[] nums, int k) {
-         int[] dp = new int[nums.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < nums.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (nums[i] - nums[j] <= k) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 5. **[Find the Maximum Length of Valid Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-ii/description/)**
-   - Problem: Find the maximum length of a valid subsequence based on specific conditions.
-   - **Recursion**:
-     ```java
-     public int maxLengthValidSubsequenceII(int[] nums, int k) {
-         return validSubseqHelper(nums, -1, 0, k);
-     }
-
-     private int validSubseqHelper(int[] nums, int prevIndex, int currIndex, int k) {
-         if (currIndex == nums.length) return 0;
-
-         int exclude = validSubseqHelper(nums, prevIndex, currIndex + 1, k);
-         int include = 0;
-         if (prevIndex == -1 || Math.abs(nums[currIndex] - nums[prevIndex]) <= k) {
-             include = 1 + validSubseqHelper(nums, currIndex, currIndex + 1, k);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int maxLengthValidSubsequenceII(int[] nums, int k) {
-         int[][] memo = new int[nums.length + 1][nums.length];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return validSubseqHelper(nums, -1, 0, k, memo);
-     }
-
-     private int validSubseqHelper(int[] nums, int prevIndex, int currIndex, int k, int[][] memo) {
-         if (currIndex == nums.length) return 0;
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int exclude = validSubseqHelper(nums, prevIndex, currIndex + 1, k, memo);
-         int include = 0;
-         if (prevIndex == -1 || Math.abs(nums[currIndex] - nums[prevIndex]) <= k) {
-             include = 1 + validSubseqHelper(nums, currIndex, currIndex + 1, k, memo);
-         }
-
-         return memo[prevIndex + 1][currIndex] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int maxLengthValidSubsequenceII(int[] nums, int k) {
-         int[] dp = new int[nums.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < nums.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (Math.abs(nums[i] - nums[j]) <= k) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 6. **[Find the Maximum Length of a Good Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-i/description/)**
-   - Problem: Determine the maximum length of a "good" subsequence based on given conditions.
-   - **Recursion**:
-     ```java
-     public int maxLengthGoodSubsequenceI(int[] nums, int x) {
-         return goodSubseqHelper(nums, 0, x);
-     }
-
-     private int goodSubseqHelper(int[] nums, int index, int x) {
-         if (index == nums.length) return 0;
-
-         int exclude = goodSubseqHelper(nums, index + 1, x);
-         int include = 0;
-         if (nums[index] >= x) {
-             include = 1 + goodSubseqHelper(nums, index + 1, x);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int maxLengthGoodSubsequenceI(int[] nums, int x) {
-         int[][] memo = new int[nums.length][2];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return goodSubseqHelper(nums, 0, x, memo);
-     }
-
-     private int goodSubseqHelper(int[] nums, int index, int x, int[][] memo) {
-         if (index == nums.length) return 0;
-         if (memo[index][x] != -1) return memo[index][x];
-
-         int exclude = goodSubseqHelper(nums, index + 1, x, memo);
-         int include = 0;
-         if (nums[index] >= x) {
-             include = 1 + goodSubseqHelper(nums, index + 1, x, memo);
-         }
-
-         return memo[index][x] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int maxLengthGoodSubsequenceI(int[] nums, int x) {
-         int[] dp = new int[nums.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < nums.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (nums[i] >= x) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 7. **[Find the Maximum Length of a Good Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-ii/description/)**
-   - Problem: Similar to the above but may involve additional constraints or different definitions of "good".
-   - **Recursion**:
-     ```java
-     public int maxLengthGoodSubsequenceII(int[] nums, int x) {
-         return goodSubseqHelper(nums, 0, x);
-     }
-
-     private int goodSubseqHelper(int[] nums, int index, int x) {
-         if (index == nums.length) return 0;
-
-         int exclude = goodSubseqHelper(nums, index + 1, x);
-         int include = 0;
-         if (nums[index] >= x) {
-             include = 1 + goodSubseqHelper(nums, index + 1, x);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int maxLengthGoodSubsequenceII(int[] nums, int x) {
-         int[][] memo = new int[nums.length][2];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return goodSubseqHelper(nums, 0, x, memo);
-     }
-
-     private int goodSubseqHelper(int[] nums, int index, int x, int[][] memo) {
-         if (index == nums.length) return 0;
-         if (memo[index][x] != -1) return memo[index][x];
-
-         int exclude = goodSubseqHelper(nums, index + 1, x, memo);
-         int include = 0;
-         if (nums[index] >= x) {
-             include = 1 + goodSubseqHelper(nums, index + 1, x, memo);
-         }
-
-         return memo[index][x] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int maxLengthGoodSubsequenceII(int[] nums, int x) {
-         int[] dp = new int[nums.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < nums.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (nums[i] >= x) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 8. **[Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/description/)**
-   - Problem: Find the longest chain of pairs such that each pair's second value is less than the next pair's first value.
-   - **Recursion**:
-     ```java
-     public int findLongestChain(int[][] pairs) {
-         Arrays.sort(pairs, (a, b) -> a[0] - b[0]);
-         return pairChainHelper(pairs, -1, 0);
-     }
-
-     private int pairChainHelper(int[][] pairs, int prevIndex, int currIndex) {
-         if (currIndex == pairs.length) return 0;
-
-         int exclude = pairChainHelper(pairs, prevIndex, currIndex + 1);
-         int include = 0;
-         if (prevIndex == -1 || pairs[prevIndex][1] < pairs[currIndex][0]) {
-             include = 1 + pairChainHelper(pairs, currIndex, currIndex + 1);
-         }
-
-         return Math.max(include, exclude);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int findLongestChain(int[][] pairs) {
-         Arrays.sort(pairs, (a, b) -> a[0] - b[0]);
-         int[][] memo = new int[pairs.length][pairs.length];
-         for (int[] row : memo) Arrays.fill(row, -1);
-         return pairChainHelper(pairs, -1, 0, memo);
-     }
-
-     private int pairChainHelper(int[][] pairs, int prevIndex, int currIndex, int[][] memo) {
-         if (currIndex == pairs.length) return 0;
-         if (memo[prevIndex + 1][currIndex] != -1) return memo[prevIndex + 1][currIndex];
-
-         int exclude = pairChainHelper(pairs, prevIndex, currIndex + 1, memo);
-         int include = 0;
-         if (prevIndex == -1 || pairs[prevIndex][1] < pairs[currIndex][0]) {
-             include = 1 + pairChainHelper(pairs, currIndex, currIndex + 1, memo);
-         }
-
-         return memo[prevIndex + 1][currIndex] = Math.max(include, exclude);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int findLongestChain(int[][] pairs) {
-         Arrays.sort(pairs, (a, b) -> a[0] - b[0]);
-         int[] dp = new int[pairs.length];
-         Arrays.fill(dp, 1);
-
-         for (int i = 1; i < pairs.length; i++) {
-             for (int j = 0; j < i; j++) {
-                 if (pairs[j][1] < pairs[i][0]) {
-                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                 }
-             }
-         }
-
-         int max = 0;
-         for (int val : dp) max = Math.max(max, val);
-         return max;
-     }
-     ```
-
----
-
-### 9. **[Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/description/)**
-   - Problem: Check if there exists a triplet (i, j, k) such that `nums[i] < nums[j] < nums[k]`.
-   - **Recursion**:
-     ```java
-     public boolean increasingTriplet(int[] nums) {
-         return tripletHelper(nums, -1, 0, 0);
-     }
-
-     private boolean tripletHelper(int[] nums, int prevIndex, int currIndex, int count) {
-         if (count == 3) return true;
-         if (currIndex == nums.length) return false;
-
-         boolean exclude = tripletHelper(nums, prevIndex, currIndex + 1, count);
-         boolean include = false;
-         if (prevIndex == -1 || nums[currIndex] > nums[prevIndex]) {
-             include = tripletHelper(nums, currIndex, currIndex + 1, count + 1);
-         }
-
-         return include || exclude;
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public boolean increasingTriplet(int[] nums) {
-         int[][][] memo = new int[nums.length][nums.length][4];
-         for (int[][] row : memo)
-             for (int[] col : row)
-                 Arrays.fill(col, -1);
-         return tripletHelper(nums, -1, 0, 0, memo);
-     }
-
-     private boolean tripletHelper(int[] nums, int prevIndex, int currIndex, int count, int[][][] memo) {
-         if (count == 3) return true;
-         if (currIndex == nums.length) return false;
-         if (memo[prevIndex + 1][currIndex][count] != -1) return memo[prevIndex + 1][currIndex][count] == 1;
-
-         boolean exclude = tripletHelper(nums, prevIndex, currIndex + 1, count, memo);
-         boolean include = false;
-         if (prevIndex == -1 || nums[currIndex] > nums[prevIndex]) {
-             include = tripletHelper(nums, currIndex, currIndex + 1, count + 1, memo);
-         }
-
-         memo[prevIndex + 1][currIndex][count] = (include || exclude) ? 1 : 0;
-         return include || exclude;
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public boolean increasingTriplet(int[] nums) {
-         int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
-
-         for (int num : nums) {
-             if (num <= first) {
-                 first = num;
-             } else if (num <= second) {
-                 second = num;
-             } else {
-                 return true;
-             }
-         }
-
-         return false;
-     }
-     ```
-
----
-
 ### 10. **[Minimum Operations to Make the Array K-Increasing](https://leetcode.com/problems/minimum-operations-to-make-the-array-k-increasing/description/)**
    - Problem: Find the minimum number of operations to make the array k-increasing.
    - **Recursion**:
@@ -892,10 +199,457 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
 
 
 
+# Complete Dynamic Programming Guide
+
+## Fundamentals
+* **Top-down approach (Memoization)**
+     - Analyze how many variables are used to create a dp array
+     - Uses recursion with memoization
+     - Easier to implement
+     - More intuitive
+
+* **Bottom-up approach (Tabulation)**
+     - Analyze the base conditions
+     - Uses iteration
+     - More efficient in space
+     - Sometimes harder to implement
+
+## Problem Categories
+
+### 3. Common Patterns
+
+
+## 1. Basic DP Problems
+
+#### 1.1 Fibonacci Pattern Problems
+##### [Jump Game](https://leetcode.com/problems/jump-game/)
+**Problem**: Determine if you can reach the last index.
+
+```java
+// 1. Recursion - Time: O(2^n), Space: O(n)
+public boolean canJump(int[] nums) {
+    return canJumpRecursive(nums, 0);
+}
+
+private boolean canJumpRecursive(int[] nums, int index) {
+    if (index >= nums.length - 1) return true;
+    
+    int maxJump = nums[index];
+    for (int step = 1; step <= maxJump; step++) {
+        if (canJumpRecursive(nums, index + step)) return true;
+    }
+    return false;
+}
+
+// 2. Memoization - Time: O(n²), Space: O(n)
+public boolean canJump(int[] nums) {
+    int[] memo = new int[nums.length];
+    Arrays.fill(memo, -1); // -1: Not computed, 0: False, 1: True
+    return canJumpMemo(nums, 0, memo);
+}
+
+private boolean canJumpMemo(int[] nums, int index, int[] memo) {
+    if (index >= nums.length - 1) return true;
+    if (memo[index] != -1) return memo[index] == 1;
+
+    int maxJump = nums[index];
+    for (int step = 1; step <= maxJump; step++) {
+        if (canJumpMemo(nums, index + step, memo)) {
+            memo[index] = 1;
+            return true;
+        }
+    }
+    memo[index] = 0;
+    return false;
+}
+
+// 3. Greedy (Most Optimal) - Time: O(n), Space: O(1)
+public boolean canJump(int[] nums) {
+    int maxReach = 0;
+    for (int i = 0; i <= maxReach && i < nums.length; i++) {
+        maxReach = Math.max(maxReach, i + nums[i]);
+        if (maxReach >= nums.length - 1) return true;
+    }
+    return false;
+}
+```
+
+
+## Distinct Ways
+##### [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+**Problem**: You can climb 1 or 2 steps. How many distinct ways to reach top?
+
+```java
+// 1. Recursion - Time: O(2^n), Space: O(n)
+public int climbStairs(int n) {
+    if (n <= 2) return n;
+    return climbStairs(n - 1) + climbStairs(n - 2);
+}
+
+// 2. Memoization - Time: O(n), Space: O(n)
+public int climbStairs(int n) {
+    int[] memo = new int[n + 1];
+    Arrays.fill(memo, -1);
+    return climbHelper(n, memo);
+}
+
+private int climbHelper(int n, int[] memo) {
+    if (n <= 2) return n;
+    if (memo[n] != -1) return memo[n];
+    return memo[n] = climbHelper(n - 1, memo) + climbHelper(n - 2, memo);
+}
+
+// 3. Tabulation - Time: O(n), Space: O(n)
+public int climbStairs(int n) {
+    if (n <= 2) return n;
+    int[] dp = new int[n + 1];
+    dp[1] = 1; dp[2] = 2;
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+```
+
+
+## **🎯 Minimization Problems Pattern: Unbounded Knapsack (Dynamic Programming)**
+### 2. Array-based DP
+
+##### [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+**Problem**: Find minimum cost to reach the top. Can start from index 0 or 1.
+
+```java
+// 1. Recursion - Time: O(2^n), Space: O(n)
+public int minCostClimbingStairs(int[] cost) {
+    return Math.min(minCost(cost, cost.length - 1), 
+                   minCost(cost, cost.length - 2));
+}
+
+private int minCost(int[] cost, int i) {
+    if (i < 0) return 0;
+    if (i == 0 || i == 1) return cost[i];
+    return cost[i] + Math.min(minCost(cost, i - 1), 
+                             minCost(cost, i - 2));
+}
+
+// 2. Memoization - Time: O(n), Space: O(n)
+public int minCostClimbingStairs(int[] cost) {
+    int n = cost.length;
+    int[] memo = new int[n];
+    Arrays.fill(memo, -1);
+    return Math.min(minCost(cost, n - 1, memo), 
+                   minCost(cost, n - 2, memo));
+}
+
+private int minCost(int[] cost, int i, int[] memo) {
+    if (i < 0) return 0;
+    if (i == 0 || i == 1) return cost[i];
+    if (memo[i] != -1) return memo[i];
+    return memo[i] = cost[i] + Math.min(minCost(cost, i - 1, memo), 
+                                       minCost(cost, i - 2, memo));
+}
+
+// 3. Tabulation - Time: O(n), Space: O(1)
+public int minCostClimbingStairs(int[] cost) {
+    int prev1 = 0, prev2 = 0;
+    
+    for (int i = 2; i <= cost.length; i++) {
+        int curr = Math.min(prev1 + cost[i - 1], 
+                          prev2 + cost[i - 2]);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+```
+
+### 5.  Unbounded Knapsack **0/1 Pattern or  Unbounded Knapsack**
+- Include/exclude choices
+- Knapsack problems
+
+The **Coin Change** problem falls under the **Unbounded Knapsack DP Pattern**, which is useful for solving **real-world problems involving combinations, minimum cost, and resource allocation**.
+Here are some real-life problems and the pattern to recognize them.
+
+This pattern applies to problems where:
+1. You have **unlimited supply** of each item (like coins, food packets, etc.).
+2. You need to **maximize/minimize a value** (like cost, count, weight).
+3. You are trying to **fill a target amount/weight/capacity** optimally.
+
+### **🔑 How to Identify This Pattern?**
+**Ask yourself:**
+✅ Do I have an **unlimited supply** of items?  
+✅ Am I trying to **reach an exact target** (amount, weight, length, distance)?  
+✅ Am I looking for the **minimum or maximum** way to do it?
+
+If **yes**, then it’s a **Coin Change (Unbounded Knapsack) DP problem**! 🎯
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin.
+
+```java
+class Solution {
+
+    int solve(int[] coins, int amount, HashMap<Integer, Integer> dp){
+        if(amount==0){
+            return 0;
+        }
+     
+        if(amount < 0){
+            return Integer.MAX_VALUE;
+        }
+
+        if(dp.get(amount) != null){
+            return dp.get(amount);
+        }
+
+        int min = Integer.MAX_VALUE;
+        for(int coin : coins){
+            if(amount<coin) continue;
+            int temp = solve(coins, amount-coin, dp);
+            min = Math.min(min, temp != Integer.MAX_VALUE ? 1 + temp : temp);
+        }
+        dp.put(amount, min);
+
+        return dp.get(amount);
+    }
+
+
+    
+    public int coinChange(int[] coins, int amount) {
+        Arrays.sort(coins);
+
+        HashMap<Integer, Integer> dp= new HashMap<>();
+        int count = solve(coins, amount, dp) ;
+        if(count!= Integer.MAX_VALUE){
+            return count;
+        }
+        return -1;
+    }
+}
+```
+
+M2  important
+
+```java
+
+import java.util.Arrays;
+
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) return 0;
+        
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1); // Fill with an unreachable max value
+        dp[0] = 0;
+
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+
+        return dp[amount] == amount + 1 ? -1 : dp[amount];
+    }
+}
+
+```
+
+---
+
+### **🌍 Real-World Problems Using This Pattern**
+
+### **1. Minimum Banknotes Needed (ATM Withdrawal)**
+**Problem:**  
+An ATM has banknotes of `{1, 5, 10, 20, 50, 100}`. A customer requests ₹287. Find the **minimum number of banknotes** required to dispense this amount.
+
+🔹 **Solution:**  
+Same as **coin change**, where:
+- `coins = {1, 5, 10, 20, 50, 100}`
+- `amount = 287`
+- Goal: Minimize the number of notes.
+
+---
+
+### **2. Minimum Food Packets for Refugees**
+**Problem:**  
+A charity organization wants to distribute **food packets** to a refugee camp. Packets are available in `{5, 10, 20}` sizes. What is the **minimum number of packets** required to supply `N` kg of food?
+
+🔹 **Solution:**
+- `coins = {5, 10, 20}` (packet sizes)
+- `amount = N` (total food requirement)
+- **Minimize** the number of packets used.
+
+---
+
+### **3. Minimum Bottles to Fill a Tank**
+**Problem:**  
+You have water bottles of different capacities `{250ml, 500ml, 1L, 2L, 5L}`. Given a tank capacity of `T` liters, find the **minimum number of bottles** required to fill it exactly.
+
+🔹 **Solution:**
+- `coins = {250, 500, 1000, 2000, 5000}` (bottle sizes in ml)
+- `amount = T * 1000` (convert liters to ml)
+- **Minimize** the number of bottles used.
+
+---
+
+### **4. Making Exact Change in Vending Machines**
+**Problem:**  
+A vending machine has coins of `{1, 2, 5, 10}`. A customer inserts a bill, and the machine needs to return `X` amount in **minimum coins**.
+
+🔹 **Solution:**
+- Same as **coin change**, where we minimize the number of coins returned.
+
+---
+
+### **5. Cutting Metal Rods for Construction**
+**Problem:**  
+A construction company needs metal rods of length `L`. They have an unlimited supply of rods of `{1m, 2m, 5m, 10m}`. Find the **minimum number of rods** required to get exactly `L` meters.
+
+🔹 **Solution:**
+- `coins = {1, 2, 5, 10}` (rod lengths)
+- `amount = L` (required length)
+- **Minimize** the number of rods.
+
+---
+
+### **6. Minimum Jumps to Reach the End**
+**Problem:**  
+A frog can jump `{1, 2, 3}` stones at a time to cross a river of `N` stones. Find the **minimum jumps** required.
+
+🔹 **Solution:**
+- `coins = {1, 2, 3}` (jump sizes)
+- `amount = N` (stones to cross)
+- **Minimize** the number of jumps.
 
 ---
 
 
+
+## 3. String-based DP
+#### ip partition
+https://leetcode.com/problems/partition-equal-subset-sum/description/
+#### 3.1 Word Break Problems
+##### [Word Break](https://leetcode.com/problems/word-break/)
+**Problem**: Determine if string can be segmented into dictionary words.
+
+```java
+// 1. Recursion - Time: O(2^n), Space: O(n)
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakRecursive(s, new HashSet<>(wordDict), 0);
+}
+
+private boolean wordBreakRecursive(String s, Set<String> dict, int start) {
+    if (start == s.length()) return true;
+    
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (dict.contains(s.substring(start, end)) && 
+            wordBreakRecursive(s, dict, end)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 2. Memoization - Time: O(n²), Space: O(n)
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakMemo(s, new HashSet<>(wordDict), 0, 
+                        new Boolean[s.length()]);
+}
+
+private boolean wordBreakMemo(String s, Set<String> dict, 
+                            int start, Boolean[] memo) {
+    if (start == s.length()) return true;
+    if (memo[start] != null) return memo[start];
+    
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (dict.contains(s.substring(start, end)) && 
+            wordBreakMemo(s, dict, end, memo)) {
+            return memo[start] = true;
+        }
+    }
+    return memo[start] = false;
+}
+
+// 3. Tabulation - Time: O(n²), Space: O(n)
+public boolean wordBreak(String s, List<String> wordDict) {
+    Set<String> dictionary = new HashSet<>(wordDict);
+    boolean[] dp = new boolean[s.length() + 1];
+    dp[0] = true;
+    
+    for (int i = 1; i <= s.length(); i++) {
+        for (int j = 0; j < i; j++) {
+            if (dp[j] && dictionary.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length()];
+}
+```
+
+
+
+## **Matrix Pattern**
+- Grid traversal
+- Path finding
+
+
+
+## **Interval Pattern**
+- Substring problems
+- Range queries
+
+
+## Interview Tips
+
+## Must-Know Problems for FAANG
+
+1. **Array/String DP**
+     - Longest Increasing Subsequence
+     - Edit Distance
+     - Word Break
+     - Regular Expression Matching
+
+2. **Matrix DP**
+     - Unique Paths
+     - Minimum Path Sum
+     - Maximal Square
+
+3. **Game Theory DP**
+     - Stone Game
+     - Predict the Winner
+
+4. **Interval DP**
+     - Burst Balloons
+     - Palindrome Problems
+
+5. **Tree DP**
+     - House Robber III
+     - Binary Tree Maximum Path Sum
+
+## Practice Strategy
+
+1. **Start with Basics**
+     - Fibonacci sequence
+     - Climbing Stairs
+     - Coin Change
+
+2. **Move to Intermediate**
+     - Longest Common Subsequence
+     - Word Break
+     - Jump Game
+
+3. **Advanced Problems**
+     - Regular Expression Matching
+     - Burst Balloons
+     - Edit Distance
+
+4. **Company-Specific Focus**
+     - Google: String DP
+     - Amazon: Matrix DP
+     - Facebook: Array DP
+     - Apple: Tree DP
 
 
 
@@ -911,41 +665,6 @@ private int[] findLISHelper(int[] nums, int prevIndex, int currIndex, int length
 
 
 ## other 
-
-1. **[Fibonacci Numbers](https://leetcode.com/problems/fibonacci-number/)**
-   - **Recursion**:
-     ```java
-     public int fib(int n) {
-         if (n <= 1) return n;
-         return fib(n - 1) + fib(n - 2);
-     }
-     ```
-   - **Memoization**:
-     ```java
-     public int fib(int n) {
-         int[] memo = new int[n + 1];
-         Arrays.fill(memo, -1);
-         return fibHelper(n, memo);
-     }
-
-     private int fibHelper(int n, int[] memo) {
-         if (n <= 1) return n;
-         if (memo[n] != -1) return memo[n];
-         return memo[n] = fibHelper(n - 1, memo) + fibHelper(n - 2, memo);
-     }
-     ```
-   - **Tabulation**:
-     ```java
-     public int fib(int n) {
-         if (n <= 1) return n;
-         int[] dp = new int[n + 1];
-         dp[0] = 0; dp[1] = 1;
-         for (int i = 2; i <= n; i++) {
-             dp[i] = dp[i - 1] + dp[i - 2];
-         }
-         return dp[n];
-     }
-     ```
 
 
 ### **6. [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)**
@@ -1089,194 +808,6 @@ public int coinChange(int[] coins, int amount) {
         }
     }
     return dp[amount] > amount ? -1 : dp[amount];
-}
-```
-
----
-
-### **8. [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)**
-
-#### **Problem Statement**
-Find the contiguous subarray within an array (containing at least one number) which has the largest product.
-
-
-**Note** can be subsequence or sub-array for max/min sum/product elements or with length k  
----
-
-#### **Solution Approaches**
-
-##### 1. **Recursive Solution**
-```java
-
-private int maxProductRecursive(int[] nums, int index, int currentProduct) {
-    if (index == nums.length) return currentProduct;
-    return Math.max(maxProductRecursive(nums, index + 1, currentProduct * nums[index]),
-                    maxProductRecursive(nums, index + 1, nums[index]));
-}
-
-public int maxProduct(int[] nums) {
-    return maxProductRecursive(nums, 0, 1);
-}
-
-
-```
-**Note**: Recursive solutions for this problem are not ideal due to complexity. Use DP-based solutions below.
-
----
-
-##### 2. **Tabulation Solution**
-```java
-public int maxProduct(int[] nums) {
-    int maxProduct = nums[0];
-    int currMax = nums[0], currMin = nums[0];
-
-    for (int i = 1; i < nums.length; i++) {
-        if (nums[i] < 0) {
-            int temp = currMax;
-            currMax = currMin;
-            currMin = temp;
-        }
-        currMax = Math.max(nums[i], currMax * nums[i]);
-        currMin = Math.min(nums[i], currMin * nums[i]);
-
-        maxProduct = Math.max(maxProduct, currMax);
-    }
-    return maxProduct;
-}
-```
-
----
-
-### **9. [Word Break](https://leetcode.com/problems/word-break/)**
-
-#### **Problem Statement**
-Given a string `s` and a dictionary of strings `wordDict`, determine if `s` can be segmented into a space-separated sequence of one or more dictionary words.
-
----
-
-#### **Solution Approaches**
-
-##### 1. **Recursive Solution**
-```java
-public boolean wordBreak(String s, List<String> wordDict) {
-    return wordBreakRecursive(s, new HashSet<>(wordDict), 0);
-}
-
-private boolean wordBreakRecursive(String s, Set<String> wordDict, int start) {
-    if (start == s.length()) return true;
-    for (int end = start + 1; end <= s.length(); end++) {
-        if (wordDict.contains(s.substring(start, end)) && wordBreakRecursive(s, wordDict, end)) {
-            return true;
-        }
-    }
-    return false;
-}
-```
-
-##### 2. **Memoization Solution**
-```java
-public boolean wordBreak(String s, List<String> wordDict) {
-    return wordBreakMemo(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
-}
-
-private boolean wordBreakMemo(String s, Set<String> wordDict, int start, Boolean[] memo) {
-    if (start == s.length()) return true;
-    if (memo[start] != null) return memo[start];
-
-    for (int end = start + 1; end <= s.length(); end++) {
-        if (wordDict.contains(s.substring(start, end)) && wordBreakMemo(s, wordDict, end, memo)) {
-            return memo[start] = true;
-        }
-    }
-    return memo[start] = false;
-}
-```
-
-##### 3. **Tabulation Solution**
-```java
-public boolean wordBreak(String s, List<String> wordDict) {
-    Set<String> wordSet = new HashSet<>(wordDict);
-    boolean[] dp = new boolean[s.length() + 1];
-    dp[0] = true;
-
-    for (int i = 1; i <= s.length(); i++) {
-        for (int j = 0; j < i; j++) {
-            if (dp[j] && wordSet.contains(s.substring(j, i))) {
-                dp[i] = true;
-                break;
-            }
-        }
-    }
-    return dp[s.length()];
-}
-```
-
-### **[Decode Ways](https://leetcode.com/problems/decode-ways/)**
-
-#### **Problem Statement**
-Given a string `s` containing only digits, determine the total number of ways to decode it, where:
-- 'A' -> "1", 'B' -> "2", ..., 'Z' -> "26".
-
----
-
-#### **Solution Approaches**
-
-##### 1. **Recursive Solution**
-```java
-public int numDecodings(String s) {
-    return decodeRecursive(s, 0);
-}
-
-private int decodeRecursive(String s, int index) {
-    if (index == s.length()) return 1;
-    if (s.charAt(index) == '0') return 0;
-
-    int ways = decodeRecursive(s, index + 1);
-    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
-        ways += decodeRecursive(s, index + 2);
-    }
-    return ways;
-}
-```
-
-##### 2. **Memoization Solution**
-```java
-public int numDecodings(String s) {
-    int[] memo = new int[s.length()];
-    Arrays.fill(memo, -1);
-    return decodeMemo(s, 0, memo);
-}
-
-private int decodeMemo(String s, int index, int[] memo) {
-    if (index == s.length()) return 1;
-    if (s.charAt(index) == '0') return 0;
-    if (memo[index] != -1) return memo[index];
-
-    int ways = decodeMemo(s, index + 1, memo);
-    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
-        ways += decodeMemo(s, index + 2, memo);
-    }
-    memo[index] = ways;
-    return ways;
-}
-```
-
-##### 3. **Tabulation Solution**
-```java
-public int numDecodings(String s) {
-    int n = s.length();
-    int[] dp = new int[n + 1];
-    dp[0] = 1;
-
-    for (int i = 1; i <= n; i++) {
-        if (s.charAt(i - 1) != '0') {
-            dp[i] += dp[i - 1];
-        }
-        if (i >= 2 && Integer.parseInt(s.substring(i - 2, i)) <= 26) {
-            dp[i] += dp[i - 2];
-        }
-    }
-    return dp[n];
 }
 ```
 
@@ -1711,42 +1242,7 @@ public int superEggDrop(int k, int n) {
 
 Interview Tips and Problem Organization
 
-### 1. Problem Solving Steps
-1. **Identify Pattern**
-   - What changes in each subproblem?
-   - What information needs to be tracked?
-
-2. **Define States**
-   - What variables represent the state?
-   - How many dimensions needed?
-
-3. **Write Recurrence**
-   - Base cases first
-   - Transition function
-   - Return value
-
-4. **Optimize**
-   - Can space be reduced?
-   - Any unnecessary calculations?
-
-### 2. Common Mistakes to Avoid
-1. **Base Cases**
-   - Missing edge cases
-   - Incorrect initialization
-
-2. **State Definition**
-   - Too many state variables
-   - Missing crucial information
-
-3. **Transitions**
-   - Incorrect recurrence relation
-   - Missing some valid transitions
-
-4. **Space Optimization**
-   - Not considering when possible
-   - Incorrect variable updates
-
-## Must-Know Problems by Difficulty
+### Must-Know Problems by Difficulty
 
 ### Easy (⭐)
 1. Climbing Stairs
@@ -1768,22 +1264,6 @@ Interview Tips and Problem Organization
 3. Burst Balloons
 4. Maximum Profit in Job Scheduling
 5. Longest Common Subsequence
-
-## Space Optimization Techniques
-
-### 1. 1D to Constant Space
-- Keep only last 2-3 values
-- Example: Fibonacci, House Robber
-
-### 2. 2D to 1D Space
-- Use rolling array
-- Only need previous row/column
-
-### 3. Memory vs Speed
-- Consider problem constraints
-- Sometimes trading space for time is worth it
-
-
 
 
 ~~## string problems 

@@ -40,6 +40,7 @@
 * https://leetcode.com/problems/count-vowel-substrings-of-a-string/description/
 * https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/description/
 * https://leetcode.com/problems/word-break/description/?envType=study-plan-v2&envId=top-interview-150
+* https://leetcode.com/problems/number-of-longest-increasing-subsequence/
 
 
 ## recursion or iteration problems

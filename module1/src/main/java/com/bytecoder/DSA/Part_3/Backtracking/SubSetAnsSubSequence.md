@@ -316,6 +316,94 @@ class Solution {
 }
 ```
 
+## 4. Subsequence Problems
+
+#### 4.1 Longest Increasing Subsequence (LIS)
+
+##### 1. **[Longest Increasing Subsequence II](https://leetcode.com/problems/longest-increasing-subsequence-ii/description/)**
+- Problem: Find the length of the longest increasing subsequence within a limited difference range.
+##### 2. **[Longest Ideal Subsequence](https://leetcode.com/problems/longest-ideal-subsequence/description/)**
+- Problem: Find the longest ideal subsequence with a character difference limit.
+##### 3. **[Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/description/)**
+- Problem: Find the number of longest increasing subsequences.
+
+##### 4. **[Find the Maximum Length of Valid Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-i/description/)**
+- Problem: Find the maximum length of a valid subsequence from the input.
+
+
+##### 5. **[Find the Maximum Length of Valid Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-ii/description/)**
+- Problem: Find the maximum length of a valid subsequence based on specific conditions.
+
+##### 6. **[Find the Maximum Length of a Good Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-i/description/)**
+- Problem: Determine the maximum length of a "good" subsequence based on given conditions.
+
+##### 7. **[Find the Maximum Length of a Good Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-ii/description/)**
+- Problem: Similar to the above but may involve additional constraints or different definitions of "good".
+
+##### 8. **[Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/description/)**
+- Problem: Find the longest chain of pairs such that each pair's second value is less than the next pair's first value.
+
+##### 9. **[Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/description/)**
+- Problem: Check if there exists a triplet (i, j, k) such that `nums[i] < nums[j] < nums[k]`.
+```java
+// 1. Recursion - Time: O(2^n), Space: O(n)
+public int lengthOfLIS(int[] nums) {
+    return lengthOfLISRecursive(nums, Integer.MIN_VALUE, 0);
+}
+
+private int lengthOfLISRecursive(int[] nums, int prev, int curr) {
+    if (curr == nums.length) return 0;
+    
+    int include = 0;
+    if (nums[curr] > prev) {
+        include = 1 + lengthOfLISRecursive(nums, nums[curr], curr + 1);
+    }
+    int exclude = lengthOfLISRecursive(nums, prev, curr + 1);
+    
+    return Math.max(include, exclude);
+}
+
+// 2. Memoization - Time: O(n²), Space: O(n²)
+public int lengthOfLIS(int[] nums) {
+    int[][] memo = new int[nums.length + 1][nums.length];
+    for (int[] row : memo) Arrays.fill(row, -1);
+    return lengthOfLISMemo(nums, -1, 0, memo);
+}
+
+private int lengthOfLISMemo(int[] nums, int prevIndex, int curr, int[][] memo) {
+    if (curr == nums.length) return 0;
+    if (prevIndex != -1 && memo[prevIndex][curr] != -1) 
+        return memo[prevIndex][curr];
+    
+    int include = 0;
+    if (prevIndex == -1 || nums[curr] > nums[prevIndex]) {
+        include = 1 + lengthOfLISMemo(nums, curr, curr + 1, memo);
+    }
+    int exclude = lengthOfLISMemo(nums, prevIndex, curr + 1, memo);
+    
+    if (prevIndex != -1) memo[prevIndex][curr] = Math.max(include, exclude);
+    return Math.max(include, exclude);
+}
+
+// 3. Tabulation - Time: O(n²), Space: O(n)
+public int lengthOfLIS(int[] nums) {
+    int[] dp = new int[nums.length];
+    Arrays.fill(dp, 1);
+    int maxLen = 1;
+    
+    for (int i = 1; i < nums.length; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[i] > nums[j]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+        maxLen = Math.max(maxLen, dp[i]);
+    }
+    return maxLen;
+}
+```
+
+
 
 ## **1. Basic Subset Generation**
 - 🔹 **[78. Subsets](https://leetcode.com/problems/subsets/) (Medium)**  

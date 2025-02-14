@@ -3,8 +3,8 @@ package com.gschoudhary.design.patterns.bahavioral.iterator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.bytecoder.DesignPatterns.bahavioral.iterator.DoublyLinkedList;
-import com.bytecoder.DesignPatterns.bahavioral.iterator.DoublyNode;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.iterator.DoublyLinkedList;
+import com.bytecoder.DesignPatterns.LLD.bahavioral.iterator.DoublyNode;
 
 import java.util.Iterator;
 

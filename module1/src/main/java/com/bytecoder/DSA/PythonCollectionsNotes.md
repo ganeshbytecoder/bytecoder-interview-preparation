@@ -1,6 +1,63 @@
 > **Note**: One relevant change that arrived in **Python 3.9** is the **dictionary merge (`|`) and update (`|=`) operators**, which you can use in Python 3.10 as well.
 > by-default all the iterable functions will work on dictionary's key only it does not take values 
 
+```python 
+print([1] == [1])
+
+print([1] is [1])
+
+print({1:1} == {1:1})
+
+print({1:1} is {1:1})
+
+```
+
+
+In Python, the `==` operator checks for **value equality**, while the `is` operator checks for **object identity** (whether two objects refer to the same memory location).
+
+### Equivalent Java Code:
+Java doesn't have an `is` operator like Python, but you can achieve the same checks using `equals()` for value equality and `==` for reference equality.
+
+#### Equivalent Java Implementation:
+```java
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EqualityCheck {
+    public static void main(String[] args) {
+        // Checking value and reference equality for lists
+        List<Integer> list1 = List.of(1);
+        List<Integer> list2 = List.of(1);
+        System.out.println(list1.equals(list2)); // Equivalent to Python's [1] == [1]
+        System.out.println(list1 == list2); // Equivalent to Python's [1] is [1]
+
+        // Checking value and reference equality for maps
+        Map<Integer, Integer> map1 = new HashMap<>();
+        map1.put(1, 1);
+
+        Map<Integer, Integer> map2 = new HashMap<>();
+        map2.put(1, 1);
+
+        System.out.println(map1.equals(map2)); // Equivalent to Python's {1:1} == {1:1}
+        System.out.println(map1 == map2); // Equivalent to Python's {1:1} is {1:1}
+    }
+}
+```
+
+### Explanation:
+1. `list1.equals(list2)`: ✅ `true` → Checks **value equality**, so two lists with the same elements are considered equal.
+2. `list1 == list2`: ❌ `false` → Checks **reference equality**, and since `List.of(1)` creates new objects, they are different.
+3. `map1.equals(map2)`: ✅ `true` → Checks **value equality**, meaning two maps with the same key-value pairs are equal.
+4. `map1 == map2`: ❌ `false` → Checks **reference equality**, and since both are separately created instances, they are different.
+
+Would you like a deeper explanation of Java's `equals()` vs. `==`?
+
+
+
+
+
+
 Here are detailed notes on **`is`**, **`in`**, **`not in`**, and **`is not`** in Python with examples and use cases:
 
 ---

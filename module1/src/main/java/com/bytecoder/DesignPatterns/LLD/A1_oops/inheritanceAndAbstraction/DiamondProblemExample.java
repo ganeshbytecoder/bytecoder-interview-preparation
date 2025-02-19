@@ -1,4 +1,4 @@
-package com.bytecoder.DesignPatterns.LLD.oops.inheritanceAndAbstraction;
+package com.bytecoder.DesignPatterns.LLD.A1_oops.inheritanceAndAbstraction;
 
 /**
  * how to have multiple inheritance in java through interfaces

@@ -1,3 +1,6 @@
+//    MST -> PK -> P -> graph starts PriorityQueue 0 edge +  BFS and K -> PriorityQueue + all edges + DSU
+//    note -> use only if you know graph is DAG for this (stack and DFS) else use kahn's algorithm (in-degree and queue
+
 
 in the real world , many problems are representated in terms of objects and connections between them.
 for example, airline routes, electric circuits , LAN and internet , facebook friends etc
@@ -193,6 +196,8 @@ Graph coloring:
     }
 /*-------------------------------------------------------------------------------------------------*/
 ```
+
+
 ```java
 Practice Question : No of Islands , Rotting Oranges
 
@@ -286,6 +291,68 @@ private static void dfs(Graph<String> graph, String source) {
     System.out.println(curr);
 }
 /*-----------------------------------------------------------------------------------*/
+```
+15. **Find if There is a Path of More Than K Length from a Source**
+    -The "Path of Greater than Equal to k length" problem is a graph traversal problem where we need to determine
+    whether there exists a path in an undirected weighted graph whose total weight is greater than or equal to
+    k. This problem is typically solved using Depth First Search (DFS) with backtracking.
+
+```java
+
+import java.util.*;
+
+class Solution {
+    public boolean dfs(List<List<int[]>> adj, boolean[] visited, int node, int currentSum, int k) {
+        // If current path sum is already >= k, return true
+        if (currentSum >= k) return true;
+
+        visited[node] = true; // Mark node as visited
+
+        for (int[] neighbor : adj.get(node)) {
+            int nextNode = neighbor[0];
+            int weight = neighbor[1];
+
+            if (!visited[nextNode]) {
+                if (dfs(adj, visited, nextNode, currentSum + weight, k)) {
+                    return true;
+                }
+            }
+        }
+
+        visited[node] = false; // Backtrack
+        return false;
+    }
+
+    public boolean pathMoreThanK(int N, int M, int K, int[][] edges) {
+        List<List<int[]>> adj = new ArrayList<>();
+        
+        // Initialize adjacency list
+        for (int i = 0; i < N; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Build the graph
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1], w = edge[2];
+            adj.get(u).add(new int[]{v, w});
+            adj.get(v).add(new int[]{u, w}); // Since the graph is undirected
+        }
+
+        boolean[] visited = new boolean[N];
+
+        // Start DFS from node 0
+        return dfs(adj, visited, 0, 0, K);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int N = 4, M = 3, K = 8;
+        int[][] edges = {{0, 1, 4}, {1, 2, 3}, {2, 3, 5}};
+
+        System.out.println(solution.pathMoreThanK(N, M, K, edges)); // Output: true
+    }
+}
+
 ```
 
 Start DFS from nodes at boundary:

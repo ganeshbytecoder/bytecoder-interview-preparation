@@ -1,4 +1,4 @@
-package com.bytecoder.java17.FunctionalProgramming;
+package com.bytecoder.javaSpecialisation.FunctionalProgramming;
 
 import java.util.function.Predicate;
 

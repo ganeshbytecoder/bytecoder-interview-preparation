@@ -3,7 +3,8 @@
 
 ## **📌 What is Polymorphism?**
 
-**Polymorphism** in Java is an **OOP principle** that allows  **a single interface to represent multiple implementations** . It enables objects of different types to be treated as objects of a common supertype.
+**Polymorphism** in Java is an **OOP principle** that allows  **a single interface to represent multiple implementations** . 
+It enables objects of different types to be treated as objects of a common supertype.
 
 ### **Types of Polymorphism**
 

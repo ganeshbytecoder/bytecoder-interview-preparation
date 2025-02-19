@@ -1,7 +1,3 @@
-# Backtracking - FAANG Interview Guide
-
-## Core Concepts
-
 ### What is Backtracking?
 Backtracking is an algorithmic technique that considers searching every possible combination in order to solve a computational problem. It builds candidates to the solution incrementally and abandons each partial candidate ("backtracks") if it determines that the candidate cannot possibly be completed to a valid solution.
 
@@ -27,6 +23,26 @@ void backtrack(parameters) {
 }
 ```
 
+## Interview Tips
+
+1. **Pattern Recognition**:
+   - If the problem asks for "all possible combinations/arrangements", consider backtracking
+   - Look for problems where you need to explore multiple paths to find valid solutions
+
+2. **Optimization Techniques**:
+   - Always look for opportunities to prune invalid paths early
+   - Use sorting when dealing with duplicates
+   - Consider using a visited set/array to avoid cycles
+
+3. **Common Pitfalls**:
+   - Forgetting to remove elements when backtracking
+   - Not handling base cases properly
+   - Missing edge cases in the input
+
+4. **Time Complexity Analysis**:
+   - Most backtracking solutions are exponential
+   - Be prepared to discuss the exact complexity (e.g., O(2^n) for subsets, O(n!) for permutations)
+
 ### Key Optimization Techniques
 1. **Sorting**: Helps in skipping duplicates and optimizing decisions
 ```java
@@ -36,33 +52,29 @@ if (used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i - 1])) continue;
 3. **State Management**: Efficiently track and restore state
 4. **Visited Sets/Arrays**: Avoid revisiting same states
 
-## Top FAANG Backtracking Questions
+
+used following data structures to keep track of visited:
+- array or list -> dp[element] = True or False or 0 /1
+- set to have contains 
+- dictionary to keep visited and optimised ans 
+- 
+
+### Choice-Based Template
 
 
-### 2. String Backtracking
-
-1. **Generate Parentheses** [LC-22] 
 ```java
-public List<String> generateParenthesis(int n) {
-    List<String> result = new ArrayList<>();
-    backtrack(result, "", 0, 0, n);
-    return result;
-}
-
-private void backtrack(List<String> result, String current, int open, int close, int max) {
-    if (current.length() == max * 2) {
-        result.add(current);
-        return;
-    }
+void backtrack(List<List<Integer>> result, List<Integer> current, int[] choices, int start) {
+    result.add(new ArrayList<>(current));  // add current combination
     
-    if (open < max)
-        backtrack(result, current + "(", open + 1, close, max);
-    if (close < open)
-        backtrack(result, current + ")", open, close + 1, max);
+    for (int i = start; i < choices.length; i++) {
+        current.add(choices[i]);           // make choice
+        backtrack(result, current, choices, i + 1);  // explore
+        current.remove(current.size() - 1); // undo choice
+    }
 }
 ```
 
-2. **Letter Combinations of Phone Number** [LC-17] 
+2. **Letter Combinations of Phone Number** [LC-17]
 ```java
 import java.util.*;
 
@@ -105,237 +117,6 @@ class Solution {
 
 ```
 
-### 3. Matrix Backtracking
-
-1. **Word Search** [LC-79] 
-```java
-class Solution {
-   private static final int[][] DIRECTIONS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
-   private boolean findWord(char[][] board, int i, int j, String word, String currentPath, int[][] visited) {
-      if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || visited[i][j] == 1) {
-         return false;
-      }
-
-      // If the current path matches the word, return true
-      if (word.equals(currentPath)) {
-         return true;
-      }
-
-      visited[i][j] = 1; // Mark cell as visited
-
-      // Explore all 4 directions
-      for (int[] dir : DIRECTIONS) {
-         int newRow = i + dir[0];
-         int newCol = j + dir[1];
-
-         if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length
-                 && visited[newRow][newCol] != 1 && board[newRow][newCol] == word.charAt(currentPath.length())) {
-
-            if (findWord(board, newRow, newCol, word, currentPath + board[newRow][newCol], visited)) {
-               return true;
-            }
-         }
-      }
-
-      visited[i][j] = 0; // Backtrack: Unmark cell
-      return false;
-   }
-
-   public boolean exist(char[][] board, String word) {
-      int rows = board.length, cols = board[0].length;
-      int[][] visited = new int[rows][cols];
-
-      for (int i = 0; i < rows; i++) {
-         for (int j = 0; j < cols; j++) {
-            // Start search from any matching first character
-            if (board[i][j] == word.charAt(0)) {
-               if (findWord(board, i, j, word, "" + board[i][j], visited)) {
-                  return true;
-               }
-            }
-         }
-      }
-      return false;
-   }
-}
-
-```
-
-
-
-4. [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
-   - Fill an incomplete Sudoku grid with valid numbers.
-```java
-public void solveSudoku(char[][] board) {
-    backtrack(board);
-}
-
-private boolean backtrack(char[][] board) {
-    for (int i = 0; i < board.length; i++) {
-        for (int j = 0; j < board[0].length; j++) {
-            if (board[i][j] == '.') {
-                for (char c = '1'; c <= '9'; c++) {
-                    if (isValid(board, i, j, c)) {
-                        board[i][j] = c;
-                        if (backtrack(board)) return true;
-                        board[i][j] = '.';
-                    }
-                }
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-private boolean isValid(char[][] board, int row, int col, char c) {
-    for (int i = 0; i < 9; i++) {
-        if (board[row][i] == c || board[i][col] == c || board[row / 3 * 3 + i / 3][col / 3 * 3 + i % 3] == c) return false;
-    }
-    return true;
-}
-
-```
-
-2. **N-Queens** [LC-51] 
-```java
-public List<List<String>> solveNQueens(int n) {
-    List<List<String>> result = new ArrayList<>();
-    char[][] board = new char[n][n];
-    for (char[] row : board) Arrays.fill(row, '.');
-    backtrack(result, board, 0);
-    return result;
-}
-
-private void backtrack(List<List<String>> result, char[][] board, int row) {
-    if (row == board.length) {
-        result.add(construct(board));
-        return;
-    }
-    for (int col = 0; col < board.length; col++) {
-        if (isValid(board, row, col)) {
-            board[row][col] = 'Q';
-            backtrack(result, board, row + 1);
-            board[row][col] = '.';
-        }
-    }
-}
-
-private boolean isValid(char[][] board, int row, int col) {
-    for (int i = 0; i < row; i++) {
-        if (board[i][col] == 'Q') return false;
-        if (col - (row - i) >= 0 && board[i][col - (row - i)] == 'Q') return false;
-        if (col + (row - i) < board.length && board[i][col + (row - i)] == 'Q') return false;
-    }
-    return true;
-}
-
-private List<String> construct(char[][] board) {
-    List<String> result = new ArrayList<>();
-    for (char[] row : board) result.add(new String(row));
-    return result;
-}
-```
-
-### 4. Advanced Backtracking
-
-1. **Palindrome Partitioning** [LC-131] 
-```java
-public List<List<String>> partition(String s) {
-    List<List<String>> result = new ArrayList<>();
-    backtrack(result, new ArrayList<>(), s, 0);
-    return result;
-}
-
-private void backtrack(List<List<String>> result, List<String> current, String s, int start) {
-    if (start == s.length()) {
-        result.add(new ArrayList<>(current));
-        return;
-    }
-    
-    for (int i = start; i < s.length(); i++) {
-        if (isPalindrome(s, start, i)) {
-            current.add(s.substring(start, i + 1));
-            backtrack(result, current, s, i + 1);
-            current.remove(current.size() - 1);
-        }
-    }
-}
-
-private boolean isPalindrome(String s, int low, int high) {
-    while (low < high) {
-        if (s.charAt(low++) != s.charAt(high--)) return false;
-    }
-    return true;
-}
-```
-
-2. **Remove Invalid Parentheses** [LC-301] 
-3. **Word Break II** [LC-140] 
-
-
-
-
-7. [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/)
-   - Restore all valid IP addresses from a string of digits.
-```java
-public List<String> restoreIpAddresses(String s) {
-    List<String> result = new ArrayList<>();
-    backtrack(result, s, "", 0, 0);
-    return result;
-}
-
-private void backtrack(List<String> result, String s, String current, int start, int segments) {
-    if (segments == 4 && start == s.length()) {
-        result.add(current.substring(0, current.length() - 1));
-        return;
-    }
-    if (segments == 4 || start == s.length()) return;
-
-    for (int len = 1; len <= 3 && start + len <= s.length(); len++) {
-        String part = s.substring(start, start + len);
-        if (Integer.parseInt(part) > 255 || (part.length() > 1 && part.startsWith("0"))) continue;
-        backtrack(result, s, current + part + ".", start + len, segments + 1);
-    }
-}
-
-```
-
-## Interview Tips
-
-1. **Pattern Recognition**:
-   - If the problem asks for "all possible combinations/arrangements", consider backtracking
-   - Look for problems where you need to explore multiple paths to find valid solutions
-
-2. **Optimization Techniques**:
-   - Always look for opportunities to prune invalid paths early
-   - Use sorting when dealing with duplicates
-   - Consider using a visited set/array to avoid cycles
-
-3. **Common Pitfalls**:
-   - Forgetting to remove elements when backtracking
-   - Not handling base cases properly
-   - Missing edge cases in the input
-
-4. **Time Complexity Analysis**:
-   - Most backtracking solutions are exponential
-   - Be prepared to discuss the exact complexity (e.g., O(2^n) for subsets, O(n!) for permutations)
-
-## Common Templates
-
-### Choice-Based Template
-```java
-void backtrack(List<List<Integer>> result, List<Integer> current, int[] choices, int start) {
-    result.add(new ArrayList<>(current));  // add current combination
-    
-    for (int i = start; i < choices.length; i++) {
-        current.add(choices[i]);           // make choice
-        backtrack(result, current, choices, i + 1);  // explore
-        current.remove(current.size() - 1); // undo choice
-    }
-}
-```
 
 ### Constraint-Based Template
 ```java
@@ -361,26 +142,7 @@ void backtrack(List<String> result, StringBuilder current, int open, int close, 
 
 
 
-
-
-
----
-
-
-
 ### **Backtracking Problems:**
-
-1. **Rat in a Maze Problem**
-   - Use backtracking to explore all possible paths from the start to the destination, marking visited paths and backtracking if a path leads to a dead end.
-
-3. **Word Break Problem Using Backtracking**
-   - Use backtracking to check all possible partitions of the string and see if each partition is a valid word in the dictionary.
-
-4. **Remove Invalid Parentheses**
-   - Use backtracking to generate all possible expressions by removing invalid parentheses, then check if they are valid.
-
-6. **m Coloring Problem**
-   - Use backtracking to assign colors to each vertex, ensuring no two adjacent vertices share the same color.
 
    
 9. **The Knight’s Tour Problem**
@@ -389,99 +151,162 @@ void backtrack(List<String> result, StringBuilder current, int open, int close, 
 10. **Tug of War**
    - Use backtracking to divide the array into two subsets of nearly equal sum, minimizing the difference between the sums.
 
-11. **Find Shortest Safe Route in a Path with Landmines**
-   - Use backtracking to explore all possible routes, ensuring that no landmines are encountered.
-
-
 13. **Find Maximum Number Possible by Doing At-Most K Swaps**
    - Use backtracking to explore all possible digit swaps, keeping track of the maximum number formed.
-
-14. **Print All Permutations of a String**
-   - Use backtracking to generate all permutations of the string by swapping characters and reverting swaps.
-
-15. **Find if There is a Path of More Than K Length from a Source**
-   - Use backtracking to explore all paths and track the length of each path.
-
-16. **Longest Possible Route in a Matrix with Hurdles**
-   - Use backtracking to explore all routes in the matrix, keeping track of the longest valid route.
-
-17. **Print All Possible Paths from Top Left to Bottom Right of an mXn Matrix**
-   - Use backtracking to explore all possible paths from the start to the destination in the matrix.
+   
 
 18. **Partition of a Set into K Subsets with Equal Sum**
    - Use backtracking to partition the array into `K` subsets such that each subset has the same sum.
 
-19. **Find the K-th Permutation Sequence of First N Natural Numbers**
-   - Use backtracking to generate permutations, and keep track of the `K-th` permutation.
-```python
-   class Solution:
-    def solve(self, nums, used, k, num, result):
-        if len(num) == k:
-            result.append(num)
-            return
-        
-        for i in range(len(nums)):
-            if not used[i]:  # Ensure each number is used only once
-                used[i] = True
-                self.solve(nums, used, k, num + str(nums[i]), result)
-                used[i] = False  # Backtrack
-                
-    def kthPermutation(self, n: int, k: int) -> str:
-        nums = list(range(1, n+1))
-        result = []
-        used = [False] * n  # Track used numbers
-        
-        self.solve(nums, used, n, "", result)
-        
-        return result[k-1] if k <= len(result) else ""
- 
-   
-   ```
 
-## string problems
 
-https://leetcode.com/problems/decode-string/description/
 
-https://www.geeksforgeeks.org/roman-number-to-integer/
 
-https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
+# Tracking Visited Elements in Backtracking Problems
 
-https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/
+## Why Track Visited Elements?
+In backtracking problems, we often need to keep track of elements we've already considered to avoid unnecessary recomputation, infinite loops, or constraint violations. Different data structures can be used for this purpose depending on the problem type and constraints.
 
-https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/?ref=asr30
+---
+## Common Data Structures to Track Visited Elements
 
-https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/?ref=asr29
+### 1. **Boolean Array / List**
+#### Usage:
+- Suitable when the elements are **limited in range** (e.g., `0 to N-1`).
+- Used for tracking visited indices in **permutations, subsets, and graph traversal**.
+- Often used in **DFS, BFS, and N-Queens problems**.
 
-https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/?ref=asr28
-
-https://www.geeksforgeeks.org/longest-substring-that-can-be-made-a-palindrome-by-swapping-of-characters/?ref=asr27
-
-https://www.geeksforgeeks.org/longest-substring-with-no-pair-of-adjacent-characters-are-adjacent-english-alphabets/?ref=asr26
-
-https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-at-least-k-times-set-3/?ref=asr25
-
-https://www.geeksforgeeks.org/longest-prefix-also-suffix/
-
-https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1
-
-```python
-    
-    def longestUniqueSubstring(self, s):
-        charSet = set()  # HashSet to store unique characters
-        i = 0
-        ans = 0
-        
-        for j in range(len(s)):
-            while s[j] in charSet:  # If duplicate found, remove leftmost character
-                charSet.remove(s[i])
-                i += 1
-            charSet.add(s[j])  # Add current character
-            ans = max(ans, j - i + 1)  # Update max length
-        
-        return ans
+#### Example:
+```java
+boolean[] visited = new boolean[N];
+visited[index] = true; // Mark index as visited
+...
+visited[index] = false; // Backtrack
 ```
 
+#### Where to Use:
+✅ **Permutations (LeetCode 46)** – Ensures no element is used more than once in a sequence.  
+✅ **Graph Traversal (LeetCode 79 - Word Search)** – Prevents revisiting the same cell.  
+✅ **N-Queens (LeetCode 51)** – Ensures each column is used only once.
 
-https://leetcode.com/problems/longest-palindromic-substring/description/
+---
+### 2. **Set (HashSet in Java, unordered_set in C++)**
+#### Usage:
+- Suitable when elements are **not continuous or have large values**.
+- Fast `O(1)` lookup time for checking visited elements.
+- Used for **tracking previously visited nodes or partial results**.
 
-https://leetcode.com/problems/longest-palindromic-subsequence/
+#### Example:
+```java
+Set<Integer> visited = new HashSet<>();
+visited.add(num); // Mark visited
+...
+visited.remove(num); // Backtrack
+```
+
+#### Where to Use:
+✅ **Unique Permutations (LeetCode 47)** – Avoid duplicate permutations.  
+✅ **Graph Cycles Detection (LeetCode 207 - Course Schedule)** – Avoid loops in DFS.  
+✅ **Word Search with Memory (LeetCode 212 - Word Search II)** – Store visited words for pruning.
+
+---
+### 3. **Dictionary / HashMap**
+#### Usage:
+- Best for problems involving **memoization** or **storing visited elements along with computed results**.
+- Used for **Dynamic Programming (DP) and backtracking hybrid problems**.
+
+#### Example:
+```java
+Map<String, Integer> memo = new HashMap<>();
+memo.put(state, result); // Store computed result for a state
+...
+memo.remove(state); // Backtrack if needed
+```
+
+#### Where to Use:
+✅ **Memoized Backtracking (LeetCode 329 - Longest Increasing Path in Matrix)** – Stores results to avoid recomputation.  
+✅ **Expression Add Operators (LeetCode 282)** – Stores partial computations.  
+✅ **Word Break (LeetCode 139 - Word Break I)** – Caches already computed substrings.
+
+---
+### 4. **Matrix (2D Boolean Array)**
+#### Usage:
+- Used for **grid-based traversal problems** like **mazes, puzzles, and pathfinding**.
+- Helps avoid revisiting the same grid cell.
+
+#### Example:
+```java
+boolean[][] visited = new boolean[rows][cols];
+visited[row][col] = true;
+...
+visited[row][col] = false; // Backtrack
+```
+
+#### Where to Use:
+✅ **Maze Problems (LeetCode 79 - Word Search, LeetCode 130 - Surrounded Regions)**  
+✅ **Knight’s Tour Problem**  
+✅ **Flood Fill Algorithm**
+
+---
+### 5. **Bitmasking (Integer Bit Manipulation)**
+#### Usage:
+- Used when tracking small numbers of visited elements efficiently.
+- Typically applied in **state-space problems, DP, and subset problems**.
+
+#### Example:
+```java
+int mask = 0;
+mask |= (1 << index); // Mark visited
+...
+mask &= ~(1 << index); // Unmark visited (backtrack)
+```
+
+#### Where to Use:
+✅ **Travelling Salesman Problem (TSP) (LeetCode 847 - Shortest Path Visiting All Nodes)**  
+✅ **Subset Problems (LeetCode 78 - Subsets, LeetCode 90 - Subsets II)**  
+✅ **Combinatorial Optimization**
+
+---
+### 6. **Stack/List for Path Tracking**
+#### Usage:
+- Used for problems where we need to keep track of the exact path we have taken.
+- Useful when backtracking in tree and graph problems.
+
+#### Example:
+```java
+Stack<Integer> path = new Stack<>();
+path.push(node); // Add to path
+...
+path.pop(); // Remove when backtracking
+```
+
+#### Where to Use:
+✅ **Pathfinding Problems (LeetCode 797 - All Paths From Source to Target)**  
+✅ **Eulerian Path & Hamiltonian Path Problems**  
+✅ **Graph Problems with Explicit Path Tracking**
+
+---
+## **Comparison Table**
+
+| Data Structure    | Best For | Lookup Time | Space Complexity |
+|------------------|---------|-------------|-----------------|
+| **Boolean Array**  | Small fixed range indices (0 to N-1) | O(1) | O(N) |
+| **HashSet**        | Large or unordered values | O(1) | O(N) |
+| **HashMap**        | Memoization & storing states | O(1) | O(N) |
+| **2D Boolean Array** | Grid-based problems | O(1) | O(N*M) |
+| **Bitmasking**     | Small element sets, TSP | O(1) | O(1) |
+| **Stack**         | Explicit path tracking | O(1) | O(N) |
+
+---
+## **When to Use Which?**
+- ✅ **Use a boolean array** when elements have a known range **(e.g., permutations, N-Queens).**
+- ✅ **Use a HashSet** when the range is large or unknown **(e.g., cycle detection, unique elements).**
+- ✅ **Use a HashMap** when caching results is necessary **(e.g., memoized DP in backtracking).**
+- ✅ **Use a 2D boolean array** when working with grid traversal problems **(e.g., Word Search, Maze Solving).**
+- ✅ **Use bitmasking** for optimizing state tracking in small element sets **(e.g., TSP, subset generation).**
+- ✅ **Use a stack** when explicit path tracking is required **(e.g., graph traversal, pathfinding).**
+
+---
+
+
+

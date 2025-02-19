@@ -1,4 +1,5 @@
 **Dynamic Programming Notes on Leetcode Variants**
+https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming?utm_campaign=post&utm_medium=web
 
 ## **Longest Increasing Subsequence (LIS) Variants**
 1. **[Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)** - Use DP with binary search (O(n log n)) or DP (O(n^2)).
@@ -89,3 +90,4 @@
 1. **[Predict the Winner](https://leetcode.com/problems/predict-the-winner/)** - Minimax DP for game strategy.
 2. **[Stone Game](https://leetcode.com/problems/stone-game/)** - Optimal strategy using DP.
 
+https://leetcode.com/problems/interleaving-string/submissions/1545724299/?envType=study-plan-v2&envId=top-interview-150

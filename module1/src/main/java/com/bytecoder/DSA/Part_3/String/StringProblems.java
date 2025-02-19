@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 
 public class StringProblems {
 //    multiple values (array2list and list2array
-//    strings permutation and cobinations
 //    permitive streams
     public static int n =0;
     public static void stringPermutation(String prefix, String str){

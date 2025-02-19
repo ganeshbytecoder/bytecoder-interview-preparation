@@ -1,6 +1,20 @@
 Here’s how you can answer the **Meta technical recruiter’s questions** based on your background. Since this is your first call, the goal is to **make a strong impression, align your experience with Meta’s needs, and prepare for the next steps**.
 
 ---
+Till 25 Feb -> LLD and DSA part3
+till 4nd March -> HLD and Java - Spring  Specialisation
+5-  + interview specific preps  and DSA , LLD - HLD and Java - Spring  Specialisation - revisions and QnA only
+
+
+
+Fourkites Connect ->
+DB concurrency 
+Logical Concurrency in Java 
+
+
+
+
+
 
 ## **1. Resume & Background Discussion**
 
@@ -154,11 +168,3 @@ For example, in a past project, we disagreed on **whether to use a SQL or NoSQL 
 This approach helped us make an informed decision while maintaining a positive team dynamic."
 
 ---
-
-## **Final Tips for the Call**
-✅ Be **clear and concise** in your answers.  
-✅ Emphasize your **backend and system design experience**.  
-✅ Show enthusiasm for Meta’s **engineering culture**.  
-✅ Ask **clarifying questions** about the role and next steps.
-
-Let me know if you want to refine any answer further! 🚀

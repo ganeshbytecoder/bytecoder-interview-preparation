@@ -5,6 +5,7 @@
 - **Subset**: A subset of a set includes any combination of its elements, including the empty set and the set itself. Order does not matter.
     - Example: `{1, 2, 3}` → `{}`, `{1}`, `{2}`, `{3}`, `{1,2}`, `{1,3}`, `{2,3}`, `{1,2,3}`
     - Total subsets of a set with `n` elements = `2^n` (including empty set)
+    - when there are duplicate elements you should skip since duplicate subset is not valid
 
 - **Subsequence**: A subsequence is a sequence derived from another sequence by deleting some or no elements without changing the order.
     - Example: "abc" → "a", "b", "c", "ab", "ac", "bc", "abc"
@@ -12,14 +13,18 @@
 
 
 ---
+
+## Subset Problems
 #### **Concept**
 - Order doesn't matter (continuous order not required).
 - Variations:
     - **Distinct elements**
     - **With duplicates (Skip Duplicates)**
     - **With conditions (Fixed size, sum constraints, etc.)**
-
+    - **if we have constraints of size they we call it combinations not sub set**  
 ---
+
+
 ### **1. Subsets (LC-78)**
 - Generate all subsets.
 - **Time:** O(2^n), **Space:** O(n)
@@ -62,6 +67,7 @@ private void helper(int[] nums, int index, List<Integer> temp, List<List<Integer
 }
 ```
 ---
+
 ### **2. Subsets II (LC-90) [With Duplicates]**
 - **Key:** Sort & Skip duplicates
 
@@ -106,9 +112,47 @@ private void helper(int[] nums, int index, List<Integer> temp, List<List<Integer
     temp.remove(temp.size() - 1);
 }
 ```
+## **5. Bitmasking & Subsets**
+- 🔹 **[1178. Number of Valid Words for Each Puzzle](https://leetcode.com/problems/number-of-valid-words-for-each-puzzle/) (Hard)**  
+  Use bitmasking to find valid words in a given puzzle.
+
+- 🔹 **[1986. Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) (Medium)**  
+  Find the minimum number of sessions required to finish tasks using subsets.
+
+---
+
+## **6. Partitioning using Subsets**
+- 🔹 **[416. Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/) (Medium)**  
+  Determine if an array can be partitioned into two subsets with equal sums.
+
+- 🔹 **[698. Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) (Medium)**  
+  Check if an array can be divided into k subsets of equal sum.
+
+- 🔹 **[805. Split Array With Same Average](https://leetcode.com/problems/split-array-with-same-average/) (Hard)**  
+  Find if an array can be split into two subsets with the same average.
+
+---
+
+
+
+
+
+
 
 
 ## **5. Subsequences**
+A subsequence is derived from a string or an array by deleting some or no elements without changing the order of the remaining elements.
+Yes! A subset is closely related to the concept of a combination in combinatorics.
+
+## Subset Problems
+#### **Concept**
+- Order matter (continuous order required).
+- Variations:
+  - **Distinct elements**
+  - **With duplicates (Skip Duplicates)**
+  - **With conditions (Fixed size, sum constraints, etc.)**
+---
+
 ### **Generate all Subsequences of a String**
 - **Key Idea**: Either take the character or skip it (Recursion).
 - **Time Complexity**: `O(2^n)`, **Space Complexity**: `O(n)`
@@ -127,12 +171,34 @@ public void generateSubsequences(String s, int index, String current, List<Strin
     generateSubsequences(s, index + 1, current + s.charAt(index), result);
 }
 
+public void generateSubsequences(String s, int index, String current, List<String> result) {
+  if (index == s.length()) {
+    result.add(current);
+    return;
+  }
+
+  for (int i = index ; i < s.length() ; i++) {
+    generateSubsequences(s, i + 1, current + s.charAt(i), result);
+  }
+}
+
 public List<String> getAllSubsequences(String s) {
     List<String> result = new ArrayList<>();
     generateSubsequences(s, 0, "", result);
     return result;
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 ## **6. Longest Increasing Subsequence [LC-300]**
@@ -158,167 +224,6 @@ public int lengthOfLIS(int[] nums) {
 }
 ```
 
----
-### **3. Combinations (LC-77)**
-- Generate all possible **k-sized** combinations.
-
-```java
-public List<List<Integer>> combine(int n, int k) {
-    List<List<Integer>> result = new ArrayList<>();
-    backtrack(result, new ArrayList<>(), 1, n, k);
-    return result;
-}
-
-private void backtrack(List<List<Integer>> result, List<Integer> current, int start, int n, int k) {
-    if (current.size() == k) {
-        result.add(new ArrayList<>(current));
-        return;
-    }
-    for (int i = start; i <= n; i++) {
-        current.add(i);
-        backtrack(result, current, i + 1, n, k);
-        current.remove(current.size() - 1);
-    }
-}
-```
----
-### **4. Combination Sum (LC-39) [Unlimited Use]**
-```java
-public List<List<Integer>> combinationSum(int[] nums, int target) {
-    List<List<Integer>> list = new ArrayList<>();
-    Arrays.sort(nums);
-    backtrack(list, new ArrayList<>(), nums, target, 0);
-    return list;
-}
-
-private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int remain, int start) {
-    if (remain < 0) return;
-    if (remain == 0) list.add(new ArrayList<>(tempList));
-    else {
-        for (int i = start; i < nums.length; i++) {
-            tempList.add(nums[i]);
-            backtrack(list, tempList, nums, remain - nums[i], i); // Allow reuse
-            tempList.remove(tempList.size() - 1);
-        }
-    }
-}
-```
----
-### **5. Combination Sum II (LC-40) [No Reuse]**
-```java
-public List<List<Integer>> combinationSum2(int[] nums, int target) {
-    List<List<Integer>> list = new ArrayList<>();
-    Arrays.sort(nums);
-    backtrack(list, new ArrayList<>(), nums, target, 0);
-    return list;
-}
-
-private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int remain, int start) {
-    if (remain < 0) return;
-    if (remain == 0) list.add(new ArrayList<>(tempList));
-    else {
-        for (int i = start; i < nums.length; i++) {
-            if (i > start && nums[i] == nums[i - 1]) continue; // Skip duplicates
-            tempList.add(nums[i]);
-            backtrack(list, tempList, nums, remain - nums[i], i + 1);
-            tempList.remove(tempList.size() - 1);
-        }
-    }
-}
-```
----
-### **6. Combination Sum III (LC-216)**
-- **Find all k-sized numbers summing to n.**
-
-```java
-public List<List<Integer>> combinationSum3(int k, int n) {
-    List<List<Integer>> result = new ArrayList<>();
-    backtrack(result, new ArrayList<>(), k, n, 1);
-    return result;
-}
-
-private void backtrack(List<List<Integer>> result, List<Integer> tempList, int k, int remain, int start) {
-    if (tempList.size() == k && remain == 0) {
-        result.add(new ArrayList<>(tempList));
-        return;
-    }
-    for (int i = start; i <= 9; i++) {
-        tempList.add(i);
-        backtrack(result, tempList, k, remain - i, i + 1);
-        tempList.remove(tempList.size() - 1);
-    }
-}
-```
-
-
-
-#### 1.2 Permutations
-1. **Permutations** [LC-46]
-2. **Permutations II** [LC-47]
-```java
-public List<List<Integer>> permuteUnique(int[] nums) {
-    List<List<Integer>> list = new ArrayList<>();
-    Arrays.sort(nums);
-    backtrack(list, new ArrayList<>(), nums, new boolean[nums.length]);
-    return list;
-}
-
-private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, boolean [] used){
-    if(tempList.size() == nums.length){
-        list.add(new ArrayList<>(tempList));
-    } else{
-        for(int i = 0; i < nums.length; i++){
-            if(used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i - 1])) continue;
-            used[i] = true; 
-            tempList.add(nums[i]);
-            backtrack(list, tempList, nums, used);
-            used[i] = false; 
-            tempList.remove(tempList.size() - 1);
-        }
-    }
-}
-```
-
-method-2
-
-```java
-class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
-
-    public void solve(int [] nums, List<Integer> list, int index, boolean[] used){
-
-        if(nums.length == index){
-            ans.add(new ArrayList<>(list));
-            return;
-        }
-
-        for(int i = 0 ; i < nums.length ; i++){
-            if(used[i] ) continue;
-            used[i] = true; 
-            list.add(nums[i]);
-            solve(nums, list, index+1, used);
-            list.remove(list.size()-1);
-            used[i] = false; 
-        }
-
-    }
-
-
-
-    public List<List<Integer>> permuteUnique(int[] nums) {
-        List<Integer> list = new ArrayList<>();
-        boolean [] used = new boolean[nums.length];
-        Arrays.sort(nums);
-        solve(nums, list, 0, used);
-        List<List<Integer>> result = ans.stream().distinct().collect(Collectors.toList());
-        return result;
-    }
-}
-```
-
-## 4. Subsequence Problems
-
-#### 4.1 Longest Increasing Subsequence (LIS)
 
 ##### 1. **[Longest Increasing Subsequence II](https://leetcode.com/problems/longest-increasing-subsequence-ii/description/)**
 - Problem: Find the length of the longest increasing subsequence within a limited difference range.
@@ -330,15 +235,9 @@ class Solution {
 ##### 4. **[Find the Maximum Length of Valid Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-i/description/)**
 - Problem: Find the maximum length of a valid subsequence from the input.
 
-
-##### 5. **[Find the Maximum Length of Valid Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-ii/description/)**
-- Problem: Find the maximum length of a valid subsequence based on specific conditions.
-
 ##### 6. **[Find the Maximum Length of a Good Subsequence I](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-i/description/)**
 - Problem: Determine the maximum length of a "good" subsequence based on given conditions.
 
-##### 7. **[Find the Maximum Length of a Good Subsequence II](https://leetcode.com/problems/find-the-maximum-length-of-a-good-subsequence-ii/description/)**
-- Problem: Similar to the above but may involve additional constraints or different definitions of "good".
 
 ##### 8. **[Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/description/)**
 - Problem: Find the longest chain of pairs such that each pair's second value is less than the next pair's first value.
@@ -404,16 +303,6 @@ public int lengthOfLIS(int[] nums) {
 ```
 
 
-
-## **1. Basic Subset Generation**
-- 🔹 **[78. Subsets](https://leetcode.com/problems/subsets/) (Medium)**  
-  Generate all possible subsets of a given array.
-
-- 🔹 **[90. Subsets II](https://leetcode.com/problems/subsets-ii/) (Medium)**  
-  Generate all unique subsets when the array contains duplicates.
-
----
-
 ## **2. Subsequences (String/Array Based)**
 - 🔹 **[392. Is Subsequence](https://leetcode.com/problems/is-subsequence/) (Easy)**  
   Check if a string is a subsequence of another.
@@ -423,21 +312,6 @@ public int lengthOfLIS(int[] nums) {
 
 - 🔹 **[1035. Uncrossed Lines](https://leetcode.com/problems/uncrossed-lines/) (Medium)**  
   Similar to LCS but applied to arrays.
-
----
-
-## **3. Combination/Subset Sum Problems**
-- 🔹 **[39. Combination Sum](https://leetcode.com/problems/combination-sum/) (Medium)**  
-  Find all unique ways to sum up to a target using elements (repetition allowed).
-
-- 🔹 **[40. Combination Sum II](https://leetcode.com/problems/combination-sum-ii/) (Medium)**  
-  Similar to Combination Sum, but elements are unique (no repetition).
-
-- 🔹 **[216. Combination Sum III](https://leetcode.com/problems/combination-sum-iii/) (Medium)**  
-  Find k numbers that sum to a target from 1-9.
-
-- 🔹 **[377. Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) (Medium)**  
-  Find the total number of ways to form a target sum.
 
 ---
 
@@ -474,17 +348,6 @@ public int lengthOfLIS(int[] nums) {
 
 ---
 
-## **7. Power Set & Permutations (Backtracking)**
-- 🔹 **[46. Permutations](https://leetcode.com/problems/permutations/) (Medium)**  
-  Generate all permutations of an array.
-
-- 🔹 **[47. Permutations II](https://leetcode.com/problems/permutations-ii/) (Medium)**  
-  Generate all unique permutations of an array with duplicate elements.
-
-- 🔹 **[267. Palindrome Permutation II](https://leetcode.com/problems/palindrome-permutation-ii/) (Medium)**  
-  Find all palindromic permutations of a string.
-
----
 
 ## **8. Binary String Subsequences**
 - 🔹 **[187. Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) (Medium)**  

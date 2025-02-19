@@ -130,9 +130,6 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
      - Case 1: m+n is odd, the median is at (m+n)/2th index in the array obtained after merging both the arrays. 
      - Case 2: m+n is even, the median will be the average of elements at index ((m+n)/2 – 1) and (m+n)/2 in the array obtained after merging both the arrays
 
-### 15. **Next Permutation**
-   - **Hint**: Find the first decreasing element from the right, swap it with the next largest element, and reverse the subsequent part of the array.
-
 
 ### 16. **Count Inversions**
    - **Hint**: Use a modified merge sort algorithm that counts inversions while merging the subarrays.

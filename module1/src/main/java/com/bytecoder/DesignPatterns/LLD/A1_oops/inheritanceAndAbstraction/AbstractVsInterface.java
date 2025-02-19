@@ -1,12 +1,15 @@
-package com.bytecoder.DesignPatterns.LLD.oops.inheritanceAndAbstraction;
+package com.bytecoder.DesignPatterns.LLD.A1_oops.inheritanceAndAbstraction;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.bytecoder.DesignPatterns.LLD.A1_oops.inheritanceAndAbstraction.AbstractVsInterface;
 
 /**
  * This example demonstrates the key differences between abstract classes and interfaces,
  * and when to use each one.
  */
+
+
 public class AbstractVsInterface {
 
     // Abstract class example - used when we need to share state and implementation
@@ -41,32 +44,8 @@ public class AbstractVsInterface {
         abstract void executeQuery(String query);
     }
 
-    // Interface example - used to define a contract/capability
-    interface Loggable {
-        // All fields are public static final
-        String LOG_PREFIX = "[LOG] ";
-        
-        // Abstract method
-        void log(String message);
-        
-        // Default method
-        default void logError(String error) {
-            log(LOG_PREFIX + "ERROR: " + error);
-        }
-        
-        // Static method
-        static String formatMessage(String message) {
-            return LOG_PREFIX + message;
-        }
-    }
 
-    // Interface extending multiple interfaces
-    interface AdvancedLogging extends Loggable {
-        void setLogLevel(String level);
-        default void logDebug(String message) {
-            log(LOG_PREFIX + "DEBUG: " + message);
-        }
-    }
+
 
     // Concrete implementation of abstract class
     static class PostgresConnection extends DatabaseConnection {
@@ -93,6 +72,37 @@ public class AbstractVsInterface {
             System.out.println("Executing query: " + query);
         }
     }
+
+
+
+
+    // Interface example - used to define a contract/capability
+    interface Loggable {
+        // All fields are public static final
+        String LOG_PREFIX = "[LOG] ";
+
+        // Abstract method
+        void log(String message);
+
+        // Default method
+        default void logError(String error) {
+            log(LOG_PREFIX + "ERROR: " + error);
+        }
+
+        // Static method
+        static String formatMessage(String message) {
+            return LOG_PREFIX + message;
+        }
+    }
+
+    // Interface extending multiple interfaces
+    interface AdvancedLogging extends Loggable {
+        void setLogLevel(String level);
+        default void logDebug(String message) {
+            log(LOG_PREFIX + "DEBUG: " + message);
+        }
+    }
+
 
     // Class implementing multiple interfaces
     static class DatabaseLogger implements AdvancedLogging {

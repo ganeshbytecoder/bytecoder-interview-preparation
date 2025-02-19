@@ -1,4 +1,4 @@
-package com.bytecoder.java17;
+package com.bytecoder.javaSpecialisation;
 
 
 //reverse string and number list/collection, array	string to array

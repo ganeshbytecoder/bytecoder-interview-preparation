@@ -1,4 +1,4 @@
-package com.bytecoder.java17.Basics;
+package com.bytecoder.javaSpecialisation.Basics;
 
 public class Basics {
 

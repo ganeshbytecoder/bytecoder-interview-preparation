@@ -6,7 +6,7 @@ public class SegmentTree {
     int[] tree;
     int[] arr;
     int n;
-
+    int a = Math.max(10, Math.max(1,2));
     public SegmentTree(int[] input) {
         this.n = input.length;
         this.arr = input;

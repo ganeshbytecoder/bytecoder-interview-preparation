@@ -1,4 +1,4 @@
-package com.bytecoder.DesignPatterns.LLD.oops.inheritanceAndAbstraction;
+package com.bytecoder.DesignPatterns.LLD.A1_oops.inheritanceAndAbstraction;
 
 /**
  * This example demonstrates multiple inheritance through interfaces,

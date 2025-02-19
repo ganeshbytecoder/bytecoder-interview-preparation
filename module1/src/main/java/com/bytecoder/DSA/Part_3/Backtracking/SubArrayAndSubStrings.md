@@ -335,7 +335,56 @@ public int numDecodings(String s) {
 
 ---
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Here are some **LeetCode problems** on **Subarrays** and **Substrings**, categorized by different conditions:
+
+No, it is **not 100% true** that subarray problems are only solved using **Sliding Window, Prefix Sum, and Suffix Sum**, and **not by Backtracking**.
+
+### 1️⃣ **Sliding Window Approach**
+- Used when the problem involves **contiguous subarrays** and you need to optimize time complexity.
+- Works well for problems like **maximum sum subarray, longest subarray with a given condition**, etc.
+- **Example:** Find the longest subarray with sum ≤ k.
+
+### 2️⃣ **Prefix Sum & Suffix Sum**
+- Prefix sum is used for fast range queries (e.g., sum of subarrays in O(1) after O(n) preprocessing).
+- Suffix sum is useful for problems where we need to consider suffix elements efficiently.
+- **Example:** Count subarrays with a given sum.
+
+### 3️⃣ **Backtracking for Subarray Problems?**
+- While backtracking is **not the optimal choice** for most subarray problems, it **can** be used in problems where:
+   - You are **enumerating all possible subarrays**.
+   - The problem has **constraints that cannot be handled efficiently by sliding window or prefix sum**.
+   - You need to **generate all subsets** of an array (though subset ≠ subarray, sometimes they overlap).
+- **Example:** Find all contiguous subarrays that sum to a prime number.
+
+### **Key Takeaway**
+✅ **Sliding Window, Prefix Sum, and Suffix Sum** are the primary tools for solving subarray problems **efficiently**.  
+✅ **Backtracking is rarely used** but can be applied if the problem requires generating all possible subarrays explicitly.  
+❌ **It is not 100% true** that subarray problems cannot be solved by backtracking—it depends on the problem constraints.
 
 ---
 
@@ -343,6 +392,7 @@ Here are some **LeetCode problems** on **Subarrays** and **Substrings**, categor
 (An array slice that maintains order and contiguity)
 
 ### **📌 Sum-Related Conditions**
+or mux sum subarray, does subarray have sum is equal k or more constraints
 1. **[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)**
     - Given an integer array `nums` and an integer `k`, find the number of contiguous subarrays that sum to `k`.
     - **Condition:** Sum of elements must be exactly `k`.
@@ -444,10 +494,7 @@ Here are some **LeetCode problems** on **Subarrays** and **Substrings**, categor
 - **Condition:** Substring must contain all of `t`'s characters at least once.
 - **Difficulty:** Hard
 
-17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
-- Check if some substring is a permutation of `s2`.
-- **Condition:** Substring must be a permutation of another string.
-- **Difficulty:** Medium
+
 
 18. **[30. Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)**
 - Find all starting indices where a substring is a concatenation of all words in a given list.

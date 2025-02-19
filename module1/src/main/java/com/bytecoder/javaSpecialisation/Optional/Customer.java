@@ -1,17 +1,19 @@
-package com.bytecoder.java17.Optional;
+package com.bytecoder.javaSpecialisation.Optional;
 
 import lombok.*;
-
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-class User {
+class Customer {
+    private int id;
+
     private String name;
 
     private int age;
 
     private String address;
+
 }

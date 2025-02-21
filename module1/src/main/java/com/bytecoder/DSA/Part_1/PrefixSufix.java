@@ -28,7 +28,3 @@ package com.bytecoder.DSA.Part_1;
 // number theory
 // BitMasking and DP + BitMasking
 
-
-// https://leetcode.com/problems/subarray-sum-equals-k/description/
-public class PrefixSufix {
-}

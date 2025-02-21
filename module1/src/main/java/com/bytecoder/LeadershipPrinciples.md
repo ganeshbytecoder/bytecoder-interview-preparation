@@ -1,8 +1,10 @@
 Here’s how you can answer the **Meta technical recruiter’s questions** based on your background. Since this is your first call, the goal is to **make a strong impression, align your experience with Meta’s needs, and prepare for the next steps**.
 
 ---
-Till 25 Feb -> LLD and DSA part3
-till 4nd March -> HLD and Java - Spring  Specialisation
+Till 25 Feb -> LLD and DSA part3 
+26 - 28 = 150 + 75 blind complete 
+till  1 - 5nd March -> HLD and Java - Spring  Specialisation
+
 5-  + interview specific preps  and DSA , LLD - HLD and Java - Spring  Specialisation - revisions and QnA only
 
 

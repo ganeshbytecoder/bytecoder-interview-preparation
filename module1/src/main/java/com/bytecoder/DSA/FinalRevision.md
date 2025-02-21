@@ -1,6 +1,3 @@
-
-## important leetcode problems
-
 * https://leetcode.com/problems/product-of-array-except-self/description/
 * https://leetcode.com/problems/search-a-2d-matrix/description/
 * https://leetcode.com/problems/find-the-duplicate-number/description/
@@ -41,56 +38,13 @@
 * https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/description/
 * https://leetcode.com/problems/word-break/description/?envType=study-plan-v2&envId=top-interview-150
 * https://leetcode.com/problems/number-of-longest-increasing-subsequence/
-
-
-## recursion or iteration problems
-
-playlist: https://www.youtube.com/watch?v=_-2u4EPHD88&list=PLDzeHZWIZsTqBmRGnsCOGNDG5FY0G04Td
-
-* check is given array sorted. return true/false
-* return sum of given array
-* using Linear search in find a value given unsorted array
-* Reverse string or array
-* Check palindrome in given string or array
-* find the power of a on b or a^b
-* binary search to find the given value
-* find all possible sets of given set
-*
 * Bubble sort and Merge and quick sort
-* https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/?envType=problem-list-v2&envId=recursion&difficulty=EASY
 * https://leetcode.com/problems/predict-the-winner/submissions/1423638042/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
-
-
-
-
-## educative coding patterns
-
-### Two pointers
-- reverse string/array
-- palindrome check 
-- 3 sum 
-- sum in sorted array
-
-
-### Fast and slow pointers
-- find middle element in Linked list
-- 
-
-### Sliding window 
-
-### Merge intervals
-
-### In place Manipulation of Linked list
-
-- reverse linked list 
-
-### Two pointers
-
-
-
-
-
-Two Sum
+  https://leetcode.com/problems/max-consecutive-ones-iii/description/
+* https://leetcode.com/problems/subarray-sum-equals-k/description/
+* https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+* https://leetcode.com/problems/subarray-sums-divisible-by-k/description/
+* https://leetcode.com/problems/maximum-product-subarray/description/
 Best Time to Buy and Sell Stock
 Contains Duplicate
 Product of Array Except Self

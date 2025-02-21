@@ -1,5 +1,8 @@
 **Dynamic Programming Notes on Leetcode Variants**
 https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming?utm_campaign=post&utm_medium=web
+https://leetcode.com/studyplan/dynamic-programming/
+
+
 
 ## **Longest Increasing Subsequence (LIS) Variants**
 1. **[Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)** - Use DP with binary search (O(n log n)) or DP (O(n^2)).

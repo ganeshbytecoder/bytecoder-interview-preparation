@@ -391,6 +391,8 @@ No, it is **not 100% true** that subarray problems are only solved using **Slidi
 ## 🔹 **Subarray Problems**
 (An array slice that maintains order and contiguity)
 
+https://leetcode.com/problems/maximum-subarray/description/
+
 ### **📌 Sum-Related Conditions**
 or mux sum subarray, does subarray have sum is equal k or more constraints
 1. **[560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)**
@@ -415,11 +417,6 @@ or mux sum subarray, does subarray have sum is equal k or more constraints
 
 ---
 
-### **📌 XOR / Bitwise Conditions**
-5. **[1371. Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/)**
-    - Find the longest contiguous substring where each vowel appears an even number of times.
-    - **Condition:** Subarray must satisfy an XOR-based condition.
-    - **Difficulty:** Medium
 
 6. **[1442. Count Triplets That Can Form Two Equal XORs](https://leetcode.com/problems/count-triplets-that-can-form-two-equal-xors/)**
     - Find the number of triplets `(i, j, k)` such that `XOR[i:j] == XOR[j:k]`.
@@ -448,72 +445,29 @@ or mux sum subarray, does subarray have sum is equal k or more constraints
     - **Difficulty:** Medium
 
 10. **[424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)**
-- Find the longest contiguous substring where you can replace at most `k` characters.
+- what id it's array Find the longest contiguous substring where you can replace at most `k` characters.
 - **Condition:** Subarray length maximization with `≤ k` changes.
 - **Difficulty:** Medium
 
----
-
-## 🔹 **Substring Problems**
-(A contiguous sequence of characters in a string)
-
-### **📌 Palindrome & Reverse Conditions**
-11. **[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)**
-- Find the longest contiguous palindromic substring.
-- **Condition:** Substring must be a palindrome.
-- **Difficulty:** Medium
-
-12. **[647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)**
-- Count all substrings in a string that are palindromic.
-- **Condition:** Count substrings meeting the palindrome condition.
-- **Difficulty:** Medium
+### **📌 XOR / Bitwise Conditions**
+5. **[1371. Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/)**
+   - Find the longest contiguous substring where each vowel appears an even number of times.
+   - **Condition:** Subarray must satisfy an XOR-based condition.
+   - **Difficulty:** Medium
 
 ---
 
-### **📌 K Distinct or Unique Character Conditions**
-13. **[340. Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/)**
-- Find the longest contiguous substring with at most `k` distinct characters.
-- **Condition:** Substring must contain ≤ `k` unique characters.
-- **Difficulty:** Medium
-
-14. **[159. Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/)**
-- Same as above, but with **exactly two** distinct characters.
-- **Condition:** Substring must contain exactly `2` unique characters.
-- **Difficulty:** Medium
-
-15. **[3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)**
-- Find the longest contiguous substring where no character repeats.
-- **Condition:** Substring must have all unique characters.
-- **Difficulty:** Medium
-
----
-
-### **📌 Sliding Window & Frequency Conditions**
-16. **[76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)**
-- Find the smallest substring containing all characters of `t`.
-- **Condition:** Substring must contain all of `t`'s characters at least once.
-- **Difficulty:** Hard
 
 
 
-18. **[30. Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)**
-- Find all starting indices where a substring is a concatenation of all words in a given list.
-- **Condition:** Substring must be a concatenation of a word list.
-- **Difficulty:** Hard
 
----
 
-### **🔥 Bonus: Hard Problems**
-19. **[727. Minimum Window Subsequence](https://leetcode.com/problems/minimum-window-subsequence/)**
-- Find the minimum contiguous substring in `s` where `t` appears as a subsequence.
-- **Condition:** Substring must contain `t` as a subsequence.
-- **Difficulty:** Hard
 
-20. **[1062. Longest Repeating Substring](https://leetcode.com/problems/longest-repeating-substring/)**
-- Find the longest contiguous substring that appears at least twice.
-- **Condition:** Substring must be **repeating** at least twice.
-- **Difficulty:** Hard
 
----
+
+
+
+
+
 
 

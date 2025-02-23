@@ -1,5 +1,6 @@
 **Dynamic Programming Notes on Leetcode Variants**
 ## Fundamentals
+* **Recursion Approach**
 * **Top-down approach (Memoization)**
     - Analyze how many variables are used to create a dp array
     - Uses recursion with memoization
@@ -17,132 +18,16 @@ https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming?utm_campa
 https://leetcode.com/studyplan/dynamic-programming/
 
 
-## Fibonacci Sequence /pattern 
+## Fibonacci Sequence /pattern
 ### Fibonacci series
 
 ### **[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)**
 - Problem: You can climb 1 or 2 steps. How many distinct ways can you reach the top of a staircase with `n` steps?
 
-- **Recursion**:
-  ```java
-  public int climbStairs(int n) {
-      if (n <= 2) return n;
-      return climbStairs(n - 1) + climbStairs(n - 2);
-  }
-  ```
-
-- **Memoization**:
-  ```java
-  private int climbHelper(int n, int[] memo) {
-      if (n <= 2) return n;
-      if (memo[n] != -1) return memo[n];
-      return memo[n] = climbHelper(n - 1, memo) + climbHelper(n - 2, memo);
-  }
-  
-  public int climbStairs(int n) {
-      int[] memo = new int[n + 1];
-      Arrays.fill(memo, -1);
-      return climbHelper(n, memo);
-  }
-  
-  ```
-- **Tabulation**:
-  ```java
-  public int climbStairs(int n) {
-      if (n <= 2) return n;
-      int[] dp = new int[n + 1];
-      dp[1] = 1; dp[2] = 2;
-      for (int i = 3; i <= n; i++) {
-          dp[i] = dp[i - 1] + dp[i - 2];
-      }
-      return dp[n];
-  }
-  ```
-
 ### ** [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) **
 You are given an integer array `cost` where `cost[i]` is the cost of the `i-th` step. Once you pay the cost, you can either climb one or two steps. You can start from step 0 or step 1. Return the minimum cost to reach the top.
 
-- **Solution Approaches**
-
-1. **Recursive Solution**
-```java
-    public int minCostClimbingStairs(int[] cost) {
-        return Math.min(minCost(cost, cost.length - 1), minCost(cost, cost.length - 2));
-    }
-
-    private int minCost(int[] cost, int i) {
-        if (i < 0) return 0; // Base case
-        if (i == 0 || i == 1) return cost[i];
-        return cost[i] + Math.min(minCost(cost, i - 1), minCost(cost, i - 2));
-    }
-
-    int solve1(int[] cost,int index){
-        if(index >= cost.length){
-            return 0;
-        }
-        return cost[index] + Math.min(solve1(cost, index + 1 ),  solve1(cost, index + 2));
-    }
-
-```
-
-2. **Memoization Solution**
-```java
-
-private int minCost(int[] cost, int i, int[] memo) {
-    if (i < 0) return 0; // Base case
-    if (i == 0 || i == 1) return cost[i];
-    if (memo[i] != -1) return memo[i];
-    return memo[i] = cost[i] + Math.min(minCost(cost, i - 1, memo), minCost(cost, i - 2, memo));
-}
-
-public int minCostClimbingStairs(int[] cost) {
-    int n = cost.length;
-    int[] memo = new int[n];
-    Arrays.fill(memo, -1);
-    return Math.min(minCost(cost, n - 1, memo), minCost(cost, n - 2, memo));
-}
-
-
-```
-
-3. **Tabulation Solution**
-```java
-public int minCostClimbingStairs(int[] cost) {
-    int n = cost.length;
-    int[] dp = new int[n + 1];
-    
-    // Initialize base cases
-    dp[0] = 0;
-    dp[1] = 0;
-    
-    // Build the DP array
-    for (int i = 2; i <= n; i++) {
-        dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
-    }
-    
-    return dp[n];
-}
-```
-
-4. **Space-Optimized Tabulation**
-```java
-public int minCostClimbingStairs(int[] cost) {
-    int prev1 = 0, prev2 = 0;
-    
-    for (int i = 2; i <= cost.length; i++) {
-        int curr = Math.min(prev1 + cost[i - 1], prev2 + cost[i - 2]);
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    
-    return prev1;
-}
-```
-
-
----
-
-##### [Jump Game](https://leetcode.com/problems/jump-game/)
+#### [Jump Game](https://leetcode.com/problems/jump-game/)
 **Problem**: Determine if you can reach the last index.
 
 ```java
@@ -198,7 +83,8 @@ public boolean canJump(int[] nums) {
 
 
 
-##  Kadane's Algorithm/ prefix sum for subarray 
+##  Kadane's Algorithm/ prefix sum for subarray:
+Kadane's Algorithm is primarily used for solving the Maximum Subarray Problem and its variations where the problem asks to optimize a contiguous subarray within a one-dimensional numeric array
 
 LeetCode 53: Maximum Subarray
 
@@ -220,17 +106,36 @@ LeetCode 152: Maximum Product Subarray
 5. **[Minimum Cost for Tickets](https://leetcode.com/problems/minimum-cost-for-tickets/)** - DP tracking cost of valid travel days.
 
 
+## **Matrix Pattern**
+- Grid traversal
+- Path finding
+- LeetCode 62: Unique Paths
+- LeetCode 64: Minimum Path Sum
+- LeetCode 329. Longest Increasing Path in a Matrix
 
 
+## **Matrix Multiplication Variants**
+1. **[Minimum Score Triangulation of Polygon](https://leetcode.com/problems/minimum-score-triangulation-of-polygon/)** - DP with range.
+2. **[Minimum Cost Tree from Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)** - DP/Greedy.
+3. **[Burst Balloons](https://leetcode.com/problems/burst-balloons/)** - DP with range partitioning.
 
+---
+
+## **Matrix/2D Array Problems**
+1. **[Matrix Block Sum](https://leetcode.com/problems/matrix-block-sum/)** - Prefix sum for efficient block sum queries.
+2. **[Range Sum Query 2D Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/)** - Prefix sum table.
+3. **[Dungeon Game](https://leetcode.com/problems/dungeon-game/)** - DP bottom-up to compute min health.
+4. **[Triangle](https://leetcode.com/problems/triangle/)** - DP from bottom to top.
+5. **[Maximal Square](https://leetcode.com/problems/maximal-square/)** - DP to find largest square of `1`s.
+6. **[Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/)** - DP on rows.
 
 ---
 
 
+## 0/1 Knapsack
 
 
-
-## unbounded knapsack 
+## unbounded knapsack
 ## **🎯 Minimization Problems Pattern: Unbounded Knapsack (Dynamic Programming)**
 ### 2. Array-based DP
 
@@ -442,7 +347,6 @@ A frog can jump `{1, 2, 3}` stones at a time to cross a river of `N` stones. Fin
 
 ---
 
-
 ## **State Machine Problems (Stock Trading)**
 1. **[Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)** - One transaction, find max profit.
 2. **[Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)** - Multiple transactions.
@@ -457,6 +361,7 @@ A frog can jump `{1, 2, 3}` stones at a time to cross a river of `N` stones. Fin
 2. **[Edit Distance](https://leetcode.com/problems/edit-distance/)** - DP table to compute min edit operations.
 3. **[Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)** - Count distinct subsequences using DP.
 4. **[Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)** - DP to compute minimum delete cost for equal strings.
+
 
 
 ## **Longest Increasing Subsequence (LIS) Variants**
@@ -558,6 +463,18 @@ public boolean wordBreak(String s, List<String> wordDict) {
 1. **[Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)** - Use bitmask DP to track subset partitions.
 
 
+## DP on Trees
+LeetCode 337: House Robber III
+
+LeetCode 124: Binary Tree Maximum Path Sum
+
+LeetCode 968: Binary Tree Cameras
+
+## DP on Graphs
+
+LeetCode 787: Cheapest Flights Within K Stops
+
+LeetCode 1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance
 
 ---
 
@@ -576,7 +493,11 @@ public boolean wordBreak(String s, List<String> wordDict) {
 
 ---
 
+## **DFS + DP Problems**
+1. **[Out of Boundary Paths](https://leetcode.com/problems/out-of-boundary-paths/)** - DFS + DP to track valid paths.
+2. **[Knight Probability in Chessboard](https://leetcode.com/problems/knight-probability-in-chessboard/)** - DP to track probabilities.
 
+---
 
 ## **Minimax DP**
 1. **[Predict the Winner](https://leetcode.com/problems/predict-the-winner/)** - Minimax DP for game strategy.

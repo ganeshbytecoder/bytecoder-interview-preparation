@@ -1,5 +1,9 @@
 Java interview questions:  https://github.com/DopplerHQ/awesome-interview-questions?tab=readme-ov-file#java
 
+all Spring containers and connections -> 
+    IOC, Beanfactory, context , Multitenancy , security context 
+
+
 
 
 1.     You need to handle 1 million requests per second. How would you scale your backend architecture?

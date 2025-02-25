@@ -1,5 +1,7 @@
 # **📌 Observer Pattern - Chapter 2 Summary from Head First Design Patterns**
 
+
+Observer Pattern vs pub-sub vs bus
 ---
 
 ## **🚀 Overview**

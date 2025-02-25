@@ -7,7 +7,7 @@ Till 25 Feb -> LLD and DSA part3
 till  1 - 5nd March -> HLD and Java - Spring  Specialisation
 
 After 5th March -  interview specific preps 
-                -  Revision DSA + one assessment of leetcode   
+                -  Revision DSA + one assessment of leetcode    
                 -  Revision LLD - HLD and Java - Spring  Specialisation 
 
 

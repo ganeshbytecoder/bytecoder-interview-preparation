@@ -15,7 +15,8 @@
 1. **416. Partition Equal Subset Sum**
     - **Challenge:** Determine if a given set can be partitioned into two subsets of equal sum.
     - **Focus:** Subset sum variation using DP.
-
+      https://leetcode.com/problems/partition-to-k-equal-sum-subsets/description/
+    - 
 2. **494. Target Sum**
     - **Challenge:** Count the number of ways to assign + or – signs to array elements to reach a target sum.
     - **Focus:** A variation that models a knapsack-like choice with sign flips.
@@ -188,5 +189,168 @@ Beyond the basic formulation, the 0/1 Knapsack pattern extends to several intere
 
 - **Investment Portfolio Selection:**  
   Consider selecting stocks or investment opportunities with limited capital. Each investment requires a certain amount of money (weight) and has an expected return (value). The knapsack model assists in choosing the optimal combination of investments to maximize returns under your capital constraints.
+
+---
+
+
+
+
+# unbounded knapsack
+- Include/exclude choices
+- Knapsack problems
+
+The **Coin Change** problem falls under the **Unbounded Knapsack DP Pattern**, which is useful for solving **real-world problems involving combinations, minimum cost, and resource allocation**.
+Here are some real-life problems and the pattern to recognize them.
+
+This pattern applies to problems where:
+1. You have **unlimited supply** of each item (like coins, food packets, etc.).
+2. You need to **maximize/minimize a value** (like cost, count, weight).
+3. You are trying to **fill a target amount/weight/capacity** optimally.
+
+### **🔑 How to Identify This Pattern?**
+**Ask yourself:**
+✅ Do I have an **unlimited supply** of items?  
+✅ Am I trying to **reach an exact target** (amount, weight, length, distance)?  
+✅ Am I looking for the **minimum or maximum** way to do it?
+
+If **yes**, then it’s a **Coin Change (Unbounded Knapsack) DP problem**! 🎯
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin.
+
+```java
+class Solution {
+
+    int solve(int[] coins, int amount, HashMap<Integer, Integer> dp){
+        if(amount==0){
+            return 0;
+        }
+     
+        if(amount < 0){
+            return Integer.MAX_VALUE;
+        }
+
+        if(dp.get(amount) != null){
+            return dp.get(amount);
+        }
+
+        int min = Integer.MAX_VALUE;
+        for(int coin : coins){
+            if(amount<coin) continue;
+            int temp = solve(coins, amount-coin, dp);
+            min = Math.min(min, temp != Integer.MAX_VALUE ? 1 + temp : temp);
+        }
+        dp.put(amount, min);
+
+        return dp.get(amount);
+    }
+
+
+    
+    public int coinChange(int[] coins, int amount) {
+        Arrays.sort(coins);
+
+        HashMap<Integer, Integer> dp= new HashMap<>();
+        int count = solve(coins, amount, dp) ;
+        if(count!= Integer.MAX_VALUE){
+            return count;
+        }
+        return -1;
+    }
+}
+```
+
+M2  important
+
+```java
+
+import java.util.Arrays;
+
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) return 0;
+        
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1); // Fill with an unreachable max value
+        dp[0] = 0;
+
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+
+        return dp[amount] == amount + 1 ? -1 : dp[amount];
+    }
+}
+
+```
+
+---
+
+### **🌍 Real-World Problems Using This Pattern**
+
+### **1. Minimum Banknotes Needed (ATM Withdrawal)**
+**Problem:**  
+An ATM has banknotes of `{1, 5, 10, 20, 50, 100}`. A customer requests ₹287. Find the **minimum number of banknotes** required to dispense this amount.
+
+🔹 **Solution:**  
+Same as **coin change**, where:
+- `coins = {1, 5, 10, 20, 50, 100}`
+- `amount = 287`
+- Goal: Minimize the number of notes.
+
+---
+
+### **2. Minimum Food Packets for Refugees**
+**Problem:**  
+A charity organization wants to distribute **food packets** to a refugee camp. Packets are available in `{5, 10, 20}` sizes. What is the **minimum number of packets** required to supply `N` kg of food?
+
+🔹 **Solution:**
+- `coins = {5, 10, 20}` (packet sizes)
+- `amount = N` (total food requirement)
+- **Minimize** the number of packets used.
+
+---
+
+### **3. Minimum Bottles to Fill a Tank**
+**Problem:**  
+You have water bottles of different capacities `{250ml, 500ml, 1L, 2L, 5L}`. Given a tank capacity of `T` liters, find the **minimum number of bottles** required to fill it exactly.
+
+🔹 **Solution:**
+- `coins = {250, 500, 1000, 2000, 5000}` (bottle sizes in ml)
+- `amount = T * 1000` (convert liters to ml)
+- **Minimize** the number of bottles used.
+
+---
+
+### **4. Making Exact Change in Vending Machines**
+**Problem:**  
+A vending machine has coins of `{1, 2, 5, 10}`. A customer inserts a bill, and the machine needs to return `X` amount in **minimum coins**.
+
+🔹 **Solution:**
+- Same as **coin change**, where we minimize the number of coins returned.
+
+---
+
+### **5. Cutting Metal Rods for Construction**
+**Problem:**  
+A construction company needs metal rods of length `L`. They have an unlimited supply of rods of `{1m, 2m, 5m, 10m}`. Find the **minimum number of rods** required to get exactly `L` meters.
+
+🔹 **Solution:**
+- `coins = {1, 2, 5, 10}` (rod lengths)
+- `amount = L` (required length)
+- **Minimize** the number of rods.
+
+---
+
+### **6. Minimum Jumps to Reach the End**
+**Problem:**  
+A frog can jump `{1, 2, 3}` stones at a time to cross a river of `N` stones. Find the **minimum jumps** required.
+
+🔹 **Solution:**
+- `coins = {1, 2, 3}` (jump sizes)
+- `amount = N` (stones to cross)
+- **Minimize** the number of jumps.
 
 ---

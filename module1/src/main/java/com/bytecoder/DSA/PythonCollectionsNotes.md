@@ -1251,3 +1251,146 @@ class Solution(object):
 
         return True
 ```
+
+
+### **Counter for Dictionary in Python**
+The `collections.Counter` class in Python provides a convenient way to count elements in an iterable and manage frequency-based data structures efficiently.
+
+#### **1. Importing and Creating a Counter**
+The `Counter` class is part of the `collections` module. You can create a `Counter` from:
+- A list or iterable
+- A dictionary with keys and counts
+
+```python
+from collections import Counter
+
+# Example 1: Creating a Counter from a list
+nums = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+counter = Counter(nums)
+print(counter)  
+# Output: Counter({4: 4, 3: 3, 2: 2, 1: 1})
+
+# Example 2: Creating a Counter from a dictionary
+word_freq = {'apple': 3, 'banana': 2, 'cherry': 5}
+counter_dict = Counter(word_freq)
+print(counter_dict)  
+# Output: Counter({'cherry': 5, 'apple': 3, 'banana': 2})
+```
+
+#### **2. Accessing Elements**
+You can access counts directly using dictionary-like syntax.
+
+```python
+print(counter[3])  # Output: 3 (since 3 appears three times)
+print(counter[5])  # Output: 0 (not present in Counter)
+```
+
+#### **3. Most Common Elements**
+The `most_common(n)` method retrieves the `n` most frequent elements.
+
+```python
+print(counter.most_common(2))  
+# Output: [(4, 4), (3, 3)] - The two most common elements
+```
+
+#### **4. Updating a Counter**
+You can update a `Counter` with new elements.
+
+```python
+counter.update([3, 4, 4, 5])
+print(counter)  
+# Output: Counter({4: 6, 3: 4, 2: 2, 1: 1, 5: 1})
+```
+
+#### **5. Arithmetic Operations**
+You can perform addition, subtraction, intersection, and union on two `Counter` objects.
+
+```python
+c1 = Counter(a=3, b=1)
+c2 = Counter(a=1, b=2, c=1)
+
+# Addition (sums counts)
+print(c1 + c2)  
+# Output: Counter({'a': 4, 'b': 3, 'c': 1})
+
+# Subtraction (only keeps positive counts)
+print(c1 - c2)  
+# Output: Counter({'a': 2})  
+
+# Intersection (min count of shared keys)
+print(c1 & c2)  
+# Output: Counter({'a': 1, 'b': 1})
+
+# Union (max count of shared keys)
+print(c1 | c2)  
+# Output: Counter({'a': 3, 'b': 2, 'c': 1})
+```
+
+---
+
+### **Using `heapq.nlargest` to Retrieve Top Elements**
+The `heapq` module provides efficient heap-based operations. The function `heapq.nlargest(n, iterable, key)` is used to retrieve the `n` largest elements from an iterable based on a given key.
+
+#### **1. Finding Top N Elements from a Dictionary**
+We can use `heapq.nlargest` to extract the highest values from a dictionary.
+
+```python
+from heapq import nlargest
+
+word_freq = {'apple': 3, 'banana': 2, 'cherry': 5, 'date': 4}
+top_2 = nlargest(2, word_freq, key=word_freq.get)
+print(top_2)  
+# Output: ['cherry', 'date'] (words with highest frequencies)
+```
+
+#### **2. Using with Counter**
+Since `Counter` behaves like a dictionary, we can use `nlargest` with it.
+
+```python
+from collections import Counter
+from heapq import nlargest
+
+words = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple', 'cherry', 'cherry', 'cherry']
+word_counter = Counter(words)
+
+# Finding the top 2 most frequent words
+top_2_words = nlargest(2, word_counter, key=word_counter.get)
+print(top_2_words)  
+# Output: ['cherry', 'apple']
+```
+
+#### **3. Finding Top N Numbers in a List**
+We can also apply `heapq.nlargest` on a list.
+
+```python
+nums = [10, 3, 5, 20, 8, 25, 15]
+top_3 = nlargest(3, nums)
+print(top_3)  
+# Output: [25, 20, 15]
+```
+
+#### **4. Finding Top N Tuples Based on a Specific Key**
+If we have a list of tuples, we can extract the top `n` elements based on a specific attribute.
+
+```python
+students = [
+    ('Alice', 85),
+    ('Bob', 75),
+    ('Charlie', 90),
+    ('David', 80)
+]
+
+top_students = nlargest(2, students, key=lambda x: x[1])
+print(top_students)  
+# Output: [('Charlie', 90), ('Alice', 85)]
+```
+
+---
+
+### **Key Takeaways**
+1. `Counter` is useful for counting elements efficiently.
+2. It behaves like a dictionary but supports additional operations like `most_common()` and arithmetic operations.
+3. `heapq.nlargest(n, iterable, key)` helps extract the top `n` elements efficiently.
+4. It is particularly useful for sorting dictionaries or lists with custom sorting criteria.
+
+This combination of `Counter` and `heapq.nlargest` is frequently used in competitive programming, data analysis, and building recommendation systems.

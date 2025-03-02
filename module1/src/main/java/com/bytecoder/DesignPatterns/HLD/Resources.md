@@ -1,5 +1,9 @@
 
 ## Additional Interview Preparation Tips
+https://www.linkedin.com/posts/chiraggoswami23_api-webdevelopment-restapi-activity-7300329959120678912-TM1a?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzwIGYBEJI2ZATOVuAxZmBa6zuXW26zQMc
+https://www.linkedin.com/posts/chiraggoswami23_cybersecurity-2fa-mfa-activity-7299737336978755584-YyiO?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzwIGYBEJI2ZATOVuAxZmBa6zuXW26zQMc
+https://www.linkedin.com/posts/chiraggoswami23_sso-cybersecurity-passwordmanagement-activity-7299242817996918785-6sMK?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzwIGYBEJI2ZATOVuAxZmBa6zuXW26zQMc
+https://www.linkedin.com/posts/chiraggoswami23_ssl-tls-websecurity-activity-7297925401027194880-QO_4?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzwIGYBEJI2ZATOVuAxZmBa6zuXW26zQMc
 
 1. **Practice Whiteboarding**
     - Be ready to draw architectures involving these components (load balancers, caches, databases, microservices, etc.).

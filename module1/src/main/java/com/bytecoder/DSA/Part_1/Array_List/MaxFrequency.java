@@ -5,64 +5,69 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MaxFrequency {
-    //    creation of streams -> from array, string, file , collection,
-//    transformation and filter
-//    reduce -> max, min,
-//    collect,
-//    note util classes and functions-> collections, arrays, comparator,
 
     /***
      * find max occurred int in give integer array
      * find max occurred character in given string
      */
     public static void getMaxOccurredInt(int[] array) {
-        List<Integer> list = new ArrayList<>();
-        for (int i : array) {
-            list.add(i);
-        }
+        List<Integer> list = Arrays.stream(array).boxed().toList();
+        HashMap<Integer, Integer> map = new HashMap<>();
 
-        Map<Integer, Long> map = list.stream().collect(Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()));
-        for (Map.Entry<Integer, Long> entry : map.entrySet()
-        ) {
+        list.forEach(value -> map.put(value, map.getOrDefault(value,0)+1));
+
+        map.entrySet().forEach((entry)-> System.out.println(entry.getKey() + " : " + entry.getValue()) );
+
+        map.forEach((key, value) -> System.out.println(key + " : " + value));
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
 
-        Map.Entry<Integer, Long> entry = Collections.max(map.entrySet(), (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
+
+
+    //  Comparator.comparing((a,b)-> ab);
+        Map.Entry<Integer, Integer> entry = Collections.max(map.entrySet(), (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
         System.out.println(entry.getKey() + " : " + entry.getValue());
 
-        Comparator<Map.Entry<Integer, Long>> comparator = (o1, o2) -> (int) (o1.getValue() - o2.getValue());
-        List<Map.Entry<Integer, Long>> list1 = new ArrayList<>(map.entrySet());
+        Comparator<Map.Entry<Integer, Integer>> comparator = (o1, o2) ->  (o1.getValue() - o2.getValue());
+
+
+        List<Map.Entry<Integer, Integer>> list1 = new ArrayList<>();
+        map.entrySet().forEach((a)-> list1.add(a));
+
         Collections.sort(list1, comparator);
+//        this will work since it's set because sets are unordered
+//        Collections.sort(map.entrySet(), comparator);
+
         list1.forEach(x ->
                 System.out.println(x.getKey() + " - " + x.getValue())
         );
 
-//        Comparator.comparing((a,b)-> ab);
-
         System.out.println(Collections.max(list1, (e1, e2) -> e1.getKey().compareTo(e2.getKey())));
-//        max digit repeation
-        String collect = list.stream().map(String::valueOf).collect(Collectors.joining());
-        System.out.println(collect);
+        System.out.println(Collections.max(map.entrySet(), (e1, e2) -> e1.getKey().compareTo(e2.getKey())));
+
+
+//      max digit repeation
+        String collect = List.of(1,2,3,4).stream().map(String::valueOf).collect(Collectors.joining());
+        System.out.println("collected " + collect);
+
+
         List<Character> characterList = new ArrayList<>();
         for (Character c : collect.toCharArray()) {
             characterList.add(c);
         }
 
-        Map<Character, Long> map1 = characterList.stream().collect(Collectors.groupingBy(Function.identity(), HashMap::new, Collectors.counting()));
-        map1.entrySet().stream().filter(e -> e.getValue() > 2).forEach(System.out::println);
-        Map<Character, Long> map3 = characterList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        map3.entrySet().stream().filter(e -> e.getValue() <= 2).forEach(System.out::println);
 
-        Map<Character, List<Character>> map2 = characterList.stream().collect(Collectors.groupingBy(x -> x, Collectors.mapping(x -> x, Collectors.toList())));
-        map2.entrySet().stream().forEach(System.out::println);
+        String s = "absbcd";
+        Map<Character, Integer> map1 = new HashMap<>();
 
+        for (Character character : s.toCharArray()){
+            map1.put(character, map1.getOrDefault(character,0)+1);
+        }
 
-//        Set<> set = new HashSet<>();
-//        set.add((1,2,3) , (2,3,4))
-//
-//        dictionary
-        char c = map3.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
-        System.out.println("max c  " + c);
+        char c = map1.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
+        System.out.println("max b  " + c);
     }
 
     public static void getMaxCharFrequencyInString(String str) {
@@ -80,19 +85,14 @@ public class MaxFrequency {
 
 
     public static void main(String[] args) {
+
+
+
         getMaxOccurredInt(new int[]{1, 2, 3, 4, 133, 4, 2});
+
+
         getMaxCharFrequencyInString("ganeshSinghChoudhary");
 
-
-        List.of(1, 2, 34, 4).stream().forEach(System.out::println);
-        Arrays.asList(1, 2, 34, 2).stream().forEach(System.out::println);
-        Integer[] arr = new Integer[]{1, 2, 3, 4, 133, 4, 2};
-        List.of(arr).stream().forEach(System.out::println);
-
-        String[] array = {"one", "two", "three"};
-        List<String> list = List.of(array);
-
-        System.out.println("Immutable List: " + list);
 
     }
 }

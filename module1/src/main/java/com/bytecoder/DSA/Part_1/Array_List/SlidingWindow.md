@@ -1,5 +1,3 @@
-package com.bytecoder.DSA.Part_1;
-
 //https://leetcode.com/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=top-interview-150
 
 //https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan-v2&envId=top-interview-150
@@ -9,3 +7,11 @@ public class SlidingWindow {
 //    Count of substrings of length K with exactly K distinct characters
 //    Longest substring without repeating characters
 }
+
+
+7. **Longest Substring Without Repeating Characters**
+    - *Problem*: Find the length of the longest substring with unique characters.
+    - *Concept*:
+        - Use a sliding window and HashMap to track indices of characters.
+        - use sliding window
+    - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)

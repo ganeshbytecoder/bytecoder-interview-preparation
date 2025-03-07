@@ -14,6 +14,28 @@ Output: -1.
 Explanation: There is no occurrence of “practice” in “geeksforgeeks”
 ```
 
+
+[//]: # (get 0.012012012012012012)
+```python
+
+def find_smallest_repeating_substring(s):
+    n = len(s)
+    for k in range(1, n + 1):
+        if n % k == 0:  # Check if k is a divisor of n
+            substring = s[:k]
+            if substring * (n // k) == s:  # Check if it forms the original string
+                return substring
+    return s  # If no repeating pattern found, return the original string
+
+# Test cases
+print(find_smallest_repeating_substring("ABCABCABCABC"))  # Output: "ABC"
+print(find_smallest_repeating_substring("ABCDABCDABCD"))  # Output: "ABCD"
+print(find_smallest_repeating_substring("AAAAAA"))        # Output: "A"
+print(find_smallest_repeating_substring("ABABABAB"))      # Output: "AB"
+print(find_smallest_repeating_substring("ABCDE"))         # Output: "ABCDE"
+
+```
+
 Parenthesis problem:-
 
 1.https://leetcode.com/problems/generate-parentheses Medium

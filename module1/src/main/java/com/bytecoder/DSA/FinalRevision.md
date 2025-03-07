@@ -1,3 +1,5 @@
+
+### java array and list
 ```java
 public static void main(String[] args) {
   int[] nums = {1,2,3};
@@ -47,8 +49,150 @@ public static void main(String[] args) {
   List.of(1, 2, 34, 4).stream().forEach(System.out::println);
   Arrays.asList(1, 2, 34, 2).stream().forEach(System.out::println);
 
+
+//  java does not have nums[::-1] / nums.reverse() to reverse array in place. so use list 
+
+  List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+  Collections.reverse(list); // Reverse in-place
+
+  Integer[] array = new Integer[list.size()];
+
+  for (int i = 0; i < list.size(); i++) {
+    array[i] = list.get(i);
+  }
+  for (int i : array){
+    System.out.println(i);
+  }
+
 }
 ```
+
+
+### Java map uses 
+
+```java
+package com.bytecoder.DSA.Part_1.Array_List;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class MaxFrequency {
+
+  /***
+   * find max occurred int in give integer array
+   * find max occurred character in given string
+   */
+  public static void getMaxOccurredInt(int[] array) {
+    List<Integer> list = Arrays.stream(array).boxed().toList();
+    HashMap<Integer, Integer> map = new HashMap<>();
+
+    list.forEach(value -> map.put(value, map.getOrDefault(value,0)+1));
+
+    map.entrySet().forEach((entry)-> System.out.println(entry.getKey() + " : " + entry.getValue()) );
+
+    map.forEach((key, value) -> System.out.println(key + " : " + value));
+
+    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+      System.out.println(entry.getKey() + " : " + entry.getValue());
+    }
+
+
+
+    //  Comparator.comparing((a,b)-> ab);
+    Map.Entry<Integer, Integer> entry = Collections.max(map.entrySet(), (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
+    System.out.println(entry.getKey() + " : " + entry.getValue());
+
+    Comparator<Map.Entry<Integer, Integer>> comparator = (o1, o2) ->  (o1.getValue() - o2.getValue());
+
+
+    List<Map.Entry<Integer, Integer>> list1 = new ArrayList<>();
+    map.entrySet().forEach((a)-> list1.add(a));
+
+    Collections.sort(list1, comparator);
+//        this will work since it's set because sets are unordered
+//        Collections.sort(map.entrySet(), comparator);
+
+    list1.forEach(x ->
+            System.out.println(x.getKey() + " - " + x.getValue())
+    );
+
+    System.out.println(Collections.max(list1, (e1, e2) -> e1.getKey().compareTo(e2.getKey())));
+    System.out.println(Collections.max(map.entrySet(), (e1, e2) -> e1.getKey().compareTo(e2.getKey())));
+
+
+//      max digit repeation
+    String collect = List.of(1,2,3,4).stream().map(String::valueOf).collect(Collectors.joining());
+    System.out.println("collected " + collect);
+
+
+    List<Character> characterList = new ArrayList<>();
+    for (Character c : collect.toCharArray()) {
+      characterList.add(c);
+    }
+
+
+    String s = "absbcd";
+    Map<Character, Integer> map1 = new HashMap<>();
+
+    for (Character character : s.toCharArray()){
+      map1.put(character, map1.getOrDefault(character,0)+1);
+    }
+
+    char c = map1.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
+    System.out.println("max b  " + c);
+  }
+
+  public static void getMaxCharFrequencyInString(String str) {
+    List<Character> characters = new ArrayList<>();
+    for (char c : str.toLowerCase().toCharArray()) {
+      characters.add(c);
+    }
+    Map.Entry<Character, Long> entry = characters.stream()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+            .entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .get();
+    System.out.println("max frequency of " + entry.getKey() + " is " + entry.getValue());
+  }
+
+
+  public static void main(String[] args) {
+
+
+
+    getMaxOccurredInt(new int[]{1, 2, 3, 4, 133, 4, 2});
+
+
+    getMaxCharFrequencyInString("ganeshSinghChoudhary");
+
+
+  }
+}
+
+```
+
+https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=problem-list-v2&envId=array&
+
+https://leetcode.com/problems/plus-one/?envType=problem-list-v2&envId=array
+
+https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150
+
+
+### 9. **Minimize the Maximum Difference Between Heights** https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/
+- **Hint**: Sort the array, then consider adding or subtracting `k` from the minimum and maximum heights to minimize the difference.
+
+https://leetcode.com/problems/fraction-to-recurring-decimal/description/
+
+https://leetcode.com/problems/isomorphic-strings/description/?envType=study-plan-v2&envId=top-interview-150
+
+
+
+
+
+
+
+
 
 
 

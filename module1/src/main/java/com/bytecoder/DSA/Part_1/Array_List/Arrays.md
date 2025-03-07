@@ -14,6 +14,18 @@
     }
 ```
 
+
+
+https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=problem-list-v2&envId=array&
+
+
+https://leetcode.com/problems/plus-one/?envType=problem-list-v2&envId=array
+
+https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150
+
+
+
+
 ### 6. **Find the Union and Intersection of Two Sorted Arrays**
 **Hint**: 
    - brute force
@@ -29,39 +41,24 @@
 
 
 
-### 9. **Minimize the Maximum Difference Between Heights**
+
+
+
+
+
+
+
+
+
+
+
+### 9. **Minimize the Maximum Difference Between Heights** https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/
    - **Hint**: Sort the array, then consider adding or subtracting `k` from the minimum and maximum heights to minimize the difference.
 
-### 10. **Minimum No. of Jumps to Reach End of an Array**
-   - **Hint**: Use a greedy approach to keep track of the farthest reachable index. Increment the jump count when you move beyond the current range.
 
 ### 11. **Find Duplicate in an Array of N+1 Integers**
    - **Hint**: Use Floyd's Tortoise and Hare (Cycle Detection) method to find the duplicate.
 
-### 12. **Merge Two Sorted Arrays Without Using Extra Space**
-    Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-    Output: [1,2,2,3,5,6]
-
-
-### 14. **Merge Intervals**
-   - **Hint**: Sort intervals by their start times, then merge overlapping intervals by checking if the end of one interval is greater than or equal to the start of the next.
-    
->
-> Example 1:
-Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
-Output: [[1,6],[8,10],[15,18]]
-Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
-
->Example 2:
-Input: intervals = [[1,4],[4,5]]
-Output: [[1,5]]
-Explanation: Intervals [1,4] and [4,5] are considered overlapping.
-     
-
-
-### 17. Best Time to Buy and Sell Stock (https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/)
-   - **Hint**: Track the minimum price encountered so far and calculate the maximum profit by comparing it with the current price.
-   - dp : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
 
 ### 18. **Find All Pairs on Integer Array Whose Sum is Equal to Given Number**
    - **Hint**: Use a hash map to store the complement of each number as you traverse the array, and check if the complement exists in the map.
@@ -135,10 +132,3 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
    - **Hint**: Use a modified merge sort algorithm that counts inversions while merging the subarrays.
 
 
-
-https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=problem-list-v2&envId=array& 
-
-
-https://leetcode.com/problems/plus-one/?envType=problem-list-v2&envId=array
-
-https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150

@@ -7,20 +7,18 @@ Hint:
 
 ** sort based on key/value and apply filter /map
 
+```python 
+
+from collections import Counter
+mapper = Counter(s)
+```
+
+
 https://leetcode.com/problems/isomorphic-strings/description/ 
 https://leetcode.com/problems/bulls-and-cows/description/ 
 https://leetcode.com/problems/custom-sort-string/description/ 
 
-### **Easy Problems**
-1. **Two Sum**  
-   - *Problem*: Find two numbers in an array that add up to a given target.
-   - *Concept*: Use a HashMap to store the difference between the target and each number.  
-   - [LeetCode](https://leetcode.com/problems/two-sum/)
 
-2. **Find the Difference**  
-   - *Problem*: Given two strings, find the extra character in the second string.  
-   - *Concept*: Use a HashMap to count characters in the strings.  
-   - [LeetCode](https://leetcode.com/problems/find-the-difference/)
 
 3. **Valid Anagram**  
    - *Problem*: Check if two strings are anagrams of each other.  
@@ -44,18 +42,7 @@ https://leetcode.com/problems/custom-sort-string/description/
 
 ---
 
-### **Medium Problems**
-6. **Subarray Sum Equals K**  
-   - *Problem*: Find the number of subarrays whose sum equals a given `k`.  
-   - *Concept*: Use a HashMap to store cumulative sums and their frequencies
-   - [LeetCode](https://leetcode.com/problems/subarray-sum-equals-k/)
 
-7. **Longest Substring Without Repeating Characters**  
-   - *Problem*: Find the length of the longest substring with unique characters.  
-   - *Concept*:
-     - Use a sliding window and HashMap to track indices of characters. 
-     - use sliding window
-   - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 8. **Top K Frequent Elements**  
    - *Problem*: Find the `k` most frequent elements in an array.  
@@ -67,6 +54,30 @@ https://leetcode.com/problems/custom-sort-string/description/
    - *Concept*: Use a HashSet (or HashMap) to store numbers and check neighbors. 
    - use sorted set and priority queue check previous element
    - [LeetCode](https://leetcode.com/problems/longest-consecutive-sequence/)
+
+```python
+
+class Solution:
+    def longestConsecutive(self, nums: list[int]) -> int:
+        num_set = set(nums)  # Store all numbers in a set for O(1) lookups
+        max_len = 0
+
+        for num in num_set:
+            # Check if it's the start of a sequence (num - 1 is not in the set)
+            if num - 1 not in num_set:
+                current_num = num
+                count = 1
+
+                # Expand the sequence
+                while current_num + 1 in num_set:
+                    current_num += 1
+                    count += 1
+
+                max_len = max(max_len, count)
+
+        return max_len
+
+```
 
 
 10. **Intersection of Two Arrays II**  

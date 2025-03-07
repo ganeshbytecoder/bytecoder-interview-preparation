@@ -202,12 +202,7 @@ class Solution {
 ### 13. **Merge Sort for Linked Lists**
    - **Hint**: Use the slow-fast pointer technique to split the list, then recursively merge the two halves using the merge step of merge sort.
 
-### 15. **Find the Middle Element of a Linked List**
-   - brute-force: find length and then get l/2 element 
-   - **Hint**: Use the slow-fast pointer method where the slow pointer moves one step and the fast pointer moves two steps.
 
-### 16. **Check if a Linked List is Circular**
-   - **Hint**: Traverse the list and check if any node points back to the head or if a loop is detected.
 
 ### 17. **Split a Circular Linked List into Two Halves** or Split Linked List in Parts
    - **Hint**: Use the slow-fast pointer approach to find the middle. Then, break the list into two halves.

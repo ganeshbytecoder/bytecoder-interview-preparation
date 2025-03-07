@@ -1,3 +1,127 @@
+When testing a **Spring application**, there are multiple types of test cases based on the scope and level of testing. These can be categorized into:
+
+### 1. **Unit Tests**
+- **Purpose:** Test individual components (methods/classes) in isolation.
+- **Frameworks Used:** JUnit, TestNG, Mockito
+- **Examples:**
+  - Testing a service method using mock repositories.
+  - Verifying a utility method’s logic.
+  - Mocking an external API call and verifying the response.
+- **Tools:** JUnit 5, Mockito, AssertJ, Hamcrest
+
+---
+
+### 2. **Integration Tests**
+- **Purpose:** Test interactions between multiple components such as service layers, repositories, and databases.
+- **Frameworks Used:** Spring Boot Test, TestContainers, WireMock
+- **Examples:**
+  - Testing `@Service` and `@Repository` layers together.
+  - Running queries against an in-memory database like H2.
+  - Validating Spring beans wiring and configurations.
+- **Tools:** `@SpringBootTest`, `@DataJpaTest`, `@TestConfiguration`
+
+---
+
+### 3. **Web Layer (Controller) Tests**
+- **Purpose:** Test `@Controller` classes (REST endpoints).
+- **Frameworks Used:** MockMvc, WebTestClient
+- **Examples:**
+  - Testing HTTP request and response handling.
+  - Verifying status codes, headers, and response payload.
+  - Mocking service layer calls.
+- **Tools:** `@WebMvcTest`, `@MockBean`, `MockMvc`
+
+---
+
+### 4. **Database Tests**
+- **Purpose:** Validate database operations using JPA, Hibernate, or JDBC.
+- **Frameworks Used:** Spring Data JPA, TestContainers
+- **Examples:**
+  - Testing CRUD operations.
+  - Verifying transaction rollbacks.
+  - Testing custom queries with `@Query`.
+- **Tools:** `@DataJpaTest`, H2 Database, TestContainers
+
+---
+
+### 5. **End-to-End (E2E) Tests**
+- **Purpose:** Simulate real-world user interactions across all application layers.
+- **Frameworks Used:** Cucumber, Selenium, RestAssured
+- **Examples:**
+  - Testing an API flow from frontend to database.
+  - Verifying full request-response cycles in a deployed environment.
+- **Tools:** Cucumber, Selenium, RestAssured, Karate
+
+---
+
+### 6. **Security Tests**
+- **Purpose:** Validate authentication, authorization, and security configurations.
+- **Frameworks Used:** Spring Security Test, Testcontainers
+- **Examples:**
+  - Verifying role-based access control (RBAC).
+  - Ensuring endpoints require authentication.
+  - Testing CSRF protection.
+- **Tools:** `@WithMockUser`, `@WithSecurityContext`
+
+---
+
+### 7. **Performance Tests**
+- **Purpose:** Analyze system performance under load.
+- **Frameworks Used:** JMeter, Gatling, Locust
+- **Examples:**
+  - Checking response time for high concurrent requests.
+  - Measuring database query execution time.
+- **Tools:** JMeter, Gatling, Locust
+
+---
+
+### 8. **Configuration & Property Tests**
+- **Purpose:** Ensure Spring configurations (YAML, properties, environment variables) work as expected.
+- **Examples:**
+  - Testing different `@Profile` configurations.
+  - Validating application properties using `@TestPropertySource`.
+- **Tools:** `@TestPropertySource`, `SpringBootTest`
+
+---
+
+### 9. **Messaging Tests (Kafka, RabbitMQ, etc.)**
+- **Purpose:** Verify event-driven communication.
+- **Examples:**
+  - Testing message sending/receiving in Kafka.
+  - Mocking RabbitMQ queues and verifying message processing.
+- **Tools:** TestContainers, Embedded Kafka, MockRabbitMQ
+
+---
+
+### 10. **Contract Tests**
+- **Purpose:** Ensure APIs follow a contract (useful for microservices).
+- **Examples:**
+  - Validating API structure and response format using Pact.
+  - Ensuring backward compatibility.
+- **Tools:** Pact, Spring Cloud Contract
+
+---
+
+### **Summary Table**
+| Test Type | Scope | Tools/Annotations |
+|-----------|-------|------------------|
+| **Unit Test** | Isolated methods/classes | JUnit, Mockito |
+| **Integration Test** | Multiple Spring components | `@SpringBootTest`, TestContainers |
+| **Controller Test** | REST APIs | `@WebMvcTest`, MockMvc |
+| **Database Test** | JPA/Hibernate queries | `@DataJpaTest`, H2, TestContainers |
+| **E2E Test** | Full system test | Cucumber, RestAssured |
+| **Security Test** | Authentication & authorization | `@WithMockUser`, Spring Security Test |
+| **Performance Test** | Load handling | JMeter, Gatling |
+| **Config Test** | Property & profile validation | `@TestPropertySource` |
+| **Messaging Test** | Kafka, RabbitMQ communication | TestContainers, Embedded Kafka |
+| **Contract Test** | API schema validation | Pact, Spring Cloud Contract |
+
+Would you like me to provide **sample test cases** for any of these types? 🚀
+
+
+
+
+
 ### **Triggering Notifications & Pushing Data Between Tables Using Stored Procedures in Spring Boot**
 
 A **Stored Procedure** can be used to **push data from one table to another** and **trigger notifications** when specific conditions are met (e.g., an order is shipped, a bank transaction exceeds a limit, etc.). We achieve this using **database triggers** that call stored procedures.

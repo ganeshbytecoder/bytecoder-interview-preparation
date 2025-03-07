@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_1.SortAndSearchingAlgorithms;
+package com.bytecoder.DSA.Part_1.Array_List.SortAndSearchingAlgorithms;
 
 public class SearchAlgorithmAndProblems {
 

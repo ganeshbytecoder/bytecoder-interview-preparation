@@ -55,6 +55,7 @@ For a **Java technical screening round**, the questions typically cover **core J
 33. What are **circuit breakers**, and how do they work in microservices?
 34. How does **Spring Security** handle authentication and authorization?
 35. Explain **Spring Boot Actuator** and its importance in monitoring.
+36. Junit, mockito 
 
 ---
 

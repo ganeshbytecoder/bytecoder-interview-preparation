@@ -16,13 +16,10 @@ Note: if symbol is one then below else use stack
 
 ```
 
-**Problem** reverse order of element or check palindrome
 
 **Problem** undo sequence and page history
 
 **Problem** evaluation of postfix expression
-
-**Problem** matching tags in html and xml
 
 **Problem** design a stack such that getMinimum() should be O(1)
 
@@ -43,15 +40,6 @@ hint :
 * using brute-force
 * using priority queue
 
-
-
-Here are multiple hints for each of the stack and queue problems:
-
-## Stack Problems:
-
-
-7. **Design Stack to Support getMin() in O(1)**
-   - **Hint**: Maintain an auxiliary stack to track the minimum element along with the main stack. Push the new minimum onto the auxiliary stack when necessary.
 
 8. **Find the Next/Previous Greater/Smaller Element** (https://leetcode.com/problems/next-greater-element-i/submissions/1452271799/)
    - **Hint**: Traverse the array from right to left, pushing elements onto a stack. For each element, pop smaller elements and use the stack's top as the next greater element.
@@ -114,9 +102,6 @@ public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
 14. **Sort a Stack Using Recursion**
     - **Hint**: Pop elements recursively and insert them back in sorted order using a helper function that finds the correct position for each element.
-
-15. **Largest Rectangular Area in Histogram**
-    - **Hint**: Use a stack to store indices of histogram bars. Traverse the histogram and calculate the area for the bars stored in the stack.
 
 16. **Length of the Longest Valid Substring** \
     Given a string s consisting only of opening and closing parenthesis 'ie '('  and ')', find out the length of the longest valid(well-formed) parentheses substring.

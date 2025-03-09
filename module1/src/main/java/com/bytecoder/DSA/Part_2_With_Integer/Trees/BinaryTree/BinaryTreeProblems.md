@@ -50,6 +50,7 @@ public static class Node {
 * Insert − Inserts data in a tree.
 * delete
 
+
 ```java
 
 class Node {
@@ -98,6 +99,28 @@ private Node deleteDfs(Node node, int data) {
 }
 
 ```
+
+
+
+
+patterns :
+
+find max height of tree or node 
+give a subtree has all the elements below x value 
+recreate binary tree since after remove certain nodes
+
+insert a node at level 
+delete node at level x and value y
+
+
+
+
+
+
+
+
+
+
 
 ## problems
 

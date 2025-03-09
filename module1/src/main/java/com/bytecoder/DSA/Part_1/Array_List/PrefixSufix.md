@@ -1,3 +1,6 @@
+check ## what if it allows circular or not 
+
+
 ### **Medium Problems**
 6. **Subarray Sum Equals K**
     - *Problem*: Find the number of subarrays whose sum equals a given `k`.

@@ -23,6 +23,42 @@ https://leetcode.com/problems/plus-one/?envType=problem-list-v2&envId=array
 
 https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150
 
+### 9. [**Add “1” to a Number Represented as  List**](https://leetcode.com/problems/plus-one/)
+- **Hint**: Reverse the list, add 1 to the head node, handle carry, then reverse it back.
+- use recursion and carry forward
+- using stack
+```java
+class Solution {
+
+    int increase(int[] nums, int index){
+        if(index==nums.length-1){
+            int carry = (nums[index]+1) /10;
+            nums[index] =  (nums[index]+1) %10;
+
+            return carry;
+        }
+        int carry = increase(nums, index+1);
+        nums[index] =  (nums[index]+carry);
+        carry = (nums[index]) /10;
+        nums[index] =(nums[index]) %10;
+        return carry;
+    }
+
+    public int[] plusOne(int[] digits) {
+        int carry = increase(digits, 0);
+        if(carry==0){
+            return digits;
+        }else{
+            int[] nums = new int[digits.length+1];
+            nums[0]=carry;
+            for(int i=1; i<nums.length; i++){
+                nums[i] = digits[i-1];
+            }
+            return nums;
+        }
+    }
+}
+```
 
 
 

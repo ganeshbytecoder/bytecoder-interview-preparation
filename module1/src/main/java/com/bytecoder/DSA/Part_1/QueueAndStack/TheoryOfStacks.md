@@ -1,3 +1,10 @@
+https://leetcode.com/problems/simplify-path/submissions/1521546931/?envType=study-plan-v2&envId=top-interview-150
+https://leetcode.com/problems/min-stack/?envType=study-plan-v2&envId=top-interview-150
+https://leetcode.com/problems/evaluate-reverse-polish-notation/description/?envType=study-plan-v2&envId=top-interview-150
+https://leetcode.com/problems/decode-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+
+
+
 **Problem** balancing of symbols,
 
 Note: if symbol is one then below else use stack
@@ -14,6 +21,19 @@ Note: if symbol is one then below else use stack
             
             return opens==close
 
+```
+
+### reverseStack using recursion
+```java
+public static int reverseStack(Stack<Integer> stack){
+        if(stack.isEmpty()){
+            return 0;
+        }
+        int temp = stack.pop();
+        int ans  = reverseStack(stack);
+        stack.add(temp);
+        return ans;
+    }
 ```
 
 

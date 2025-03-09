@@ -15,3 +15,8 @@ public class SlidingWindow {
         - Use a sliding window and HashMap to track indices of characters.
         - use sliding window
     - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+
+
+## what if it allows circular 
+https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/description/?envType=daily-question&envId=2025-03-08

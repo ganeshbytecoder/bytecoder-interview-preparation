@@ -103,7 +103,7 @@ private Node deleteDfs(Node node, int data) {
 
 
 
-patterns :
+patterns questions:
 
 find max height of tree or node 
 give a subtree has all the elements below x value 
@@ -111,6 +111,8 @@ recreate binary tree since after remove certain nodes
 
 insert a node at level 
 delete node at level x and value y
+is both binary trees are same ?
+add elements at same level and give resultant 
 
 
 
@@ -125,7 +127,6 @@ delete node at level x and value y
 ## problems
 
 
-https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2 
 
 
 https://leetcode.com/problems/delete-nodes-and-return-forest/description/
@@ -295,6 +296,18 @@ dfs(3)
 
 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/submissions/1528053859/ 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### **4. Diameter of a Tree**
 The diameter is the longest path between any two nodes in the tree. Use a recursive DFS to calculate the height of the tree while keeping track of the diameter.

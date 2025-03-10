@@ -22,6 +22,13 @@
 - When **client-server communication is request-response based**.
 - When the system **requires high scalability** and caching.
 
+
+
+### 📌 **All content type for REST API:**
+- When **building RESTful APIs** that expose data/services.
+- When **client-server communication is request-response based**.
+- When the system **requires high scalability** and caching.
+- 
 ---
 
 ## 2️⃣ **FTP (File Transfer Protocol) / SFTP (Secure FTP)**
@@ -114,6 +121,7 @@
 
 ## 6️⃣ **gRPC (Google Remote Procedure Call)**
 ### 🔹 Overview:
+- Protocol Buffers (Protobuf) is a language-neutral, platform-neutral mechanism for serializing structured data developed by Google. It is designed to be smaller, faster, and more efficient than formats like JSON or XML.
 - A high-performance **RPC framework** using **HTTP/2** for **fast, efficient** communication.
 - Supports **protocol buffers (protobuf)** instead of JSON.
 

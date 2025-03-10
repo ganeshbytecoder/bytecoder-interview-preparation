@@ -447,13 +447,6 @@ public boolean wordBreak(String s, List<String> wordDict) {
 
 
 
-## **8. Binary String Subsequences**
-- 🔹 **[187. Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) (Medium)**  
-  Find repeated DNA sequences (subsequences of length 10).
 
-- 🔹 **[791. Custom Sort String](https://leetcode.com/problems/custom-sort-string/) (Medium)**  
-  Sort characters of a string based on a custom order.
-
----
 
 

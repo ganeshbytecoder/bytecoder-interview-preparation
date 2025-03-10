@@ -1,3 +1,426 @@
+### **Pattern-Based Approaches for Substring Problems**
+When dealing with substring problems, we can broadly classify them into different categories based on what needs to be computed (length, count, etc.). Each category has an optimal approach. Below are **common patterns** along with **problem types** and their corresponding **approaches**.
+
+---
+
+## **📌 1. Longest or Shortest Substring Problems → Sliding Window**
+Use **sliding window** (two-pointer technique) when you need to find:
+- The **longest** substring with certain properties.
+- The **shortest** substring with certain properties.
+
+### **Examples & Approach**
+| Problem Type | Approach |
+|-------------|----------|
+| **Longest substring with at most K distinct characters** | Sliding Window with HashMap (`O(n)`) |
+| **Longest substring without repeating characters** | Sliding Window with HashSet (`O(n)`) |
+| **Shortest substring containing all characters of a given pattern** | Sliding Window with Frequency Map (`O(n)`) |
+| **Longest substring with equal 0s and 1s** | Prefix Sum + HashMap (`O(n)`) |
+
+### **Example 1: Longest Substring Without Repeating Characters**
+✅ **Problem**: Find the longest substring where no character repeats.
+```python
+def length_of_longest_substring(s: str) -> int:
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+📌 **Key Idea**: Expand the window until a duplicate appears, then shrink from the left.
+
+---
+
+## **📌 2. Counting the Number of Substrings → Two-Pass Inclusion-Exclusion**
+When the task is to **count** the number of substrings meeting a condition, use:
+1. **Two-Pointer / Sliding Window**
+2. **At Most K Trick**: `count(exactly K) = count(at most K) - count(at most K-1)`
+
+### **Examples & Approach**
+| Problem Type | Approach |
+|-------------|----------|
+| **Number of substrings with exactly K distinct characters** | Two-Pointer + `atMost(K) - atMost(K-1)` (`O(n)`) |
+| **Number of vowel substrings containing all vowels** | Two-Pointer + HashMap (`O(n)`) |
+| **Number of palindromic substrings** | Expand Around Center (`O(n^2)`) |
+| **Number of anagram substrings matching a pattern** | Sliding Window + Frequency Map (`O(n)`) |
+
+### **Example 2: Number of Substrings with Exactly K Distinct Characters**
+✅ **Problem**: Count substrings with exactly `K` distinct characters.
+```python
+def at_most_k(s, k):
+    freq = {}
+    count = 0
+    left = 0
+
+    for right in range(len(s)):
+        freq[s[right]] = freq.get(s[right], 0) + 1
+
+        while len(freq) > k:
+            freq[s[left]] -= 1
+            if freq[s[left]] == 0:
+                del freq[s[left]]
+            left += 1
+        
+        count += right - left + 1  # Counting substrings
+        
+    return count
+
+def substr_count_k_distinct(s, k):
+    return at_most_k(s, k) - at_most_k(s, k - 1)
+```
+📌 **Key Idea**: Use `atMost(K) - atMost(K-1)` trick to get exactly K distinct character substrings.
+
+---
+
+## **📌 3. Binary Substring Problems → Prefix Sum + HashMap**
+Use **prefix sum & HashMap** when you need to:
+- Count the number of substrings satisfying a binary condition (e.g., equal number of `0s` and `1s`).
+
+### **Examples & Approach**
+| Problem Type | Approach |
+|-------------|----------|
+| **Longest substring with equal 0s and 1s** | Prefix Sum + HashMap (`O(n)`) |
+| **Count substrings with equal number of 0s and 1s** | Prefix Sum + HashMap (`O(n)`) |
+| **Longest balanced substring (brackets, binary strings, etc.)** | Stack-based approach (`O(n)`) |
+
+### **Example 3: Count Binary Substrings with Equal 0s and 1s**
+✅ **Problem**: Count the number of substrings where the number of `0s` and `1s` are the same.
+```python
+def count_binary_substrings(s: str) -> int:
+    prev, cur, count = 0, 1, 0
+
+    for i in range(1, len(s)):
+        if s[i] == s[i - 1]:
+            cur += 1
+        else:
+            count += min(prev, cur)
+            prev, cur = cur, 1
+
+    return count + min(prev, cur)
+```
+📌 **Key Idea**: Track consecutive groups of `0s` and `1s`, then sum `min(prev, cur)`.
+
+---
+
+## **📌 4. Palindromic Substrings → Expand Around Center**
+Use **Expand Around Center** when:
+- You need to **count** or **find the longest** palindromic substring.
+
+### **Examples & Approach**
+| Problem Type | Approach |
+|-------------|----------|
+| **Find the longest palindromic substring** | Expand Around Center (`O(n^2)`) |
+| **Count palindromic substrings in a string** | Expand Around Center (`O(n^2)`) |
+| **Find the longest palindromic subsequence** | Dynamic Programming (`O(n^2)`) |
+
+### **Example 4: Longest Palindromic Substring**
+✅ **Problem**: Find the longest palindromic substring.
+```python
+def longest_palindrome(s: str) -> str:
+    def expand(l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l + 1:r]
+    
+    res = ""
+    for i in range(len(s)):
+        odd = expand(i, i)
+        even = expand(i, i + 1)
+        res = max(res, odd, even, key=len)
+    
+    return res
+```
+📌 **Key Idea**: Expand around each center (odd & even length).
+
+---
+
+## **📌 5. K Distinct Character Problems → Sliding Window + HashMap**
+Use **Sliding Window + HashMap** when:
+- You need substrings with **at most K distinct characters**.
+
+### **Example 5: Longest Substring with At Most K Distinct Characters**
+✅ **Problem**: Find the longest substring with at most `K` distinct characters.
+```python
+def longest_substr_k_distinct(s: str, k: int) -> int:
+    char_map = {}
+    left, max_length = 0, 0
+
+    for right in range(len(s)):
+        char_map[s[right]] = char_map.get(s[right], 0) + 1
+
+        while len(char_map) > k:
+            char_map[s[left]] -= 1
+            if char_map[s[left]] == 0:
+                del char_map[s[left]]
+            left += 1
+
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+📌 **Key Idea**: Maintain a frequency map of characters and shrink the window when more than `k` distinct characters are found.
+
+---
+
+## **🎯 Summary Table of Patterns**
+| Problem Type | Pattern |
+|-------------|----------|
+| **Find longest/shortest substring** | Sliding Window |
+| **Count number of substrings** | Inclusion-Exclusion with Two-Pointer |
+| **Binary substring problems** | Prefix Sum + HashMap |
+| **Palindrome problems** | Expand Around Center |
+| **K distinct character problems** | Sliding Window + HashMap |
+
+
+Yes! FANG interviews often ask string problems that fit into **specific patterns**. Here are more patterns beyond the ones I already shared:
+
+---
+
+# **📌 String Problem Patterns for Interviews (FANG)**
+
+## **1️⃣ Sliding Window (Variable Length)**
+Use when finding the **longest** or **shortest** substring with certain properties.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Longest substring with at most K distinct characters | Sliding Window + HashMap (`O(n)`) |
+| Longest substring without repeating characters | Sliding Window + HashSet (`O(n)`) |
+| Shortest substring containing all characters of a pattern | Sliding Window + Frequency Map (`O(n)`) |
+
+### **Example: Longest Substring Without Repeating Characters**
+```python
+def length_of_longest_substring(s: str) -> int:
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+✅ **Use When**: Finding the longest or shortest substring satisfying a condition.
+
+---
+
+## **2️⃣ Two-Pointer (Fixed Window)**
+Use when comparing **two substrings** or **reversing** parts of a string.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Check if a string is a palindrome | Two Pointers (`O(n)`) |
+| Reverse words in a string | Two Pointers (`O(n)`) |
+| Valid anagram (reordering of characters) | HashMap + Sorting (`O(n log n)`) |
+
+### **Example: Valid Palindrome (Ignoring Non-Alphanumeric Characters)**
+```python
+import re
+def is_palindrome(s: str) -> bool:
+    s = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+```
+✅ **Use When**: Comparing parts of a string from both ends.
+
+---
+
+## **3️⃣ Expand Around Center**
+Use for problems involving **palindromes**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Longest palindromic substring | Expand Around Center (`O(n^2)`) |
+| Count palindromic substrings | Expand Around Center (`O(n^2)`) |
+
+### **Example: Longest Palindromic Substring**
+```python
+def longest_palindrome(s: str) -> str:
+    def expand(l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l + 1:r]
+    
+    res = ""
+    for i in range(len(s)):
+        odd = expand(i, i)
+        even = expand(i, i + 1)
+        res = max(res, odd, even, key=len)
+    
+    return res
+```
+✅ **Use When**: Checking for palindromes or finding longest palindromic substrings.
+
+---
+
+## **4️⃣ Hashing + Frequency Counting**
+Use for problems requiring **pattern matching** or **frequency-based conditions**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Check if two strings are anagrams | HashMap (`O(n)`) |
+| Group anagrams | HashMap + Sorting (`O(n log n)`) |
+| Find first non-repeating character | HashMap (`O(n)`) |
+
+### **Example: Group Anagrams**
+```python
+from collections import defaultdict
+def group_anagrams(strs):
+    anagrams = defaultdict(list)
+    for s in strs:
+        sorted_s = ''.join(sorted(s))
+        anagrams[sorted_s].append(s)
+    return list(anagrams.values())
+```
+✅ **Use When**: Counting character frequencies or grouping words with the same character set.
+
+---
+
+## **5️⃣ Prefix Sum + HashMap**
+Use when dealing with **binary strings** or **cumulative calculations**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Count substrings with equal 0s and 1s | Prefix Sum + HashMap (`O(n)`) |
+| Longest balanced substring (e.g., parentheses, binary) | Prefix Sum + HashMap (`O(n)`) |
+
+### **Example: Count Binary Substrings with Equal 0s and 1s**
+```python
+def count_binary_substrings(s: str) -> int:
+    prev, cur, count = 0, 1, 0
+
+    for i in range(1, len(s)):
+        if s[i] == s[i - 1]:
+            cur += 1
+        else:
+            count += min(prev, cur)
+            prev, cur = cur, 1
+
+    return count + min(prev, cur)
+```
+✅ **Use When**: Finding substrings with equal frequency of characters.
+
+---
+
+## **6️⃣ KMP Algorithm (Pattern Matching)**
+Use when searching for a **substring within another string** efficiently.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Find the first occurrence of a substring | KMP Algorithm (`O(n)`) |
+| Check if a string is a rotation of another | KMP Algorithm (`O(n)`) |
+
+### **Example: Find First Occurrence of a Substring**
+```python
+def str_str(haystack: str, needle: str) -> int:
+    if not needle:
+        return 0
+    lps = [0] * len(needle)  # Longest Prefix Suffix array
+    j = 0  
+
+    # Preprocess LPS array
+    for i in range(1, len(needle)):
+        while j > 0 and needle[i] != needle[j]:
+            j = lps[j - 1]
+        if needle[i] == needle[j]:
+            j += 1
+            lps[i] = j
+
+    j = 0
+    for i in range(len(haystack)):
+        while j > 0 and haystack[i] != needle[j]:
+            j = lps[j - 1]
+        if haystack[i] == needle[j]:
+            j += 1
+        if j == len(needle):
+            return i - j + 1
+
+    return -1
+```
+✅ **Use When**: Searching for a pattern in a string efficiently.
+
+---
+
+## **7️⃣ Trie (Prefix Tree)**
+Use for problems related to **prefix matching**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Find longest common prefix | Trie (`O(n * m)`) |
+| Auto-complete system | Trie (`O(n * m)`) |
+| Word search in a dictionary | Trie + Backtracking (`O(n * m)`) |
+
+### **Example: Implement Trie**
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word: str):
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+        node.is_end = True
+
+    def search(self, word: str) -> bool:
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                return False
+            node = node.children[c]
+        return node.is_end
+```
+✅ **Use When**: Searching words in a dictionary or implementing autocomplete.
+
+
+---
+
+# **✅ Final Checklist of String & Substring Patterns (with Time Complexity)**
+| **Pattern** | **When to Use?** | **Time Complexity** |
+|------------|----------------|------------------|
+| **Sliding Window (Variable Length)** | Find longest/shortest substring with a condition | `O(n)` |
+| **Two Pointers** | Comparing two parts of a string | `O(n)` |
+| **Expand Around Center** | Find palindromic substrings | `O(n^2)` |
+| **Hashing + Frequency Counting** | Find anagrams, frequency-based conditions | `O(n)` |
+| **Prefix Sum + HashMap** | Binary substring problems | `O(n)` |
+| **KMP (Knuth-Morris-Pratt)** | Fast substring search | `O(n + m)` |
+| **Rabin-Karp (Rolling Hash)** | Fast substring search (multiple matches) | `O(n + m)` |
+| **Trie (Prefix Tree)** | Word-based problems, autocomplete | `O(n * m)` |
+| **Manacher’s Algorithm** | Find longest palindromic substring | `O(n)` |
+
+---
+
+
 
 https://leetcode.com/problems/is-subsequence/description/
 
@@ -35,6 +458,19 @@ print(find_smallest_repeating_substring("ABABABAB"))      # Output: "AB"
 print(find_smallest_repeating_substring("ABCDE"))         # Output: "ABCDE"
 
 ```
+https://leetcode.com/problems/largest-number-after-mutating-substring/description/ 
+
+## **8. Binary String Subsequences**
+- 🔹 **[187. Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/) (Medium)**  
+  Find repeated DNA sequences (subsequences of length 10).
+
+- 🔹 **[791. Custom Sort String](https://leetcode.com/problems/custom-sort-string/) (Medium)**  
+  Sort characters of a string based on a custom order.
+
+---
+
+
+
 
 Parenthesis problem:-
 
@@ -59,7 +495,6 @@ Counting of substring based on some condition:-
 
 Check types of string:-
 
-
 1.https://leetcode.com/problems/isomorphic-strings Easy
 2.https://leetcode.com/problems/valid-anagram Easy
 3. https://leetcode.com/problems/additive-number Medium
@@ -74,7 +509,6 @@ Check types of string:-
 
 
 Palindromic string:-
-
 
 1.https://leetcode.com/problems/palindrome-partitioning Medium
 2.https://leetcode.com/problems/palindrome-partitioning-ii Hard

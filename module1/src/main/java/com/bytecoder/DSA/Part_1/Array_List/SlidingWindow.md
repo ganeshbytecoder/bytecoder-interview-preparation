@@ -16,7 +16,9 @@ public class SlidingWindow {
         - use sliding window
     - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
-
+https://leetcode.com/problems/count-of-substrings-containing-every-vowel-and-k-consonants-ii/?envType=daily-question&envId=2025-03-10
+https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters/submissions/1568646837/?envType=weekly-question&envId=2025-03-08
+https://leetcode.com/problems/alternating-groups-ii/description/?envType=daily-question&envId=2025-03-09
 
 ## what if it allows circular 
 https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/description/?envType=daily-question&envId=2025-03-08

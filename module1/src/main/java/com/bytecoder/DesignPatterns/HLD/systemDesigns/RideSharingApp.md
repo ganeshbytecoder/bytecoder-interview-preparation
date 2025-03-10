@@ -262,6 +262,62 @@ Driver accepts/rejects ride → The first driver to accept is matched; other pen
 
 - **How do you balance stale data vs. performance gains when designing your caching policies?**
 
+---
 
+### **Areas for Improvement**
+#### **1. Functional Requirement Gaps**
+- **Cancellation & Refund Flow:**
+  - How will users cancel a ride? Will there be a charge based on cancellation timing?
+- **Driver Authentication & Onboarding:**
+  - What about background checks, document verification, and vehicle validation?
+- **Multi-Ride Support?**
+  - Can a driver accept multiple ride requests (pooling)? If so, how does that impact the ride-matching algorithm?
+- **Promo Code / Offer Redemption Flow:**
+  - You mention storing them in `user-details service`, but how will they be applied to a ride?
 
+#### **2. Improve Data Consistency Strategy**
+- You mention using **Postgres for ACID compliance**, but there's ambiguity in:
+  - How will **distributed transactions** be handled across multiple databases? (e.g., Postgres + Cassandra + Redis)
+  - Are you using **2PC (Two-Phase Commit)**, or just eventual consistency with async updates?
+  - What’s the rollback strategy if a payment is deducted but the ride is never booked?
 
+#### **3. More Robust Location Tracking Strategy**
+- **Handling GPS Drift & Accuracy Issues:**
+  - How will the system filter out **incorrect or fluctuating GPS coordinates**?
+  - Will there be a fallback if a driver temporarily loses connectivity?
+- **Handling Edge Cases:**
+  - What happens if a driver **doesn’t move** but GPS incorrectly places them elsewhere?
+  - How will the system handle **tunnels, multi-level roads, or poor signal areas?**
+
+#### **4. Improve Payment & Fraud Detection**
+- **Payment Retry Strategy:**
+  - If payment fails, how many retries are allowed?
+  - Will ride be **canceled** immediately or allowed on credit?
+- **Fraud Detection:**
+  - How do you prevent **fake GPS spoofing**, driver collusion (completing fake rides), or **duplicate payments**?
+
+#### **5. More Thought on Deployment & Reliability**
+- **Multi-Region Deployment Details:**
+  - Which **database replication strategy** will be used (e.g., active-active, active-passive)?
+  - What’s the **failover strategy** in case of a region outage?
+- **Traffic Management:**
+  - Will you use **API Gateway + Load Balancers**?
+  - What’s the plan for **rate-limiting** spam requests?
+
+---
+
+### **Minor Fixes**
+- **Typos & Grammar Issues:**
+  - "fault-torrent" → "fault-tolerant"
+  - "secured , logging" → "secure, with proper logging"
+  - "to keep highly scalable with will build it using microservices" → "To keep it highly scalable, we will build it using microservices."
+  - "get nearest riders unser 3KM redius" → "Get nearest riders within a 3KM radius."
+  - "Dikshtra" → "Dijkstra’s algorithm"
+  - "Oauth2 for authentication and authorization" → "OAuth 2.0 for authentication and authorization."
+
+---
+
+### **Final Verdict**
+Your design document is **strong** in terms of **scalability, event-driven architecture, and real-time updates**. However, improving **data consistency, fraud detection, payment handling, and edge cases** will make it **more robust and production-ready**.
+
+Would you like me to refine the document for you with corrections and better structuring? 🚀

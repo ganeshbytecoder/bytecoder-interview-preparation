@@ -3,132 +3,42 @@
 ## **📌 Array & Subarray Problem Patterns for FANG Interviews**
 Array and subarray problems commonly appear in FANG interviews, and they follow certain **repeatable patterns**. Below is a **complete** breakdown of these patterns, when to use them, and example implementations.
 
----
 
-## **1️⃣ Sliding Window (Variable Length)**
-Used when:
-✅ Finding **longest/shortest** subarray that meets a condition.  
-✅ Finding **contiguous** subarrays efficiently.  
-✅ Works in **O(n)** time using two pointers.
 
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Longest subarray with sum ≤ k** | Sliding Window (`O(n)`) |
-| **Smallest subarray with sum ≥ k** | Sliding Window (`O(n)`) |
-| **Longest substring with at most K distinct elements** | Sliding Window + HashMap (`O(n)`) |
+#### 1 SubArray 
+- continuous order
+    - with condition
 
-### **Example: Smallest Subarray With Sum ≥ Target**
-```python
-def min_subarray_len(target: int, nums: list[int]) -> int:
-    left = 0
-    min_length = float('inf')
-    current_sum = 0
+```java
+import java.util.*;
 
-    for right in range(len(nums)):
-        current_sum += nums[right]
+public class SubarraysUsingLoops {
+    public static List<List<Integer>> findAllSubarrays(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        
+        // Generate all possible subarrays
+        for (int start = 0; start < nums.length; start++) { // Start index
+            List<Integer> tempList = new ArrayList<>();
+            for (int end = start; end < nums.length; end++) { // End index
+                tempList.add(nums[end]); // Expand subarray
+                result.add(new ArrayList<>(tempList)); // Store subarray
+            }
+        }
+        
+        return result;
+    }
 
-        while current_sum >= target:
-            min_length = min(min_length, right - left + 1)
-            current_sum -= nums[left]
-            left += 1
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> subarrays = findAllSubarrays(nums);
+        System.out.println(subarrays);
+    }
+}
 
-    return min_length if min_length != float('inf') else 0
 ```
-✅ **Use When**: Finding **contiguous subarrays** that satisfy a condition.
 
----
 
-## **2️⃣ Two-Pointer Approach**
-Used when:
-✅ Comparing or modifying elements **from both ends**.  
-✅ Sorting-based problems (e.g., **pair sum**, **closest pairs**).  
-✅ Works in **O(n log n) for sorting + O(n) for traversal**.
 
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Pair sum problems (Two Sum in sorted array)** | Two Pointers (`O(n)`) |
-| **Merging two sorted arrays** | Two Pointers (`O(n)`) |
-| **Trapping rainwater** | Two Pointers (`O(n)`) |
-
-### **Example: Two Sum in Sorted Array**
-```python
-def two_sum(numbers: list[int], target: int) -> list[int]:
-    left, right = 0, len(numbers) - 1
-
-    while left < right:
-        curr_sum = numbers[left] + numbers[right]
-        if curr_sum == target:
-            return [left + 1, right + 1]
-        elif curr_sum < target:
-            left += 1
-        else:
-            right -= 1
-
-    return []
-```
-✅ **Use When**: Finding **pairs** or working with **sorted arrays**.
-
----
-
-## **3️⃣ Kadane's Algorithm (Max/Min Subarray Sum)**
-Used when:
-✅ Finding the **maximum/minimum sum** of a contiguous subarray.  
-✅ Works in **O(n) time**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Maximum sum subarray** | Kadane’s Algorithm (`O(n)`) |
-| **Minimum sum subarray** | Modified Kadane’s (`O(n)`) |
-| **Maximum product subarray** | Dynamic Kadane’s (`O(n)`) |
-
-### **Example: Maximum Subarray (Kadane's Algorithm)**
-```python
-def max_subarray(nums: list[int]) -> int:
-    max_sum = float('-inf')
-    current_sum = 0
-
-    for num in nums:
-        current_sum = max(num, current_sum + num)
-        max_sum = max(max_sum, current_sum)
-
-    return max_sum
-```
-✅ **Use When**: Finding the **largest contiguous sum**.
-
----
-
-## **4️⃣ Prefix Sum & HashMap**
-Used when:
-✅ Finding **sum-based** subarray problems (e.g., subarrays with a target sum).  
-✅ Works in **O(n) time** using **prefix sums**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Subarray sum equals K** | Prefix Sum + HashMap (`O(n)`) |
-| **Count subarrays divisible by K** | Prefix Sum + Modulo (`O(n)`) |
-
-### **Example: Count Subarrays with Sum K**
-```python
-def subarray_sum(nums: list[int], k: int) -> int:
-    prefix_sum = {0: 1}  
-    current_sum = 0
-    count = 0
-
-    for num in nums:
-        current_sum += num
-        if current_sum - k in prefix_sum:
-            count += prefix_sum[current_sum - k]
-        prefix_sum[current_sum] = prefix_sum.get(current_sum, 0) + 1
-
-    return count
-```
-✅ **Use When**: Finding subarrays based on **sum conditions**.
-
----
 
 ## **5️⃣ Sorting + Two Pointers**
 Used when:
@@ -235,25 +145,6 @@ def search_range(nums: list[int], target: int) -> list[int]:
 
 
 
-1️⃣ **Merge Intervals (Sorting + Greedy)**  
-✅ Used for interval problems like **meeting rooms, merge overlapping intervals**.
-
-**Example:** **Merge Intervals**
-```python
-def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
-    intervals.sort()  
-    merged = []
-
-    for interval in intervals:
-        if not merged or merged[-1][1] < interval[0]:
-            merged.append(interval)
-        else:
-            merged[-1][1] = max(merged[-1][1], interval[1])
-
-    return merged
-```
-
----
 
 2️⃣ **Heap / Priority Queue**  
 ✅ Used when you need **Kth largest/smallest**, **sliding window max**.
@@ -316,33 +207,8 @@ def single_number(nums: list[int]) -> int:
 
 ---
 
-
-
-
-
-
-
-```java
-//    Find Largest Sum Contiguous Subarray (Kadane's Algorithm)
-    public int maxSubArray(int[] nums) {
-        int max = nums[0], sum = 0;
-        for (int num : nums) {
-            sum += num;
-            max = Math.max(max, sum);
-            if (sum < 0) {
-                sum = 0;
-            }
-        }
-        return max;
-    }
-```
-
-
-
 https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=problem-list-v2&envId=array&
 
-
-https://leetcode.com/problems/plus-one/?envType=problem-list-v2&envId=array
 
 https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150
 

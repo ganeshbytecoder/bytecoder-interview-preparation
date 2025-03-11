@@ -1,15 +1,35 @@
-check ## what if it allows circular or not 
 
 
-### **Medium Problems**
-6. **Subarray Sum Equals K**
-    - *Problem*: Find the number of subarrays whose sum equals a given `k`.
-    - *Concept*: Use a HashMap to store cumulative sums and their frequencies
-    - [LeetCode](https://leetcode.com/problems/subarray-sum-equals-k/)
+## **4️⃣ Prefix Sum & HashMap**
+Used when:
+✅ Finding **sum-based** subarray problems (e.g., subarrays with a target sum).  
+✅ Works in **O(n) time** using **prefix sums**.
 
+### **Example Problems**
+| Problem Type                       | Approach |
+|------------------------------------|----------|
+| **Count Subarrays sum equals K**   | Prefix Sum + HashMap (`O(n)`) |
+| **Count subarrays divisible by K** | Prefix Sum + Modulo (`O(n)`) |
 
-// all subarrays problems based on prefix and suffix
-https://leetcode.com/problem-list/prefix-sum/
+### **Example: Count Subarrays with Sum K**
+```python
+def subarray_sum(nums: list[int], k: int) -> int:
+    prefix_sum = {0: 1}  
+    current_sum = 0
+    count = 0
+
+    for num in nums:
+        current_sum += num
+        if current_sum - k in prefix_sum:
+            count += prefix_sum[current_sum - k]
+        prefix_sum[current_sum] = prefix_sum.get(current_sum, 0) + 1
+
+    return count
+```
+✅ **Use When**: Finding subarrays based on **sum conditions**.
+
+---
+
 
 
 

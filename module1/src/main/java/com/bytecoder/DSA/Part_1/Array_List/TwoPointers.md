@@ -1,3 +1,37 @@
+## **2️⃣ Two-Pointer Approach**
+Used when:
+✅ Comparing or modifying elements **from both ends**.  
+✅ Sorting-based problems (e.g., **pair sum**, **closest pairs**, **Max water **).  
+✅ Works in **O(n log n) for sorting + O(n) for traversal**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| **Pair sum problems (Two Sum in sorted array)** | Two Pointers (`O(n)`) |
+| **Merging two sorted arrays** | Two Pointers (`O(n)`) |
+| **Trapping rainwater** | Two Pointers (`O(n)`) |
+
+### **Example: Two Sum in Sorted Array**
+```python
+def two_sum(numbers: list[int], target: int) -> list[int]:
+    left, right = 0, len(numbers) - 1
+
+    while left < right:
+        curr_sum = numbers[left] + numbers[right]
+        if curr_sum == target:
+            return [left + 1, right + 1]
+        elif curr_sum < target:
+            left += 1
+        else:
+            right -= 1
+
+    return []
+```
+✅ **Use When**: Finding **pairs** or working with **sorted arrays**.
+
+---
+
+* 
 * Write a function that takes a string, s, as an input and determines whether or not it is a palindrome.
 
 * Sum of Three Values or two sum

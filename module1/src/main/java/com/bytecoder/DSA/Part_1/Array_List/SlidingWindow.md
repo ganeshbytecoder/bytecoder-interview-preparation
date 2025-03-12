@@ -166,3 +166,5 @@ print("Min Length Subarray (5,2,6):", result2)
     - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 
+### 31. **Smallest Subarray with Sum Greater Than a Given Value**
+- **Hint**: Use a sliding window technique to expand and shrink the window while keeping track of the sum.

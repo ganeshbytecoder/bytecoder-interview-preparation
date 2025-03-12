@@ -3,6 +3,7 @@
 Use **sliding window** (two-pointer technique) when you need to find:
 - The **longest** substring with certain properties.
 - The **shortest** substring with certain properties.
+  https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/description/
 
 ### **Examples & Approach**
 | Problem Type | Approach |

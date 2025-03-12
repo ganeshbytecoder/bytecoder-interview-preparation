@@ -31,8 +31,8 @@ def subarray_sum(nums: list[int], k: int) -> int:
 ---
 
 
+### 21. **Find if There is Any Subarray with Sum Equal to 0**
+- **Hint**: Use a hash map to store the cumulative sum as you traverse the array. If a cumulative sum repeats, the subarray sum is zero.
 
 
-https://leetcode.com/problems/count-vowel-substrings-of-a-string/
-https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/description/
-https://leetcode.com/problems/count-of-substrings-containing-every-vowel-and-k-consonants-ii/description/?envType=daily-question&envId=2025-03-10
+- [Leetcode 930: Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/)

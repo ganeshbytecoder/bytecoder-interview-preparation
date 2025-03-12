@@ -5,9 +5,7 @@ Array and subarray problems commonly appear in FANG interviews, and they follow 
 
 
 
-#### 1 SubArray 
-- continuous order
-    - with condition
+#### 1 all possible SubArray 
 
 ```java
 import java.util.*;
@@ -40,50 +38,6 @@ public class SubarraysUsingLoops {
 
 
 
-## **5️⃣ Sorting + Two Pointers**
-Used when:
-✅ Finding **triplets, quadruplets, closest sums**.  
-✅ Works in **O(n log n) for sorting + O(n) traversal**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Three Sum Problem** | Sorting + Two Pointers (`O(n^2)`) |
-| **Four Sum Problem** | Sorting + Two Pointers (`O(n^3)`) |
-
-### **Example: Three Sum Problem**
-```python
-def three_sum(nums: list[int]) -> list[list[int]]:
-    nums.sort()
-    result = []
-
-    for i in range(len(nums) - 2):
-        if i > 0 and nums[i] == nums[i - 1]:  
-            continue  
-
-        left, right = i + 1, len(nums) - 1
-        while left < right:
-            total = nums[i] + nums[left] + nums[right]
-
-            if total == 0:
-                result.append([nums[i], nums[left], nums[right]])
-                left += 1
-                right -= 1
-
-                while left < right and nums[left] == nums[left - 1]:
-                    left += 1  
-                while left < right and nums[right] == nums[right + 1]:
-                    right -= 1  
-            elif total < 0:
-                left += 1
-            else:
-                right -= 1
-
-    return result
-```
-✅ **Use When**: Finding **triplets, quadruplets** with sum constraints.
-
----
 
 ## **6️⃣ Monotonic Stack (Next Greater Element)**
 Used when:
@@ -111,40 +65,6 @@ def next_greater_elements(nums: list[int]) -> list[int]:
 ✅ **Use When**: Finding **next larger/smaller elements** efficiently.
 
 ---
-
-## **7️⃣ Binary Search on Subarrays**
-Used when:
-✅ Searching in **sorted arrays or subarrays** efficiently.  
-✅ Works in **O(log n) time**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Find First and Last Position in Sorted Array** | Binary Search (`O(log n)`) |
-| **Find K-th missing element** | Binary Search (`O(log n)`) |
-
-### **Example: Find First and Last Position**
-```python
-def search_range(nums: list[int], target: int) -> list[int]:
-    def find_boundary(left=True):
-        lo, hi = 0, len(nums) - 1
-        while lo <= hi:
-            mid = (lo + hi) // 2
-            if nums[mid] > target or (left and nums[mid] == target):
-                hi = mid - 1
-            else:
-                lo = mid + 1
-        return lo
-
-    left_index = find_boundary(True)
-    return [left_index, find_boundary(False) - 1] if left_index < len(nums) and nums[left_index] == target else [-1, -1]
-```
-✅ **Use When**: Searching efficiently in **sorted arrays**.
-
----
-
-
-
 
 2️⃣ **Heap / Priority Queue**  
 ✅ Used when you need **Kth largest/smallest**, **sliding window max**.
@@ -190,6 +110,7 @@ def single_number(nums: list[int]) -> int:
 ```
 
 ---
+
 # **✅ Final Checklist of Array & Subarray Patterns**
 | **Pattern** | **When to Use?** | **Time Complexity** |
 |------------|----------------|------------------|
@@ -207,10 +128,8 @@ def single_number(nums: list[int]) -> int:
 
 ---
 
-https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=problem-list-v2&envId=array&
 
 
-https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/?envType=study-plan-v2&envId=top-interview-150
 
 ### 9. [**Add “1” to a Number Represented as  List**](https://leetcode.com/problems/plus-one/)
 - **Hint**: Reverse the list, add 1 to the head node, handle carry, then reverse it back.
@@ -260,9 +179,7 @@ class Solution {
 ### 7. **Cyclically Rotate an Array by One**
    - **Hint**: Store the last element in a temporary variable, then shift all other elements to the right, and place the last element at the first position.
 
-### 12. **Merge Two Sorted Arrays Without Using Extra Space**
-    Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-    Output: [1,2,2,3,5,6]
+
 
 
 
@@ -294,17 +211,38 @@ class Solution {
 ### 20. **Rearrange the Array in Alternating Positive and Negative Items with O(1) Extra Space**
    - **Hint**: Partition the array into positive and negative numbers, then rearrange by swapping elements at even and odd indices.
 
-### 21. **Find if There is Any Subarray with Sum Equal to 0**
-   - **Hint**: Use a hash map to store the cumulative sum as you traverse the array. If a cumulative sum repeats, the subarray sum is zero.
 
 ### 22. **Find Factorial of a Large Number**
    - **Hint**: Use an array or a list to store digits and simulate the multiplication process digit by digit.
 
-### 23. **Find Maximum Product Subarray**
-   - **Hint**: Track the maximum and minimum products at each position due to the possibility of negative numbers flipping signs.
 
 ### 24. **Find Longest Consecutive Subsequence**
    - **Hint**: Use a hash set to store the elements, then for each element, check if it's the start of a sequence by checking if `element - 1` exists.
+```python
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        num_set = set(nums)
+        longest_count = 0
+        
+        for num in num_set:
+            # Check if it's the start of a sequence
+            if num - 1 not in num_set:
+                current_num = num
+                current_streak = 1
+                
+                while current_num + 1 in num_set:
+                    current_num += 1
+                    current_streak += 1
+                
+                longest_count = max(longest_count, current_streak)
+        
+        return longest_count
+   
+   ```
 
 ### 25. **Find Elements That Appear More Than "n/k" Times**
    - **Hint**: Use a modified Boyer-Moore majority vote algorithm to count potential candidates.
@@ -318,14 +256,10 @@ class Solution {
 ### 28. **Find the Triplet that Sum to a Given Value**
    - **Hint**: Sort the array, then for each element, use the two-pointer technique to find the other two elements.
 
-### 29. **Trapping Rain Water Problem**
-   - **Hint**: Calculate the left and right maximum heights for each element and use them to find the trapped water.
 
 ### 30. **Chocolate Distribution Problem**
    - **Hint**: Sort the array, then find the minimum difference between the largest and smallest values in each subarray of size `m`.
 
-### 31. **Smallest Subarray with Sum Greater Than a Given Value**
-   - **Hint**: Use a sliding window technique to expand and shrink the window while keeping track of the sum.
 
 * ### 32. **Three-Way Partitioning of an Array Around a Given Value**
    - **Hint**: Use the Dutch National Flag algorithm with three pointers to partition the array into three segments based on the given value.

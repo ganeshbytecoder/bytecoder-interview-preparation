@@ -104,3 +104,59 @@ class Solution:
 | **HashSet** | O(n) | O(n) | Extra space is allowed |
 | **Sorting** | O(n log n) | O(1) | Modifying array is allowed |
 
+
+
+
+
+## **5️⃣ Sorting + Two Pointers**
+Used when:
+✅ Finding **triplets, quadruplets, closest sums**.  
+✅ Works in **O(n log n) for sorting + O(n) traversal**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| **Three Sum Problem** | Sorting + Two Pointers (`O(n^2)`) |
+| **Four Sum Problem** | Sorting + Two Pointers (`O(n^3)`) |
+
+### **Example: Three Sum Problem**
+```python
+def three_sum(nums: list[int]) -> list[list[int]]:
+    nums.sort()
+    result = []
+
+    for i in range(len(nums) - 2):
+        if i > 0 and nums[i] == nums[i - 1]:  
+            continue  
+
+        left, right = i + 1, len(nums) - 1
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+
+            if total == 0:
+                result.append([nums[i], nums[left], nums[right]])
+                left += 1
+                right -= 1
+
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1  
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1  
+            elif total < 0:
+                left += 1
+            else:
+                right -= 1
+
+    return result
+```
+✅ **Use When**: Finding **triplets, quadruplets** with sum constraints.
+
+---
+
+
+### 12. **Merge Two Sorted Arrays Without Using Extra Space**
+    Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+    Output: [1,2,2,3,5,6]
+
+### 29. **Trapping Rain Water Problem**
+- **Hint**: Calculate the left and right maximum heights for each element and use them to find the trapped water.

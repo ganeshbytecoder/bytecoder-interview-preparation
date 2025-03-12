@@ -1,4 +1,5 @@
 ## Fixed size window and may allow  circular or not
+**Note** can be sub-array for max/min sum/product elements or with length k
 * https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/description/?envType=daily-question&envId=2025-03-08
 * https://leetcode.com/problems/alternating-groups-ii/description/?envType=daily-question&envId=2025-03-09
 * https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters/submissions/1568646837/?envType=weekly-question&envId=2025-03-08
@@ -35,6 +36,10 @@ Used when:
 Used when:
 ✅ Finding the **maximum/minimum sum** of a contiguous subarray.  
 ✅ Works in **O(n) time**.
+
+### **8. [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)**
+
+### https://leetcode.com/problems/maximum-sum-circular-subarray/?envType=study-plan-v2&envId=top-interview-150
 
 
 ### **Example: Maximum Subarray (Kadane's Algorithm)**

@@ -249,16 +249,3 @@ permute(list(s), 0, len(s))
 
 
 
-- 🔹 **[267. Palindrome Permutation II](https://leetcode.com/problems/palindrome-permutation-ii/) (Medium)**  
-  Find all palindromic permutations of a string.
-
-17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
-- Check if some substring is a permutation of `s2`.
-- **Condition:** Substring must be a permutation of another string.
-- **Difficulty:** Medium
-
-
-### 15. **Next Permutation**
-- **Hint**: Find the first decreasing element from the right, swap it with the next largest element, and reverse the subsequent part of the array.
-
-

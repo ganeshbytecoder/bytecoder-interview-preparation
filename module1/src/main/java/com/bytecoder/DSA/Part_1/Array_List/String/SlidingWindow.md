@@ -5,6 +5,18 @@ Use **sliding window** (two-pointer technique) when you need to find:
 - The **shortest** substring with certain properties.
   https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/description/
 
+10. **[424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)**
+- Find the longest contiguous substring where you can replace at most `k` characters.
+- **Condition:** Subarray length maximization with `≤ k` changes.
+- **Difficulty:** Medium
+
+16. **[76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)**
+- Find the smallest substring containing all characters of `t`.
+- **Condition:** Substring must contain all of `t`'s characters at least once.
+- **Difficulty:** Hard
+
+*  https://leetcode.com/problems/maximize-the-confusion-of-an-exam/description/
+
 ### **Examples & Approach**
 | Problem Type | Approach |
 |-------------|----------|
@@ -12,6 +24,12 @@ Use **sliding window** (two-pointer technique) when you need to find:
 | **Longest substring without repeating characters** | Sliding Window with HashSet (`O(n)`) |
 | **Shortest substring containing all characters of a given pattern** | Sliding Window with Frequency Map (`O(n)`) |
 | **Longest substring with equal 0s and 1s** | Prefix Sum + HashMap (`O(n)`) |
+
+* Longest substring where all the characters appear at least K times
+* Longest substring where all the characters appear exact K times
+* Longest substring where all the characters appear at most K times
+* Longest substring with no pair of adjacent characters are adjacent English alphabets
+* 
 
 ### **Example 1: Longest Substring Without Repeating Characters**
 ✅ **Problem**: Find the longest substring where no character repeats.
@@ -81,6 +99,31 @@ print("Shortest substring containing all characters of pattern:", result)
 
 ```
 
+
+#### Longest substring with no pair of adjacent characters are adjacent English alphabets
+
+```python 
+def longestSubstringNoAdjacentConsecutive(s: str) -> int:
+    max_length = 0
+    left = 0
+
+    for right in range(len(s)):
+        # If current and previous character are consecutive, reset window start
+        if right > 0 and abs(ord(s[right]) - ord(s[right - 1])) == 1:
+            left = right  # Start a new window from here
+
+        # Update max length
+        max_length = max(max_length, right - left + 1)
+
+    return max_length
+
+# Example Usage
+s = "abdfegc"
+print(longestSubstringNoAdjacentConsecutive(s))  # Output: 4 (substring "dfeg" or "fegc")
+
+
+
+```
 
 ```python 
 

@@ -26,8 +26,6 @@ This method is useful in problems involving:
 
 ---
 
-* https://leetcode.com/problems/count-vowel-substrings-of-a-string/
-* https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/description/?envType=daily-question&envId=2025-03-11
 
 
 * total number of substring with length >= k
@@ -88,6 +86,8 @@ When the task is to **count** the number of substrings meeting a condition, use:
 | **Find Number of Subarrays with Exactly `K` Distinct Elements** | `F(K) - F(K-1)` Trick |
 | **Find Number of Substrings with Exactly `K` Distinct Characters** | `F(K) - F(K-1)` Trick |
 | **Count Substrings Containing All Three Characters (a, b, c)** | `F(K) - F(K-1)` Trick |
+* https://leetcode.com/problems/count-vowel-substrings-of-a-string/
+* https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/description/?envType=daily-question&envId=2025-03-11
 
 ### **Example 2: Number of Substrings with Exactly K Distinct Characters**
 ✅ **Problem**: Count substrings with exactly `K` distinct characters.

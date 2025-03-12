@@ -55,56 +55,9 @@ public class SubstringWithDuplicates {
     }
 ```
 
-### **8. [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)**
 
-#### **Problem Statement**
-Find the contiguous subarray within an array (containing at least one number) which has the largest product.
-
-
-**Note** can be subsequence or sub-array for max/min sum/product elements or with length k
----
-
-#### **Solution Approaches**
-
-##### 1. **Recursive Solution**
-```java
-
-private int maxProductRecursive(int[] nums, int index, int currentProduct) {
-    if (index == nums.length) return currentProduct;
-    return Math.max(maxProductRecursive(nums, index + 1, currentProduct * nums[index]),
-                    maxProductRecursive(nums, index + 1, nums[index]));
-}
-
-public int maxProduct(int[] nums) {
-    return maxProductRecursive(nums, 0, 1);
-}
-
-
-```
-**Note**: Recursive solutions for this problem are not ideal due to complexity. Use DP-based solutions below.
 
 ---
-
-##### 2. **Tabulation Solution**
-```java
-public int maxProduct(int[] nums) {
-    int maxProduct = nums[0];
-    int currMax = nums[0], currMin = nums[0];
-
-    for (int i = 1; i < nums.length; i++) {
-        if (nums[i] < 0) {
-            int temp = currMax;
-            currMax = currMin;
-            currMin = temp;
-        }
-        currMax = Math.max(nums[i], currMax * nums[i]);
-        currMin = Math.min(nums[i], currMin * nums[i]);
-
-        maxProduct = Math.max(maxProduct, currMax);
-    }
-    return maxProduct;
-}
-```
 
 ---
 
@@ -243,63 +196,6 @@ public int numDecodings(String s) {
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Here are some **LeetCode problems** on **Subarrays** and **Substrings**, categorized by different conditions:
-
-No, it is **not 100% true** that subarray problems are only solved using **Sliding Window, Prefix Sum, and Suffix Sum**, and **not by Backtracking**.
-
-### 1️⃣ **Sliding Window Approach**
-- Used when the problem involves **contiguous subarrays** and you need to optimize time complexity.
-- Works well for problems like **maximum sum subarray, longest subarray with a given condition**, etc.
-- **Example:** Find the longest subarray with sum ≤ k.
-
-### 2️⃣ **Prefix Sum & Suffix Sum**
-- Prefix sum is used for fast range queries (e.g., sum of subarrays in O(1) after O(n) preprocessing).
-- Suffix sum is useful for problems where we need to consider suffix elements efficiently.
-- **Example:** Count subarrays with a given sum.
-
-### 3️⃣ **Backtracking for Subarray Problems?**
-- While backtracking is **not the optimal choice** for most subarray problems, it **can** be used in problems where:
-   - You are **enumerating all possible subarrays**.
-   - The problem has **constraints that cannot be handled efficiently by sliding window or prefix sum**.
-   - You need to **generate all subsets** of an array (though subset ≠ subarray, sometimes they overlap).
-- **Example:** Find all contiguous subarrays that sum to a prime number.
-
-### **Key Takeaway**
-✅ **Sliding Window, Prefix Sum, and Suffix Sum** are the primary tools for solving subarray problems **efficiently**.  
-✅ **Backtracking is rarely used** but can be applied if the problem requires generating all possible subarrays explicitly.  
-❌ **It is not 100% true** that subarray problems cannot be solved by backtracking—it depends on the problem constraints.
-
----
-
-## 🔹 **Subarray Problems**
-(An array slice that maintains order and contiguity)
-
-https://leetcode.com/problems/maximum-subarray/description/
 
 ### **📌 Sum-Related Conditions**
 or mux sum subarray, does subarray have sum is equal k or more constraints

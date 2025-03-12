@@ -2,6 +2,7 @@
 //    note -> use only if you know graph is DAG for this (stack and DFS) else use kahn's algorithm (in-degree and queue
 
 
+
 in the real world , many problems are representated in terms of objects and connections between them.
 for example, airline routes, electric circuits , LAN and internet , facebook friends etc
 
@@ -52,13 +53,12 @@ To keep track of no of connections or isVisited you can have array or map for ex
 ```
 
 
-### Representation of graph in Databases:
 
 
 
 ### 1. **Create a Graph, Print it**
-   - Use adjacency matrix or adjacency list to store the graph.
-   - Print the graph by iterating over the matrix/list and displaying connections.
+- Use adjacency matrix or adjacency list to store the graph.
+- Print the graph by iterating over the matrix/list and displaying connections.
 ```java
 public class Graph<T> {
     private final HashMap<T, List<T>> adjList;
@@ -88,46 +88,7 @@ public class Graph<T> {
     }
 ```
 
-### 2. **Implement BFS Algorithm**
-   - Use a queue for BFS traversal.
-   - Track visited nodes to avoid cycles and repetition.
-   - BFS is ideal for finding the shortest path in unweighted graphs.
-
-```java
-/*                                   BFS Method
--------------------------------------------------------------------------------------*/
-    private static void bfs(Graph<String> graph, String source ){
-        Queue<String> queue = new LinkedList<>();
-        queue.add(source);
-        int level = 0;
-        
-        while (!queue.isEmpty()){
-			int sz = queue.size();          // level size    
-			for(int i = 0; i < sz; i++){
-				String curr = queue.poll();
-				System.out.println(curr);
-
-				for (String neighbour: graph.getAdjList().get(curr))
-					queue.add(neighbour);
-            }
-            level++;
-        }
-    }
-/*-----------------------------------------------------------------------------------*/
-```
-
-
-BFS for shortest path:
-* https://leetcode.com/problems/01-matrix/
-* https://leetcode.com/problems/as-far-from-land-as-possible/
-* https://leetcode.com/problems/rotting-oranges/
-* https://leetcode.com/problems/shortest-path-in-binary-matrix/
-* https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/
-
-Graph coloring:
-* https://leetcode.com/problems/possible-bipartition/
-* https://leetcode.com/problems/is-graph-bipartite/
-
+### DFS:
 
 ```java
 /*                                  Number of Connected Components
@@ -198,59 +159,12 @@ Graph coloring:
 ```
 
 
-```java
-Practice Question : No of Islands , Rotting Oranges
 
-
-/*                             Rotting Oranges (BFS)
--------------------------------------------------------------------------------------*/
-public int orangesRotting(int[][] grid) {
-        Queue<int[]> queue = new LinkedList<>();
-        int fresh = 0;
-        int time = 0;
-
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                if (grid[r][c] == 2)
-                    queue.add(new int[]{r,c});
-                if (grid[r][c] == 1)
-                    fresh++;
-            }
-        }
-
-        int[][] direction = {{0,1},{0,-1},{1,0},{-1,0}};
-
-        while (!queue.isEmpty() && fresh > 0){
-            int sz = queue.size();
-            for (int i = 0; i < sz; i++) {
-                int[] rotten = queue.poll();
-                int row = rotten[0], col = rotten[1];
-
-                for (int[] drc : direction){
-                    int r = drc[0] + row, c = drc[1] + col;
-                    boolean rowbound = 0 <= r && r < grid.length;
-                    boolean colbound = 0 <= c && c < grid[0].length;
-
-                    if (rowbound && colbound && grid[r][c] == 1){
-                        grid[r][c] = 2;
-                        queue.add(new int[]{r,c});
-                        fresh--;
-                    }
-                }
-            }
-            time++;
-        }
-        if(fresh == 0)
-            return time;
-
-        return -1;    
-    }
-```
 
 ### 3. **Implement DFS Algorithm**
-   - Use a stack (or recursion) for DFS traversal.
-   - Track visited nodes to avoid infinite loops.
-   - DFS is useful for exploring deeper paths first.
+- Use a stack (or recursion) for DFS traversal.
+- Track visited nodes to avoid infinite loops.
+- **DFS is useful for exploring deeper paths first.**
 
 ```java
 import java.util.HashMap;
@@ -370,8 +284,8 @@ DFS from each unvisited node/Island problems
 
 
 ### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
-   - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
-   - **BFS:** Use a queue and track parent nodes similarly to DFS.
+- **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
+- **BFS:** Use a queue and track parent nodes similarly to DFS.
 
 ```java
 /*                                 Detect cycle in an undirected graph
@@ -408,8 +322,8 @@ DFS from each unvisited node/Island problems
 
 
 ### 5. **Detect Cycle in Directed Graph using BFS/DFS Algorithm**
-   - **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
-   - **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
+- **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
+- **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
 
 ```java
 /*                                      Detect cycle in Directed graph
@@ -478,9 +392,9 @@ private boolean checkCycle(Map<Integer, List<Integer>> adj, int src, int[] state
 
 
 ### 5. **All possible paths from scr to dst using BFS/DFS Algorithm**
-https://leetcode.com/problems/all-paths-from-source-to-target/description/ 
+https://leetcode.com/problems/all-paths-from-source-to-target/description/
 
-### 5. **All possible paths from scr to dst using BFS/DFS Algorithm with at most k stops** 
+### 5. **All possible paths from scr to dst using BFS/DFS Algorithm with at most k stops**
 * https://leetcode.com/problems/cheapest-flights-within-k-stops/solutions/3102509/normal-bfs-in-cpp/
 
 https://leetcode.com/problems/snakes-and-ladders/solutions/?envType=study-plan-v2&envId=top-interview-150

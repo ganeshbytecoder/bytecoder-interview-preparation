@@ -9,7 +9,23 @@ Use **Expand Around Center** when:
 | **Find the longest palindromic substring** | Expand Around Center (`O(n^2)`) |
 | **Count palindromic substrings in a string** | Expand Around Center (`O(n^2)`) |
 | **Find the longest palindromic subsequence** | Dynamic Programming (`O(n^2)`) |
+### **📌 Palindrome & Reverse Conditions**
+11. **[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)**
+- Find the longest contiguous palindromic substring.
+- **Condition:** Substring must be a palindrome.
+- **Difficulty:** Medium
 
+12. **[647. Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)**
+- Count all substrings in a string that are palindromic.
+- **Condition:** Count substrings meeting the palindrome condition.
+- **Difficulty:** Medium
+
+* https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/?ref=asr29
+
+* https://www.geeksforgeeks.org/longest-substring-that-can-be-made-a-palindrome-by-swapping-of-characters/?ref=asr27
+
+
+    
 ### **Example 4: Longest Palindromic Substring**
 ✅ **Problem**: Find the longest palindromic substring.
 ```python

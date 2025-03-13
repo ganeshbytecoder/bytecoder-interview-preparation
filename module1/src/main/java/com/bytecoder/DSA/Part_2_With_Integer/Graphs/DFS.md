@@ -406,20 +406,60 @@ https://leetcode.com/problems/snakes-and-ladders/solutions/?envType=study-plan-v
 - Use BFS or DFS to traverse the graph and create a deep copy.
 - Keep a hashmap of original nodes to their clones to avoid duplicate copies.
 
-### 10. **Making Wired Connections**
-- Use DFS/BFS to determine the minimum number of extra connections required to make the entire graph connected.
 
 ### 11. **Word Ladder**
 - Treat each word as a node and edges between words that differ by one character.
-- Use BFS to find the shortest transformation sequence from the start word to the end word.
+- DFS
+```python
+from typing import List, Set
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        wordSet = set(wordList)  # Convert wordList to a set for O(1) lookup
+        if endWord not in wordSet:
+            return 0  # If endWord is not present, transformation is impossible
+        
+        self.min_length = float('inf')
+        visited = set([beginWord])  # Track visited words
+        
+        # Call the DFS function
+        self.dfs(beginWord, endWord, wordSet, visited, 1)
+        
+        return self.min_length if self.min_length != float('inf') else 0
+    
+    def dfs(self, currentWord: str, endWord: str, wordSet: Set[str], visited: Set[str], depth: int):
+        """ Helper function for performing DFS traversal """
+        if currentWord == endWord:
+            self.min_length = min(self.min_length, depth)
+            return
+        
+        # Try modifying each character in the current word
+        for i in range(len(currentWord)):
+            for char in 'abcdefghijklmnopqrstuvwxyz':
+                newWord = currentWord[:i] + char + currentWord[i+1:]
+                if newWord in wordSet and newWord not in visited:
+                    visited.add(newWord)
+                    self.dfs(newWord, endWord, wordSet, visited, depth + 1)
+                    visited.remove(newWord)  # Backtracking
+ 
+
+```
+### 31. **Journey to the Moon**
+- Treat each country as a connected component and count the ways to choose astronaut pairs from different countries using combination counting.
+
+https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
+https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY
+
+
+
+
+
+
 
 
 ### 26. **Find Bridge in a Graph**
 - Use DFS and track discovery and low values of each node to detect bridges (edges whose removal increases the number of connected components).
-
-### 31. **Journey to the Moon**
-- Treat each country as a connected component and count the ways to choose astronaut pairs from different countries using combination counting.
-
 
 ### 33. **Oliver and the Game**
 - DFS-based problem that involves traversing a tree and managing game moves based on tree properties.
@@ -452,6 +492,3 @@ https://leetcode.com/problems/snakes-and-ladders/solutions/?envType=study-plan-v
 - Use a graph where vertices represent people and edges represent the net balance between pairs, then minimize cash flow using a greedy approach.
 
 
-https://leetcode.com/problems/find-the-town-judge/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
-https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph&difficulty=EASY
-https://leetcode.com/problems/find-if-path-exists-in-graph/submissions/1427991963/?envType=problem-list-v2&envId=graph&difficulty=EASY

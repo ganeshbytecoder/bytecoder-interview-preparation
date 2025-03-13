@@ -336,6 +336,42 @@ int time = 0;
     }
 ```
 
+
+### 11. **Word Ladder**
+- Treat each word as a node and edges between words that differ by one character.
+- Use BFS to find the shortest transformation sequence from the start word to the end word.
+```python 
+
+from collections import deque
+from typing import List
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        wordSet = set(wordList)  # Convert list to a set for O(1) lookup
+        if endWord not in wordSet:
+            return 0  # If endWord is not present, transformation is impossible
+
+        queue = deque([(beginWord, 1)])  # (word, transformation steps)
+
+        while queue:
+            currentWord, depth = queue.popleft()
+
+            if currentWord == endWord:
+                return depth  # Found the shortest path
+            
+            # Try modifying each character in the current word
+            for i in range(len(currentWord)):
+                for char in 'abcdefghijklmnopqrstuvwxyz':
+                    newWord = currentWord[:i] + char + currentWord[i+1:]
+                    if newWord in wordSet:
+                        queue.append((newWord, depth + 1))
+                        wordSet.remove(newWord)  # Mark word as visited by removing it
+
+        return 0  # If no transformation sequence is found
+
+
+```
+
 matrix:
 * https://leetcode.com/problems/01-matrix/
 * https://leetcode.com/problems/rotting-oranges/

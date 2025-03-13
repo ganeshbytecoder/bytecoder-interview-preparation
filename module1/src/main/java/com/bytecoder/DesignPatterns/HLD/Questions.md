@@ -3,6 +3,202 @@ Here’s a comprehensive list of **System Design Interview Questions** for a **S
 
 ---
 
+Trade-offs and Edge Cases:
+🔹 **Q: Why Kafka and not RabbitMQ?**  
+✔️ **Answer:** Kafka provides **high throughput**, durability, and **better partitioning for scalability**. RabbitMQ is better for **low-latency messaging but doesn’t scale well** for analytics.
+
+🔹 **Q: Why Postgres for bookings instead of DynamoDB?**  
+✔️ **Answer:** Postgres ensures **ACID transactions**, preventing **double booking of seats**. DynamoDB is great for high-scale reads but **lacks strong transaction guarantees** without additional overhead.
+
+🔹 **Q: Why MongoDb Vs ElasticSearch vs DynamoDb for search query?**  
+✔️ **Answer:**
+
+🔹 **Q: Why CQRS for search?**  
+✔️ **Answer:** 
+
+🔹 **Q: how CQRS will be helpful in scaling and how it will work?**  
+✔️ **Answer:** 
+
+🔹 **Q: how SSE(server side events) vs REST will be helpful in robust system and how it will work?**  
+✔️ **Answer:** 
+
+🔹 **Q: how gRPC will be helpful in robust system and how it will work?**  
+✔️ **Answer:** 
+
+🔹 **Q: how Circuit breaker and re-try will be helpful in faul-torrent and how it will work?**  
+✔️ **Answer:** 
+
+🔹 **Q: Why SAGA for async data consistency?**  
+✔️ **Answer:**
+
+
+🔹 **Q: Why Cassandra for events and history?**  
+✔️ **Answer:**
+
+
+🔹 **Q: Why memchached vs redis?**  
+✔️ **Answer:**
+
+
+🔹 **Q: Spring context, bean context, security context, multitenancy handling?**  
+✔️ **Answer:**
+
+
+🔹 **Q: how real-world failures and concurrency handling will be done and how it will work?**  
+✔️ **Answer:**
+
+
+
+Here are detailed answers to your system design interview questions along with additional important trade-offs and questions that might be asked:
+
+---
+
+## **Trade-offs and Edge Cases**
+
+### **Q: Why Kafka and not RabbitMQ?**
+✔️ **Answer:**
+- **Kafka** is built for **high-throughput, fault-tolerant event streaming** and is best suited for real-time data processing, distributed logging, and analytics.
+- **RabbitMQ** is better suited for **low-latency, per-message acknowledgments**, and task queues where immediate processing is required.
+- Kafka ensures durability via **log-based storage**, whereas RabbitMQ's **message retention is limited** unless explicitly configured.
+- **Scaling Kafka** is more efficient due to its **partitioning** mechanism, whereas RabbitMQ **scales horizontally with more effort**.
+
+✅ **Use Kafka** for log aggregation, event sourcing, stream processing.  
+✅ **Use RabbitMQ** for request-response messaging, microservices RPC, transactional event processing.
+
+---
+
+### **Q: Why Postgres for bookings instead of DynamoDB?**
+✔️ **Answer:**
+- **Postgres** provides **ACID compliance** which prevents **double booking** issues.
+- **DynamoDB** has high scalability but **lacks strong transactions guarantees** unless you use DynamoDB Transactions, which add complexity.
+- **Joins and complex queries** are better handled in Postgres.
+- DynamoDB is **eventually consistent**, making it risky for critical booking systems.
+
+✅ **Use Postgres** if the system requires **strict consistency and complex transactions**.  
+✅ **Use DynamoDB** if the system is **read-heavy, requires horizontal scaling, and has simpler transactional needs**.
+
+---
+
+### **Q: Why MongoDB Vs ElasticSearch vs DynamoDB for search query?**
+✔️ **Answer:**
+| Feature       | **MongoDB** | **ElasticSearch** | **DynamoDB** |
+|--------------|------------|------------------|-------------|
+| **Query Type** | Document search | Full-text search | Key-value lookup |
+| **Indexing** | JSON-based | Advanced inverted index | Hash/Range-based |
+| **Use Case** | Product catalog, NoSQL queries | Search engine, Log analytics | Key-based lookups, caching |
+| **Scalability** | Sharding & Replication | Sharding & Replication | Auto-scaling |
+| **Consistency** | Eventual | Eventual | Strong (optional) |
+
+✅ **Use MongoDB** for document-based storage with filtering.  
+✅ **Use Elasticsearch** for **advanced search** (full-text, autocomplete, faceted search).  
+✅ **Use DynamoDB** for key-value queries at **high throughput**.
+
+---
+
+### **Q: Why CQRS for search?**
+✔️ **Answer:**
+- **Command Query Responsibility Segregation (CQRS)** separates **write-heavy workloads from read-heavy workloads**.
+- Reduces **read latency** as the system can have **optimized read models** without impacting transactional writes.
+- Enables **polyglot persistence**—use **Postgres for commands (writes)** and **Elasticsearch for queries (reads)**.
+
+✅ **Best for:** E-commerce, event-driven systems, analytics dashboards.
+
+---
+
+### **Q: How CQRS helps in scaling and how does it work?**
+✔️ **Answer:**
+- **Scalability**: Instead of having a single database handling both reads & writes, **CQRS allows scaling reads and writes independently**.
+- **How it works?**
+    1. **Write Operations** → Go to a transactional database (e.g., Postgres).
+    2. **Read Operations** → Go to a search-optimized database (e.g., Elasticsearch).
+    3. **Syncing happens** via **event sourcing or asynchronous updates**.
+
+✅ **Prevents read-write contention, making systems more scalable.**
+
+---
+
+### **Q: How SSE (Server-Sent Events) vs REST helps in a robust system and how it works?**
+✔️ **Answer:**
+- **REST** is **request-response** based; the client must poll for updates.
+- **SSE** is **event-driven**, pushing updates **in real-time**.
+
+✅ **Use SSE** for **real-time notifications, stock prices, live dashboards**.  
+✅ **Use REST** when updates are not needed frequently.
+
+---
+
+### **Q: How gRPC helps in a robust system and how does it work?**
+✔️ **Answer:**
+- **gRPC** uses **Protocol Buffers** instead of JSON, making it **lightweight and fast**.
+- Supports **bidirectional streaming**, unlike REST.
+- Uses **HTTP/2**, reducing network overhead.
+
+✅ **Use gRPC** for **microservices communication with low latency**.
+
+---
+
+### **Q: How Circuit Breaker & Retry help in fault tolerance and how do they work?**
+✔️ **Answer:**
+- **Circuit Breaker** prevents cascading failures by **blocking requests** to failing services after a threshold.
+- **Retry** mechanisms help recover **transient failures** by **re-attempting** failed requests.
+
+✅ **Use Circuit Breaker** for **third-party integrations** to prevent excessive failures.  
+✅ **Use Retry** with **exponential backoff** for **network requests**.
+
+---
+
+### **Q: Why SAGA for async data consistency?**
+✔️ **Answer:**
+- **Saga** breaks transactions into **multiple compensating transactions** across services.
+- Works well in **microservices** where **ACID transactions aren't feasible**.
+
+✅ **Use Saga for** order processing, payments, travel bookings.
+
+---
+
+### **Q: Why Cassandra for events and history?**
+✔️ **Answer:**
+- **Cassandra** is a **highly available**, distributed NoSQL DB.
+- Optimized for **write-heavy workloads**.
+- Ideal for **event sourcing** where **append-only logs** are required.
+
+✅ **Use Cassandra for logging, audit trails, and event history.**
+
+---
+
+### **Q: Memcached vs Redis?**
+✔️ **Answer:**
+| Feature        | **Memcached** | **Redis** |
+|---------------|--------------|----------|
+| **Data Structure** | Key-Value only | Lists, Sets, Hashes |
+| **Persistence** | No persistence | Optional persistence |
+| **Use Case** | Simple caching | Advanced caching & pub/sub |
+
+✅ **Use Memcached** for **simple in-memory caching**.  
+✅ **Use Redis** for **caching + real-time pub-sub + data structures**.
+
+---
+
+### **Q: Spring Context, Bean Context, Security Context, Multitenancy Handling?**
+✔️ **Answer:**
+- **Spring Context** → Manages **bean lifecycle**.
+- **Bean Context** → Controls **dependency injection**.
+- **Security Context** → Stores **user authentication details**.
+- **Multitenancy Handling** → Uses **database sharding** or **schema-based separation**.
+
+✅ **Use Multitenancy** in **SaaS applications**.
+
+---
+
+### **Q: How real-world failures and concurrency handling will be done?**
+✔️ **Answer:**
+- **Failures**: Use **failover replicas, retries, and idempotency**.
+- **Concurrency**: Use **Optimistic Locking (eTag), Mutexes, Distributed Locks (Redis, Zookeeper)**.
+
+✅ **Use Distributed Locks in event-driven systems to prevent race conditions.**
+
+---
+
 ### **Scalability and Performance**
 1. What is the difference between **scalability** and **performance**?
 2. How would you design a system to handle **1 million requests per second**?

@@ -74,33 +74,6 @@ what project i will be working
 
 what is the role and responsiblities
 
-30+ full stack engineer -> llm -> build scalable -> production
-
-lamini-> 90% agent -> vpc
-
-srey jail ->
-
-directly in touch with
-
-secuiryty and scalable
-
-robotics -> ML
-
-rios c-> 55M B
-
-arms -> robitics
-
-flatform positions
-
-backend -> processing
-
-resume ->
-
-quickly ->
-
-rios -> quickly
-
-expected date -> to join ?
 
 **Built highly scalable backend features with Kafka and time-series db to visualize data for a real-time monitoring dashboard.**
 
@@ -109,3 +82,15 @@ Designed architecture to handle real time data processing and developed highly s
 **Developed centralized Authentication service in spring security** and role based features for the dashboard
 
 **Developed a high-performance PySpark pipeline reducing batch processing time from 27 hours to under 50 minutes, enabling to creation of features for our LLM Agents and machine-learning models. which help reduced our turn-around time for our new partners onboarding**
+
+
+
+* how are you ? . how's your day so far ?
+
+what will be process of interview -> 
+
+is there leadership principles gonna be asked ?
+
+what are the key points to remember ?
+
+any suggested topics and questions to revise before interview ?

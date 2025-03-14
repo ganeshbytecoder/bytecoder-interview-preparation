@@ -1,0 +1,13 @@
+- load balancer system design 
+- kafka design 
+- Flink and spark design
+- Nginx Design 
+- DNS server 
+- CDN server
+- Service Discovery
+- DB Design like Mongo, Redis and Postgres
+- Camera feedSystem design 
+- OS system design 
+- Driver and package design 
+- BIOs system design 
+- 

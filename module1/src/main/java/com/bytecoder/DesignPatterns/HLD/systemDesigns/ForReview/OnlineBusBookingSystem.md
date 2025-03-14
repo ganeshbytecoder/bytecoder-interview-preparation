@@ -175,6 +175,7 @@ Right now, you have **a great list**, but FAANG interviewers will **expect more 
 - Role based access for users
 - IAM role for services and thrid party access
 - CICD using jenkins -> canary deployments or blue-green
+- Request size , throughput and then number of server required to handle 1M users every seconds and infra requirements
 
 
 **Service**
@@ -206,18 +207,6 @@ Architectural Patterns:
 - API-Gateway - auth, static content like some videos , images etcs
 - Distributed and streaming processing using kafka-spark and flink -> fraud predictions preproceesing, analytics, etc
 
-**Functional**
-- user should be able to book the show in give city, theater
-- should be be able to see available slots, seats and price
-- user should be able to select seat , no. seats and book that
-- user should be able to book for future, cancel
-- online payments
-- should be able to see booking history
-- aids,home feed to show trendings and suggestions
-- notifications
-- referrals, coupens
-- rating system for the show and theater
-- customer support system
 
 
 ### APIS:- 
@@ -247,7 +236,7 @@ headers -> {JWT token, device_id, language, location, x-parameters}
 
 
 
-Schema-
+### Schema-
 
 userDetails(role and login)
 Roles and permissions tables to control access
@@ -384,13 +373,13 @@ coupons (id, coupon_code, expiryDate, maxCount, count, discountPercentage, maxDi
 
 
 
-Distributed processing for business: - will add later 
+### Distributed processing for business: - will add later 
 
-Scalability, fail-over mechanisms and fault-tolerant : will be discussed
+### Scalability, fail-over mechanisms and fault-tolerant : will be discussed
 
-real-world failures and concurrency handling:  will be discussed
+### real-world failures and concurrency handling:  will be discussed
 
-Trade-offs and Edge Cases: 
+### Trade-offs and Edge Cases: 
 🔹 **Q: Why Kafka and not RabbitMQ?**  
 ✔️ **Answer:** Kafka provides **high throughput**, durability, and **better partitioning for scalability**. RabbitMQ is better for **low-latency messaging but doesn’t scale well** for analytics.
 
@@ -415,7 +404,7 @@ Trade-offs and Edge Cases:
 ✔️ **Answer:** 
 
 
-Deployments & Security
+### Deployments & Security
 ✔ Centralized Auth Service (OAuth2 + JWT) → Secure role-based access.
 ✔ RBAC (Role-Based Access Control) → Users & admins have separate permissions.
 ✔ CICD Pipelines (Jenkins) → Automates deployment with rollback options.
@@ -430,6 +419,15 @@ Monitoring & Logging
 ✔ Prometheus + Grafana → Service health monitoring & dashboards.
 ✔ Distributed Tracing (Jaeger or Zipkin) → Tracks requests across microservices.
 Future enhancements:  will be discussed
+
+1GB = 1000MB 
+1MB = 1000KB
+1KB = 1000Bytes
+### infra requirements to handle 1M users
+* Request size (how much data is transferred per request)
+* Throughput (how many requests per second a server can handle)
+* Number of servers required to handle the expected load
+
 
 
 

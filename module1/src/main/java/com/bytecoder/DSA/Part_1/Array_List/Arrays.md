@@ -52,15 +52,20 @@ Used when:
 
 ### **Example: Next Greater Element**
 ```python
-def next_greater_elements(nums: list[int]) -> list[int]:
-    stack, result = [], [-1] * len(nums)
+    def next_greater_element(self,nums):
+        stack = []
+        result = [-1] * len(nums)  # Default to -1 (if no NGE found)
 
-    for i in range(len(nums)):
-        while stack and nums[stack[-1]] < nums[i]:
-            result[stack.pop()] = nums[i]
-        stack.append(i)
+        for i in range(len(nums) - 1, -1, -1):  # Traverse from right to left
+            while stack and stack[-1] <= nums[i]:  # Pop smaller elements
+                stack.pop()
 
-    return result
+            if stack:  # If stack is not empty, top is the NGE
+                result[i] = stack[-1]
+
+            stack.append(nums[i])  # Push current element to stack
+
+        return result
 ```
 ✅ **Use When**: Finding **next larger/smaller elements** efficiently.
 

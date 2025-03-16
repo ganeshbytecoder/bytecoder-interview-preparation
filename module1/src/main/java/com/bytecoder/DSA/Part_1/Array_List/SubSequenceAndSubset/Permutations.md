@@ -15,24 +15,39 @@ do in java and python both
 ```python
 class Solution:
     ans = []
-    def solve(self, nums, result):
-        if(len(result) == len(nums)):
+    class Solution:
+    def permuteUnique(self, nums):
+        self.ans = []
+        nums.sort()  # Sort to handle duplicates
+        used = [False] * len(nums)  # Track usage of each element
+        self.solve(nums, [], used)
+        return self.ans
+
+    def solve(self, nums, result, used):
+        if len(result) == len(nums):
             self.ans.append(list(result))
             return
         
-        for i in range(0, len(nums)):
-            if(nums[i] not in result):
-                result.append(nums[i])
-                self.solve(nums,result)
-                result.remove(nums[i])
-        
+        for i in range(len(nums)):
+            # Skip used elements
+            if used[i]:
+                continue
+            
+            # Skip duplicates: If nums[i] == nums[i-1] and nums[i-1] wasn't used in this recursion level
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue
 
-    def permute(self, nums: List[int]) -> List[List[int]]:
-        self.ans=[]
-        self.solve(nums, [])
-        
-        print(self.ans)
-        return self.ans
+            # Mark as used
+            used[i] = True
+            result.append(nums[i])
+
+            # Recurse
+            self.solve(nums, result, used)
+
+            # Backtrack
+            used[i] = False
+            result.pop()
+
 ```
 M2
 ```python
@@ -116,6 +131,8 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
         list.add(new ArrayList<>(tempList));
     } else{
         for(int i = 0; i < nums.length; i++){
+//            We skip the second occurrence (nums[i]) unless the first one was already used.
+
             if(used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i - 1])) continue;
             used[i] = true; 
             tempList.add(nums[i]);

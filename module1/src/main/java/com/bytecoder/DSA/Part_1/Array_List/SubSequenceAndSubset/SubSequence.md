@@ -90,17 +90,7 @@ public List<String> getAllSubsequences(String s) {
 
 ---
 
-## **4. Subarrays & Subsequence Problems**
-- 🔹 **[300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) (Medium)**  
-  Find the length of the longest increasing subsequence in an array.
 
-- 🔹 **[673. Number of Longest Increasing Subsequences](https://leetcode.com/problems/number-of-longest-increasing-subsequences/) (Medium)**  
-  Count how many longest increasing subsequences exist.
-
-- 🔹 **[718. Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) (Medium)**  
-  Find the longest repeated subarray in two arrays.
-
----
 
 ## **5. Bitmasking & Subsets**
 - 🔹 **[1178. Number of Valid Words for Each Puzzle](https://leetcode.com/problems/number-of-valid-words-for-each-puzzle/) (Hard)**  

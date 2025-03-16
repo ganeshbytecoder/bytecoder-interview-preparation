@@ -92,25 +92,177 @@ Here’s the **Time and Space Complexity Chart** for **Sorting, Searching, Trees
 | Permutations | O(n!) | O(n) |
 | Combination Sum | O(2^n) | O(n) |
 
+| Permutations | O(K^n) | O(n) | if you allow repetition (reuse of elements) in  the
+ 
+Distinct ways/Fibonacci : O(2^n)
+word search for start point given O( 4^L)
+Suppose you have 𝑛 positions to fill and each position has K choices. then O(K^n)
+
+
+word search for start point not given O(m * n * 4^L)
+
+coin exchange  - nlog(n)
+
+
 > **Backtracking has exponential time complexity** since it explores multiple possibilities.
 
 ---
 
 ## **6. Dynamic Programming (DP)**
 | Problem Type | Time Complexity | Space Complexity |
-|-------------|----------------|------------------|
-| Fibonacci (Memoization) | O(n) | O(n) |
-| Fibonacci (Tabulation) | O(n) | O(1) |
-| 0/1 Knapsack | O(nW) | O(nW) (O(W) with space optimization) |
-| Longest Common Subsequence (LCS) | O(nm) | O(nm) (O(min(n, m)) with space optimization) |
-| Matrix Chain Multiplication | O(n³) | O(n²) |
-| Coin Change | O(n * amount) | O(amount) |
-| Edit Distance | O(nm) | O(nm) |
-| Partition Equal Subset Sum | O(n * sum) | O(sum) |
+|-------------|-----------------|------------------|
+| Fibonacci (Memoization) | O(n)            | O(n) | 
+| Fibonacci (Tabulation) | O(n)            | O(1) |
+| 0/1 Knapsack | O(nW)           | O(nW) (O(W) with space optimization) |
+| Longest Common Subsequence (LCS) | O(nm)           | O(nm) (O(min(n, m)) with space optimization) |
+| Matrix Chain Multiplication | O(n³)           | O(n²) |
+| Coin Change | O(n * log(n)    | O(amount) |
+| Edit Distance | O(nm)           | O(nm) |
+| Partition Equal Subset Sum | O(n * sum)      | O(sum) |
 
 > **Dynamic Programming reduces exponential time complexity** to polynomial but may use extra space unless optimized.
 
 ---
+Here's a structured explanation of these common recursion patterns clearly explaining the time complexity analysis and typical scenarios:
 
-This is **a complete Time & Space Complexity Chart** for **all major DSA topics**! 🚀
+---
 
+## ✅ **Pattern 1: Take / Not-take Pattern**
+
+**Explanation:**
+- In this pattern, you make a binary decision at each recursive step:
+    - **Take** the current element.
+    - **Not take** the current element.
+- Commonly used in subset or subsequence problems.
+
+**Example Code:**
+```python
+def dfs(nums, index):
+    if index == len(nums):
+        return
+    
+    # Take current element
+    dfs(nums, index + 1)
+
+    # Not take current element
+    dfs(nums, index + 1)
+```
+
+**Time Complexity:**
+- **O(2^n)**, as each element has 2 possibilities (take/not-take).
+
+**Space Complexity:**
+- **O(n)**, recursion stack depth.
+
+**Example Problems:**
+- **Subsets**, **Subsequence**, **Knapsack (0/1)**
+
+---
+
+## ✅ **Pattern 2: Recursive Loop (Sequential Choices)**
+
+**Explanation:**
+- At each recursive call, iterate through the rest of the elements.
+- Commonly used when generating combinations, permutations, or subsequences where ordering or position matters.
+
+```python
+def dfs(nums, index):
+    for i in range(index, len(nums)):
+        dfs(nums, i + 1)
+```
+
+**Time Complexity:**
+- Generally **O(2^n)**, because it explores all subsets recursively, but explicitly visits each combination by recursive calls.
+
+**Space Complexity:**
+- **O(n)** (recursion stack)
+
+**Example Problems:**
+- **Combination Sum**, **Generate Subsets**
+
+---
+
+## ✅ **Pattern 2: Permutation Pattern**
+
+**Explanation:**
+- This recursive pattern involves choosing each element as the "start" of a permutation and recursively permuting remaining elements.
+- Usually involves marking visited/unvisited status clearly.
+
+```python
+def dfs(nums, path):
+    if len(path) == len(nums):
+        # found permutation
+        return
+    for num in nums:
+        if num not in path:
+            dfs(nums, path + [num])
+```
+
+**Time Complexity:**
+- **O(n × n!)**, generating all permutations.
+
+**Space Complexity:**
+- **O(n)** recursion depth.
+
+**Example Problems:**
+- **Permutations**, **N-Queens problem**
+
+---
+
+## ✅ **Pattern 3: DFS for combinations with Backtracking and an Index**
+
+**Explanation:**
+- Similar to Pattern 1, but slightly modified: choosing an element explicitly from a specific start index, avoiding repeated combinations.
+- Crucially used when **order does NOT matter** (to avoid duplicate sets).
+
+```python
+def dfs(nums, index, path):
+    # base case: return if condition met
+    for i in range(index, len(nums)):
+        dfs(nums, i + 1, path + [nums[i]])
+```
+
+**Time Complexity:**
+- **O(2^n)** subsets generation complexity.
+- Note: It is efficient compared to permutations because it does not explore repeated subsets.
+
+**Space Complexity:**
+- **O(n)**
+
+**Example Problems:**
+- Combination Sum, Combination Sum II
+
+---
+
+## ✅ **Pattern 4: Multiple Choices (coin/change)**
+
+In certain recursive patterns like **coin-change problems**, each recursive call explores multiple branches corresponding to different coin values:
+
+```python
+def dfs(amount, coins, index):
+    if amount == 0: return 1
+    if amount < 0: return 0
+    ways = 0
+    for i in range(index, len(coins)):
+        ways += dfs(amount - coins[i], coins, i) # reuse same coin
+```
+
+**Time Complexity:**
+- **Exponential (O(m^n))** without memoization (where m = coins, n = amount).
+
+**With memoization/dynamic programming:**
+- Complexity reduces to **O(amount × coins)**.
+
+---
+
+## 🔑 **Summary of Common Recursive Patterns:**
+
+| Pattern              | Complexity            | Example Applications                |
+|----------------------|-----------------------|-------------------------------------|
+| Take/Not-take        | **O(2^n)**            | Subsets, subsequences, 0/1 Knapsack |
+| For-loop recursion   | O(2^n) or O(n!)       | Permutations, combinations          |
+| Permutations         | O(n × n!)             | Generating permutations             |
+| Coin-change (naive)  | Exponential (O(m^n))  | Coin Change                         |
+| Coin-change (DP)     | O(amount × coins)     | Optimized Coin Change (DP)          |
+
+---

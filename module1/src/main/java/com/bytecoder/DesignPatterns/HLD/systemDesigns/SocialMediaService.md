@@ -1,4 +1,4 @@
-Here are some **senior-level system design interview questions** related to designing a **social media platform** like **TikTok, Instagram, or Twitter**:
+**social media platform** like **TikTok, Instagram, or Twitter**:
 
 ### **1. General System Design**
 - How would you design a social media platform similar to TikTok, Instagram, or Twitter?

@@ -395,10 +395,8 @@ coupons (id, coupon_code, expiryDate, maxCount, count, discountPercentage, maxDi
 🔹 **Q: Why SAGA for search?**  
 ✔️ **Answer:** 
 
-
 🔹 **Q: Why Cassandra for events and history?**  
 ✔️ **Answer:** 
-
 
 🔹 **Q: how real-world failures and concurrency handling will be done and how it will work?**  
 ✔️ **Answer:** 

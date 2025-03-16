@@ -1,34 +1,3 @@
-## 0/1 Knapsack
-
-## 5. Practical Tips for Interview Success
-
-- **Clarify Requirements:** Ensure you understand whether items are 0/1 or fractional, and confirm constraints such as capacity and number of items.
-- **Define Your State Clearly:** Explain what each dimension of your DP (e.g., \( dp[i][w] \)) represents.
-- **Discuss Complexity:** Highlight time and space complexities, and mention optimizations (like reducing space to \( O(W) \)).
-- **Handle Edge Cases:** Consider cases such as an empty item list, zero capacity, or items that individually exceed the capacity.
-- **Explain Reconstruction:** Be ready to discuss how to backtrack through your DP table to determine the actual items selected.
-
----
-
-## 6. Additional LeetCode Practice Problems
-
-1. **416. Partition Equal Subset Sum**
-    - **Challenge:** Determine if a given set can be partitioned into two subsets of equal sum.
-    - **Focus:** Subset sum variation using DP.
-      https://leetcode.com/problems/partition-to-k-equal-sum-subsets/description/
-    - 
-2. **494. Target Sum**
-    - **Challenge:** Count the number of ways to assign + or – signs to array elements to reach a target sum.
-    - **Focus:** A variation that models a knapsack-like choice with sign flips.
-
-3. **1049. Last Stone Weight II**
-    - **Challenge:** Partition stones into two groups such that the difference in their sums is minimized.
-    - **Focus:** A variation of the subset sum problem using knapsack principles.
-
-4. **474. Ones and Zeroes**
-    - **Challenge:** Given binary strings and limits on the number of 0's and 1's you can use, find the maximum number of strings you can form.
-    - **Focus:** A multidimensional knapsack variant where each string represents an item with two “weights.”
-
 
 
 
@@ -50,112 +19,48 @@ The 0/1 Knapsack problem is a classic dynamic programming challenge that involve
 
 ---
 
-## 2. Problem Statement
+* Maximize the total value of selected items without exceeding the weight capacity
 
-**Given:**
-
-- A list of \( n \) items, where each item \( i \) has:
-    - Weight \( w_i \)
-    - Value \( v_i \)
-- A knapsack with capacity \( W \).
-
-**Objective:**  
-Maximize the total value of items chosen such that their combined weight does not exceed \( W \).
-
-### Example:
-- **Items:**
-    - Item 1: Weight = 2, Value = 4
-    - Item 2: Weight = 3, Value = 5
-    - Item 3: Weight = 4, Value = 6
-- **Capacity:** \( W = 5 \)
-
-**Optimal Selection:**  
-Choosing item 1 and item 2 gives a total weight of 5 and a total value of 9.
-
----
-
-## 3. DP Formulation
-
-### 3.1 Bottom-Up (Tabulation) Approach
-
-#### DP State Definition
-
-Define a 2D table \( dp[i][w] \) where:
-- \( dp[i][w] \) is the maximum value achievable using the **first \( i \) items** with a capacity \( w \).
-
-#### Recurrence Relation
-
-For each item \( i \) (using 1-indexing for clarity) and capacity \( w \):
-\[
-dp[i][w] =
-\begin{cases}
-dp[i-1][w] & \text{if } w_i > w \quad \text{(item too heavy to include)} \\
-\max\Big(dp[i-1][w],\; v_i + dp[i-1][w-w_i]\Big) & \text{if } w_i \leq w \quad \text{(choose the best option)}
-\end{cases}
-\]
-
-#### Base Cases
-
-- \( dp[0][w] = 0 \) for all \( w \) (with 0 items, value is 0).
-- \( dp[i][0] = 0 \) for all \( i \) (with 0 capacity, no items can be included).
-
-#### Pseudocode (Bottom-Up)
 ```python
-# Create dp table with dimensions (n+1) x (W+1), initialized to 0.
-dp = [[0 for _ in range(W + 1)] for _ in range(n + 1)]
+Maximize the total value of selected items without exceeding the weight capacity 
 
-for i in range(1, n + 1):
-    for w in range(1, W + 1):
-        if weight[i-1] > w:
-            dp[i][w] = dp[i-1][w]
-        else:
-            dp[i][w] = max(dp[i-1][w],
-                           value[i-1] + dp[i-1][w - weight[i-1]])
+# Dictionary for memoization
+dp = {}
 
-# The final answer is in dp[n][W]
-```
-
-**Time Complexity:** \( O(n \times W) \)  
-**Space Complexity:** \( O(n \times W) \) (can be optimized to \( O(W) \))
-
----
-
-### 3.2 Top-Down (Memoization) Approach
-
-#### Recursive Definition
-
-Let \( knapsack(i, w) \) be the maximum value obtainable using items indexed from 0 through \( i \) with capacity \( w \):
-\[
-knapsack(i, w) =
-\begin{cases}
-0 & \text{if } i < 0 \text{ or } w \leq 0, \\
-knapsack(i-1, w) & \text{if } weight[i] > w, \\
-\max\Big(knapsack(i-1, w),\; v_i + knapsack(i-1, w - weight[i])\Big) & \text{otherwise.}
-\end{cases}
-\]
-
-#### Memoization Strategy
-
-Store computed values in a 2D array (or dictionary) for states \((i, w)\) so that each state is computed only once.
-
-#### Pseudocode (Top-Down)
-```python
-# Assume dp is a 2D array or dictionary initialized with a sentinel value (e.g., -1)
 def knapsack(i, w):
     if i < 0 or w <= 0:
         return 0
-    if dp[i][w] != -1:
-        return dp[i][w]
+    if (i, w) in dp:  # Return memoized result
+        return dp[(i, w)]
     
-    if weight[i] > w:
-        dp[i][w] = knapsack(i-1, w)
+    if weight[i] > w:  # Exclude item if too heavy
+        dp[(i, w)] = knapsack(i - 1, w)
     else:
-        dp[i][w] = max(knapsack(i-1, w),
-                       value[i] + knapsack(i-1, w - weight[i]))
-    return dp[i][w]
+        # Max of excluding or including the item
+        dp[(i, w)] = max(knapsack(i - 1, w), value[i] + knapsack(i - 1, w - weight[i]))
+    
+    return dp[(i, w)]
+
 ```
 
----
+
+1. **416. Partition Equal Subset Sum**
+    - **Challenge:** Determine if a given set can be partitioned into two subsets of equal sum.
+    - **Focus:** Subset sum variation using DP.
+      https://leetcode.com/problems/partition-to-k-equal-sum-subsets/description/
+    - 
+2. **494. Target Sum**
+    - **Challenge:** Count the number of ways to assign + or – signs to array elements to reach a target sum.
+    - **Focus:** A variation that models a knapsack-like choice with sign flips.
+
+3. **1049. Last Stone Weight II**
+    - **Challenge:** Partition stones into two groups such that the difference in their sums is minimized.
+    - **Focus:** A variation of the subset sum problem using knapsack principles.
+
+4. **474. Ones and Zeroes**
+    - **Challenge:** Given binary strings and limits on the number of 0's and 1's you can use, find the maximum number of strings you can form.
+    - **Focus:** A multidimensional knapsack variant where each string represents an item with two “weights.”
+
 
 ## 4. Extended Examples & Real-Life Analogies
 

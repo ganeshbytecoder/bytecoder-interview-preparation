@@ -12,10 +12,7 @@
     - More efficient in space
     - Sometimes harder to implement
 
-
-https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming?utm_campaign=post&utm_medium=web
-https://leetcode.com/studyplan/dynamic-programming/
-
+  
 
 ## Fibonacci Sequence /pattern 
 ### Fibonacci series
@@ -142,7 +139,7 @@ public int minCostClimbingStairs(int[] cost) {
 
 ---
 
-##### [Jump Game](https://leetcode.com/problems/jump-game/)
+### [Jump Game](https://leetcode.com/problems/jump-game/)
 **Problem**: Determine if you can reach the last index.
 
 ```java
@@ -196,32 +193,11 @@ public boolean canJump(int[] nums) {
 
 
 
-
-
-##  Kadane's Algorithm/ prefix sum for subarray 
-
-LeetCode 53: Maximum Subarray
-
-LeetCode 918: Maximum Sum Circular Subarray
-
-LeetCode 152: Maximum Product Subarray
-
-
 ## **Hashing + DP**
 1. **[Target Sum](https://leetcode.com/problems/target-sum/)** - DP with state `(index, sum)`.
 2. **[Longest Arithmetic Sequence](https://leetcode.com/problems/longest-arithmetic-sequence/)** - DP with hash table.
 3. **[Longest Arithmetic Subsequence of Given Difference](https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/)** - DP with hashmap.
 4. **[Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)** - DFS + DP.
-
-
-
-## **Coin Change Variants**
-1. **[Coin Change](https://leetcode.com/problems/coin-change/)** - DP for minimum number of coins.
-2. **[Coin Change 2](https://leetcode.com/problems/coin-change-2/)** - Count ways to make change.
-3. **[Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)** - DP with order-sensitive sum combinations.
-4. **[Perfect Squares](https://leetcode.com/problems/perfect-squares/)** - Find min squares summing to `n`.
-5. **[Minimum Cost for Tickets](https://leetcode.com/problems/minimum-cost-for-tickets/)** - DP tracking cost of valid travel days.
-
 
 
 

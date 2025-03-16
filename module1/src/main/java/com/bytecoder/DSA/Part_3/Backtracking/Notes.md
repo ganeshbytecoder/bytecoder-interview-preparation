@@ -1,63 +1,6 @@
 ### What is Backtracking?
 Backtracking is an algorithmic technique that considers searching every possible combination in order to solve a computational problem. It builds candidates to the solution incrementally and abandons each partial candidate ("backtracks") if it determines that the candidate cannot possibly be completed to a valid solution.
 
-### General Structure of Backtracking
-1. **Base Case**: Check if the solution is complete or valid
-2. **Recursive Exploration**:
-   - Choose: Make a choice from available options
-   - Explore: Recursively solve the subproblem
-   - Unchoose: Undo the choice (backtrack)
-
-```java
-void backtrack(parameters) {
-    if (base case condition met) {
-        // Process result
-        return;
-    }
-
-    for (each option in choices) {
-        // Make a choice
-        backtrack(next parameters);
-        // Undo the choice
-    }
-}
-```
-
-## Interview Tips
-
-1. **Pattern Recognition**:
-   - If the problem asks for "all possible combinations/arrangements", consider backtracking
-   - Look for problems where you need to explore multiple paths to find valid solutions
-
-2. **Optimization Techniques**:
-   - Always look for opportunities to prune invalid paths early
-   - Use sorting when dealing with duplicates
-   - Consider using a visited set/array to avoid cycles
-
-3. **Common Pitfalls**:
-   - Forgetting to remove elements when backtracking
-   - Not handling base cases properly
-   - Missing edge cases in the input
-
-4. **Time Complexity Analysis**:
-   - Most backtracking solutions are exponential
-   - Be prepared to discuss the exact complexity (e.g., O(2^n) for subsets, O(n!) for permutations)
-
-### Key Optimization Techniques
-1. **Sorting**: Helps in skipping duplicates and optimizing decisions
-```java
-if (used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i - 1])) continue;
-```
-2. **Early Pruning**: Skip invalid paths early
-3. **State Management**: Efficiently track and restore state
-4. **Visited Sets/Arrays**: Avoid revisiting same states
-
-
-used following data structures to keep track of visited:
-- array or list -> dp[element] = True or False or 0 /1
-- set to have contains 
-- dictionary to keep visited and optimised ans 
-- 
 
 ### Choice-Based Template
 
@@ -161,13 +104,9 @@ void backtrack(List<String> result, StringBuilder current, int open, int close, 
 
 
 
-
-# Tracking Visited Elements in Backtracking Problems
-
-## Why Track Visited Elements?
-In backtracking problems, we often need to keep track of elements we've already considered to avoid unnecessary recomputation, infinite loops, or constraint violations. Different data structures can be used for this purpose depending on the problem type and constraints.
-
 ---
+
+
 ## Common Data Structures to Track Visited Elements
 
 ### 1. **Boolean Array / List**

@@ -173,3 +173,12 @@ print("Min Length Subarray (5,2,6):", result2)
 
 ### 31. **Smallest Subarray with Sum Greater Than a Given Value**
 - **Hint**: Use a sliding window technique to expand and shrink the window while keeping track of the sum.
+
+
+
+17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
+- Check if some substring is a permutation of `s2`.
+- **Condition:** Substring must be a permutation of another string.
+- **Difficulty:** Medium
+
+

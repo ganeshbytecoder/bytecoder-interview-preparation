@@ -1,7 +1,17 @@
+
+
+
+
+
 Java interview questions:  https://github.com/DopplerHQ/awesome-interview-questions?tab=readme-ov-file#java
 
 all Spring containers and connections -> 
-    IOC, Beanfactory, context , Multitenancy , security context 
+    IOC, Beanfactory, context , Multitenancy , security context , spring context,
+
+
+
+
+
 
 
 

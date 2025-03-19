@@ -1,18 +1,15 @@
 
+https://leetcode.com/problems/longest-palindromic-subsequence/description/
 
-- 🔹 **[267. Palindrome Permutation II](https://leetcode.com/problems/palindrome-permutation-ii/) (Medium)**  
-  Find all palindromic permutations of a string.
+https://leetcode.com/problems/count-different-palindromic-subsequences/description/
 
-17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
-- Check if some substring is a permutation of `s2`.
-- **Condition:** Substring must be a permutation of another string.
-- **Difficulty:** Medium
+https://leetcode.com/problems/longest-palindromic-subsequence-ii/description/
 
+https://leetcode.com/problems/maximize-palindrome-length-from-subsequences/description/
 
-### 15. **Next Permutation**
-- **Hint**: Find the first decreasing element from the right, swap it with the next largest element, and reverse the subsequent part of the array.
+https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/description/
 
 
-## Palindromic Subsequence
-1. **[Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)** - DP with a cut count for partitions.
-2. **[Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)** - DP or center expansion.
+longest palimdromic sequence in between two strings or one
+
+

@@ -1,349 +1,1200 @@
-
-# Functional 
-- Core business functionalities covering all the cases
-- user should be able to book for future, cancel
-- Payment system for (one-time, recursive and subscription )
-- user click events for analytics 
-- should be able to see history
-- home feed to show trending and suggestions
-- notifications
-- aids
-- referrals, coupons
-- rating system for product and services 
-- customer support system
-
-# non-functional requirements
-- Microservices architecture for highly scalable, secured , fault-tolerant to support 1M users 
-- high throughput and low latency and High Performance
-- secured system to handle 1M users
-- Devops technologies and strategies for Deployments, monitoring & Security etc
-- Analytics Tools and big data processing for business insight 
-- streaming data processing to prediction scams/faults/ bot
+# Basic Design
 
 
+### **System Design for Subscription, Recurring Payment Deduction, and Booking**
 
-# Services
-- User details and Authentication service
-- Core business services 
-- Home Feed service:
-- Booking service:
-- SearchService
-- AidsService
-- Payments service
-- Notification Service(FanOut service)
-- rating service
-- Referrals and coupon service
-- Customer service -> to create tickets and chat with back-office
-
-
-# Architectural Patterns and Technologies
-
-**Technologies**
-- Redis for caches- home feed, available slots, fast fetch booking details, for already searched queries or shows
-- Postgres to support ACID and prevents concurrent bookings -> user details, bookings, Coupens, refferals, show_slots, seats_slots , partition by city
-- MongoDB for heavy reads -> to show available theaters, movies and other details, partition by city
-- Cassandra -> to capture click events, searches, booking history, user activities and other analytics details
-- Kafka - to have event drive architecture , to support scale, fault-tolerant
-
-Architectural Patterns:
-- centralised authentication
-- horizontal scaling using load balancers and auto-scaling
-- SAGA or Outbox pattern
-- event sourcing 
-- Circuit breaker
-- CQRS
-- API-Gateway - auth, static content like some videos , images etcs
-- Distributed and streaming processing using kafka-spark and flink -> fraud predictions preproceesing, analytics, etc
-
-# Discussion on Database Scalability and performance using 
-- indexing, Partition, sharding, replication, consistent hashing, caching, CDN , multiple locations deployment for scale
-
-# Trade-offs, Bottlenecks and Edge Cases or missing cases:
-
-
-### how billions of like and views are updated on db. how this counter works ? for youtube,
-### how billions messages are hanlded in whatsapp
-### how s3 handle load and support ? and durability, fault-tolerance
-### how banks make sure balance is consistent even after billions of transactions per day
-
-
-### **Q: Why Kafka and not RabbitMQ?**
-✔️ **Answer:**
-- **Kafka** is built for **high-throughput, fault-tolerant event streaming** and is best suited for real-time data processing, distributed logging, and analytics.
-- **RabbitMQ** is better suited for **low-latency, per-message acknowledgments**, and task queues where immediate processing is required.
-- Kafka ensures durability via **log-based storage**, whereas RabbitMQ's **message retention is limited** unless explicitly configured.
-- **Scaling Kafka** is more efficient due to its **partitioning** mechanism, whereas RabbitMQ **scales horizontally with more effort**.
-
-✅ **Use Kafka** for log aggregation, event sourcing, stream processing.  
-✅ **Use RabbitMQ** for request-response messaging, microservices RPC, transactional event processing.
+This system will support:
+- User subscriptions with multiple plans (monthly, yearly, etc.).
+- Automated recurring payment deduction.
+- Booking services for subscribed users.
+- Handling scalability for **1 million users**.
 
 ---
 
-### **Q: Why Postgres for bookings instead of DynamoDB?**
-✔️ **Answer:**
-- **Postgres** provides **ACID compliance** which prevents **double booking** issues.
-- **DynamoDB** has high scalability but **lacks strong transactions guarantees** unless you use DynamoDB Transactions, which add complexity.
-- **Joins and complex queries** are better handled in Postgres.
-- DynamoDB is **eventually consistent**, making it risky for critical booking systems.
-
-✅ **Use Postgres** if the system requires **strict consistency and complex transactions**.  
-✅ **Use DynamoDB** if the system is **read-heavy, requires horizontal scaling, and has simpler transactional needs**.
-
----
-
-### **Q: Why MongoDB Vs ElasticSearch vs DynamoDB for search query?**
-✔️ **Answer:**
-| Feature       | **MongoDB** | **ElasticSearch** | **DynamoDB** |
-|--------------|------------|------------------|-------------|
-| **Query Type** | Document search | Full-text search | Key-value lookup |
-| **Indexing** | JSON-based | Advanced inverted index | Hash/Range-based |
-| **Use Case** | Product catalog, NoSQL queries | Search engine, Log analytics | Key-based lookups, caching |
-| **Scalability** | Sharding & Replication | Sharding & Replication | Auto-scaling |
-| **Consistency** | Eventual | Eventual | Strong (optional) |
-
-✅ **Use MongoDB** for document-based storage with filtering.  
-✅ **Use Elasticsearch** for **advanced search** (full-text, autocomplete, faceted search).  
-✅ **Use DynamoDB** for key-value queries at **high throughput**.
+## **1. High-Level Architecture**
+### **Components**
+1. **User Service** - Manages user accounts and authentication.
+2. **Subscription Service** - Handles subscription plans and user enrollments.
+3. **Payment Service** - Processes payments and handles recurring deductions.
+4. **Booking Service** - Manages service bookings for subscribed users.
+5. **Notification Service** - Sends reminders, confirmations, and alerts.
+6. **Background Job Service** - Handles recurring payments asynchronously.
+7. **Database & Caching** - Stores user, subscription, and payment details.
+8. **Queue System (Kafka/SQS)** - Processes background tasks efficiently.
+9. **API Gateway** - Routes API requests to respective services.
 
 ---
 
-### **Q: Why CQRS for search?**
-✔️ **Answer:**
-- **Command Query Responsibility Segregation (CQRS)** separates **write-heavy workloads from read-heavy workloads**.
-- Reduces **read latency** as the system can have **optimized read models** without impacting transactional writes.
-- Enables **polyglot persistence**—use **Postgres for commands (writes)** and **Elasticsearch for queries (reads)**.
+## **2. Database Schema**
+We'll use **PostgreSQL** for transactional data and **Redis** for caching frequently accessed data.
 
-✅ **Best for:** E-commerce, event-driven systems, analytics dashboards.
+### **User Table**
+```sql
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    phone VARCHAR(20),
+    password_hash VARCHAR(255),
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+```
 
----
+### **Subscription Plans Table**
+```sql
+CREATE TABLE subscription_plans (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) UNIQUE NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    duration INTERVAL NOT NULL, -- e.g., '1 month', '1 year'
+    currency VARCHAR(10) DEFAULT 'USD',
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+```
 
-### **Q: How CQRS helps in scaling and how does it work?**
-✔️ **Answer:**
-- **Scalability**: Instead of having a single database handling both reads & writes, **CQRS allows scaling reads and writes independently**.
-- **How it works?**
-    1. **Write Operations** → Go to a transactional database (e.g., Postgres).
-    2. **Read Operations** → Go to a search-optimized database (e.g., Elasticsearch).
-    3. **Syncing happens** via **event sourcing or asynchronous updates**.
+### **User Subscriptions Table**
+```sql
+CREATE TABLE user_subscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    plan_id UUID REFERENCES subscription_plans(id) ON DELETE CASCADE,
+    status VARCHAR(20) CHECK (status IN ('active', 'cancelled', 'expired')) DEFAULT 'active',
+    start_date TIMESTAMP DEFAULT now(),
+    next_billing_date TIMESTAMP,
+    payment_method VARCHAR(255), -- e.g., 'credit_card', 'paypal'
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+```
 
-✅ **Prevents read-write contention, making systems more scalable.**
+### **Payments Table**
+```sql
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subscription_id UUID REFERENCES user_subscriptions(id) ON DELETE CASCADE,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('pending', 'successful', 'failed')) DEFAULT 'pending',
+    payment_method VARCHAR(255),
+    transaction_id VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP DEFAULT now()
+);
+```
 
----
-
-### **Q: How SSE (Server-Sent Events) vs REST helps in a robust system and how it works?**
-✔️ **Answer:**
-- **REST** is **request-response** based; the client must poll for updates.
-- **SSE** is **event-driven**, pushing updates **in real-time**.
-
-✅ **Use SSE** for **real-time notifications, stock prices, live dashboards**.  
-✅ **Use REST** when updates are not needed frequently.
-
----
-
-### **Q: How gRPC helps in a robust system and how does it work?**
-✔️ **Answer:**
-- **gRPC** uses **Protocol Buffers** instead of JSON, making it **lightweight and fast**.
-- Supports **bidirectional streaming**, unlike REST.
-- Uses **HTTP/2**, reducing network overhead.
-
-✅ **Use gRPC** for **microservices communication with low latency**.
-
----
-
-### **Q: How Circuit Breaker & Retry help in fault tolerance and how do they work?**
-✔️ **Answer:**
-- **Circuit Breaker** prevents cascading failures by **blocking requests** to failing services after a threshold.
-- **Retry** mechanisms help recover **transient failures** by **re-attempting** failed requests.
-
-✅ **Use Circuit Breaker** for **third-party integrations** to prevent excessive failures.  
-✅ **Use Retry** with **exponential backoff** for **network requests**.
-
----
-
-### **Q: Why SAGA/outbox pattern for async data consistency?**
-✔️ **Answer:**
-- **Saga** breaks transactions into **multiple compensating transactions** across services.
-- Works well in **microservices** where **ACID transactions aren't feasible**.
-
-✅ **Use Saga for** order processing, payments, travel bookings.
-
----
-
-### **Q: Why Cassandra for events and history?**
-✔️ **Answer:**
-- **Cassandra** is a **highly available**, distributed NoSQL DB.
-- Optimized for **write-heavy workloads**.
-- Ideal for **event sourcing** where **append-only logs** are required.
-
-✅ **Use Cassandra for logging, audit trails, and event history.**
-
----
-
-### **Q: Memcached vs Redis?**
-✔️ **Answer:**
-| Feature        | **Memcached** | **Redis** |
-|---------------|--------------|----------|
-| **Data Structure** | Key-Value only | Lists, Sets, Hashes |
-| **Persistence** | No persistence | Optional persistence |
-| **Use Case** | Simple caching | Advanced caching & pub/sub |
-
-✅ **Use Memcached** for **simple in-memory caching**.  
-✅ **Use Redis** for **caching + real-time pub-sub + data structures**.
+### **Bookings Table**
+```sql
+CREATE TABLE bookings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subscription_id UUID REFERENCES user_subscriptions(id) ON DELETE CASCADE,
+    service_name VARCHAR(255) NOT NULL,
+    booking_time TIMESTAMP NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('pending', 'confirmed', 'cancelled', 'completed')) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+```
 
 ---
 
-### **Q: Spring Context, Bean Context, Security Context, Multitenancy Handling?**
-✔️ **Answer:**
-- **Spring Context** → Manages **bean lifecycle**.
-- **Bean Context** → Controls **dependency injection**.
-- **Security Context** → Stores **user authentication details**.
-- **Multitenancy Handling** → Uses **database sharding** or **schema-based separation**.
+## **3. Handling 1M Users - Scalability**
+### **Database Optimization**
+- **Sharding:** Use sharding based on `user_id` for better distribution.
+- **Read Replicas:** Read-heavy queries (e.g., user subscriptions) go to replicas.
+- **Indexing:** Index `email`, `status`, `user_id` for fast lookups.
+- **Partitioning:** Partition large tables (e.g., payments, bookings) by date.
 
-✅ **Use Multitenancy** in **SaaS applications**.
+### **Cache Strategy**
+- **Redis Cache:** Cache frequently accessed data (`user_subscriptions`, `subscription_plans`).
+- **Write-Through Caching:** Write to cache and DB simultaneously to avoid cache misses.
+
+### **Asynchronous Payment Processing**
+- **Message Queue (Kafka, AWS SQS):** Queues payment processing jobs.
+- **Cron Jobs:** Run batch jobs every minute to retry failed payments.
+
+### **Load Balancing & API Scaling**
+- **API Gateway (NGINX, AWS ALB):** Load balances traffic.
+- **Microservices Architecture:** Independent services for scaling different workloads.
+- **Kubernetes (K8s):** Scales services dynamically based on load.
 
 ---
 
-### **Q: How real-world failures and concurrency handling will be done?**
-✔️ **Answer:**
-- **Failures**: Use **failover replicas, retries, and idempotency**.
-- **Concurrency**: Use **Optimistic Locking (eTag), Mutexes, Distributed Locks (Redis, Zookeeper)**.
+## **4. Payment Deduction Handling**
+### **Process**
+1. **Subscription Signup:**
+    - User selects a plan → enters payment details → payment processed.
+    - If successful, `next_billing_date = start_date + duration`.
 
-✅ **Use Distributed Locks in event-driven systems to prevent race conditions.**
+2. **Recurring Payment Deduction:**
+    - **Cron Job (every 24 hours):** Checks subscriptions with `next_billing_date <= now()`.
+    - If due, triggers a **payment request**.
+    - If successful, updates `next_billing_date`.
+    - If failed, retries **3 times in 7 days** before marking as **'failed'**.
+
+3. **Grace Period Handling:**
+    - **Grace period of 7 days** before subscription is marked as **'expired'**.
+    - Email notifications sent for failed payments.
 
 ---
 
-# APIs and Schema- 
-this will be discussed based on requirements
+## **5. Booking Service**
+### **Booking Flow**
+1. User selects a service → Checks **active subscription**.
+2. If valid, creates **booking entry**.
+3. Sends **confirmation notification**.
+4. User can **cancel/reschedule** within allowed timeframe.
 
-# infra requirements to handle 1M users
-- Request size , throughput and then number of server required to handle 1M users every seconds and infra requirements
+### **Handling Scalability**
+- **Rate Limiting:** Prevent spam booking requests.
+- **Distributed Locking:** Prevents double-booking (Redis-based lock).
+- **Event-Driven Updates:** Booking status updates via Kafka.
+
+
+---
+
+## **7. API Endpoints**
+### **User Authentication**
+```http
+POST /api/v1/auth/signup
+POST /api/v1/auth/login
+```
+
+### **Subscription Management**
+```http
+GET /api/v1/subscriptions/plans
+POST /api/v1/subscriptions/subscribe
+GET /api/v1/subscriptions/status
+POST /api/v1/subscriptions/cancel
+```
+
+### **Payment Processing**
+```http
+POST /api/v1/payments/process
+GET /api/v1/payments/history
+```
+
+### **Booking Service**
+```http
+POST /api/v1/bookings/create
+GET /api/v1/bookings/my
+POST /api/v1/bookings/cancel
+```
+
+---
+
+
+In **Java Spring Boot**, you can handle **payment retries** and **grace period handling** using a combination of:
+
+- **Spring Scheduler** (`@Scheduled`)
+- **Retry Mechanism** (Spring Retry / Custom Job)
+- **Background Job Processing** (Quartz Scheduler, Resilience4j, or Kafka)
+- **Event-Driven Notifications** (Email alerts)
+
+---
+
+## **1. Implementing Payment Retries (3 Retries in 7 Days)**
+### **Approach:**
+- Store **failed payments** in the database with a retry count.
+- Use a **scheduled job** to retry payments every day.
+- If a payment **fails 3 times in 7 days**, mark it as **'failed'**.
+
+### **Database Table for Payment Retries**
+```sql
+CREATE TABLE payment_retries (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subscription_id UUID REFERENCES user_subscriptions(id) ON DELETE CASCADE,
+    payment_attempts INT DEFAULT 0,
+    last_attempt TIMESTAMP DEFAULT now(),
+    status VARCHAR(20) CHECK (status IN ('pending', 'successful', 'failed')) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
+);
+```
+
+---
+
+### **Spring Boot Service for Payment Retries**
+```java
+@Service
+public class PaymentRetryService {
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Autowired
+    private PaymentGatewayService paymentGatewayService;
+
+    @Autowired
+    private EmailService emailService;
+
+    private static final int MAX_RETRIES = 3;
+    private static final int RETRY_PERIOD_DAYS = 7;
+
+    @Scheduled(cron = "0 0 2 * * ?") // Runs every day at 2 AM
+    @Transactional
+    public void retryFailedPayments() {
+        List<PaymentRetry> failedPayments = paymentRepository.findFailedPayments();
+
+        for (PaymentRetry payment : failedPayments) {
+            if (payment.getPaymentAttempts() < MAX_RETRIES) {
+                boolean success = processPayment(payment);
+
+                if (success) {
+                    payment.setStatus("successful");
+                } else {
+                    payment.setPaymentAttempts(payment.getPaymentAttempts() + 1);
+                    payment.setLastAttempt(LocalDateTime.now());
+                    
+                    if (payment.getPaymentAttempts() >= MAX_RETRIES) {
+                        payment.setStatus("failed");
+                        emailService.sendPaymentFailureNotification(payment.getUser());
+                    }
+                }
+                paymentRepository.save(payment);
+            }
+        }
+    }
+
+    private boolean processPayment(PaymentRetry payment) {
+        try {
+            return paymentGatewayService.chargeUser(payment.getUser(), payment.getSubscription().getPlan().getPrice());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+```
+
+---
+
+## **2. Grace Period Handling**
+### **Approach:**
+- **Monitor subscriptions** that have failed payments but are within the **7-day grace period**.
+- If payment is not successful **after 7 days**, mark the subscription as **expired**.
+- **Send email reminders** on Day 1, 3, and 5.
+
+---
+
+### **Spring Boot Scheduled Job for Grace Period Handling**
+```java
+@Service
+public class GracePeriodService {
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    private static final int GRACE_PERIOD_DAYS = 7;
+
+    @Scheduled(cron = "0 0 3 * * ?") // Runs every day at 3 AM
+    @Transactional
+    public void checkGracePeriod() {
+        List<UserSubscription> expiringSubscriptions = subscriptionRepository.findExpiringSubscriptions();
+
+        for (UserSubscription subscription : expiringSubscriptions) {
+            LocalDateTime dueDate = subscription.getNextBillingDate();
+            long daysSinceFailure = ChronoUnit.DAYS.between(dueDate, LocalDateTime.now());
+
+            if (daysSinceFailure >= GRACE_PERIOD_DAYS) {
+                subscription.setStatus("expired");
+                subscriptionRepository.save(subscription);
+                emailService.sendSubscriptionExpiredNotification(subscription.getUser());
+            } else {
+                // Send reminders on Day 1, 3, and 5
+                if (daysSinceFailure == 1 || daysSinceFailure == 3 || daysSinceFailure == 5) {
+                    emailService.sendGracePeriodReminder(subscription.getUser(), GRACE_PERIOD_DAYS - daysSinceFailure);
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+## **3. Email Notification Service**
+```java
+@Service
+public class EmailService {
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public void sendPaymentFailureNotification(User user) {
+        String subject = "Payment Failed - Retry in Progress";
+        String body = "Dear " + user.getName() + ",\n\nYour payment has failed. We will retry in the next 7 days.";
+        sendEmail(user.getEmail(), subject, body);
+    }
+
+    public void sendGracePeriodReminder(User user, int daysLeft) {
+        String subject = "Payment Pending - " + daysLeft + " Days Left";
+        String body = "Dear " + user.getName() + ",\n\nYou have " + daysLeft + " days to complete your payment.";
+        sendEmail(user.getEmail(), subject, body);
+    }
+
+    public void sendSubscriptionExpiredNotification(User user) {
+        String subject = "Subscription Expired";
+        String body = "Dear " + user.getName() + ",\n\nYour subscription has expired. Please renew to continue using the service.";
+        sendEmail(user.getEmail(), subject, body);
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    }
+}
+```
 
 
 
-To design a system that can handle **1 million users per second**, we need to calculate key performance metrics:
+## allow booking payments in payment:
 
-- **Request size** (how much data is transferred per request)
-- **Throughput** (how many requests per second a server can handle)
-- **Number of servers required** to handle the expected load
+```java
+@Entity
+@Table(name = "payments")
+public class Payment {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", nullable = true) // Nullable for booking payments
+    private UserSubscription subscription;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_id", nullable = true) // Nullable for subscription payments
+    private Booking booking;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
+    private String paymentMethod;
+    private String transactionId;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType; // Differentiates subscription vs. booking
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+    
+    // Getters and Setters
+}
+
+
+```
+
+
+
+---
+
+## **4. How This Works Together**
+1. **Failed Payment Handling**
+    - If a payment **fails**, it is stored in `payment_retries` with `payment_attempts = 0`.
+    - A **scheduled job runs daily at 2 AM** to retry payments **up to 3 times** in 7 days.
+    - If **all 3 retries fail**, subscription is **marked as failed**.
+    - An **email notification** is sent.
+
+2. **Grace Period Handling**
+    - If a user’s subscription payment fails, they get a **7-day grace period**.
+    - During this period, **reminder emails** are sent on **Day 1, 3, and 5**.
+    - If the payment is not made within **7 days**, the subscription is **marked as expired**.
+
+---
+
+## **5. Scaling This for 1M Users**
+- **Batch Processing**: Instead of checking every user individually, use:
+    - **Partitioning the database**: Process **100K users per batch**.
+    - **Distributed job execution** (e.g., Kafka, AWS Lambda).
+- **Caching User Payment Status**: Use **Redis** to avoid DB overload.
+- **Asynchronous Job Processing**: Use **Spring Batch + Kafka** for efficient retries.
+
+---
+
+### **Conclusion**
+This system ensures **scalability** (1M users), **fault tolerance**, and **efficient payment handling** using:
+- **Sharded & indexed database**
+- **Caching strategies (Redis)**
+- **Asynchronous payment jobs**
+- **Microservices & event-driven architecture**
+- **Load balancing & auto-scaling (K8s, AWS ALB)**
+  ✅ **Retries failed payments** up to 3 times in 7 days.  
+  ✅ **Implements grace period logic** to prevent immediate expiry.  
+  ✅ **Sends email reminders** before subscription expiration.  
+  ✅ **Efficient batch processing** for handling 1M users.
+
+
+
+### Yes, Cassandra is optimized for **high write throughput** due to its **distributed partitioned storage model**. Here’s why:
+
+### **1. Writes are Append-Only and Sequential**
+- Unlike traditional databases that perform **random disk I/O**, Cassandra **writes data sequentially** to the commit log and **MemTable** before flushing to SSTables.
+- This means **writes don’t require disk seeks**, making them **fast and efficient**.
+
+### **2. Partition-Based Storage**
+- Data in Cassandra is **partitioned based on a partition key**.
+- Each partition is stored on specific nodes (based on the consistent hashing algorithm).
+- Writes are **spread across multiple nodes**, reducing contention and improving parallelism.
+
+### **3. No Read-before-Write Overhead**
+- Unlike some databases that require checking for existing data before updating, Cassandra simply **appends new data**.
+- This avoids the performance hit of read-before-write operations.
+
+### **4. Writes are Distributed Across Nodes**
+- Since Cassandra is **distributed**, a single write request is **replicated across multiple nodes** asynchronously.
+- This ensures **high availability and fault tolerance** while allowing **concurrent high-volume writes**.
+
+### **5. Tunable Consistency**
+- Cassandra allows configuring **write consistency levels** (e.g., `ONE`, `QUORUM`, `ALL`).
+- Lower consistency levels (e.g., `ONE`) ensure **faster writes** by reducing the number of acknowledgments needed.
+
+### **6. Background Compaction (Not Immediate Updates)**
+- Data is written to immutable SSTables.
+- Old SSTables are **compacted in the background**, reducing the need for in-place updates.
+
+### **Conclusion**
+Yes, Cassandra is **write-optimized** due to its **append-only, partitioned, and distributed nature**. However, this design also makes **reads more complex** due to potential multiple SSTable lookups and compactions.
+
+# Basic of CQRS
+
+Yes, having two separate databases—one for commands (writes) and one for queries (reads)—is a common practice in **CQRS (Command Query Responsibility Segregation)**. This approach improves performance, scalability, and fault isolation.
+
+### **Why Use Separate Databases in CQRS?**
+1. **Optimized for Specific Workloads**
+    - **PostgreSQL (Write-Optimized - Command Side):**
+        - Ensures strong consistency and transactional integrity (ACID compliance).
+        - Good for handling complex transactions and enforcing constraints.
+    - **MongoDB (Read-Optimized - Query Side):**
+        - Schema-less structure allows for flexible query responses.
+        - Faster reads, especially for JSON-based queries and hierarchical data.
+
+2. **Scalability & Performance**
+    - The write database (PostgreSQL) is optimized for handling updates, inserts, and ensuring data consistency.
+    - The read database (MongoDB) is optimized for fast data retrieval, reducing the load on the primary database.
+
+3. **Eventual Consistency**
+    - In a **CQRS Event-Sourced system**, writes go to PostgreSQL, and events are propagated to MongoDB asynchronously.
+    - This allows MongoDB to be a **read replica** with denormalized and precomputed views for efficient queries.
+
+4. **Fault Tolerance & Isolation**
+    - If the read database (MongoDB) is under heavy load, it doesn't affect write operations.
+    - If the write database (PostgreSQL) needs to be upgraded, the read side remains operational.
+
+### **Implementation Strategies**
+- **Event Sourcing Approach**:
+    - Store all events in an event store (e.g., PostgreSQL).
+    - Use event-driven architecture (Kafka, RabbitMQ) to sync updates to MongoDB.
+
+- **ETL (Extract, Transform, Load) Pipelines**:
+    - Periodically synchronize data from PostgreSQL to MongoDB using tools like **Debezium, Kafka Connect, or Change Data Capture (CDC)**.
+
+- **Dual Writes (Not Recommended in Most Cases)**:
+    - Writing directly to both databases can lead to inconsistency due to failures.
+    - Instead, prefer **event-driven synchronization**.
+
+### **Potential Challenges**
+1. **Data Synchronization**
+    - Ensuring MongoDB has the latest changes from PostgreSQL requires a robust mechanism (CDC, message queues, etc.).
+
+2. **Eventual Consistency**
+    - Reads might return slightly stale data, which is acceptable in most cases but must be managed.
+
+3. **Operational Complexity**
+    - Maintaining two different databases increases infrastructure overhead, monitoring, and operational effort.
+
+### **Alternative Approaches**
+- Instead of using MongoDB, consider **PostgreSQL Read Replicas** for queries.
+- Use **Elasticsearch** instead of MongoDB if full-text search or analytics are a priority.
+
+
+### **Implementing CQRS (Command Query Responsibility Segregation) in Spring Boot Applications**
+CQRS (Command Query Responsibility Segregation) is an architectural pattern that separates the read (query) and write (command) operations for a system. This helps in improving performance, scalability, and maintainability, especially in microservices architectures.
+
+---
+
+### **Key Components in CQRS Implementation**
+1. **Command Side (Write Model)**
+    - Handles **Create, Update, Delete (CUD)** operations.
+    - Uses **Event Sourcing** to store changes as events.
+    - Can use **Transactional Databases**.
+
+2. **Query Side (Read Model)**
+    - Handles **Read Operations**.
+    - Uses **Denormalized Views** optimized for queries.
+    - Can use **NoSQL or Caching** for performance.
+
+3. **Event Bus**
+    - Transfers changes from **Command Side** to **Query Side**.
+    - Implements **Event-Driven Architecture**.
+
+---
+
+### **Implementation of CQRS in Spring Boot**
+We will implement CQRS with **Spring Boot, Spring Data, Axon Framework (optional), and Kafka (for event propagation)**.
+
+---
+
+## **Step 1: Define the Model**
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Order {
+    private String id;
+    private String product;
+    private int quantity;
+    private String status;
+}
+```
+
+---
+
+## **Step 2: Create Command Side (Write Model)**
+
+### **Define Commands**
+```java
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
+
+@Data
+@AllArgsConstructor
+public class CreateOrderCommand {
+    @TargetAggregateIdentifier
+    private String orderId;
+    private String product;
+    private int quantity;
+}
+```
+
+---
+
+### **Define Aggregate for Event Sourcing**
+```java
+import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.spring.stereotype.Aggregate;
+
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+
+@Aggregate
+public class OrderAggregate {
+
+    @AggregateIdentifier
+    private String orderId;
+    private String product;
+    private int quantity;
+    private String status;
+
+    public OrderAggregate() {}
+
+    @CommandHandler
+    public OrderAggregate(CreateOrderCommand command) {
+        apply(new OrderCreatedEvent(command.getOrderId(), command.getProduct(), command.getQuantity()));
+    }
+
+    @EventSourcingHandler
+    public void on(OrderCreatedEvent event) {
+        this.orderId = event.getOrderId();
+        this.product = event.getProduct();
+        this.quantity = event.getQuantity();
+        this.status = "CREATED";
+    }
+}
+```
+
+---
+
+### **Publish Events to Kafka**
+```java
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EventPublisher {
+
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    public EventPublisher(KafkaTemplate<String, Object> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void publish(String topic, Object event) {
+        kafkaTemplate.send(topic, event);
+    }
+}
+```
+
+---
+
+### **Define Command Controller**
+```java
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/orders")
+public class OrderCommandController {
+
+    private final CommandGateway commandGateway;
+
+    public OrderCommandController(CommandGateway commandGateway) {
+        this.commandGateway = commandGateway;
+    }
+
+    @PostMapping
+    public String createOrder(@RequestBody Order order) {
+        String orderId = UUID.randomUUID().toString();
+        CreateOrderCommand command = new CreateOrderCommand(orderId, order.getProduct(), order.getQuantity());
+        commandGateway.send(command);
+        return "Order placed with ID: " + orderId;
+    }
+}
+```
+
+---
+
+## **Step 3: Create Query Side (Read Model)**
+
+### **Define Event for Read Model**
+```java
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class OrderCreatedEvent {
+    private String orderId;
+    private String product;
+    private int quantity;
+}
+```
+
+---
+
+### **Define Read Model Repository (MongoDB)**
+```java
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface OrderRepository extends MongoRepository<Order, String> {}
+```
+
+---
+
+### **Consume Events from Kafka for Read Model**
+```java
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderEventListener {
+
+    private final OrderRepository orderRepository;
+
+    public OrderEventListener(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @KafkaListener(topics = "order-events", groupId = "orders-group")
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        Order order = new Order(event.getOrderId(), event.getProduct(), event.getQuantity(), "CREATED");
+        orderRepository.save(order);
+    }
+}
+```
+
+---
+
+### **Define Query Controller**
+```java
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/orders")
+public class OrderQueryController {
+
+    private final OrderRepository orderRepository;
+
+    public OrderQueryController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Order getOrderById(@PathVariable String id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+}
+```
+
+---
+
+## **Step 4: Configure Kafka for Event Propagation**
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: "orders-group"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+```
+
+---
+
+## **Key Takeaways**
+1. **Command Side**
+    - Uses **Axon Framework** for event-driven CQRS.
+    - Commands are handled by Aggregates.
+    - Events are published to Kafka.
+
+2. **Query Side**
+    - Uses **MongoDB** for optimized read storage.
+    - Listens to Kafka events and updates query storage.
+
+3. **Event Bus (Kafka)**
+    - Connects **Command** and **Query** sides.
+    - Ensures eventual consistency.
+
+---
+
+### **Advantages of This CQRS Implementation**
+✅ **Scalability** – Read and write workloads can be scaled independently.  
+✅ **Performance** – Optimized read models provide fast queries.  
+✅ **Flexibility** – Different databases can be used for reading and writing.  
+✅ **Event Sourcing** – Enables an audit log of all state changes.
+
+# **Q: Transactional Outbox Pattern vs. Choreography-Based Saga for Scalable Systems**
+
+Both the **Transactional Outbox Pattern** and **Choreography-Based Saga Pattern** address **data consistency** across microservices in
+**event-driven architectures**,
+
+---
+
+## **1. Transactional Outbox Pattern**
+### **Overview:**
+The **Transactional Outbox Pattern** ensures **atomicity** between database changes and event publishing by storing events in an **outbox table** within the same transaction as the database operation. A background process (poller) reads and publishes events to the message broker.
+
+### **How It Works:**
+1. Service **A** writes data into its database and records an event in the **outbox table** within the same transaction.
+2. A **background process** reads the outbox table and publishes the event to a message broker (Kafka, RabbitMQ, etc.).
+3. Other services consume the event and update their state accordingly.
+
+### **Strengths:**
+✅ **Strong Consistency:** Ensures that database operations and event publishing happen atomically. No risk of data loss or out-of-sync issues.  
+✅ **Reliable Event Publishing:** Uses the database as a buffer, avoiding dual-write problems.  
+✅ **Scalability:** Works well for high-throughput systems as the outbox table can be optimized with partitioning and indexing.  
+✅ **Fault Tolerance:** If the event publishing fails, retries can be implemented without losing the original event.
+
+### **Challenges:**
+⚠️ **Increased Latency:** Events are not published immediately; they depend on a polling mechanism.  
+⚠️ **Additional Infrastructure:** Requires an outbox table and a poller to process and publish events.  
+⚠️ **Complexity in Ordering:** May require **event deduplication** and proper ordering mechanisms.
+
+### **Best Use Cases:**
+- **Fintech & Banking Systems** (ensures strict consistency in transactions).
+- **E-commerce Order Processing** (ensures payment and order status updates remain in sync).
+- **Critical Business Workflows** (where event loss is unacceptable).
+
+
+### **Q: Outbox Pattern implementation**
+### Solution
+| Approach | Best For | Scalability | Complexity |
+|----------|---------|------------|------------|
+| **Single Outbox Table** | Small-to-medium workloads, simple architecture | Medium | Low |
+| **Separate Outbox Tables** | High-throughput applications, different event priorities | High | Medium-High |
+| **Partitioned Outbox Table** | Large-scale systems, optimized performance | Very High | Medium |
+
+#### **3️⃣ Hybrid Approach: Partitioned Outbox Table**
+🔹 **How It Works:**
+- Use **a single outbox table** but implement **table partitioning** based on `event_type` or `aggregate_type`.
+- Example **PostgreSQL partitioning**:
+```sql
+CREATE TABLE outbox (
+    id UUID PRIMARY KEY,
+    event_type VARCHAR(255),
+    aggregate_type VARCHAR(255),
+    aggregate_id UUID,
+    payload JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed BOOLEAN DEFAULT FALSE
+) PARTITION BY LIST (event_type);
+
+CREATE TABLE outbox_orders PARTITION OF outbox FOR VALUES IN ('OrderCreated', 'OrderUpdated');
+CREATE TABLE outbox_payments PARTITION OF outbox FOR VALUES IN ('PaymentProcessed', 'PaymentFailed');
+```
+🔹 **Pros:**
+✅ **Balances simplicity and performance**.  
+✅ **Efficient querying via partitions**.  
+✅ **Less schema complexity** compared to separate tables.
+
+🔹 **Cons:**
+⚠️ Requires **database support for partitioning**.  
+⚠️ Slightly more complex setup than a single table.
+
+🔹 **Best Use Case:**
+- **Large-scale applications** that need **efficient query performance** without multiple tables.
+
+---
+
+---
+
+### **2. Choreography-Based Saga**
+### **Overview:**
+The **Choreography-Based Saga Pattern** manages distributed transactions across microservices using **event-driven interactions**, where each service listens to relevant events and triggers subsequent actions.
+
+### **How It Works:**
+1. A microservice (e.g., `Order Service`) initiates a business process and publishes an event (`OrderCreated`).
+2. Other microservices (e.g., `Payment Service`, `Inventory Service`) **react** to this event and trigger their own actions.
+3. Each service ensures local consistency and publishes subsequent events.
+4. If a failure occurs, compensating actions (rollbacks) are triggered.
+
+### **Strengths:**
+✅ **High Scalability:** Services remain **loosely coupled** and can independently handle events, making the system **highly scalable**.  
+✅ **Real-Time Processing:** Events are processed asynchronously and immediately, reducing **latency** compared to polling mechanisms.  
+✅ **No Centralized Coordinator:** Each service **autonomously** decides its actions, making the system resilient.  
+✅ **Resilient to Failures:** If a service fails, only that part of the transaction is affected.
+
+### **Challenges:**
+⚠️ **Complex Failure Handling:** Requires **compensating transactions** and careful **state management** to handle failures.  
+⚠️ **Difficult to Debug:** Since events flow **asynchronously**, debugging and tracing transactions require **distributed tracing** (e.g., OpenTelemetry).  
+⚠️ **Event Explosion:** A high number of events can create a **"domino effect"**, leading to **unexpected behavior** if not managed properly.
+
+### **Best Use Cases:**
+- **High-Traffic Applications** (e.g., social media, real-time notifications).
+- **E-commerce Systems** (order processing across multiple services).
+- **Decentralized Workflows** (where each service acts independently).
+
+---
+
+### **Comparison Table:**
+| Feature               | **Transactional Outbox** | **Choreography-Based Saga** |
+|----------------------|---------------------|-----------------------|
+| **Consistency** | Stronger (atomicity via DB transactions) | Weaker (eventual consistency) |
+| **Scalability** | Moderate (depends on database performance) | High (event-driven, loosely coupled) |
+| **Latency** | Higher (polling introduces delay) | Lower (real-time event processing) |
+| **Complexity** | Moderate (requires outbox table & poller) | High (requires event orchestration & compensations) |
+| **Failure Handling** | Reliable (retries and polling) | Complex (requires compensating transactions) |
+| **Best for** | **Fintech, banking, order processing** | **Social media, e-commerce, decentralized workflows** |
+
+---
+
+### **Final Recommendation for Scalable Systems**
+- **For high consistency & transactional reliability** → Use **Transactional Outbox Pattern** (ideal for fintech, banking, and critical workflows).
+- **For high scalability & real-time responsiveness** → Use **Choreography-Based Saga** (ideal for distributed event-driven systems).
+- **Hybrid Approach** → Some systems use a combination: Outbox Pattern for core services + Choreography for non-critical, asynchronous workflows.
+
+
+# **Event Sourcing** :
+
+# **Circuit Breaker** :
+Implementing a **Circuit Breaker** to switch between multiple third-party payment services in **Spring Boot** can be done using **Resilience4j**, a popular fault-tolerance library. The goal is to automatically switch to another service if one fails.
+
+---
+
+## **Steps to Implement:**
+1. **Configure Resilience4j Circuit Breaker**
+2. **Define a Payment Service with Circuit Breaker**
+3. **Implement a Fallback Mechanism to Switch Between Payment Providers**
+4. **Test the Failover Mechanism**
+
+---
+
+## **1. Add Dependencies**
+Add the required dependencies in `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-spring-boot2</artifactId>
+</dependency>
+```
+
+---
+
+## **2. Configure Circuit Breaker Properties**
+Define the circuit breaker properties in `application.yml`:
+
+```yaml
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentService:
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 2s
+        permittedNumberOfCallsInHalfOpenState: 2
+        maxWaitDurationInHalfOpenState: 5s
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 2
+        waitDurationInOpenState: 10s
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+```
+
+- **failureRateThreshold:** 50% failures trigger the circuit breaker.
+- **slowCallDurationThreshold:** Calls slower than **2s** are considered slow failures.
+- **waitDurationInOpenState:** Circuit breaker waits **10s** before retrying.
+
+---
+
+## **3. Implement Payment Service**
+Each payment provider has its own API integration. We use **Circuit Breaker** to switch when one fails.
+
+### **3.1. Create Payment Service Interface**
+```java
+public interface PaymentService {
+    String processPayment(double amount);
+}
+```
+
+---
+
+### **3.2. Implement Payment Services**
+#### **Paytm Service**
+```java
+@Service
+public class PaytmPaymentService implements PaymentService {
+
+    @Override
+    public String processPayment(double amount) {
+        // Simulating API call
+        if (Math.random() > 0.7) {
+            throw new RuntimeException("Paytm API Failure");
+        }
+        return "Payment Successful via Paytm";
+    }
+}
+```
+
+---
+
+#### **PayPal Service**
+```java
+@Service
+public class PaypalPaymentService implements PaymentService {
+
+    @Override
+    public String processPayment(double amount) {
+        // Simulating API call
+        if (Math.random() > 0.7) {
+            throw new RuntimeException("PayPal API Failure");
+        }
+        return "Payment Successful via PayPal";
+    }
+}
+```
+
+---
+
+#### **Razorpay Service**
+```java
+@Service
+public class RazorpayPaymentService implements PaymentService {
+
+    @Override
+    public String processPayment(double amount) {
+        // Simulating API call
+        if (Math.random() > 0.7) {
+            throw new RuntimeException("Razorpay API Failure");
+        }
+        return "Payment Successful via Razorpay";
+    }
+}
+```
+
+---
+
+### **3.3. Implement Payment Service with Circuit Breaker**
+Create a service that switches between providers when one fails.
+
+```java
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PaymentProcessorService {
+
+    private final List<PaymentService> paymentServices;
+    private int currentIndex = 0;  // Keeps track of current provider
+
+    public PaymentProcessorService(List<PaymentService> paymentServices) {
+        this.paymentServices = paymentServices;
+    }
+
+    @CircuitBreaker(name = "paymentService", fallbackMethod = "fallbackPayment")
+    public String processPayment(double amount) {
+        return paymentServices.get(currentIndex).processPayment(amount);
+    }
+
+    private String fallbackPayment(double amount, Throwable throwable) {
+        System.out.println("Switching to another payment provider due to: " + throwable.getMessage());
+
+        currentIndex = (currentIndex + 1) % paymentServices.size(); // Switch to next provider
+
+        return paymentServices.get(currentIndex).processPayment(amount);
+    }
+}
+```
+---
+## **4. Create Payment Controller**
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/payment")
+public class PaymentController {
+
+    private final PaymentProcessorService paymentProcessorService;
+
+    public PaymentController(PaymentProcessorService paymentProcessorService) {
+        this.paymentProcessorService = paymentProcessorService;
+    }
+
+    @PostMapping("/process")
+    public String processPayment(@RequestParam double amount) {
+        return paymentProcessorService.processPayment(amount);
+    }
+}
+```
+
+---
+
+## **5. Test the Failover Mechanism**
+Start your Spring Boot application and test the endpoint:
+
+```sh
+curl -X POST "http://localhost:8080/payment/process?amount=1000"
+```
+
+- If **Paytm** fails, it switches to **PayPal**.
+- If **PayPal** fails, it switches to **Razorpay**.
+- Keeps cycling through the providers.
+
+---
+
+## **Summary**
+✅ Used **Resilience4j Circuit Breaker** to monitor failures  
+✅ Switched between payment providers dynamically  
+✅ Configured fallback logic for automatic failover
+
+This ensures **high availability** of your payment processing system even if a provider is down. 🚀
+
+# **Infra Requirements to Handle 1M Users per Second**
+- **Request size:** Fixed at **10 KB** for easier calculations.
+- **Throughput:** Data processed per second.
+- **Number of servers required** to handle 1M requests per second.
 
 ---
 
 ## **Step 1: Estimating Request Size**
-The **request size** depends on the type of request and response. Let's break it down:
+For simplicity, let's assume:
+- **Request + Response total size** = **10 KB** per request.
 
-- **Request Headers** (HTTP headers) → ~500 bytes (depends on cookies, auth tokens)
-- **Request Payload** (JSON, API data) → ~1 KB (varies based on API request)
-- **Response Headers** → ~500 bytes
-- **Response Payload** (JSON, HTML, images) → Typically **10 KB** (can be much larger for images, videos)
-
-### **Total Request Size Estimation**
-If the system handles mainly API requests:
-- **Average request-response size** ≈ **12 KB (500B + 1KB + 500B + 10KB)**
-
-For **static files, images, or video streaming**, the response size can be much larger.
+This includes:
+- HTTP headers (~500B each for request & response)
+- Request payload (~1 KB)
+- Response payload (~8 KB)
+- This assumes a typical API call. For media-heavy applications, sizes can be much larger.
 
 ---
 
 ## **Step 2: Calculating Throughput**
-### **Throughput Formula**
 \[
-\text{Throughput} = \frac{\text{Total Data Processed Per Second}}{\text{Number of Requests Per Second}}
+\text{Throughput} = \text{Requests per second} \times \text{Request size}
 \]
 
-For **1 million requests per second**, assuming **each request is 12 KB**:
-
+For **1 million requests per second**:
 \[
-\text{Total Data Processed Per Second} = 1M \times 12 KB = 12 GB/s
+1,000,000 \times 10 \text{ KB} = 10 \text{ GB/s}
 \]
 
-This means our system needs to handle **12 gigabytes of data per second**.
+The system must handle **10 GB of data per second**.
 
 ---
 
 ## **Step 3: Determining Server Capacity**
-The number of servers required depends on:
-- **Throughput per server** (how many requests a single server can handle per second)
-- **CPU, RAM, and Network Bandwidth**
+### **Server Throughput Assumption**
+Let's assume:
+- **Each server can handle 50,000 requests per second** (based on benchmarks of optimized Nginx or an application server).
+- **Each server has a 10 Gbps network card**, capable of **1.25 GB/s**.
 
-### **Throughput per Server**
-Let’s assume:
-- **Each server has a 10 Gbps network card**
-- **Each request is 12 KB**
-- **Each server can handle 50,000 requests per second (based on benchmarked performance of Nginx or an application server)**
-
-If a single **high-performance server** can process **50K requests/sec**, then:
-
+### **Number of Servers Needed**
 \[
-\text{Total Servers Required} = \frac{1,000,000}{50,000} = 20 \text{ servers}
+\text{Total Servers} = \frac{1,000,000}{50,000} = 20 \text{ servers}
 \]
+
+Each server handles **50K RPS**, and with **20 servers**, we achieve **1M RPS**.
 
 ---
 
-## **Step 4: Scaling Considerations**
+## **Step 4: Infrastructure Considerations**
 1. **Network Bandwidth**
-    - A **10 Gbps network** can transfer **10,000 MB/s**.
-    - With **12 KB per request**, a **single server can handle ~833K requests/sec** before saturating the network.
-    - If network is a bottleneck, upgrade to **40 Gbps** or use **load balancers**.
+    - **Each request is 10 KB** → **1M RPS = 10 GB/s**.
+    - **A single 10 Gbps NIC handles ~1.25 GB/s**.
+    - **8 servers (with 10 Gbps each) are required to handle 10 GB/s**, meaning each of the 20 servers should have **dual 10 Gbps NICs** or better.
 
 2. **CPU & RAM**
-    - High-performance servers (e.g., **32-core CPUs with 128GB RAM**) can handle **50K+ RPS**.
-    - More CPU cores help parallelize requests.
+    - High-performance servers with **32-core CPUs and 128 GB RAM** are optimal.
+    - More CPU cores allow handling requests in parallel.
 
 3. **Load Balancing**
-    - Use **Nginx, HAProxy, or AWS ALB** to distribute requests across servers.
+    - **Use Nginx, HAProxy, or AWS ALB** to evenly distribute load.
+    - **CDNs** should be used for static assets to reduce backend load.
 
 4. **Caching**
-    - Use **Redis, Memcached** to cache frequent API responses.
-    - Store **static assets in a CDN** to reduce backend load.
+    - Implement **Redis, Memcached** for frequently accessed data.
+    - Database queries should be optimized with **indexing & read replicas**.
 
 ---
 
 ## **Final Calculation Summary**
 | Metric | Calculation | Value |
 |---------|------------|-------|
-| Request Size | Headers + Payload + Response | ~12 KB |
-| Total Throughput | Requests per second × Request Size | **12 GB/s** |
+| Request Size | Fixed for easy calculation | **10 KB** |
+| Total Throughput | \( 1M \times 10 KB \) | **10 GB/s** |
 | Server Throughput | 50K RPS per server | **50,000 RPS** |
-| Number of Servers | \( \frac{1,000,000}{50,000} \) | **20 servers** |
-
----
-
-
-# Deployments, monitoring & Security more over Devops tools for microservices  
-- Vault for secrets and configs management
-- SSL/TLS certificates for security 
-- stateless services , env agnostic so we can scale and migrate to different envs after testing without re-build
-- Docker and K8s
-- Different VPC and private subnets for deployments
-- security groups to not allow outside requests in the system
-- Service discovery - for load balancer and service discovery and control over inter service calls
-- EFK/ELK for logs monitoring
-- services monitoring - using promethious + grafana + heart beats
-- actuator integrations in service to check health and other matrics
-- Role based access for users
-- IAM role for services and thrid party access
-- CICD using jenkins -> canary deployments or blue-green
-- API Gateway for static and routing 
-- reverse proxy and firewall for rate limiting
-
-# Scalability, fail-over mechanisms and fault-tolerant :
-- Circuit breaker, autoscaling, load balancer, K8s, docker, API gateway
-
-# real-world failures and concurrency handling:  
-- multiple zone deployments and locking system at DB and cache level
-
-# Distributed processing for business insights: - 
-- ETL/ELT service for analtics purpose (pysaprk + Flink)
-- streaming data processing to prediction scams/faults bookings/ bot booking
-
-# Future Enhancements:
-- what are the features can be implemented
+| Servers Required | \( 1,000,000 \div 50,000 \) | **20 servers** |
+| Network Requirement | 10 GB/s total → Dual **10 Gbps NICs per server** | **20 servers** |
 
 
 # **Common Problems in Microservices and Distributed Systems**
-
-Microservices and distributed systems bring scalability and flexibility but introduce several **challenges**. Below is a comprehensive list of key problems and their details:
-
----
 
 ## **1. Distributed Data Management Problems**
 ### **1.1 Dual Write Problem**
@@ -689,124 +1540,272 @@ Handling **2GB/sec writes** requires **high-speed ingestion mechanisms**.
 
 
 
-# **Q: Transactional Outbox Pattern vs. Choreography-Based Saga for Scalable Systems**
 
-Both the **Transactional Outbox Pattern** and **Choreography-Based Saga Pattern** address **data consistency** across microservices in
-**event-driven architectures**,
 
----
 
-## **1. Transactional Outbox Pattern**
-### **Overview:**
-The **Transactional Outbox Pattern** ensures **atomicity** between database changes and event publishing by storing events in an **outbox table** within the same transaction as the database operation. A background process (poller) reads and publishes events to the message broker.
 
-### **How It Works:**
-1. Service **A** writes data into its database and records an event in the **outbox table** within the same transaction.
-2. A **background process** reads the outbox table and publishes the event to a message broker (Kafka, RabbitMQ, etc.).
-3. Other services consume the event and update their state accordingly.
 
-### **Strengths:**
-✅ **Strong Consistency:** Ensures that database operations and event publishing happen atomically. No risk of data loss or out-of-sync issues.  
-✅ **Reliable Event Publishing:** Uses the database as a buffer, avoiding dual-write problems.  
-✅ **Scalability:** Works well for high-throughput systems as the outbox table can be optimized with partitioning and indexing.  
-✅ **Fault Tolerance:** If the event publishing fails, retries can be implemented without losing the original event.
+# Functional 
+- Core business functionalities covering all the cases
+- user should be able to book for future, cancel
+- Payment system for (one-time, recursive and subscription )
+- user click events for analytics 
+- should be able to see history
+- home feed to show trending and suggestions
+- notifications
+- aids
+- referrals, coupons
+- rating system for product and services 
+- customer support system
+- 
 
-### **Challenges:**
-⚠️ **Increased Latency:** Events are not published immediately; they depend on a polling mechanism.  
-⚠️ **Additional Infrastructure:** Requires an outbox table and a poller to process and publish events.  
-⚠️ **Complexity in Ordering:** May require **event deduplication** and proper ordering mechanisms.
+# non-functional requirements
+- Microservices architecture for highly scalable, secured , fault-tolerant to support 1M users 
+- high throughput and low latency and High Performance
+- secured system to handle 1M users
+- Devops technologies and strategies for Deployments, monitoring & Security etc
+- Analytics Tools and big data processing for business insight 
+- streaming data processing to prediction scams/faults/ bot
 
-### **Best Use Cases:**
-- **Fintech & Banking Systems** (ensures strict consistency in transactions).
-- **E-commerce Order Processing** (ensures payment and order status updates remain in sync).
-- **Critical Business Workflows** (where event loss is unacceptable).
 
----
 
-### **2. Choreography-Based Saga**
-### **Overview:**
-The **Choreography-Based Saga Pattern** manages distributed transactions across microservices using **event-driven interactions**, where each service listens to relevant events and triggers subsequent actions.
-
-### **How It Works:**
-1. A microservice (e.g., `Order Service`) initiates a business process and publishes an event (`OrderCreated`).
-2. Other microservices (e.g., `Payment Service`, `Inventory Service`) **react** to this event and trigger their own actions.
-3. Each service ensures local consistency and publishes subsequent events.
-4. If a failure occurs, compensating actions (rollbacks) are triggered.
-
-### **Strengths:**
-✅ **High Scalability:** Services remain **loosely coupled** and can independently handle events, making the system **highly scalable**.  
-✅ **Real-Time Processing:** Events are processed asynchronously and immediately, reducing **latency** compared to polling mechanisms.  
-✅ **No Centralized Coordinator:** Each service **autonomously** decides its actions, making the system resilient.  
-✅ **Resilient to Failures:** If a service fails, only that part of the transaction is affected.
-
-### **Challenges:**
-⚠️ **Complex Failure Handling:** Requires **compensating transactions** and careful **state management** to handle failures.  
-⚠️ **Difficult to Debug:** Since events flow **asynchronously**, debugging and tracing transactions require **distributed tracing** (e.g., OpenTelemetry).  
-⚠️ **Event Explosion:** A high number of events can create a **"domino effect"**, leading to **unexpected behavior** if not managed properly.
-
-### **Best Use Cases:**
-- **High-Traffic Applications** (e.g., social media, real-time notifications).
-- **E-commerce Systems** (order processing across multiple services).
-- **Decentralized Workflows** (where each service acts independently).
+# Services
+Here’s a properly formatted version of your list with consistency in naming and description:
 
 ---
 
-### **Comparison Table:**
-| Feature               | **Transactional Outbox** | **Choreography-Based Saga** |
-|----------------------|---------------------|-----------------------|
-| **Consistency** | Stronger (atomicity via DB transactions) | Weaker (eventual consistency) |
-| **Scalability** | Moderate (depends on database performance) | High (event-driven, loosely coupled) |
-| **Latency** | Higher (polling introduces delay) | Lower (real-time event processing) |
-| **Complexity** | Moderate (requires outbox table & poller) | High (requires event orchestration & compensations) |
-| **Failure Handling** | Reliable (retries and polling) | Complex (requires compensating transactions) |
-| **Best for** | **Fintech, banking, order processing** | **Social media, e-commerce, decentralized workflows** |
+### **Core Microservices in the System**
+
+1. **User & Authentication Service** - Manages user accounts, authentication, and authorization.
+2. **Core Business Services** - Implements the primary business logic and operations.
+3. **Home Feed Service** - Generates and serves personalized content for users.
+4. **Booking Service** - Manages user bookings and service appointments.
+5. **Search Service** - Enables search functionality across the platform.
+6. **Aids Service** - Provides support services or assistance-related features.
+7. **Payments Service** - Handles payment processing, transactions, and refunds.
+8. **Notification Service (Fan-out Service)** - Sends real-time notifications, alerts, and updates.
+9. **Rating Service** - Manages user ratings, reviews, and feedback.
+10. **Referrals & Coupon Service** - Handles referral programs, discounts, and promotional offers.
+11. **Customer Service** - Supports ticket creation and user communication with the back-office.
+
+### **Supporting Infrastructure & Services**
+
+12. **Subscription Service** - Manages subscription plans, renewals, and user enrollments.
+13. **Background Job Service** - Handles asynchronous tasks such as recurring payments and scheduled jobs. and update Caching
+
+
+
+# Architectural Patterns and Technologies
+
+### **Technologies and Architectural Patterns**
+
+#### **Technologies**
+1. **Redis (Caching Layer)** - Used for caching frequently accessed data such as home feeds, available slots, fast-fetch booking details, and previously searched queries or shows.
+2. **PostgreSQL (Relational Database)** - Ensures ACID compliance and prevents concurrent bookings. Stores critical data such as user details, bookings, coupons, referrals, show slots, and seat slots. Data is partitioned by city for optimized query performance.
+3. **MongoDB (Document Database)** - Handles heavy read and write operations efficiently. Used for displaying available theaters, movies, and other related details. Data is partitioned by city to improve scalability.
+4. **Cassandra (Time-Series & Event Data Store)** - Captures high-velocity data such as click events, searches, booking history, user activities, and analytics. Designed for high availability and write-intensive workloads.
+5. **Kafka (Event-Driven Messaging System)** - Supports an event-driven architecture, enabling scalable and fault-tolerant asynchronous communication between microservices.
+6. **Elasticsearch (Search & Analytics Engine)** - Provides full-text search capabilities for searching movies, theaters, and user-generated content. Also used for log aggregation, real-time monitoring, and analytics.
+
+
+#### **Architectural Patterns**
+1. **Centralized Authentication** - Ensures a unified authentication mechanism for secure access across services.
+2. **Horizontal Scaling** - Uses load balancers and auto-scaling strategies to efficiently handle increasing user demand.
+3. **Saga or Outbox Pattern** - Implements distributed transactions to maintain consistency across microservices.
+4. **Event Sourcing** - Stores all state changes as a sequence of events, ensuring traceability and auditability.
+5. **Circuit Breaker** - Prevents cascading failures by detecting service failures and restricting requests when needed.
+6. **CQRS (Command Query Responsibility Segregation)** - Separates read and write operations to optimize performance and scalability.-using PostgreSQL Read Replicas or different db like mongodb or Elastic search
+7. **API Gateway** - Manages authentication, request routing, and serves static content such as videos and images.
+8. **Distributed & Stream Processing (Kafka, Spark, Flink)** - Processes real-time data streams for use cases such as fraud detection, pre-processing, and analytics.
+
+
+
+# Trade-offs, Bottlenecks and Edge Cases or missing cases:
+### - indexing, Partition, sharding, read-replication, consistent hashing, caching, CDN , multiple locations deployment for scale
+### how billions of like and views are updated on db. how this counter works ? for youtube,
+### how billions messages are hanlded in whatsapp
+### how s3 handle load and support ? and durability, fault-tolerance
+### how banks make sure balance is consistent even after billions of transactions per day
+
+
+### **Q: Why Kafka and not RabbitMQ?**
+✔️ **Answer:**
+- **Kafka** is built for **high-throughput, fault-tolerant event streaming** and is best suited for real-time data processing, distributed logging, and analytics.
+- **RabbitMQ** is better suited for **low-latency, per-message acknowledgments**, and task queues where immediate processing is required.
+- Kafka ensures durability via **log-based storage**, whereas RabbitMQ's **message retention is limited** unless explicitly configured.
+- **Scaling Kafka** is more efficient due to its **partitioning** mechanism, whereas RabbitMQ **scales horizontally with more effort**.
+
+✅ **Use Kafka** for log aggregation, event sourcing, stream processing.  
+✅ **Use RabbitMQ** for request-response messaging, microservices RPC, transactional event processing.
 
 ---
 
-### **Final Recommendation for Scalable Systems**
-- **For high consistency & transactional reliability** → Use **Transactional Outbox Pattern** (ideal for fintech, banking, and critical workflows).
-- **For high scalability & real-time responsiveness** → Use **Choreography-Based Saga** (ideal for distributed event-driven systems).
-- **Hybrid Approach** → Some systems use a combination: Outbox Pattern for core services + Choreography for non-critical, asynchronous workflows.
+### **Q: Why Postgres for bookings instead of DynamoDB?**
+✔️ **Answer:**
+- **Postgres** provides **ACID compliance** which prevents **double booking** issues.
+- **DynamoDB** has high scalability but **lacks strong transactions guarantees** unless you use DynamoDB Transactions, which add complexity.
+- **Joins and complex queries** are better handled in Postgres.
+- DynamoDB is **eventually consistent**, making it risky for critical booking systems.
 
-### **Q: Outbox Pattern implementation**
-#### **3️⃣ Hybrid Approach: Partitioned Outbox Table**
-🔹 **How It Works:**
-- Use **a single outbox table** but implement **table partitioning** based on `event_type` or `aggregate_type`.
-- Example **PostgreSQL partitioning**:
-```sql
-CREATE TABLE outbox (
-    id UUID PRIMARY KEY,
-    event_type VARCHAR(255),
-    aggregate_type VARCHAR(255),
-    aggregate_id UUID,
-    payload JSONB,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    processed BOOLEAN DEFAULT FALSE
-) PARTITION BY LIST (event_type);
-
-CREATE TABLE outbox_orders PARTITION OF outbox FOR VALUES IN ('OrderCreated', 'OrderUpdated');
-CREATE TABLE outbox_payments PARTITION OF outbox FOR VALUES IN ('PaymentProcessed', 'PaymentFailed');
-```
-🔹 **Pros:**
-✅ **Balances simplicity and performance**.  
-✅ **Efficient querying via partitions**.  
-✅ **Less schema complexity** compared to separate tables.
-
-🔹 **Cons:**
-⚠️ Requires **database support for partitioning**.  
-⚠️ Slightly more complex setup than a single table.
-
-🔹 **Best Use Case:**
-- **Large-scale applications** that need **efficient query performance** without multiple tables.
+✅ **Use Postgres** if the system requires **strict consistency and complex transactions**.  
+✅ **Use DynamoDB** if the system is **read-heavy, requires horizontal scaling, and has simpler transactional needs**.
 
 ---
 
-### **Final Recommendation**
-| Approach | Best For | Scalability | Complexity |
-|----------|---------|------------|------------|
-| **Single Outbox Table** | Small-to-medium workloads, simple architecture | Medium | Low |
-| **Separate Outbox Tables** | High-throughput applications, different event priorities | High | Medium-High |
-| **Partitioned Outbox Table** | Large-scale systems, optimized performance | Very High | Medium |
+### **Q: Why MongoDB Vs ElasticSearch vs DynamoDB for search query?**
+✔️ **Answer:**
+| Feature       | **MongoDB** | **ElasticSearch** | **DynamoDB** |
+|--------------|------------|------------------|-------------|
+| **Query Type** | Document search | Full-text search | Key-value lookup |
+| **Indexing** | JSON-based | Advanced inverted index | Hash/Range-based |
+| **Use Case** | Product catalog, NoSQL queries | Search engine, Log analytics | Key-based lookups, caching |
+| **Scalability** | Sharding & Replication | Sharding & Replication | Auto-scaling |
+| **Consistency** | Eventual | Eventual | Strong (optional) |
+
+✅ **Use MongoDB** for document-based storage with filtering.  
+✅ **Use Elasticsearch** for **advanced search** (full-text, autocomplete, faceted search).  
+✅ **Use DynamoDB** for key-value queries at **high throughput**.
+
+---
+
+### **Q: Why CQRS for search?**
+✔️ **Answer:**
+- **Command Query Responsibility Segregation (CQRS)** separates **write-heavy workloads from read-heavy workloads**.
+- Reduces **read latency** as the system can have **optimized read models** without impacting transactional writes.
+- Enables **polyglot persistence**—use **Postgres for commands (writes)** and **Elasticsearch for queries (reads)**.
+
+✅ **Best for:** E-commerce, event-driven systems, analytics dashboards.
+
+---
+
+### **Q: How CQRS helps in scaling and how does it work?**
+✔️ **Answer:**
+- **Scalability**: Instead of having a single database handling both reads & writes, **CQRS allows scaling reads and writes independently**.
+- **How it works?**
+    1. **Write Operations** → Go to a transactional database (e.g., Postgres).
+    2. **Read Operations** → Go to a search-optimized database (e.g., Elasticsearch).
+    3. **Syncing happens** via **event sourcing or asynchronous updates**.
+
+✅ **Prevents read-write contention, making systems more scalable.**
+
+---
+
+### **Q: How SSE (Server-Sent Events) vs REST helps in a robust system and how it works?**
+✔️ **Answer:**
+- **REST** is **request-response** based; the client must poll for updates.
+- **SSE** is **event-driven**, pushing updates **in real-time**.
+
+✅ **Use SSE** for **real-time notifications, stock prices, live dashboards**.  
+✅ **Use REST** when updates are not needed frequently.
+
+---
+
+### **Q: How gRPC helps in a robust system and how does it work?**
+✔️ **Answer:**
+- **gRPC** uses **Protocol Buffers** instead of JSON, making it **lightweight and fast**.
+- Supports **bidirectional streaming**, unlike REST.
+- Uses **HTTP/2**, reducing network overhead.
+
+✅ **Use gRPC** for **microservices communication with low latency**.
+
+---
+
+### **Q: How Circuit Breaker & Retry help in fault tolerance and how do they work?**
+✔️ **Answer:**
+- **Circuit Breaker** prevents cascading failures by **blocking requests** to failing services after a threshold.
+- **Retry** mechanisms help recover **transient failures** by **re-attempting** failed requests.
+
+✅ **Use Circuit Breaker** for **third-party integrations** to prevent excessive failures.  
+✅ **Use Retry** with **exponential backoff** for **network requests**.
+
+---
+
+### **Q: Why SAGA/outbox pattern for async data consistency?**
+✔️ **Answer:**
+- **Saga** breaks transactions into **multiple compensating transactions** across services.
+- Works well in **microservices** where **ACID transactions aren't feasible**.
+
+✅ **Use Saga for** order processing, payments, travel bookings.
+
+---
+
+### **Q: Why Cassandra for events and history?**
+✔️ **Answer:**
+- **Cassandra** is a **highly available**, distributed NoSQL DB.
+- Optimized for **write-heavy workloads**.
+- Ideal for **event sourcing** where **append-only logs** are required.
+
+✅ **Use Cassandra for logging, audit trails, and event history.**
+
+---
+
+### **Q: Memcached vs Redis vs hazelcast?**
+✔️ **Answer:**
+| Feature        | **Memcached** | **Redis** |
+|---------------|--------------|----------|
+| **Data Structure** | Key-Value only | Lists, Sets, Hashes |
+| **Persistence** | No persistence | Optional persistence |
+| **Use Case** | Simple caching | Advanced caching & pub/sub |
+
+✅ **Use Memcached** for **simple in-memory caching**.  
+✅ **Use Redis** for **caching + real-time pub-sub + data structures**.
+
+---
+
+### **Q: Spring Context, Bean Context, Security Context, Multitenancy Handling?**
+✔️ **Answer:**
+- **Spring Context** → Manages **bean lifecycle**.
+- **Bean Context** → Controls **dependency injection**.
+- **Security Context** → Stores **user authentication details**.
+- **Multitenancy Handling** → Uses **database sharding** or **schema-based separation**.
+
+✅ **Use Multitenancy** in **SaaS applications**.
+
+---
+
+### **Q: How real-world failures and concurrency handling will be done?**
+✔️ **Answer:**
+- **Failures**: Use **failover replicas, retries, and idempotency**.
+- **Concurrency**: Use **Optimistic Locking (eTag), Mutexes, Distributed Locks (Redis, Zookeeper)**.
+
+✅ **Use Distributed Locks in event-driven systems to prevent race conditions.**
+
+---
+
+# APIs and Schema- 
+this will be discussed based on requirements
+
+
+
+# Deployments, monitoring & Security more over Devops tools for microservices  
+- Vault for secrets and configs management
+- SSL/TLS certificates for security 
+- stateless services , env agnostic so we can scale and migrate to different envs after testing without re-build
+- Docker and K8s
+- Different VPC and private subnets for deployments
+- security groups to not allow outside requests in the system
+- Service discovery - for load balancer and service discovery and control over inter service calls
+- EFK/ELK for logs monitoring
+- services monitoring - using promethious + grafana + heart beats
+- actuator integrations in service to check health and other matrics
+- Role based access for users
+- IAM role for services and thrid party access
+- CICD using jenkins -> canary deployments or blue-green
+- API Gateway for static and routing 
+- reverse proxy and firewall for rate limiting
+
+# Scalability, fail-over mechanisms and fault-tolerant :
+- Circuit breaker, autoscaling, load balancer, K8s, docker, API gateway
+
+# real-world failures and concurrency handling:  
+- multiple zone deployments and locking system at DB and cache level
+
+# Distributed processing for business insights: - 
+- ETL/ELT service for analtics purpose (pysaprk + Flink)
+- streaming data processing to prediction scams/faults bookings/ bot booking
+
+# Future Enhancements:
+- what are the features can be implemented
 
 
 
@@ -1690,5 +2689,64 @@ Each shard contains **a different subset of rows**, but the **same table structu
 
 
 
+### **LSM Tree vs. B-Tree: A Comparative Analysis**
+Log-Structured Merge (LSM) Trees and B-Trees are two **fundamentally different data structures** used in databases and storage engines. They optimize for different workloads:
+
+- **LSM Trees** → Optimized for **high write throughput**.
+- **B-Trees** → Optimized for **fast reads and indexed lookups**.
+
+---
+
+## **1. What is a B-Tree?**
+A **B-Tree** is a **self-balancing tree** data structure where:
+- Data is **stored in nodes**, and each node contains a sorted list of keys.
+- Reads, writes, and updates are **O(log N)** due to balanced branching.
+- Updates occur **in place**, meaning disk I/O is frequent.
+
+### **B-Tree Characteristics**
+✅ **Efficient for Random Reads** → Direct key lookups are fast.  
+✅ **Good for Mixed Workloads** → Supports both reads and writes efficiently.  
+❌ **Write Amplification** → Small updates require modifying multiple disk pages.  
+❌ **Expensive Disk Seeks** → As data grows, maintaining balance requires disk I/O.
+
+**Example Uses**: Traditional relational databases like **MySQL (InnoDB), PostgreSQL**.
+
+---
+
+## **2. What is an LSM Tree?**
+A **Log-Structured Merge Tree (LSM Tree)** is designed for **high write performance** by:
+- **Buffering writes in memory (MemTable)** instead of modifying disk pages directly.
+- Periodically **flushing data to immutable SSTables** on disk.
+- **Merging SSTables via compaction** to remove obsolete data.
+
+### **LSM Tree Characteristics**
+✅ **Write-Optimized** → Writes are sequential and batched.  
+✅ **Reduced Disk Writes** → No in-place updates, reducing random I/O.  
+✅ **Better Storage Utilization** → Old/deleted data is removed via compaction.  
+❌ **Slower Reads** → Data may be spread across multiple SSTables.  
+❌ **Compaction Overhead** → Periodic merges consume CPU and I/O.
+
+**Example Uses**: NoSQL databases like **Cassandra, LevelDB, RocksDB, HBase**.
+
+---
+
+## **3. Comparison Table: LSM Tree vs. B-Tree**
+
+| Feature | **B-Tree** | **LSM Tree** |
+|---------|-----------|-------------|
+| **Write Performance** | Slower (random disk writes) | Faster (append-only writes) |
+| **Read Performance** | Faster (single lookup) | Slower (multiple SSTables) |
+| **Update Overhead** | In-place updates (high I/O) | New writes, old data compacted |
+| **Disk Usage** | Efficient | Can be higher due to compaction |
+| **Latency** | Low for reads, moderate for writes | Low for writes, higher for reads |
+| **Best For** | OLTP, indexed lookups | High write workloads, logs, time-series |
+
+---
+
+## **4. When to Use Which?**
+- **Use B-Trees** if you need **fast indexed lookups and balanced read-write performance** (e.g., MySQL, PostgreSQL).
+- **Use LSM Trees** if your workload is **write-heavy** (e.g., logging, event storage, NoSQL databases like Cassandra).
+
+---
 
 

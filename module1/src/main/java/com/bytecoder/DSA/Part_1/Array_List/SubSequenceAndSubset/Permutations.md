@@ -265,4 +265,10 @@ permute(list(s), 0, len(s))
 ## **7. Power Set & Permutations (Backtracking)**
 
 
+17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
+- Check if some substring is a permutation of `s2`.
+- **Condition:** Substring must be a permutation of another string.
+- **Difficulty:** Medium
+
+
 

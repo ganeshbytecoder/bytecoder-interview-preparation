@@ -28,3 +28,6 @@ Amazon
 * https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design
 * https://www.interviewcake.com/
 * https://interviewing.io/
+
+
+

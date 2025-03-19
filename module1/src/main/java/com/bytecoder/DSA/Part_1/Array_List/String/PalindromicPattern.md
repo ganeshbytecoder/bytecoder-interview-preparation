@@ -47,3 +47,6 @@ def longest_palindrome(s: str) -> str:
 📌 **Key Idea**: Expand around each center (odd & even length).
 
 ---
+## Palindromic Subsequence
+1. **[Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)** - DP with a cut count for partitions.
+

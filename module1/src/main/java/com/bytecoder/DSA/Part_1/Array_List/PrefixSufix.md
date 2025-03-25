@@ -35,4 +35,11 @@ def subarray_sum(nums: list[int], k: int) -> int:
 - **Hint**: Use a hash map to store the cumulative sum as you traverse the array. If a cumulative sum repeats, the subarray sum is zero.
 
 
-- [Leetcode 930: Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/)
+3. **[974. Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)**
+    - Find the number of subarrays whose sum is divisible by `k`.
+    - **Condition:** Sum of elements must be divisible by `k`.
+    - **Difficulty:** Medium
+
+
+
+---

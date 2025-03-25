@@ -133,7 +133,8 @@ https://leetcode.com/problems/delete-nodes-and-return-forest/description/
 
 https://leetcode.com/problems/binary-tree-right-side-view/description/?envType=study-plan-v2&envId=top-interview-150
 https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/
-
+https://leetcode.com/problems/binary-tree-vertical-order-traversal/description/
+https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/description/
 
 * https://leetcode.com/problems/merge-two-binary-trees/
 * merge two binary trees

@@ -240,6 +240,140 @@ public class Main {
 
 ```
 
+M2
+
+```python 
+class Node:
+    def __init__(self, val, neighbours=None ):
+        self.val = val
+        self.neighbours = neighbours or []
+
+
+
+def build_graph(edges):
+    nodes = {}
+
+    for u, v in edges:
+        if u not in nodes:
+            nodes[u] = Node(u)
+        if v not in nodes:
+            nodes[v] = Node(v)
+
+        # Add neighbours (undirected graph)
+        nodes[u].neighbours.append(nodes[v])
+        nodes[v].neighbours.append(nodes[u])
+
+    return nodes
+    
+
+
+
+
+
+
+
+def getPath(target, mapper):
+    ans =[]
+    node =target
+    while(node != None):
+        ans.insert(0, node)
+        node = mapper.get(node)
+    return ans
+        
+        
+        
+        
+def ShortestPath(root, target):
+    q = [root]
+    mapper ={root: None}
+    
+    while(q):
+        l = len(q)
+        while(l>0):
+            temp = q.pop(0)
+            if(temp==target):
+                    return getPath(target, mapper)
+            for ne in temp.neighbours:
+                if(ne not in mapper ):
+                    q.append(ne)
+                    mapper[ne]=temp
+                    
+            l -=1
+    return []
+    
+
+
+
+
+def shortedPathUsingDFS(root, target, visited ,temp, result):
+    if(root ==None):
+        return 
+
+    
+    if(root == target):
+        if(len(temp)<len(result) or not result):
+            result.clear()
+            result.extend(temp)
+            return 
+    
+    visited.add(root)
+    
+    for node in root.neighbours:
+        if(node not in visited):
+            temp.append(node.val)
+            shortedPathUsingDFS(node, target, visited, temp, result)
+            temp.remove(node.val)
+    
+    visited.remove(root)
+
+
+
+
+def shortedPathUsingDFS_v2(root, target, visited ):
+    if(root == None):
+        return 
+    
+    if(root == target):
+            return  1
+    
+    visited.add(root)
+    # ans = float('inf')
+    for node in root.neighbours:
+        if(node not in visited):
+            temp = 1 + shortedPathUsingDFS_v2(node, target, visited)
+            ans[0] = min(ans[0], temp)
+    
+    visited.remove(root)
+    return ans[0]
+
+edges = [
+    ("A", "B"),
+    ("A", "C"),
+    ("C", "D"),
+    ("B", "E"),
+    ("F", "Z")
+]
+
+graph = build_graph(edges)
+
+# Let's say we want to find path from "A" to "D"
+start = graph["A"]
+end = graph["E"]
+
+path = ShortestPath(start, end)
+print(" -> ".join(node.val for node in path)) 
+
+result = []
+shortedPathUsingDFS(start,end, set(), [start.val],result )
+
+print(result) 
+
+ans = [float('inf')]
+print(shortedPathUsingDFS_v2(start,end, set()))
+
+```
+
+
 
 ```java
 

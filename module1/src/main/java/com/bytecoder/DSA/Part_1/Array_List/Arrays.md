@@ -1,10 +1,4 @@
 
-
-## **📌 Array & Subarray Problem Patterns for FANG Interviews**
-Array and subarray problems commonly appear in FANG interviews, and they follow certain **repeatable patterns**. Below is a **complete** breakdown of these patterns, when to use them, and example implementations.
-
-
-
 #### 1 all possible SubArray 
 
 ```java
@@ -35,41 +29,6 @@ public class SubarraysUsingLoops {
 
 ```
 
-
-
-
-
-## **6️⃣ Monotonic Stack (Next Greater Element)**
-Used when:
-✅ Finding **next greater/smaller element** efficiently.  
-✅ Works in **O(n)** time using a **stack**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| **Next Greater Element** | Monotonic Stack (`O(n)`) |
-| **Largest Rectangle in Histogram** | Monotonic Stack (`O(n)`) |
-
-### **Example: Next Greater Element**
-```python
-    def next_greater_element(self,nums):
-        stack = []
-        result = [-1] * len(nums)  # Default to -1 (if no NGE found)
-
-        for i in range(len(nums) - 1, -1, -1):  # Traverse from right to left
-            while stack and stack[-1] <= nums[i]:  # Pop smaller elements
-                stack.pop()
-
-            if stack:  # If stack is not empty, top is the NGE
-                result[i] = stack[-1]
-
-            stack.append(nums[i])  # Push current element to stack
-
-        return result
-```
-✅ **Use When**: Finding **next larger/smaller elements** efficiently.
-
----
 
 2️⃣ **Heap / Priority Queue**  
 ✅ Used when you need **Kth largest/smallest**, **sliding window max**.
@@ -116,6 +75,10 @@ def single_number(nums: list[int]) -> int:
 
 ---
 
+
+
+
+
 # **✅ Final Checklist of Array & Subarray Patterns**
 | **Pattern** | **When to Use?** | **Time Complexity** |
 |------------|----------------|------------------|
@@ -132,97 +95,8 @@ def single_number(nums: list[int]) -> int:
 | **Bit Manipulation** | Finding missing/unique elements | `O(n)` |
 
 ---
-
-
-
-
-### 9. [**Add “1” to a Number Represented as  List**](https://leetcode.com/problems/plus-one/)
-- **Hint**: Reverse the list, add 1 to the head node, handle carry, then reverse it back.
-- use recursion and carry forward
-- using stack
-```java
-class Solution {
-
-    int increase(int[] nums, int index){
-        if(index==nums.length-1){
-            int carry = (nums[index]+1) /10;
-            nums[index] =  (nums[index]+1) %10;
-
-            return carry;
-        }
-        int carry = increase(nums, index+1);
-        nums[index] =  (nums[index]+carry);
-        carry = (nums[index]) /10;
-        nums[index] =(nums[index]) %10;
-        return carry;
-    }
-
-    public int[] plusOne(int[] digits) {
-        int carry = increase(digits, 0);
-        if(carry==0){
-            return digits;
-        }else{
-            int[] nums = new int[digits.length+1];
-            nums[0]=carry;
-            for(int i=1; i<nums.length; i++){
-                nums[i] = digits[i-1];
-            }
-            return nums;
-        }
-    }
-}
-```
-
-
-
-### 6. **Find the Union and Intersection of Two Sorted Arrays**
-**Hint**: 
-   - brute force
-   - Use two pointers, one for each array, and traverse through both arrays simultaneously. Use comparison to find union and intersection.
-   - use hashmap for each array and cross check elements
-
-### 7. **Cyclically Rotate an Array by One**
-   - **Hint**: Store the last element in a temporary variable, then shift all other elements to the right, and place the last element at the first position.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 9. **Minimize the Maximum Difference Between Heights** https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/
-   - **Hint**: Sort the array, then consider adding or subtracting `k` from the minimum and maximum heights to minimize the difference.
-
-
-### 11. **Find Duplicate in an Array of N+1 Integers**
-   - **Hint**: Use Floyd's Tortoise and Hare (Cycle Detection) method to find the duplicate.
-
-
-### 18. **Find All Pairs on Integer Array Whose Sum is Equal to Given Number**
-   - **Hint**: Use a hash map to store the complement of each number as you traverse the array, and check if the complement exists in the map.
-
-### 19. **Find Common Elements in 3 Sorted Arrays**
-   - **Hint**: Use three pointers, one for each array, and increment the pointers based on comparison to find common elements.
-
-### 20. **Rearrange the Array in Alternating Positive and Negative Items with O(1) Extra Space**
-   - **Hint**: Partition the array into positive and negative numbers, then rearrange by swapping elements at even and odd indices.
-
-
-### 22. **Find Factorial of a Large Number**
-   - **Hint**: Use an array or a list to store digits and simulate the multiplication process digit by digit.
-
-
 ### 24. **Find Longest Consecutive Subsequence**
-   - **Hint**: Use a hash set to store the elements, then for each element, check if it's the start of a sequence by checking if `element - 1` exists.
+- **Hint**: Use a hash set to store the elements, then for each element, check if it's the start of a sequence by checking if `element - 1` exists.
 ```python
 class Solution(object):
     def longestConsecutive(self, nums):
@@ -249,11 +123,34 @@ class Solution(object):
    
    ```
 
+### 19. **Find Common Elements in 3 Sorted Arrays**
+- **Hint**: Use three pointers, one for each array, and increment the pointers based on comparison to find common elements.
+
+
+
+
+
+
+
+### 9. **Minimize the Maximum Difference Between Heights** https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/
+   - **Hint**: Sort the array, then consider adding or subtracting `k` from the minimum and maximum heights to minimize the difference.
+
+
+### 18. **Find All Pairs on Integer Array Whose Sum is Equal to Given Number**
+   - **Hint**: Use a hash map to store the complement of each number as you traverse the array, and check if the complement exists in the map.
+
+
+### 20. **Rearrange the Array in Alternating Positive and Negative Items with O(1) Extra Space**
+   - **Hint**: Partition the array into positive and negative numbers, then rearrange by swapping elements at even and odd indices.
+
+
+### 22. **Find Factorial of a Large Number**
+   - **Hint**: Use an array or a list to store digits and simulate the multiplication process digit by digit.
+
+
+
 ### 25. **Find Elements That Appear More Than "n/k" Times**
    - **Hint**: Use a modified Boyer-Moore majority vote algorithm to count potential candidates.
-
-* ### 26. **Maximum Profit by Buying and Selling a Share At Most Twice**
-   - **Hint**: Create two arrays: one for the maximum profit by selling up to that day, and the other for the maximum profit by buying from that day onwards.
 
 ### 27. **Find Whether an Array is a Subset of Another Array**
    - **Hint**: Use a hash set or binary search to check the presence of each element of one array in another.
@@ -294,5 +191,106 @@ class Solution(object):
 
 ### 16. **Count Inversions**
    - **Hint**: Use a modified merge sort algorithm that counts inversions while merging the subarrays.
+
+
+
+
+### **[Decode Ways](https://leetcode.com/problems/decode-ways/)**
+
+#### **Problem Statement**
+Given a string `s` containing only digits, determine the total number of ways to decode it, where:
+- 'A' -> "1", 'B' -> "2", ..., 'Z' -> "26".
+
+---
+
+#### **Solution Approaches**
+
+##### 1. **Recursive Solution**
+```java
+public int numDecodings(String s) {
+    return decodeRecursive(s, 0);
+}
+
+private int decodeRecursive(String s, int index) {
+    if (index == s.length()) return 1;
+    if (s.charAt(index) == '0') return 0;
+
+    int ways = decodeRecursive(s, index + 1);
+    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
+        ways += decodeRecursive(s, index + 2);
+    }
+    return ways;
+}
+```
+
+##### 2. **Memoization Solution**
+```java
+public int numDecodings(String s) {
+    int[] memo = new int[s.length()];
+    Arrays.fill(memo, -1);
+    return decodeMemo(s, 0, memo);
+}
+
+private int decodeMemo(String s, int index, int[] memo) {
+    if (index == s.length()) return 1;
+    if (s.charAt(index) == '0') return 0;
+    if (memo[index] != -1) return memo[index];
+
+    int ways = decodeMemo(s, index + 1, memo);
+    if (index + 1 < s.length() && Integer.parseInt(s.substring(index, index + 2)) <= 26) {
+        ways += decodeMemo(s, index + 2, memo);
+    }
+    memo[index] = ways;
+    return ways;
+}
+```
+
+##### 3. **Tabulation Solution**
+```java
+public int numDecodings(String s) {
+    int n = s.length();
+    int[] dp = new int[n + 1];
+    dp[0] = 1;
+
+    for (int i = 1; i <= n; i++) {
+        if (s.charAt(i - 1) != '0') {
+            dp[i] += dp[i - 1];
+        }
+        if (i >= 2 && Integer.parseInt(s.substring(i - 2, i)) <= 26) {
+            dp[i] += dp[i - 2];
+        }
+    }
+    return dp[n];
+}
+```
+
+---
+
+
+
+
+6. **[1442. Count Triplets That Can Form Two Equal XORs](https://leetcode.com/problems/count-triplets-that-can-form-two-equal-xors/)**
+    - Find the number of triplets `(i, j, k)` such that `XOR[i:j] == XOR[j:k]`.
+    - **Condition:** XOR of subarrays must be equal.
+    - **Difficulty:** Medium
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

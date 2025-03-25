@@ -23,6 +23,7 @@ For a **Java technical screening round**, the questions typically cover **core J
 10. What is the difference between **HashSet**, **TreeSet**, and **LinkedHashSet**?
 11. Explain **fail-fast vs fail-safe iterators** in Java.
 12. How does **ConcurrentHashMap** achieve thread safety?
+13. What is the difference between LinkedHashMap , TreeMap and HashMap
 
 ---
 
@@ -110,376 +111,472 @@ For a **Java technical screening round**, the questions typically cover **core J
 
 
 
-### **Differences Between HashSet, TreeSet, and LinkedHashSet**
+Java interview questions:  https://github.com/DopplerHQ/awesome-interview-questions?tab=readme-ov-file#java
 
-| Feature         | **HashSet** | **TreeSet** | **LinkedHashSet** |
-|---------------|------------|------------|----------------|
-| **Underlying Data Structure** | Hash table | Red-Black tree | Hash table + Doubly Linked List |
-| **Order of Elements** | No guarantee of order | Sorted in natural order (or custom comparator) | Maintains insertion order |
-| **Performance (Insertion, Deletion, Lookup)** | O(1) (Best case), O(n) (Worst case due to hash collisions) | O(log n) (due to tree operations) | O(1) (Best case), O(n) (Worst case due to hash collisions) |
-| **Null Element** | Allowed (Only one) | Not allowed | Allowed (Only one) |
-| **Duplicates** | Not allowed | Not allowed | Not allowed |
-| **Use Case** | When you need fast operations and don’t care about order | When you need sorted order | When you need insertion order preservation |
+all Spring containers and connections ->
+IOC, Beanfactory, context , Multitenancy , security context , spring context,
 
-### **Example Usage**
+
+
+
+
+
+
+
+
+1.     You need to handle 1 million requests per second. How would you scale your backend architecture?
+2.     If you are building an order management system, how would you design the services? (Database choices, API interactions, scalability)
+3.     Design a simple service that asynchronously processes tasks using Spring Boot.
+4.     You have a distributed system where one Microservice must call another but should retry on failure. How would you implement this in Spring Boot?
+5.     You deployed a Spring Boot service, but it crashes with an "Out of Memory" error. How do you debug this?
+6.     Your Spring Boot REST API, which fetches data from a database, suddenly becomes slow. The response time has increased from 100ms to 3 seconds.
+7.     Your Spring Boot microservice is running on Kubernetes and after a few hours, it crashes with OutOfMemoryError.
+·       What are the possible causes of memory leaks in Java?
+·       How to find which objects are causing the memory leak?
+·       How to use a profiler (like JVisualVM, YourKit) to detect leaks?
+
+8.     One of your microservices has started consuming high CPU (90%), even though the incoming traffic is normal.
+·       How to investigate and identify the root cause?
+·       What could cause a thread to enter an infinite loop?
+·        How can you profile CPU usage in a running application?
+
+9.     You start your Spring Boot application, but it fails with a "BeanCurrentlyInCreationException" due to a circular dependency.
+·       How to debug and fix this issue?
+·       What Spring mechanisms help break circular dependencies?
+
+10.  Your Spring Boot app occasionally freezes and stops processing requests.
+     ·       How to detect a deadlock in Java?
+     ·       How can you use jstack to diagnose the issue?
+     ·       How can you avoid deadlocks in database transactions?
+
+
+
+
+
+
+**Dependency Injection & Inversion of Control (IoC) - Detailed Notes**
+
+### **What is Dependency Injection (DI)?**
+Dependency Injection is a **design pattern** used to achieve **Inversion of Control (IoC)** by **injecting dependencies** into a class rather than letting the class create them itself. This makes the code **loosely coupled**, more testable, and easier to manage.
+
+---
+
+### **Key Concepts of Dependency Injection**
+1. **Dependency**: An object that another object depends on.
+    - Example: A `Car` depends on an `Engine`.
+2. **Injection**: Instead of a class creating its own dependencies, they are provided (injected) from outside.
+3. **Inversion of Control (IoC)**: The responsibility of managing dependencies is shifted from the class itself to an external framework or container.
+
+---
+
+### **Inversion of Control (IoC)**
+Inversion of Control (IoC) is a design principle in which the control of object creation and dependency management is transferred from the class itself to an external framework or container.
+
+This principle decouples components in a system, making it easier to manage dependencies, improve testability, and maintain clean architecture.
+
+---
+
+### **Example Without Dependency Injection (Tightly Coupled Code)**
 ```java
-import java.util.*;
+class Engine {
+    void start() {
+        System.out.println("Engine started!");
+    }
+}
 
-public class SetComparison {
+class Car {
+    private Engine engine;
+
+    public Car() {  // Car is responsible for creating Engine
+        this.engine = new Engine();
+    }
+
+    void drive() {
+        engine.start();
+        System.out.println("Car is moving!");
+    }
+}
+```
+💡 **Problem**: The `Car` class is **tightly coupled** to `Engine`, making it difficult to replace `Engine` with another type (e.g., `ElectricEngine`).
+
+---
+
+### **Example With Dependency Injection (Loosely Coupled Code)**
+```java
+class Engine {
+    void start() {
+        System.out.println("Engine started!");
+    }
+}
+
+// Dependency injected via constructor
+class Car {
+    private Engine engine;
+
+    public Car(Engine engine) {  
+        this.engine = engine;  
+    }
+
+    void drive() {
+        engine.start();
+        System.out.println("Car is moving!");
+    }
+}
+
+// Injecting dependency externally
+public class Main {
     public static void main(String[] args) {
-        Set<Integer> hashSet = new HashSet<>(Arrays.asList(5, 1, 10, 3, 2));
-        Set<Integer> treeSet = new TreeSet<>(Arrays.asList(5, 1, 10, 3, 2));
-        Set<Integer> linkedHashSet = new LinkedHashSet<>(Arrays.asList(5, 1, 10, 3, 2));
+        Engine engine = new Engine();  // Created externally
+        Car car = new Car(engine);     // Injected via constructor
+        car.drive();
+    }
+}
+```
+✅ **Advantages of DI**:
+- **Loose coupling**: `Car` doesn’t depend on a specific implementation of `Engine`.
+- **Easier testing**: You can mock dependencies in unit tests.
+- **Better maintainability**: Swap dependencies without modifying the class.
 
-        System.out.println("HashSet: " + hashSet);  // Unordered
-        System.out.println("TreeSet: " + treeSet);  // Sorted
-        System.out.println("LinkedHashSet: " + linkedHashSet);  // Insertion order preserved
+---
+
+### **Types of Dependency Injection**
+1. **Constructor Injection** (Recommended)
+    - Inject dependencies via the class constructor.
+   ```java
+   class Car {
+       private Engine engine;
+       public Car(Engine engine) { this.engine = engine; }
+   }
+   ```
+
+2. **Setter Injection**
+    - Inject dependencies using a setter method.
+   ```java
+   class Car {
+       private Engine engine;
+       public void setEngine(Engine engine) { this.engine = engine; }
+   }
+   ```
+
+3. **Field Injection (Not Recommended)**
+    - Directly inject dependencies into fields using annotations like `@Autowired` in Spring.
+   ```java
+   class Car {
+       @Autowired
+       private Engine engine;
+   }
+   ```
+
+---
+
+### **Dependency Injection in Spring Boot (Example)**
+Spring Boot uses DI with annotations like `@Component` and `@Autowired`.
+
+```java
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Component
+class Engine {
+    void start() {
+        System.out.println("Engine started!");
+    }
+}
+
+@Service
+class Car {
+    private final Engine engine;
+
+    @Autowired  // Spring injects the Engine dependency
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+
+    void drive() {
+        engine.start();
+        System.out.println("Car is moving!");
     }
 }
 ```
 
-### **When to Use What?**
-- **Use `HashSet`** when order does not matter and you need the fastest operations.
-- **Use `TreeSet`** when you need elements to be sorted automatically.
-- **Use `LinkedHashSet`** when you need to maintain insertion order.
-
-Would you like a deeper dive into any of these?
-
-
-### **Types of `Map` in Java**
-The `Map` interface in Java is part of the `java.util` package and represents a collection of key-value pairs. Below are the main implementations of `Map` in Java:
-
 ---
 
-### **1. `HashMap` (Unordered, Fast)**
-- **Underlying Data Structure:** Hash Table
-- **Order:** No order guaranteed
-- **Performance:** O(1) for `put()` and `get()` (Best case), O(n) (Worst case due to collisions)
-- **Null Keys/Values:** Allows one `null` key, multiple `null` values
-- **Thread-Safety:** Not thread-safe
-
-**Example:**
+### **Example: Naming a Bean and Injecting by Name**
 ```java
-import java.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-public class HashMapExample {
-    public static void main(String[] args) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("Apple", 3);
-        map.put("Banana", 5);
-        map.put("Cherry", 2);
-        System.out.println(map);  // Unordered
+// Define Engine Interface
+interface Engine {
+    void start();
+}
+
+// Implementation 1 - Petrol Engine
+@Component("petrolEngine")  // Custom Bean Name
+class PetrolEngine implements Engine {
+    public void start() {
+        System.out.println("Petrol Engine started!");
+    }
+}
+
+// Implementation 2 - Diesel Engine
+@Component("dieselEngine")  // Custom Bean Name
+class DieselEngine implements Engine {
+    public void start() {
+        System.out.println("Diesel Engine started!");
+    }
+}
+
+// Car class with Constructor Injection using Bean Name
+@Service
+class Car {
+    private final Engine engine;
+
+    @Autowired
+    public Car(@Qualifier("petrolEngine") Engine engine) {  // Inject by Bean Name
+        this.engine = engine;
+    }
+
+    void drive() {
+        engine.start();
+        System.out.println("Car is moving!");
+    }
+}
+
+// Spring Configuration Class
+@Configuration
+class AppConfig {
+    @Bean(name = "electricEngine")  // Another way to name a bean
+    public Engine electricEngine() {
+        return new Engine() {
+            public void start() {
+                System.out.println("Electric Engine started!");
+            }
+        };
     }
 }
 ```
 
 ---
 
-### **2. `LinkedHashMap` (Ordered by Insertion)**
-- **Underlying Data Structure:** Hash Table + Doubly Linked List
-- **Order:** Maintains insertion order
-- **Performance:** Similar to `HashMap` (O(1) for `put()` and `get()`)
-- **Null Keys/Values:** Allows one `null` key, multiple `null` values
-- **Thread-Safety:** Not thread-safe
+### **Key Points:**
+1. **Use `@Component("beanName")`** – Assigns a name to a `@Component` bean.
+2. **Use `@Bean(name = "beanName")`** – Assigns a name to a manually created bean in a `@Configuration` class.
+3. **Use `@Qualifier("beanName")`** – Specifies which named bean to inject when multiple implementations exist.
 
-**Example:**
+📌 **In this example:**
+- **`@Qualifier("petrolEngine")`** ensures that `Car` uses `PetrolEngine`.
+- You can switch to **`@Qualifier("dieselEngine")`** to use the `DieselEngine` instead.
+- **`@Bean(name = "electricEngine")`** shows how to name a bean in a `@Configuration` class.
+
+
+
+
+
+
+
+
+# Spring Framework Interview Revision Notes 🚀
+
+## 1. Core Concepts
+
+### 1.1 Dependency Injection (DI) & Inversion of Control (IoC)
+- **DI**: Design pattern where dependencies are injected rather than created internally
+- **IoC**: Broader principle where control of object creation is given to framework
+- **Benefits**: Loose coupling, better testability, easier maintenance
+
+#### Quick Reference: IoC vs DI
+| Feature | IoC | DI |
+|---------|-----|-----|
+| Scope | Broader principle | Specific implementation |
+| Control | Framework manages objects | Dependencies passed externally |
+| Methods | Factory, Service Locator, DI | Constructor, Setter, Field injection |
+
+### 1.2 Types of Dependency Injection
+1. **Constructor Injection** (✅ Recommended)
 ```java
-Map<String, Integer> map = new LinkedHashMap<>();
-map.put("Apple", 3);
-map.put("Banana", 5);
-map.put("Cherry", 2);
-System.out.println(map);  // Preserves insertion order
+@Service
+class Car {
+    private final Engine engine;
+    
+    @Autowired
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+}
 ```
 
----
-
-### **3. `TreeMap` (Sorted by Key)**
-- **Underlying Data Structure:** Red-Black Tree
-- **Order:** Sorted in natural order (or custom `Comparator`)
-- **Performance:** O(log n) for `put()`, `get()`, `remove()`
-- **Null Keys/Values:** Does **not** allow `null` keys, allows `null` values
-- **Thread-Safety:** Not thread-safe
-
-**Example:**
+2. **Setter Injection**
 ```java
-Map<String, Integer> map = new TreeMap<>();
-map.put("Banana", 5);
-map.put("Apple", 3);
-map.put("Cherry", 2);
-System.out.println(map);  // Sorted by key
+@Service
+class Car {
+    private Engine engine;
+    
+    @Autowired
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
 ```
 
----
-
-### **4. `Hashtable` (Thread-Safe, Synchronized)**
-- **Underlying Data Structure:** Hash Table
-- **Order:** No guarantee
-- **Performance:** O(1) (Slightly slower due to synchronization)
-- **Null Keys/Values:** **Does not allow** `null` keys or `null` values
-- **Thread-Safety:** Thread-safe (all methods synchronized)
-
-**Example:**
+3. **Field Injection** (⚠️ Not Recommended)
 ```java
-Map<String, Integer> map = new Hashtable<>();
-map.put("Apple", 3);
-map.put("Banana", 5);
-map.put("Cherry", 2);
-System.out.println(map);  // Unordered, thread-safe
+@Service
+class Car {
+    @Autowired
+    private Engine engine;
+}
 ```
 
----
+## 2. Spring Annotations Quick Reference
 
-### **5. `ConcurrentHashMap` (Thread-Safe, High Performance)**
-- **Underlying Data Structure:** Segment-based Hash Table
-- **Order:** No guarantee
-- **Performance:** Better than `Hashtable` (uses lock-free operations for some tasks)
-- **Null Keys/Values:** **Does not allow** `null` keys or `null` values
-- **Thread-Safety:** Thread-safe (Better than `Hashtable`)
+### 2.1 Component Annotations
+- `@Component`: Generic component
+- `@Service`: Business logic layer
+- `@Repository`: Data access layer
+- `@Controller`: Web layer
+- `@RestController`: REST API endpoints
 
-**Example:**
-```java
-import java.util.concurrent.*;
+### 2.2 Configuration Annotations
+- `@Configuration`: Class with bean definitions
+- `@Bean`: Method-level annotation for custom beans
+- `@ComponentScan`: Specify packages to scan
+- `@PropertySource`: External properties file
 
-Map<String, Integer> map = new ConcurrentHashMap<>();
-map.put("Apple", 3);
-map.put("Banana", 5);
-map.put("Cherry", 2);
-System.out.println(map);  // Thread-safe, unordered
-```
+### 2.3 Dependency Injection
+- `@Autowired`: Automatic dependency injection
+- `@Qualifier`: Specify which bean to inject
+- `@Primary`: Preferred bean when multiple exist
+- `@Value`: Inject property values
 
----
+## 3. Common Interview Questions & Answers
 
-### **Comparison Table**
-| Feature             | `HashMap` | `LinkedHashMap` | `TreeMap` | `Hashtable` | `ConcurrentHashMap` |
-|---------------------|----------|----------------|----------|------------|---------------------|
-| **Ordering**        | No order | Insertion order | Sorted by key | No order | No order |
-| **Performance (put/get)** | O(1) | O(1) | O(log n) | O(1) (Synchronized) | O(1) (Concurrent) |
-| **Null Keys?**      | ✅ Yes (1) | ✅ Yes (1) | ❌ No | ❌ No | ❌ No |
-| **Null Values?**    | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | ❌ No |
-| **Thread-Safety**   | ❌ No | ❌ No | ❌ No | ✅ Yes (Synchronized) | ✅ Yes (Concurrent) |
+### 3.1 Basic Concepts
+Q: **What is Spring Framework?**
+- Java framework for building enterprise applications
+- Provides comprehensive infrastructure support
+- Core features: DI, AOP, Data Access, Web MVC
 
----
+Q: **What are Spring Boot advantages?**
+- Automatic configuration
+- Embedded server support
+- Starter dependencies
+- Production-ready features
 
-### **When to Use Which?**
-- **Use `HashMap`** when you need fast lookups and do not care about order.
-- **Use `LinkedHashMap`** when you need fast lookups while preserving insertion order.
-- **Use `TreeMap`** when you need sorted keys.
-- **Use `Hashtable`** when you need thread safety but do not want to use synchronization manually.
-- **Use `ConcurrentHashMap`** for high-performance concurrent operations in a multi-threaded environment.
+### 3.2 Advanced Concepts
+Q: **Explain Spring Bean Lifecycle**
+1. Instantiation
+2. Populate Properties
+3. BeanNameAware
+4. BeanFactoryAware
+5. Pre-initialization (@PostConstruct)
+6. InitializingBean
+7. Custom init-method
+8. Post-initialization
+9. Pre-destruction (@PreDestroy)
+10. Custom destroy-method
 
-Let me know if you want a deep dive into any specific one! 🚀
+Q: **What is Spring AOP?**
+- Aspect-Oriented Programming
+- Handles cross-cutting concerns
+- Common uses: logging, security, transactions
 
+## 4. Best Practices & Common Pitfalls
 
+### 4.1 Best Practices ✅
+1. Use Constructor Injection
+2. Keep components small and focused
+3. Use appropriate stereotypes
+4. Implement proper exception handling
+5. Use configuration properties
 
+### 4.2 Common Pitfalls ⚠️
+1. Circular dependencies
+2. Memory leaks in singleton beans
+3. Improper transaction management
+4. Missing component scanning
+5. Incorrect bean scope usage
 
+## 5. Spring Boot Features
 
-Here's a detailed overview of **Circuit Breakers** in Microservices architecture, explaining clearly how they work, their benefits, and how to implement them using **Spring Cloud Circuit Breaker with Resilience4j**.
+### 5.1 Auto-configuration
+- Automatically configures based on dependencies
+- Can be customized or disabled
+- Conditional configuration
 
----
-
-## 🔍 What is a Circuit Breaker?
-
-A **Circuit Breaker** is a design pattern used in microservices to handle failures gracefully. Its main objective is to prevent cascading failures by temporarily halting calls to a failing service.
-
-The concept is similar to an electrical circuit breaker that trips when overloaded, protecting the entire system from further harm.
-
----
-
-## 🛠️ How Does a Circuit Breaker Work?
-
-A Circuit Breaker has three states:
-
-1. **Closed (Normal Operation)**:
-    - All requests flow normally.
-    - If the failure rate exceeds a defined threshold, the circuit moves to **Open**.
-
-2. **Open (Fail Fast)**:
-    - All calls immediately fail without making an actual request.
-    - After a configured timeout, it moves to **Half-Open**.
-
-3. **Half-Open (Trial State)**:
-    - The circuit allows a limited number of requests through.
-    - If these requests succeed, it moves back to **Closed**.
-    - If any request fails, it moves back to **Open**.
-
-**State Transition:**
-```
-Closed → failures → Open → timeout → Half-Open → success → Closed
-                                              ↘ failure → Open
-```
-
----
-
-## 🚨 Why Use Circuit Breakers?
-
-- **Prevents cascading failures**: One microservice failing won't cause others to fail.
-- **Improved fault tolerance**: Reduces system downtime.
-- **Graceful degradation**: Provides fallback mechanisms.
-- **Reduced latency**: Failing fast avoids wasting resources on timeouts.
-- **Better observability**: Easy monitoring of failures and health.
-
----
-
-## 📝 Example of Implementing Circuit Breaker (Spring Boot & Resilience4j):
-
-**Step 1: Add Dependencies**
-
-In your `pom.xml`:
-
+### 5.2 Starter Dependencies
 ```xml
-<!-- Spring Cloud dependencies -->
-<dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-</dependency>
-
-<!-- Spring Web -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
 ```
 
----
+### 5.3 Actuator Endpoints
+- `/health`: Application health information
+- `/metrics`: Application metrics
+- `/info`: Application information
+- `/env`: Environment properties
 
-**Step 2: Enable Circuit Breaker**
+## 6. Testing in Spring
 
-Add annotation to your main application class:
+### 6.1 Test Annotations
+- `@SpringBootTest`: Full application context
+- `@WebMvcTest`: Web layer testing
+- `@DataJpaTest`: JPA components testing
+- `@MockBean`: Mock dependencies
 
+### 6.2 Example Test
 ```java
-@SpringBootApplication
-@EnableCircuitBreaker
-public class CircuitBreakerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(CircuitBreakerApplication.class, args);
+@SpringBootTest
+class CarServiceTest {
+    @Autowired
+    private CarService carService;
+    
+    @MockBean
+    private EngineRepository engineRepo;
+    
+    @Test
+    void testCarStart() {
+        // Test implementation
     }
 }
 ```
 
----
+## 7. Quick Reference: Bean Scopes
 
-**Step 3: Configure Resilience4j Properties**
+| Scope | Description |
+|-------|-------------|
+| singleton | One instance per Spring container |
+| prototype | New instance each time requested |
+| request | One instance per HTTP request |
+| session | One instance per HTTP session |
+| application | One instance per ServletContext |
 
-Define circuit breaker properties in `application.properties`:
+## 8. Performance Optimization Tips
+1. Use lazy initialization where appropriate
+2. Optimize component scanning
+3. Use appropriate bean scopes
+4. Implement caching strategies
+5. Profile and monitor application
 
-```properties
-resilience4j.circuitbreaker.instances.myService.failure-rate-threshold=50
-resilience4j.circuitbreaker.instances.myService.wait-duration-in-open-state=10s
-resilience4j.circuitbreaker.instances.myService.sliding-window-size=5
-```
-
-- `failure-rate-threshold`: Opens circuit after 50% failure.
-- `wait-duration-in-open-state`: Waits 10 seconds before transitioning to half-open.
-- `sliding-window-size`: Number of recent requests considered for threshold calculation.
-
----
-
-**Step 4: Using the Circuit Breaker in Service**
-
-Implement Circuit Breaker logic in your service using annotation or functional style.
-
-```java
-@Service
-public class MyService {
-
-    private final RestTemplate restTemplate;
-
-    public MyService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    @CircuitBreaker(name = "myService", fallbackMethod = "fallbackResponse")
-    public String callExternalService() {
-        return restTemplate.getForObject("http://remote-service/api/data", String.class);
-    }
-
-    public String fallbackResponse(Throwable throwable) {
-        return "Default Response (Fallback): External service unavailable.";
-    }
-}
-```
-
-**Explanation:**
-
-- The method annotated with `@CircuitBreaker` (`callExternalService()`) will invoke `fallbackResponse()` if:
-    - The remote service fails repeatedly (threshold breached).
-    - The circuit breaker is currently in OPEN state.
+## 9. Security Best Practices
+1. Use Spring Security
+2. Implement proper authentication
+3. Use HTTPS
+4. Validate input
+5. Implement proper session management
 
 ---
+📌 **Remember**:
+- Focus on understanding core concepts
+- Practice explaining with examples
+- Be ready to discuss real-world applications
+- Know common pitfalls and solutions
 
-**Alternative: Functional Approach using `CircuitBreakerRegistry`:**
 
-```java
-@Service
-public class MyFunctionalService {
-
-    private final RestTemplate restTemplate;
-    private final CircuitBreaker circuitBreaker;
-
-    public MyFunctionalService(RestTemplate restTemplate, CircuitBreakerRegistry registry) {
-        this.restTemplate = restTemplate;
-        this.circuitBreaker = registry.circuitBreaker("myService");
-    }
-
-    public String getData() {
-        Supplier<String> decoratedSupplier = CircuitBreaker
-                .decorateSupplier(circuitBreaker, () -> restTemplate.getForObject("http://remote-service/api/data", String.class));
-
-        return Try.ofSupplier(decoratedSupplier)
-                  .recover(throwable -> "Default Response (Functional Fallback)")
-                  .get();
-    }
-}
-```
-
----
-
-## 📈 Monitoring & Metrics
-
-You can easily monitor circuit breaker metrics using Actuator:
-
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-```
-
-Access Circuit Breaker metrics via:
-
-```
-http://localhost:8080/actuator/circuitbreakers
-```
-
-Or detailed metrics in JSON format:
-
-```
-http://localhost:8080/actuator/metrics/resilience4j.circuitbreaker.calls
-```
-
----
-
-## ⚙️ Best Practices:
-
-- Always define a fallback method.
-- Use sensible thresholds for failure-rate and window size.
-- Regularly monitor Circuit Breaker metrics and adjust configurations accordingly.
-- Test your Circuit Breaker in production-like scenarios.
-
----
-
-## 🧑‍💻 Real-world Use Case:
-
-- **Payment Processing in Fintech**:  
-  When a payment gateway becomes slow or unavailable, the circuit breaker opens quickly, and transactions fail fast, allowing your system to gracefully degrade and switch to alternative payment channels or inform the user transparently.
-
-- **E-Commerce Inventory**:  
-  Prevents checkout processes from slowing down or crashing when an external inventory system is overloaded or down.
-
----
-
-## ✅ Summary:
-
-Circuit breakers protect microservices from cascading failures by managing service reliability and allowing quick recovery. Implementing them using Spring Cloud Circuit Breaker with Resilience4j is straightforward, robust, and recommended for resilient microservices architecture.
-
-Would you like assistance setting up a specific scenario or integrating additional resilience mechanisms?

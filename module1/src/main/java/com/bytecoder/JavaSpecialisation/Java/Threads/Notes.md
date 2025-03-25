@@ -1,10 +1,6 @@
 @Async and executerService or thread pool or joinfork , Future, completable, 
 
 
-
-
-
-
 ### **Understanding `wait()`, `notify()`, and `notifyAll()` in Java**
 
 These methods are fundamental to inter-thread communication in Java and are defined in the `Object` class. They allow threads to coordinate their execution, ensuring that shared resources are accessed in a controlled manner.

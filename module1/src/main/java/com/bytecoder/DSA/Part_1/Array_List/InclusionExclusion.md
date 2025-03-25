@@ -24,6 +24,24 @@ This technique is useful in problems involving:
 **Solution:** Use `count(atMost(K)) - count(atMost(K-1))`
 
 ```python
+def count_subarrays_at_most_k(nums, k):
+    n = len(nums)
+    count = 0
+
+    for i in range(n):  # Start of subarray
+        odd_count = 0
+        for j in range(i, n):  # End of subarray
+            if nums[j] % 2 == 1:
+                odd_count += 1
+            if odd_count == k:
+                count += 1
+            elif odd_count > k:
+                break  # No need to continue if we exceed k
+
+    return count
+
+
+
 from collections import defaultdict
 
 def count_subarrays_at_most_k(nums, k):
@@ -63,6 +81,24 @@ print("Number of subarrays with exactly K distinct elements:", count_subarrays_e
 **Solution:** Convert odd numbers to `1` and even numbers to `0`, then apply `count(atMost(K)) - count(atMost(K-1))`.
 
 ```python
+
+def count_subarrays_exactly_k_odds(nums, k):
+    n = len(nums)
+    count = 0
+
+    for i in range(n):  # Start of subarray
+        odd_count = 0
+        for j in range(i, n):  # End of subarray
+            if nums[j] % 2 == 1:
+                odd_count += 1
+            if odd_count == k:
+                count += 1
+            elif odd_count > k:
+                break  # No need to continue if we exceed k
+
+    return count
+
+
 def count_subarrays_at_most_k_odds(nums, k):
     left = 0
     count = 0
@@ -86,40 +122,6 @@ def count_subarrays_exactly_k_odds(nums, k):
 nums = [1, 2, 3, 4, 5]
 k = 2
 print("Number of subarrays with exactly K odd numbers:", count_subarrays_exactly_k_odds(nums, k))
-```
-
-✅ **Time Complexity:** `O(N)`.
-
----
-
-#### **3. Number of Subarrays with at Most K Distinct Elements**
-**Problem:** Count the number of subarrays with at most `K` distinct elements.
-
-**Solution:** Use a sliding window with a frequency map.
-
-```python
-def count_subarrays_at_most_k(nums, k):
-    freq_map = {}
-    left = 0
-    count = 0
-    
-    for right in range(len(nums)):
-        freq_map[nums[right]] = freq_map.get(nums[right], 0) + 1
-        
-        while len(freq_map) > k:
-            freq_map[nums[left]] -= 1
-            if freq_map[nums[left]] == 0:
-                del freq_map[nums[left]]
-            left += 1
-        
-        count += (right - left + 1)
-    
-    return count
-
-# Example Usage
-nums = [1, 2, 1, 2, 3]
-k = 2
-print("Number of subarrays with at most K distinct elements:", count_subarrays_at_most_k(nums, k))
 ```
 
 ✅ **Time Complexity:** `O(N)`.

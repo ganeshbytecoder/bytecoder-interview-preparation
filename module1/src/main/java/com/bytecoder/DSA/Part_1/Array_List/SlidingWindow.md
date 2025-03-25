@@ -6,8 +6,7 @@
 * public class SlidingWindow {
 
 //    Given a string S which represents DNA sequence, the task is to find all the 10-letter long substring that are repeated more than once. Returning the sequence can be done in any order.
-//    Count of substrings of length K with exactly K distinct characters
-//    Longest substring without repeating characters
+
 }
 
 
@@ -23,10 +22,6 @@ Used when:
 | **Maximum sum subarray** | Kadane’s Algorithm (`O(n)`) |
 | **Minimum sum subarray** | Modified Kadane’s (`O(n)`) |
 | **Maximum product subarray** | Dynamic Kadane’s (`O(n)`) |
-
-### **Example Problems with conditions**
-| Problem Type | Approach |
-|-------------|----------|
 | **Longest subarray with sum ≤ k** | Sliding Window (`O(n)`) |
 | **Smallest subarray with sum ≥ k** | Sliding Window (`O(n)`) |
 | **Longest substring with at most K distinct elements** | Sliding Window + HashMap (`O(n)`) |
@@ -58,23 +53,17 @@ def max_subarray(nums: list[int]) -> int:
 
 ---
 
-* Question-1
-```python
-def min_subarray_len(target: int, nums: list[int]) -> int:
-    left = 0
-    min_length = float('inf')
-    current_sum = 0
+4. **[209. Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)**
+   - Find the smallest subarray whose sum is at least `target`.
+   - **Condition:** Sum must be `>= target`, and subarray should be smallest.
 
-    for right in range(len(nums)):
-        current_sum += nums[right]
 
-        while current_sum >= target:
-            min_length = min(min_length, right - left + 1)
-            current_sum -= nums[left]
-            left += 1
-
-    return min_length if min_length != float('inf') else 0
-```
+7. **Longest Substring Without Repeating Characters**
+   - *Problem*: Find the length of the longest substring with unique characters.
+   - *Concept*:
+      - Use a sliding window and HashMap to track indices of characters.
+      - use sliding window
+   - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 * Question-2
 ```python
@@ -108,7 +97,7 @@ print("Length:", length)
 ```
 
 
-* Question-3
+* Question-3 : https://leetcode.com/problems/minimum-window-substring/description/
 ```python
 
 def min_length_subarray(nums, required_elements):
@@ -159,22 +148,55 @@ print("Min Length Subarray (5,2,6):", result2)
 ```
 ---
 
+* Question-3 :  (https://leetcode.com/problems/minimum-window-substring/description/)
+```python
 
-* https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan-v2&envId=top-interview-150
+from collections import Counter
+
+def min_length_subarray(nums, required_elements):
+    required_map = Counter(required_elements)
+    window_count = Counter()
+    have, need = 0, len(required_map)
+    
+    res = []
+    res_len = float('inf')
+    left = 0
+
+    for right, num in enumerate(nums):
+        if num in required_map:
+            window_count[num] += 1
+            if window_count[num] == required_map[num]:
+                have += 1
+
+        while have == need:
+            if (right - left + 1) < res_len:
+                res = nums[left:right+1]
+                res_len = right - left + 1
+
+            # Shrink from the left
+            if nums[left] in required_map:
+                if window_count[nums[left]] == required_map[nums[left]]:
+                    have -= 1
+                window_count[nums[left]] -= 1
+
+            left += 1
+
+    return res
+
+```
 
 
-7. **Longest Substring Without Repeating Characters**
-    - *Problem*: Find the length of the longest substring with unique characters.
-    - *Concept*:
-        - Use a sliding window and HashMap to track indices of characters.
-        - use sliding window
-    - [LeetCode](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
+   - 
+9. **[1004. Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)**
+   - Find the longest contiguous subarray of `1s` after flipping at most `k` zeros.
+   - **Condition:** Subarray length maximization while maintaining a condition.
+   - **Difficulty:** Medium
 
-### 31. **Smallest Subarray with Sum Greater Than a Given Value**
-- **Hint**: Use a sliding window technique to expand and shrink the window while keeping track of the sum.
-
-
+10. **[424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)**
+- what id it's array Find the longest contiguous substring where you can replace at most `k` characters.
+- **Condition:** Subarray length maximization with `≤ k` changes.
+- **Difficulty:** Medium
 
 17. **[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)**
 - Check if some substring is a permutation of `s2`.
@@ -182,3 +204,8 @@ print("Min Length Subarray (5,2,6):", result2)
 - **Difficulty:** Medium
 
 
+
+6. **[1371. Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/)**
+   - Find the longest contiguous substring where each vowel appears an even number of times.
+   - **Condition:** Subarray must satisfy an XOR-based condition.
+   - **Difficulty:** Medium

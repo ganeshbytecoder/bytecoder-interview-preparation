@@ -335,6 +335,132 @@ https://leetcode.com/problems/largest-number-after-mutating-substring/descriptio
 
 
 
+
+
+
+```java
+import java.util.*;
+
+public class SubstringWithDuplicates {
+    public void backtrack(String s, int start, StringBuilder temp, List<String> result) {
+        if (temp.length() > 0) {  // Only add non-empty substrings
+            result.add(temp.toString());
+        }
+
+        // Base case: Prevent out-of-bounds access
+        if (start >= s.length()) return;
+
+        // Expand substring by including contiguous characters
+        temp.append(s.charAt(start));
+        backtrack(s, start + 1, temp, result);
+        temp.deleteCharAt(temp.length() - 1);  // Backtrack
+    }
+
+    public List<String> findAllSubstrings(String s) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) { // Start from each index
+            backtrack(s, i, new StringBuilder(), result);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        SubstringWithDuplicates obj = new SubstringWithDuplicates();
+        System.out.println(obj.findAllSubstrings("abc"));
+    }
+}
+
+
+```
+
+* Method 2 solution only for sub-strings
+```java
+    public List<String> substrings(String s) {
+        List<String> result = new ArrayList<>();
+        int n = s.length();
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                result.add(s.substring(i, j));
+            }
+        }
+        
+        return result;
+    }
+```
+
+
+
+---
+
+---
+
+### **9. [Word Break](https://leetcode.com/problems/word-break/)**
+
+#### **Problem Statement**
+Given a string `s` and a dictionary of strings `wordDict`, determine if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+---
+
+#### **Solution Approaches**
+
+##### 1. **Recursive Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakRecursive(s, new HashSet<>(wordDict), 0);
+}
+
+private boolean wordBreakRecursive(String s, Set<String> wordDict, int start) {
+    if (start == s.length()) return true;
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (wordDict.contains(s.substring(start, end)) && wordBreakRecursive(s, wordDict, end)) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+##### 2. **Memoization Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    return wordBreakMemo(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
+}
+
+private boolean wordBreakMemo(String s, Set<String> wordDict, int start, Boolean[] memo) {
+    if (start == s.length()) return true;
+    if (memo[start] != null) return memo[start];
+
+    for (int end = start + 1; end <= s.length(); end++) {
+        if (wordDict.contains(s.substring(start, end)) && wordBreakMemo(s, wordDict, end, memo)) {
+            return memo[start] = true;
+        }
+    }
+    return memo[start] = false;
+}
+```
+
+##### 3. **Tabulation Solution**
+```java
+public boolean wordBreak(String s, List<String> wordDict) {
+    Set<String> wordSet = new HashSet<>(wordDict);
+    boolean[] dp = new boolean[s.length() + 1];
+    dp[0] = true;
+
+    for (int i = 1; i <= s.length(); i++) {
+        for (int j = 0; j < i; j++) {
+            if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length()];
+}
+```
+
+
+
 Parenthesis problem:-
 
 1.https://leetcode.com/problems/generate-parentheses Medium

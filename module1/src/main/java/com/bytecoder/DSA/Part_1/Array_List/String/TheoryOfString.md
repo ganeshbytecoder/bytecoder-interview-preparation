@@ -6,134 +6,9 @@ When dealing with substring problems, we can broadly classify them into differen
 
 ## **📌 5. K Distinct Character Problems → Sliding Window + HashMap**
 Use **Sliding Window + HashMap** when:
-- You need substrings with **at most K distinct characters**.
-
-### **Example 5: Longest Substring with At Most K Distinct Characters**
-✅ **Problem**: Find the longest substring with at most `K` distinct characters.
-```python
-def longest_substr_k_distinct(s: str, k: int) -> int:
-    char_map = {}
-    left, max_length = 0, 0
-
-    for right in range(len(s)):
-        char_map[s[right]] = char_map.get(s[right], 0) + 1
-
-        while len(char_map) > k:
-            char_map[s[left]] -= 1
-            if char_map[s[left]] == 0:
-                del char_map[s[left]]
-            left += 1
-
-        max_length = max(max_length, right - left + 1)
-    
-    return max_length
-```
-📌 **Key Idea**: Maintain a frequency map of characters and shrink the window when more than `k` distinct characters are found.
-
----
-
-## **🎯 Summary Table of Patterns**
-| Problem Type | Pattern |
-|-------------|----------|
-| **Find longest/shortest substring** | Sliding Window |
-| **Count number of substrings** | Inclusion-Exclusion with Two-Pointer |
-| **Binary substring problems** | Prefix Sum + HashMap |
-| **Palindrome problems** | Expand Around Center |
-| **K distinct character problems** | Sliding Window + HashMap |
-
-
-Yes! FANG interviews often ask string problems that fit into **specific patterns**. Here are more patterns beyond the ones I already shared:
-
----
 
 # **📌 String Problem Patterns for Interviews (FANG)**
 
-## **1️⃣ Sliding Window (Variable Length)**
-Use when finding the **longest** or **shortest** substring with certain properties.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| Longest substring with at most K distinct characters | Sliding Window + HashMap (`O(n)`) |
-| Longest substring without repeating characters | Sliding Window + HashSet (`O(n)`) |
-| Shortest substring containing all characters of a pattern | Sliding Window + Frequency Map (`O(n)`) |
-
-### **Example: Longest Substring Without Repeating Characters**
-```python
-def length_of_longest_substring(s: str) -> int:
-    char_set = set()
-    left = 0
-    max_length = 0
-
-    for right in range(len(s)):
-        while s[right] in char_set:
-            char_set.remove(s[left])
-            left += 1
-        char_set.add(s[right])
-        max_length = max(max_length, right - left + 1)
-    
-    return max_length
-```
-✅ **Use When**: Finding the longest or shortest substring satisfying a condition.
-
----
-
-## **2️⃣ Two-Pointer (Fixed Window)**
-Use when comparing **two substrings** or **reversing** parts of a string.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| Check if a string is a palindrome | Two Pointers (`O(n)`) |
-| Reverse words in a string | Two Pointers (`O(n)`) |
-| Valid anagram (reordering of characters) | HashMap + Sorting (`O(n log n)`) |
-
-### **Example: Valid Palindrome (Ignoring Non-Alphanumeric Characters)**
-```python
-import re
-def is_palindrome(s: str) -> bool:
-    s = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
-    left, right = 0, len(s) - 1
-    while left < right:
-        if s[left] != s[right]:
-            return False
-        left += 1
-        right -= 1
-    return True
-```
-✅ **Use When**: Comparing parts of a string from both ends.
-
----
-
-## **3️⃣ Expand Around Center**
-Use for problems involving **palindromes**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| Longest palindromic substring | Expand Around Center (`O(n^2)`) |
-| Count palindromic substrings | Expand Around Center (`O(n^2)`) |
-
-### **Example: Longest Palindromic Substring**
-```python
-def longest_palindrome(s: str) -> str:
-    def expand(l, r):
-        while l >= 0 and r < len(s) and s[l] == s[r]:
-            l -= 1
-            r += 1
-        return s[l + 1:r]
-    
-    res = ""
-    for i in range(len(s)):
-        odd = expand(i, i)
-        even = expand(i, i + 1)
-        res = max(res, odd, even, key=len)
-    
-    return res
-```
-✅ **Use When**: Checking for palindromes or finding longest palindromic substrings.
-
----
 
 ## **4️⃣ Hashing + Frequency Counting**
 Use for problems requiring **pattern matching** or **frequency-based conditions**.
@@ -156,73 +31,6 @@ def group_anagrams(strs):
     return list(anagrams.values())
 ```
 ✅ **Use When**: Counting character frequencies or grouping words with the same character set.
-
----
-
-## **5️⃣ Prefix Sum + HashMap**
-Use when dealing with **binary strings** or **cumulative calculations**.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| Count substrings with equal 0s and 1s | Prefix Sum + HashMap (`O(n)`) |
-| Longest balanced substring (e.g., parentheses, binary) | Prefix Sum + HashMap (`O(n)`) |
-
-### **Example: Count Binary Substrings with Equal 0s and 1s**
-```python
-def count_binary_substrings(s: str) -> int:
-    prev, cur, count = 0, 1, 0
-
-    for i in range(1, len(s)):
-        if s[i] == s[i - 1]:
-            cur += 1
-        else:
-            count += min(prev, cur)
-            prev, cur = cur, 1
-
-    return count + min(prev, cur)
-```
-✅ **Use When**: Finding substrings with equal frequency of characters.
-
----
-
-## **6️⃣ KMP Algorithm (Pattern Matching)**
-Use when searching for a **substring within another string** efficiently.
-
-### **Example Problems**
-| Problem Type | Approach |
-|-------------|----------|
-| Find the first occurrence of a substring | KMP Algorithm (`O(n)`) |
-| Check if a string is a rotation of another | KMP Algorithm (`O(n)`) |
-
-### **Example: Find First Occurrence of a Substring**
-```python
-def str_str(haystack: str, needle: str) -> int:
-    if not needle:
-        return 0
-    lps = [0] * len(needle)  # Longest Prefix Suffix array
-    j = 0  
-
-    # Preprocess LPS array
-    for i in range(1, len(needle)):
-        while j > 0 and needle[i] != needle[j]:
-            j = lps[j - 1]
-        if needle[i] == needle[j]:
-            j += 1
-            lps[i] = j
-
-    j = 0
-    for i in range(len(haystack)):
-        while j > 0 and haystack[i] != needle[j]:
-            j = lps[j - 1]
-        if haystack[i] == needle[j]:
-            j += 1
-        if j == len(needle):
-            return i - j + 1
-
-    return -1
-```
-✅ **Use When**: Searching for a pattern in a string efficiently.
 
 ---
 
@@ -268,20 +76,49 @@ class Trie:
 
 ---
 
-# **✅ Final Checklist of String & Substring Patterns (with Time Complexity)**
-| **Pattern** | **When to Use?** | **Time Complexity** |
-|------------|----------------|------------------|
-| **Sliding Window (Variable Length)** | Find longest/shortest substring with a condition | `O(n)` |
-| **Two Pointers** | Comparing two parts of a string | `O(n)` |
-| **Expand Around Center** | Find palindromic substrings | `O(n^2)` |
-| **Hashing + Frequency Counting** | Find anagrams, frequency-based conditions | `O(n)` |
-| **Prefix Sum + HashMap** | Binary substring problems | `O(n)` |
-| **KMP (Knuth-Morris-Pratt)** | Fast substring search | `O(n + m)` |
-| **Rabin-Karp (Rolling Hash)** | Fast substring search (multiple matches) | `O(n + m)` |
-| **Trie (Prefix Tree)** | Word-based problems, autocomplete | `O(n * m)` |
-| **Manacher’s Algorithm** | Find longest palindromic substring | `O(n)` |
+
+## **6️⃣ KMP Algorithm (Pattern Matching)**
+Use when searching for a **substring within another string** efficiently.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Find the first occurrence of a substring | KMP Algorithm (`O(n)`) |
+| Check if a string is a rotation of another | KMP Algorithm (`O(n)`) |
+
+### **Example: Find First Occurrence of a Substring**
+```python
+def str_str(haystack: str, needle: str) -> int:
+    if not needle:
+        return 0
+    lps = [0] * len(needle)  # Longest Prefix Suffix array
+    j = 0  
+
+    # Preprocess LPS array
+    for i in range(1, len(needle)):
+        while j > 0 and needle[i] != needle[j]:
+            j = lps[j - 1]
+        if needle[i] == needle[j]:
+            j += 1
+            lps[i] = j
+
+    j = 0
+    for i in range(len(haystack)):
+        while j > 0 and haystack[i] != needle[j]:
+            j = lps[j - 1]
+        if haystack[i] == needle[j]:
+            j += 1
+        if j == len(needle):
+            return i - j + 1
+
+    return -1
+```
+✅ **Use When**: Searching for a pattern in a string efficiently.
 
 ---
+
+
+
 
 
 
@@ -321,6 +158,9 @@ print(find_smallest_repeating_substring("ABABABAB"))      # Output: "AB"
 print(find_smallest_repeating_substring("ABCDE"))         # Output: "ABCDE"
 
 ```
+
+
+
 https://leetcode.com/problems/largest-number-after-mutating-substring/description/ 
 
 ## **8. Binary String Subsequences**
@@ -331,9 +171,6 @@ https://leetcode.com/problems/largest-number-after-mutating-substring/descriptio
   Sort characters of a string based on a custom order.
 
 ---
-
-
-
 
 
 
@@ -458,6 +295,10 @@ public boolean wordBreak(String s, List<String> wordDict) {
     return dp[s.length()];
 }
 ```
+//    https://leetcode.com/problems/repeated-dna-sequences/description/
+//    https://www.geeksforgeeks.org/given-two-strings-find-first-string-subsequence-second/
+//    https://www.geeksforgeeks.org/check-string-substring-another/?ref=ml_lbp
+
 
 
 
@@ -563,3 +404,42 @@ https://www.geeksforgeeks.org/longest-prefix-also-suffix/
 https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1 
 
 https://leetcode.com/problems/longest-palindromic-substring/description/
+
+
+
+Basics:
+* https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/?envType=problem-list-v2&envId=recursion&difficulty=EASY
+
+
+18. **[30. Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)**
+- Find all starting indices where a substring is a concatenation of all words in a given list.
+- **Condition:** Substring must be a concatenation of a word list.
+- **Difficulty:** Hard
+
+---
+
+### **🔥 Bonus: Hard Problems**
+19. **[727. Minimum Window Subsequence](https://leetcode.com/problems/minimum-window-subsequence/)**
+- Find the minimum contiguous substring in `s` where `t` appears as a subsequence.
+- **Condition:** Substring must contain `t` as a subsequence.
+- **Difficulty:** Hard
+
+20. **[1062. Longest Repeating Substring](https://leetcode.com/problems/longest-repeating-substring/)**
+- Find the longest contiguous substring that appears at least twice.
+- **Condition:** Substring must be **repeating** at least twice.
+- **Difficulty:** Hard
+
+---
+
+
+
+https://leetcode.com/problems/decode-string/description/
+
+https://www.geeksforgeeks.org/roman-number-to-integer/
+
+
+https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
+https://leetcode.com/problems/longest-palindromic-subsequence/
+
+
+

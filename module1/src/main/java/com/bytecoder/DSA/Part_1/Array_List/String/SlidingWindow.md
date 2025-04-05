@@ -31,6 +31,30 @@ Use **sliding window** (two-pointer technique) when you need to find:
 * Longest substring with no pair of adjacent characters are adjacent English alphabets
 * 
 
+### **Example 5: Longest Substring with At Most K Distinct Characters**
+✅ **Problem**: Find the longest substring with at most `K` distinct characters.
+```python
+def longest_substr_k_distinct(s: str, k: int) -> int:
+    char_map = {}
+    left, max_length = 0, 0
+
+    for right in range(len(s)):
+        char_map[s[right]] = char_map.get(s[right], 0) + 1
+
+        while len(char_map) > k:
+            char_map[s[left]] -= 1
+            if char_map[s[left]] == 0:
+                del char_map[s[left]]
+            left += 1
+
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+📌 **Key Idea**: Maintain a frequency map of characters and shrink the window when more than `k` distinct characters are found.
+
+---
+
 ### **Example 1: Longest Substring Without Repeating Characters**
 ✅ **Problem**: Find the longest substring where no character repeats.
 ```python
@@ -223,3 +247,63 @@ s = "110101110"
 - Convert `A` to `+1`, `B` to `-1`.
 - Use **prefix sum + hash map** (same logic as `0`s and `1`s problem).
 
+
+
+
+
+## **1️⃣ Sliding Window (Variable Length)**
+Use when finding the **longest** or **shortest** substring with certain properties.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Longest substring with at most K distinct characters | Sliding Window + HashMap (`O(n)`) |
+| Longest substring without repeating characters | Sliding Window + HashSet (`O(n)`) |
+| Shortest substring containing all characters of a pattern | Sliding Window + Frequency Map (`O(n)`) |
+
+### **Example: Longest Substring Without Repeating Characters**
+```python
+def length_of_longest_substring(s: str) -> int:
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+```
+✅ **Use When**: Finding the longest or shortest substring satisfying a condition.
+
+---
+
+## **2️⃣ Two-Pointer (Fixed Window)**
+Use when comparing **two substrings** or **reversing** parts of a string.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Check if a string is a palindrome | Two Pointers (`O(n)`) |
+| Reverse words in a string | Two Pointers (`O(n)`) |
+| Valid anagram (reordering of characters) | HashMap + Sorting (`O(n log n)`) |
+
+### **Example: Valid Palindrome (Ignoring Non-Alphanumeric Characters)**
+```python
+import re
+def is_palindrome(s: str) -> bool:
+    s = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+```
+✅ **Use When**: Comparing parts of a string from both ends.
+
+---

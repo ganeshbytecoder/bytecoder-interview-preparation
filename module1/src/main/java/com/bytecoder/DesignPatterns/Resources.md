@@ -19,7 +19,6 @@ Amazon
 
 * https://www.youtube.com/channel/UC9vLsnF6QPYuH51njmIooCQ
 * https://www.educative.io/
-* https://github.com/tssovi/grokking-the-object-oriented-design-interview/blob/master/object-oriented-design-case-studies/design-cricinfo.md
 * https://www.amazon.com/System-Design-Interview-insiders-Second/dp/B08CMF2CQF/ref=tmm_pap_swatch_0?_encoding=UTF8&sr=
 * https://www.amazon.com/dp/1736049119/ref=tsm_1_fb_lk
 * https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850/ref=sr_1_3?dchild=1&keywords=cracking+coding+interview&qid=1623709878&sr=8-3

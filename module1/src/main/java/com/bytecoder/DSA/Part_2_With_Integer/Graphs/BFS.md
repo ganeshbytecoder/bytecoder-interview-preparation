@@ -421,6 +421,9 @@ public class Main {
 
 
 ```
+Problem: https://leetcode.com/problems/minimum-genetic-mutation/description/?envType=study-plan-v2&envId=top-interview-150
+
+
 
 ```java
 // Practice Question : No of Islands , Rotting Oranges
@@ -506,6 +509,11 @@ class Solution:
 
 ```
 
+
+
+find celebrity(important) 
+- https://leetcode.com/problems/find-the-celebrity/?envType=company&envId=linkedin&favoriteSlug=linkedin-thirty-days
+
 matrix:
 * https://leetcode.com/problems/01-matrix/
 * https://leetcode.com/problems/rotting-oranges/
@@ -517,6 +525,7 @@ matrix:
 Graph coloring:
 * https://leetcode.com/problems/possible-bipartition/
 * https://leetcode.com/problems/is-graph-bipartite/
+
 
 
 ### **Important BFS-Based LeetCode Problems & Real-Life Applications** 🚀

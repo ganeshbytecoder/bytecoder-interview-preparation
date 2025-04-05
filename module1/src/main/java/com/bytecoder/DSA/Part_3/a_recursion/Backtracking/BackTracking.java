@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_3.Backtracking;
+package com.bytecoder.DSA.Part_3.a_recursion.Backtracking;
 
 import java.util.ArrayList;
 import java.util.List;

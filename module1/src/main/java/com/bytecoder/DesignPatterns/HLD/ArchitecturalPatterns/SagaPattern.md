@@ -739,9 +739,4 @@ If **any step fails**:
 
 ---
 
-## **🔹 Next Steps**
-Would you like to:
-- **Persist state machine data** in PostgreSQL/Redis?
-- **Add a Circuit Breaker (Resilience4j)** for failure management?
-- **Implement event reprocessing (DLQ - Dead Letter Queue)?**
-
+# **Q: Transactional Outbox Pattern vs. Choreography-Based Saga for Scalable Systems**

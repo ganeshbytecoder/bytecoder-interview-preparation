@@ -115,19 +115,247 @@ is both binary trees are same ?
 add elements at same level and give resultant 
 
 
+Here's a **concise and clean revision note** for:
+
+✅ **Height**  
+✅ **Depth**  
+✅ **Level**
+
+with clear **definitions**, **examples**, and **Java implementations**.
+
+---
+
+### 🌳 Binary Tree: Height, Depth & Level (with Java code)
+
+---
+
+### 🔹 1. **Height**
+
+- **Definition**: Number of edges on the longest path from a node **to a leaf**.
+- **Height of Tree** = Height of root.
+- **Height of leaf** = 0.
+- **Height of null node** = -1 (for correct leaf calculation).
+
+#### ✅ Example:
+```
+        A         → Height = 2
+       / \
+      B   C       → Height = 1
+     /
+    D             → Height = 0
+```
+
+#### 🧩 Java Code:
+```java
+public static int height(TreeNode node) {
+    if (node == null) return -1;
+    return 1 + Math.max(height(node.left), height(node.right));
+}
+```
+
+---
+
+### 🔹 2. **Depth**
+
+- **Definition**: Number of edges from **root to a node**.
+- **Depth of root** = 0.
+- Used in recursion and node search.
+
+#### ✅ Example:
+```
+        A         → Depth = 0
+       / \
+      B   C       → Depth = 1
+     /
+    D             → Depth = 2
+```
+
+#### 🧩 Java Code:
+```java
+public static int depth(TreeNode root, TreeNode target) {
+    return findDepth(root, target, 0);
+}
+
+private static int findDepth(TreeNode node, TreeNode target, int level) {
+    if (node == null) return -1;
+    if (node == target) return level;
+    int left = findDepth(node.left, target, level + 1);
+    return (left != -1) ? left : findDepth(node.right, target, level + 1);
+}
+```
+
+---
+
+### 🔹 3. **Level**
+
+- **Definition**: Number of **nodes** on the path from root to the node (including root and node).
+- **Level = Depth + 1**
+- **Level of root** = 1
+
+#### ✅ Example:
+```
+        A         → Level = 1
+       / \
+      B   C       → Level = 2
+     /
+    D             → Level = 3
+```
+
+#### 🧩 Java Code:
+```java
+public static int level(TreeNode root, TreeNode target) {
+    int depth = depth(root, target); // reuse depth method
+    return (depth != -1) ? depth + 1 : -1;
+}
+```
+
+---
+
+### 🧪 Sample Usage in `main`:
+
+```java
+public static void main(String[] args) {
+    TreeNode A = new TreeNode('A');
+    TreeNode B = new TreeNode('B');
+    TreeNode C = new TreeNode('C');
+    TreeNode D = new TreeNode('D');
+    A.left = B; A.right = C; B.left = D;
+
+    System.out.println("Height of A: " + height(A));       // 2
+    System.out.println("Depth of D: " + depth(A, D));       // 2
+    System.out.println("Level of D: " + level(A, D));       // 3
+}
+```
+
+
+## 1. **Head Recursion**
+
+### ✅ Definition
+- **Head recursion** occurs when the **recursive call** is the **first** statement in the function.
+- Any processing is done **after** the recursive call returns.
+
+### 🔎 Structure
+```java
+void headRec(int n) {
+    if (n <= 0) return;       // Base case
+    headRec(n - 1);          // Recursive call (head)
+    System.out.println(n);   // Processing after
+}
+```
+
+### 🏷️ When to Use
+- When you need to process data in **reverse order** of the function calls.
+- Situations where you're building up a result **after** exploring deeper levels.
+
+### 🌐 Real-Life Example
+- **Reading a book from last page to first page**:
+    - You might want to understand how many pages are remaining, so you keep “recursing” (turning pages backward) until you reach the front. Then, as you come back from each page, you record the page number or content.
+
+---
+
+## 2. **Tail Recursion**
+
+### ✅ Definition
+- **Tail recursion** occurs when the **recursive call** is the **last** operation in the function.
+- There is no extra computation after the recursive call returns.
+
+### 🔎 Structure
+```java
+void tailRec(int n) {
+    if (n <= 0) return;      // Base case
+    System.out.println(n);   // Processing before
+    tailRec(n - 1);          // Recursive call (tail)
+}
+```
+
+### 🏷️ When to Use
+- When processing the data in **forward order** of the function calls.
+- Certain languages/compilers optimize tail calls (called **tail call optimization**).
+
+### 🌐 Real-Life Example
+- **Counting down a rocket launch**:
+    - You say “10” (process now), then call the function to say “9,” and so forth, until you reach zero. There’s no work after the recursive call because you do all the work (print the number) before you recurse.
+
+---
+
+
+Great question! Understanding **when and why to use inorder traversal** is key for solving many tree-related LeetCode problems efficiently.
+
+---
+
+### ✅ **When to Use Inorder Traversal**
+
+You should use **inorder traversal** when:
+
+1. ✅ **You need nodes in sorted order** (only for **BSTs**).
+2. ✅ **You want to process the left subtree, then the node, then the right subtree**.
+3. ✅ You are working with **range queries** in BSTs.
+4. ✅ You need to **validate or reconstruct** a BST.
+5. ✅ You are solving **Morris traversal / iterative traversal** questions.
+
+---
+
+### 🧠 Inorder Traversal Pattern (Left → Node → Right):
+
+```java
+void inorder(TreeNode root) {
+    if (root == null) return;
+    inorder(root.left);
+    // process root
+    inorder(root.right);
+}
+```
+
+---
+
+### 🔥 Top LeetCode Problems Where Inorder is Ideal:
+
+| Problem | Why Inorder? | Link |
+|--------|--------------|------|
+| **94. Binary Tree Inorder Traversal** | Classic traversal task | [LeetCode 94](https://leetcode.com/problems/binary-tree-inorder-traversal/) |
+| **98. Validate Binary Search Tree** | Check if inorder is strictly increasing | [LeetCode 98](https://leetcode.com/problems/validate-binary-search-tree/) |
+| **230. Kth Smallest Element in a BST** | Inorder gives sorted order of BST | [LeetCode 230](https://leetcode.com/problems/kth-smallest-element-in-a-bst/) |
+| **173. Binary Search Tree Iterator** | Use inorder to iterate in sorted order | [LeetCode 173](https://leetcode.com/problems/binary-search-tree-iterator/) |
+| **501. Find Mode in Binary Search Tree** | Inorder to find frequency in sorted nodes | [LeetCode 501](https://leetcode.com/problems/find-mode-in-binary-search-tree/) |
+| **530. Minimum Absolute Difference in BST** | Inorder for adjacent sorted values | [LeetCode 530](https://leetcode.com/problems/minimum-absolute-difference-in-bst/) |
+| **783. Minimum Distance Between BST Nodes** | Similar to 530 | [LeetCode 783](https://leetcode.com/problems/minimum-distance-between-bst-nodes/) |
+
+---
+
+### 🧪 Example: LeetCode 230 – Kth Smallest Element in a BST
+
+```java
+class Solution {
+    int count = 0;
+    int result = -1;
+
+    public int kthSmallest(TreeNode root, int k) {
+        inorder(root, k);
+        return result;
+    }
+
+    private void inorder(TreeNode node, int k) {
+        if (node == null) return;
+
+        inorder(node.left, k);
+
+        count++;
+        if (count == k) {
+            result = node.val;
+            return;
+        }
+
+        inorder(node.right, k);
+    }
+}
+```
+
+---
 
 
 
-
-
-
-
-
-
-## problems
-
-
-
+# Problems
+https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/description/
 
 https://leetcode.com/problems/delete-nodes-and-return-forest/description/
 
@@ -499,107 +727,6 @@ void bottomView(Node root) {
 
    - Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
    - To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
-
-
-### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
-   - Traverse the left boundary, then leaf nodes, then the right boundary (in reverse order).
-
-### 17. **Construct Binary Tree from String with Bracket Representation**
-   - Use recursion and string parsing to interpret brackets as indicators of subtree boundaries.
-
-### 18. **Convert Binary Tree into Doubly Linked List**
-   - Perform in-order traversal, convert each node into a doubly linked list node, and link them together.
-
-### 19. **Convert Binary Tree into Sum Tree**
-   - Recursively replace each node with the sum of its left and right subtrees while returning  Finally, return the sum of new value and value (which is sum of values in the subtree rooted with this node).
-
-### 20. **Construct Binary Tree from Inorder and Preorder Traversal**
-   - Use recursion and index tracking to build the tree. The first element in preorder is the root; use inorder to find left and right subtrees.
-
-### 21. **Find Minimum Swaps to Convert Binary Tree to BST**
-   - In-order traversal of the tree yields a list. Count the minimum swaps required to sort the list.
-
-### 22. **Check if Binary Tree is Sum Tree**
-   - A sum tree is one where the value of each node is equal to the sum of its left and right subtree values.
-   - Use a post-order traversal to verify the sum property.
-
-### 23. **Check if All Leaf Nodes are at the Same Level**
-   - Use level order traversal and check the levels of leaf nodes.
-
-### 24. **Check if a Binary Tree Contains Duplicate Subtrees of Size 2 or More**
-   - Use serialization (or hashing) of subtrees to detect duplicates during post-order traversal.
-
-### 25. **Check if Two Trees are Mirror**
-   - Recursively compare the left subtree of one tree with the right subtree of the other.
-
-### 26. **Sum of Nodes on the Longest Path from Root to Leaf Node**
-   - Use DFS to find the path with the maximum depth and calculate the sum of its nodes.
-
-### 27. **Check if Given Graph is Tree**
-   - A graph is a tree if it is connected and has no cycles.
-   - Use BFS/DFS to verify connectivity and absence of cycles.
-
-### 28. **Find Largest Subtree Sum in a Tree**
-   - Perform a post-order traversal to calculate the sum of each subtree and track the maximum.
-
-### 29. **Maximum Sum of Nodes in a Binary Tree Such that No Two are Adjacent**
-   - Use dynamic programming with two states: include the current node or exclude it.
-
-### 30. **Print All “K” Sum Paths in a Binary Tree**
-   - Use DFS and backtracking to find all paths from any node that sum to `K`.
-
-### 31. **Find LCA in a Binary Tree** (good)
-   - Use recursion to find the lowest common ancestor by exploring left and right subtrees.
-
-```java
-    public void path(TreeNode node, TreeNode target, List<TreeNode> list, List<TreeNode> ans){
-        if(node == null){
-            return;
-        }
-        if(node == target){
-            list.add(node);
-            // ans = new ArrayList<TreeNode>(list);
-            for(TreeNode n : list){
-                ans.add(n);
-            }
-            return;
-        }
-        list.add(node);
-        path(node.left, target, list, ans);
-        path(node.right, target, list, ans);
-        list.remove(node);
-    }
-
-
-    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        List<TreeNode> ans1 = new ArrayList<>();
-        List<TreeNode> ans2 = new ArrayList<>();
-
-        path(root, p, new ArrayList<>(), ans1);
-        
-        path(root, q, new ArrayList<>(), ans2);
-        System.out.print(ans1.size());
-        for(int i = ans1.size()-1 ; i >= 0; i--){
-            System.out.println("check " + ans1.get(i).val);
-            if(ans2.contains(ans1.get(i))){
-                return ans1.get(i);
-            }
-        }
-
-        System.out.println("ans root ");
-        return root;
-
-    }
-```
-
-### 32. **Find Distance Between Two Nodes in a Binary Tree** (good) (https://leetcode.com/problems/minimum-distance-between-bst-nodes/description/)
-   - Find LCA of the two nodes, then calculate the distance from LCA to each node.
-
-### 33. **Kth Ancestor of a Node in a Binary Tree**
-   - Use recursion to track ancestors and return the `Kth` one when the target node is found.
-
-### 34. **Find All Duplicate Subtrees in a Binary Tree** (good)
-   - Use serialization (or hashing) of subtrees during post-order traversal to detect duplicates.
 
 ### 35. **Tree Isomorphism Problem** 
    - Check if two trees can be transformed into each other by flipping subtrees.
@@ -1095,3 +1222,130 @@ class Solution {
 ```
 
 https://leetcode.com/problems/sum-root-to-leaf-numbers/description/?envType=study-plan-v2&envId=top-interview-150
+
+
+### search till require
+https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/submissions/1586147821/
+https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/description/?envType=company&envId=amazon&favoriteSlug=amazon-three-months
+https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/description/
+
+### LCA in a Binary Tree
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/description/
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/description/
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/description/
+
+#### 31. **Find LCA in a Binary Tree** (good)
+
+- Use recursion to find the lowest common ancestor by exploring left and right subtrees.
+
+```java
+    public void path(TreeNode node, TreeNode target, List<TreeNode> list, List<TreeNode> ans){
+        if(node == null){
+            return;
+        }
+        if(node == target){
+            list.add(node);
+            // ans = new ArrayList<TreeNode>(list);
+            for(TreeNode n : list){
+                ans.add(n);
+            }
+            return;
+        }
+        list.add(node);
+        path(node.left, target, list, ans);
+        path(node.right, target, list, ans);
+        list.remove(node);
+    }
+
+
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        List<TreeNode> ans1 = new ArrayList<>();
+        List<TreeNode> ans2 = new ArrayList<>();
+
+        path(root, p, new ArrayList<>(), ans1);
+        
+        path(root, q, new ArrayList<>(), ans2);
+        
+        
+        System.out.print(ans1.size());
+        for(int i = ans1.size()-1 ; i >= 0; i--){
+            System.out.println("check " + ans1.get(i).val);
+            if(ans2.contains(ans1.get(i))){
+                return ans1.get(i);
+            }
+        }
+
+        System.out.println("ans root ");
+        return root;
+
+    }
+```
+
+https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/description/
+https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/description/
+### String to Tree
+- https://leetcode.com/problems/construct-binary-tree-from-string/description/
+- https://leetcode.com/problems/construct-string-from-binary-tree/description/
+
+
+
+
+### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
+- Traverse the left boundary, then leaf nodes, then the right boundary (in reverse order).
+
+### 17. **Construct Binary Tree from String with Bracket Representation**
+- Use recursion and string parsing to interpret brackets as indicators of subtree boundaries.
+
+### 18. **Convert Binary Tree into Doubly Linked List**
+- Perform in-order traversal, convert each node into a doubly linked list node, and link them together.
+
+### 19. **Convert Binary Tree into Sum Tree**
+- Recursively replace each node with the sum of its left and right subtrees while returning  Finally, return the sum of new value and value (which is sum of values in the subtree rooted with this node).
+
+### 20. **Construct Binary Tree from Inorder and Preorder Traversal**
+- Use recursion and index tracking to build the tree. The first element in preorder is the root; use inorder to find left and right subtrees.
+
+### 21. **Find Minimum Swaps to Convert Binary Tree to BST**
+- In-order traversal of the tree yields a list. Count the minimum swaps required to sort the list.
+
+### 22. **Check if Binary Tree is Sum Tree**
+- A sum tree is one where the value of each node is equal to the sum of its left and right subtree values.
+- Use a post-order traversal to verify the sum property.
+
+### 23. **Check if All Leaf Nodes are at the Same Level**
+- Use level order traversal and check the levels of leaf nodes.
+
+### 24. **Check if a Binary Tree Contains Duplicate Subtrees of Size 2 or More**
+- Use serialization (or hashing) of subtrees to detect duplicates during post-order traversal.
+
+### 25. **Check if Two Trees are Mirror**
+- Recursively compare the left subtree of one tree with the right subtree of the other.
+
+### 26. **Sum of Nodes on the Longest Path from Root to Leaf Node**
+- Use DFS to find the path with the maximum depth and calculate the sum of its nodes.
+
+### 27. **Check if Given Graph is Tree**
+- A graph is a tree if it is connected and has no cycles.
+- Use BFS/DFS to verify connectivity and absence of cycles.
+
+### 28. **Find Largest Subtree Sum in a Tree**
+- Perform a post-order traversal to calculate the sum of each subtree and track the maximum.
+
+### 29. **Maximum Sum of Nodes in a Binary Tree Such that No Two are Adjacent**
+- Use dynamic programming with two states: include the current node or exclude it.
+
+### 30. **Print All “K” Sum Paths in a Binary Tree**
+- Use DFS and backtracking to find all paths from any node that sum to `K`.
+
+
+### 32. **Find Distance Between Two Nodes in a Binary Tree** (good) (https://leetcode.com/problems/minimum-distance-between-bst-nodes/description/)
+- Find LCA of the two nodes, then calculate the distance from LCA to each node.
+
+### 33. **Kth Ancestor of a Node in a Binary Tree**
+- Use recursion to track ancestors and return the `Kth` one when the target node is found.
+
+### 34. **Find All Duplicate Subtrees in a Binary Tree** (good)
+- Use serialization (or hashing) of subtrees during post-order traversal to detect duplicates.
+

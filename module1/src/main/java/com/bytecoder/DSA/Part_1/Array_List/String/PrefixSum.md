@@ -199,4 +199,29 @@ print("Count of binary substrings:", count_binary_substrings(s))
 - **Consecutive grouping** is useful when substrings must be in **a specific order**.
 - **These patterns are crucial in FAANG interviews**, especially for **strings and arrays**.
 
-Would you like **practice problems or variations** on this technique? 🚀
+## **5️⃣ Prefix Sum + HashMap**
+Use when dealing with **binary strings** or **cumulative calculations**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Count substrings with equal 0s and 1s | Prefix Sum + HashMap (`O(n)`) |
+| Longest balanced substring (e.g., parentheses, binary) | Prefix Sum + HashMap (`O(n)`) |
+
+### **Example: Count Binary Substrings with Equal 0s and 1s**
+```python
+def count_binary_substrings(s: str) -> int:
+    prev, cur, count = 0, 1, 0
+
+    for i in range(1, len(s)):
+        if s[i] == s[i - 1]:
+            cur += 1
+        else:
+            count += min(prev, cur)
+            prev, cur = cur, 1
+
+    return count + min(prev, cur)
+```
+✅ **Use When**: Finding substrings with equal frequency of characters.
+
+---

@@ -8,6 +8,8 @@
 
 * https://leetcode.com/problems/swap-nodes-in-pairs/submissions/1423121266/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
 * 
+* https://leetcode.com/problems/lru-cache/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
+* 
 * https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/description/
 
 M1

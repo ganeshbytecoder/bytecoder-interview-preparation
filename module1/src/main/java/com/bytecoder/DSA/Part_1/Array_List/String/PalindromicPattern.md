@@ -50,3 +50,35 @@ def longest_palindrome(s: str) -> str:
 ## Palindromic Subsequence
 1. **[Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)** - DP with a cut count for partitions.
 
+## **3️⃣ Expand Around Center**
+Use for problems involving **palindromes**.
+
+### **Example Problems**
+| Problem Type | Approach |
+|-------------|----------|
+| Longest palindromic substring | Expand Around Center (`O(n^2)`) |
+| Count palindromic substrings | Expand Around Center (`O(n^2)`) |
+
+### **Example: Longest Palindromic Substring**
+```python
+def longest_palindrome(s: str) -> str:
+    def expand(l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return s[l + 1:r]
+    
+    res = ""
+    for i in range(len(s)):
+        odd = expand(i, i)
+        even = expand(i, i + 1)
+        res = max(res, odd, even, key=len)
+    
+    return res
+```
+✅ **Use When**: Checking for palindromes or finding longest palindromic substrings.
+
+---
+
+
+

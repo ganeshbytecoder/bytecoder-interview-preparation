@@ -1,3 +1,155 @@
+## 🔁 Core Patterns (With Best LeetCode Practice Links)
+
+### 1. **Array & Hashing**
+- 🔹 [Two Sum](https://leetcode.com/problems/two-sum/)
+- 🔹 [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
+- 🔹 [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+- 🔹 [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
+- 🔹 [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+- 🔹 [Set Mismatch](https://leetcode.com/problems/set-mismatch/)
+- 🔹 [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+- 🔹 [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+- 🔹 [3Sum](https://leetcode.com/problems/3sum/)
+- 🔹 [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+- 🔹 [Remove Duplicates II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
+- 🔹 [Plus One](https://leetcode.com/problems/plus-one/)
+- 🔹 [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+- 🔹 [Insert Interval](https://leetcode.com/problems/insert-interval/)
+- 🔹 [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+- 🔹 [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+
+### 2. **String Manipulation & Hashing**
+- 🔹 [Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+- 🔹 [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+- 🔹 [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+- 🔹 [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+- 🔹 [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+- 🔹 [Longest Substring Without Repeating](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- 🔹 [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+- 🔹 [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+- 🔹 [Encode and Decode Strings (Premium)](https://leetcode.com/problems/encode-and-decode-strings/)
+
+### 3. **Sliding Window & Two Pointers**
+- 🔹 [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+- 🔹 [Longest Substring Without Repeat](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- 🔹 [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+- 🔹 [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+- 🔹 [Count Number of Nice Subarrays](https://leetcode.com/problems/count-number-of-nice-subarrays/)
+- 🔹 [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)
+
+---
+
+## 🔄 Subsequence vs Subarray vs Subset vs Combination (🔥 MUST-KNOW)
+
+| Concept | Order | Skipping | Duplicates | Fixed Size |
+|--------|--------|----------|------------|-------------|
+| Subsequence | ✅ Yes | ✅ Yes | ✅ Yes | Optional |
+| Subarray | ✅ Yes | ❌ No | ✅ Yes | Optional |
+| Subset | ❌ No | ✅ Yes | ❌ No | Optional |
+| Combination | ❌ No | ✅ Yes | ✅ Yes | ✅ Fixed |
+
+### 🧠 Leetcode Examples
+- [Is Subsequence](https://leetcode.com/problems/is-subsequence/)
+- [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+- [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+- [Edit Distance](https://leetcode.com/problems/edit-distance/)
+- [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
+- [Combination Sum](https://leetcode.com/problems/combination-sum/)
+
+---
+
+## 💡 DP Patterns (Group-wise Breakdown)
+
+### 🧬 Longest Increasing Subsequence (LIS) & Variants
+- 🔹 [LIS](https://leetcode.com/problems/longest-increasing-subsequence/)
+- 🔹 [Number of LIS](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
+- 🔹 [Longest Ideal Subsequence](https://leetcode.com/problems/longest-ideal-subsequence/)
+- 🔹 [Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/)
+- 🔹 [Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
+- 🔹 [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
+- 🔹 [Find the Maximum Length of Valid Subsequence](https://leetcode.com/problems/find-the-maximum-length-of-valid-subsequence-i/)
+
+### 💰 Coin Change Family
+- 🔹 [Coin Change I](https://leetcode.com/problems/coin-change/)
+- 🔹 [Coin Change II](https://leetcode.com/problems/coin-change-2/)
+- 🔹 [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
+- 🔹 [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
+
+### 🔐 Partition / Subset Sum
+- 🔹 [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
+- 🔹 [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
+- 🔹 [Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/)
+- 🔹 [IP Address Restore](https://leetcode.com/problems/restore-ip-addresses/)
+
+### 📈 Matrix DP
+- 🔹 [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+- 🔹 [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+- 🔹 [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/)
+- 🔹 [Triangle](https://leetcode.com/problems/triangle/)
+- 🔹 [Maximal Square](https://leetcode.com/problems/maximal-square/)
+- 🔹 [Unique Paths](https://leetcode.com/problems/unique-paths/)
+
+---
+
+## 🌳 Tree Problems
+- 🔹 [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+- 🔹 [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+- 🔹 [Lowest Common Ancestor of BST](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+- 🔹 [Validate BST](https://leetcode.com/problems/validate-binary-search-tree/)
+- 🔹 [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+- 🔹 [Same Tree](https://leetcode.com/problems/same-tree/)
+- 🔹 [Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree/)
+- 🔹 [Construct Tree from Inorder & Preorder](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+- 🔹 [House Robber III](https://leetcode.com/problems/house-robber-iii/)
+
+---
+
+## 🌉 Graph Problems – Categorized by Pattern
+
+### 🔁 Topological Sort (DAG)
+- [Course Schedule](https://leetcode.com/problems/course-schedule/)
+- [Parallel Courses](https://leetcode.com/problems/parallel-courses/)
+- [Find All Recipes](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
+
+### 🔍 DFS/BFS
+- [Clone Graph](https://leetcode.com/problems/clone-graph/)
+- [Number of Islands](https://leetcode.com/problems/number-of-islands/)
+- [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+- [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+
+### ⚡ Shortest Path / Weighted Graph
+- [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+- [Network Delay Time](https://leetcode.com/problems/network-delay-time/)
+- [Evaluate Division](https://leetcode.com/problems/evaluate-division/)
+
+### ⚙️ Union-Find (Disjoint Set)
+- [Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
+- [Redundant Connection](https://leetcode.com/problems/redundant-connection/)
+- [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/)
+
+---
+
+## 📚 Java-Specific Tips (from your notes)
+
+- Convert `int[]` to `List<Integer>` ➜ `Arrays.stream(arr).boxed().toList();`
+- Convert `char[]` ➜ loop manually (no `boxed()` for char)
+- `Collections.reverse(List)` for in-place reversal
+- `Map.Entry` sorting: use `Collections.max()` or sort `List<Map.Entry<>>`
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+--------
 
 ## ✅ When to Use **Subsequence** Instead of Subset or Combination?
 
@@ -528,6 +680,10 @@ print(shortestCommonSupersequence("abac", "cab"))  # Output: "cabac"
 4. **[Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)** - DP to compute minimum delete cost for equal strings.
 
 
+
+
+
+
 ## **Longest Increasing Subsequence (LIS) Variants**
 1. **[Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)** - Use DP with binary search (O(n log n)) or DP (O(n^2)).
 2. **[Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/)** - DP with sorting, track the longest subset where `nums[j]` divides `nums[i]`.
@@ -985,8 +1141,6 @@ https://leetcode.com/problems/interleaving-string/submissions/1545724299/?envTyp
 
 
 Graph:
-
-
 Here's a categorized breakdown of the **graph-related LeetCode questions** you provided, based on the most common graph patterns:
 
 ---
@@ -1098,3 +1252,4 @@ Here's a categorized breakdown of the **graph-related LeetCode questions** you p
 - 851. Loud and Rich
 
 ---
+

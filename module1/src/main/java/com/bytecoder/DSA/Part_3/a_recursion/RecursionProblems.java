@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2_With_Integer.a_recursion;
+package com.bytecoder.DSA.Part_3.a_recursion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,10 +8,7 @@ import java.util.List;
 
 
 //https://leetcode.com/problems/swap-nodes-in-pairs/submissions/1423121266/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
-//https://leetcode.com/problems/predict-the-winner/submissions/1423638042/?envType=problem-list-v2&envId=recursion&difficulty=MEDIUM
-// Bubble sort
-// Merge and quick sort
-// https://leetcode.com/problems/decode-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+
 //https://leetcode.com/problems/different-ways-to-add-parentheses/description/?envType=company&envId=amazon&favoriteSlug=amazon-thirty-days
 public class RecursionProblems {
 

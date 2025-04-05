@@ -400,6 +400,10 @@ https://leetcode.com/problems/all-paths-from-source-to-target/description/
 https://leetcode.com/problems/snakes-and-ladders/solutions/?envType=study-plan-v2&envId=top-interview-150
 
 
+https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/submissions/1586147821/
+
+
+how to solve this in asked in graph : https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/description/?envType=company&envId=amazon&favoriteSlug=amazon-three-months
 
 
 ### 9. **Clone a Graph**

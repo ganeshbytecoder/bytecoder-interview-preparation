@@ -13,7 +13,7 @@ from collections import Counter
 mapper = Counter(s)
 ```
 
-
+https://leetcode.com/problems/group-shifted-strings/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 https://leetcode.com/problems/isomorphic-strings/description/ 
 https://leetcode.com/problems/bulls-and-cows/description/ 
 https://leetcode.com/problems/custom-sort-string/description/ 

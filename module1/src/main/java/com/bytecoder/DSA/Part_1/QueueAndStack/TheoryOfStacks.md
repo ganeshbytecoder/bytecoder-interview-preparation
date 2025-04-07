@@ -4,6 +4,7 @@ https://leetcode.com/problems/evaluate-reverse-polish-notation/description/?envT
 https://leetcode.com/problems/decode-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 https://leetcode.com/problems/exclusive-time-of-functions/?envType=company&envId=linkedin&favoriteSlug=linkedin-thirty-days
 
+https://leetcode.com/problems/exclusive-time-of-functions/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 
 **Problem** balancing of symbols,
 

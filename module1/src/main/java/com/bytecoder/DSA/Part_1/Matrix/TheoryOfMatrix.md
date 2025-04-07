@@ -103,6 +103,8 @@ https://leetcode.com/problems/unique-paths/
 
 https://leetcode.com/problems/max-area-of-island/description/?envType=problem-list-v2&envId=union-find 
 
+https://leetcode.com/problems/diagonal-traverse/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+
 https://www.geeksforgeeks.org/problems/find-shortest-safe-route-in-a-matrix/1
 
 

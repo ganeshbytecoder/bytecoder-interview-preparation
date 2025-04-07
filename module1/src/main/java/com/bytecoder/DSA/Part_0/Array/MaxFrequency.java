@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_1.Array_List;
+package com.bytecoder.DSA.Part_0.Array;
 
 import java.util.*;
 import java.util.function.Function;

@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyList;
+package com.bytecoder.DSA.Part_2_With_Integer.Graphs.TypesOfGraph.AdjacencyList;
 
 import java.util.List;
 import java.util.Map;

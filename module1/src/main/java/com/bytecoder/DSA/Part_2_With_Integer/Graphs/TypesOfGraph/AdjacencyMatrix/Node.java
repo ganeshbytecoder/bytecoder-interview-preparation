@@ -1,4 +1,4 @@
-package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
+package com.bytecoder.DSA.Part_2_With_Integer.Graphs.TypesOfGraph.AdjacencyMatrix;
 
 import lombok.Data;
 

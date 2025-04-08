@@ -1,7 +1,6 @@
-package com.bytecoder.DSA.Part_2_With_Integer.Graphs.AdjacencyMatrix;
+package com.bytecoder.DSA.Part_2_With_Integer.Graphs.TypesOfGraph.AdjacencyMatrix;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of graph algorithms using Adjacency Matrix representation.

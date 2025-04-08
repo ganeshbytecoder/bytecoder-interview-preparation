@@ -1,3 +1,18 @@
+- linear search 
+- binary search in sort array
+- Cycle detection 
+- floyd algorithm
+- 
+
+
+https://leetcode.com/problems/kth-largest-element-in-an-array/
+
+
+
+
+
+
+
 **Problem** Given an array of n numbers. find the element which appears the maximum number of times
 
 hint:

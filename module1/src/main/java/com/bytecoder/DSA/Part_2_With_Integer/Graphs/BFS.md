@@ -5,7 +5,7 @@ for example, airline routes, electric circuits , LAN and internet , facebook fri
 **Graph**: a graph is a pair (V,E), where V is a set of nodes, called vertices (vertex) and E is collection of pairs of vertices
 
 
-![img.png](AdjacencyMatrix/img.png)
+![img.png](TypesOfGraph/AdjacencyMatrix/img.png)
 
 ![img.png](img.png)
 

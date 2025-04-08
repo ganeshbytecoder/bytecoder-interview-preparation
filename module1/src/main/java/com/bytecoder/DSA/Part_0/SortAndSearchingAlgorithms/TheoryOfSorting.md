@@ -640,6 +640,96 @@ print(topKFrequent(nums, k))  # Output: [1, 2]
 
 ---------------------------------------------------------
 
+Absolutely! Here's a clean and crisp **Quick Revision Guide** for **All Sorting Algorithms** — ideal for interview prep, coding rounds, and last-minute brushing up.
+
+---
+
+# ✅ **Sorting Algorithms Quick Revision Notes**
+
+---
+
+## 🔄 **1. Bubble Sort**
+- **Idea**: Repeatedly swap adjacent elements if they are in the wrong order.
+- **Time**: Worst O(n²), Best O(n)
+- **Space**: O(1)
+- **Stable**: ✅
+- **Use When**: Teaching concept, very small or nearly sorted data.
+
+---
+
+## ⬅️➡️ **2. Insertion Sort**
+- **Idea**: Build sorted array one item at a time by inserting current element into the right position.
+- **Time**: Worst O(n²), Best O(n)
+- **Space**: O(1)
+- **Stable**: ✅
+- **Use When**: Small or nearly sorted data, Linked Lists.
+
+---
+
+## 🔄↘️ **3. Selection Sort**
+- **Idea**: Select the smallest (or largest) element and move it to correct position.
+- **Time**: O(n²) always
+- **Space**: O(1)
+- **Stable**: ❌
+- **Use When**: Simplicity matters, educational use.
+
+---
+
+## 📦 **4. Merge Sort**
+- **Idea**: Divide array into halves, sort recursively, then merge.
+- **Time**: O(n log n) in all cases
+- **Space**: O(n)
+- **Stable**: ✅
+- **Use When**: Linked Lists, guaranteed performance.
+
+---
+
+## ⚡ **5. Quick Sort**
+- **Idea**: Choose pivot, partition array, sort recursively.
+- **Time**: Avg O(n log n), Worst O(n²)
+- **Space**: O(log n) stack space
+- **Stable**: ❌
+- **Use When**: Arrays, fast average-case, in-place sorting.
+
+---
+
+## 🪣 **6. Bucket Sort**
+- **Idea**: Divide range into buckets, sort buckets individually.
+- **Time**: Best O(n), Worst O(n²)
+- **Space**: O(n + k)
+- **Stable**: Depends
+- **Use When**: Uniformly distributed floats in [0,1)
+
+---
+
+## 🧮 **7. Counting Sort**
+- **Idea**: Count frequency of elements and reconstruct the sorted array.
+- **Time**: O(n + k)
+- **Space**: O(k)
+- **Stable**: ✅
+- **Use When**: Integers in a small range.
+
+---
+
+## 🔢 **8. Radix Sort**
+- **Idea**: Sort numbers digit by digit using Counting Sort as subroutine.
+- **Time**: O(nk) where k = number of digits
+- **Space**: O(n + k)
+- **Stable**: ✅
+- **Use When**: Fixed-length integers, IDs, phone numbers.
+
+---
+
+## 🏔️ **9. Heap Sort**
+- **Idea**: Build a max-heap, extract elements from the heap.
+- **Time**: O(n log n)
+- **Space**: O(1)
+- **Stable**: ❌
+- **Use When**: In-place sort needed without recursion.
+
+
+
+-----
 ## problems 
 
 **Problem-1:** check the list if any element is duplicated or not

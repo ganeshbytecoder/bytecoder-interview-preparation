@@ -1,11 +1,17 @@
-# Sorting Algorithms 
-https://leetcode.com/problems/kth-largest-element-in-an-array/
-https://leetcode.com/problems/top-k-frequent-elements/submissions/1598686457/
 
 
-## bubble sort : 
-comparing the each pair of elements and swapping them if need. bubble sort continues its iterations until no more swaps are needed. 
-* algorithm takes O(n^2) and space complexity O(1)
+# ✅ **Sorting Algorithms – Ultimate Revision Notes**
+
+---
+
+## 🔁 1. **Bubble Sort**
+- **Concept**: Repeatedly swap adjacent elements if out of order.
+- **Time**:
+    - Best: O(n) (already sorted)
+    - Worst: O(n²)
+- **Space**: O(1)
+- **Stable**: ✅
+- **Use When**: Simple or nearly sorted arrays.
 
 ```java
 public static void main(String[] args) {
@@ -21,12 +27,16 @@ public static void main(String[] args) {
 }
 ```
 
-## selection sort (pick min from right): 
-we creates two index i and j where is used for current element and j is to find least element from right side of list.
-swap it with the value in the current position. 
-Repeat this process for all the elements until the entire array is sorted. 
-* algorithm takes O(n^2) and space complexity O(1)
 
+
+---
+
+## 📍 2. **Selection Sort**
+- **Concept**: Find the min element from the unsorted part and place it at the beginning.
+- **Time**: O(n²) in all cases
+- **Space**: O(1)
+- **Stable**: ❌
+- **Use When**: Simplicity > performance.
 
 ```java
 public static void main(String[] args) {
@@ -45,8 +55,14 @@ public static void main(String[] args) {
 ```
 
 
-## Insertion sort(taash pick and shift): 
-in this algorithm we pick a element and slide it till it satisfy the condition then swap it 
+## 🃏 3. **Insertion Sort** ("Taash logic")
+- **Concept**: Insert each element into its correct position in the sorted part of the array.
+- **Time**:
+    - Best: O(n)
+    - Worst: O(n²)
+- **Space**: O(1)
+- **Stable**: ✅
+- **Use When**: Nearly sorted, small datasets.
 
 ```java
 
@@ -55,7 +71,7 @@ public static void main(String[] args) {
     for (int i = 1; i < array.length; i++) {
         int k = i;
         int temp = array[k];
-        
+
         while (k > 0 && temp < array[k - 1]) {
             array[k] = array[k - 1];
             k--;
@@ -68,10 +84,14 @@ public static void main(String[] args) {
 }
 ```
 
-## Heap Sort
+---
 
-
-## Merge Sort
+## 📦 4. **Merge Sort**
+- **Concept**: Divide → Sort halves → Merge.
+- **Time**: O(n log n) in all cases
+- **Space**: O(n)
+- **Stable**: ✅
+- **Use When**: Linked lists, guaranteed performance.
 
 **Merge Sort** is a **Divide and Conquer** algorithm used for sorting an array or list. It breaks the input into smaller parts, sorts them, and then merges them back together in a sorted way.
 
@@ -274,67 +294,16 @@ public class MergeSortLinkedList {
 
 ---
 
-### **Python (Linked List)**
-```python
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-def merge_sort(head):
-    if not head or not head.next:
-        return head
-
-    mid = get_middle(head)
-    right = mid.next
-    mid.next = None
-
-    left_sorted = merge_sort(head)
-    right_sorted = merge_sort(right)
-
-    return merge(left_sorted, right_sorted)
-
-def get_middle(head):
-    slow = head
-    fast = head.next
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-    return slow
-
-def merge(l1, l2):
-    dummy = ListNode()
-    tail = dummy
-
-    while l1 and l2:
-        if l1.val <= l2.val:
-            tail.next = l1
-            l1 = l1.next
-        else:
-            tail.next = l2
-            l2 = l2.next
-        tail = tail.next
-
-    tail.next = l1 or l2
-    return dummy.next
-
-# Helper to print list
-def print_list(head):
-    while head:
-        print(head.val, end=" ")
-        head = head.next
-    print()
-
-# Usage
-head = ListNode(6, ListNode(3, ListNode(8, ListNode(5, ListNode(2)))))
-sorted_head = merge_sort(head)
-print_list(sorted_head)  # Output: 2 3 5 6 8
-```
-
----
 
 
-## **Quick Sort Overview**
+## ⚡ 5. **Quick Sort**
+- **Concept**: Pick pivot → Partition → Recur on halves.
+- **Time**:
+    - Best/Avg: O(n log n)
+    - Worst: O(n²) (bad pivot)
+- **Space**: O(log n)
+- **Stable**: ❌
+- **Use When**: Fast in-place sort.
 
 ### **Steps:**
 
@@ -443,6 +412,278 @@ print(arr)  # Output: [2, 3, 5, 6, 8]
 ---
 
 
+---
+
+
+
+## 🏔️ 6. **Heap Sort**
+- **Concept**: Build a max-heap → Swap max with end → Heapify.
+- **Time**: O(n log n)
+- **Space**: O(1)
+- **Stable**: ❌
+- **Use When**: In-place, consistent time, no recursion.
+
+```python
+def heap_sort(arr):
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
+```
+
+---
+
+### 🔧 `heapq` (Python Min Heap Library)
+
+| Method | Description |
+|--------|-------------|
+| `heapq.heapify(arr)` | In-place min-heap |
+| `heappush(heap, x)` | Add element |
+| `heappop(heap)` | Pop smallest |
+| `nlargest(k, iterable)` | k largest |
+| `nsmallest(k, iterable)` | k smallest |
+
+---
+## ✅ **Heap Sort in Python (Manual Implementation using Max-Heap Logic)**
+
+```python
+def heap_sort(arr):
+    n = len(arr)
+
+    # Step 1: Build max heap
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    # Step 2: Extract elements one by one from the heap
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]  # swap max element to end
+        heapify(arr, i, 0)  # restore heap property for reduced heap
+
+def heapify(arr, size, root):
+    largest = root
+    left = 2 * root + 1
+    right = 2 * root + 2
+
+    if left < size and arr[left] > arr[largest]:
+        largest = left
+    if right < size and arr[right] > arr[largest]:
+        largest = right
+
+    if largest != root:
+        arr[root], arr[largest] = arr[largest], arr[root]
+        heapify(arr, size, largest)
+
+# Example usage
+arr = [4, 10, 3, 5, 1]
+heap_sort(arr)
+print(arr)  # Output: [1, 3, 4, 5, 10]
+```
+
+---
+## 🧰 **Python Built-in Heap: `heapq` Module**
+
+The `heapq` module provides a **Min-Heap** by default. It allows **efficient priority queue operations** in O(log n) time.
+
+---
+
+### 📦 `heapq` – Common Methods
+
+```python
+import heapq
+```
+
+| Method | Description |
+|--------|-------------|
+| `heapq.heapify(lst)` | Converts a list into a min-heap in-place (O(n)) |
+| `heapq.heappush(heap, item)` | Adds an item to the heap (O(log n)) |
+| `heapq.heappop(heap)` | Pops and returns the smallest item (O(log n)) |
+| `heapq.heappushpop(heap, item)` | Push then pop (faster than separate ops) |
+| `heapq.heapreplace(heap, item)` | Pops then pushes (always replaces root) |
+| `heapq.nlargest(k, iterable)` | Returns k largest elements |
+| `heapq.nsmallest(k, iterable)` | Returns k smallest elements |
+
+---
+
+### ✅ Example Usage
+
+```python
+import heapq
+
+arr = [5, 1, 3, 10, 4]
+
+heapq.heapify(arr)
+print(arr)  # Heapified array: [1, 4, 3, 10, 5]
+
+heapq.heappush(arr, 0)
+print(heapq.heappop(arr))  # Output: 0
+
+# Get 2 largest elements
+print(heapq.nlargest(2, arr))  # Output: [10, 5]
+
+# Get 2 smallest elements
+print(heapq.nsmallest(2, arr))  # Output: [1, 3]
+```
+
+---
+
+### ✅ Common Queue Methods `PriorityQueue` Supports:
+```java
+public static void main(String[] args) {
+
+    Queue<Integer> queue = new LinkedList<>();
+
+
+    List<Integer> list = Arrays.asList(3, 1, 4, 2);
+    PriorityQueue<Integer> pq = new PriorityQueue<>(list);
+
+
+    List<Integer> list = Arrays.asList(3, 1, 4, 2);
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    maxHeap.addAll(list);
+}
+
+```
+
+
+
+| Method         | Description |
+|----------------|-------------|
+| `offer(E e)`   | Inserts an element (returns `false` if it fails) |
+| `add(E e)`     | Same as `offer()`, but throws exception on failure |
+| `peek()`       | Retrieves but does not remove the head (min by default) |
+| `poll()`       | Retrieves and removes the head |
+| `remove()`     | Removes the head (throws exception if empty) |
+| `isEmpty()`    | Checks if the queue is empty |
+| `size()`       | Returns number of elements |
+
+---
+
+### MedianFinder
+
+```java
+import java.util.PriorityQueue;
+import java.util.Collections;
+
+public class MedianFinder {
+
+    // Max-heap for the smaller half
+    private PriorityQueue<Integer> left;
+
+    // Min-heap for the larger half
+    private PriorityQueue<Integer> right;
+
+    public MedianFinder() {
+        left = new PriorityQueue<>(Collections.reverseOrder()); // max-heap
+        right = new PriorityQueue<>(); // min-heap
+    }
+
+    public void addNum(int num) {
+        // Add to max-heap first
+        if (!left.isEmpty() && num < left.peek()) {
+            left.offer(num);
+        } else {
+            right.offer(num);
+        }
+
+        // Balance the heaps
+        if (left.size() > right.size() + 1) {
+            right.offer(left.poll());
+        } else if (right.size() > left.size() + 1) {
+            left.offer(right.poll());
+        }
+    }
+
+    public double findMedian() {
+        if (left.size() > right.size()) {
+            return left.peek();
+        } else if (right.size() > left.size()) {
+            return right.peek();
+        } else {
+            return (left.peek() + right.peek()) / 2.0;
+        }
+    }
+}
+
+```
+
+```python 
+import heapq
+
+class MedianFinder:
+
+    def __init__(self):
+        self.left = []   # Max heap (as negative numbers)
+        self.right = []  # Min heap
+
+    def addNum(self, num: int) -> None:
+        if self.left and -self.left[0] > num:
+            heapq.heappush(self.left, -num)
+        else:
+            heapq.heappush(self.right, num)
+
+        # Balance the heaps only if their sizes differ by more than 1
+        if len(self.left) > len(self.right) + 1:
+            heapq.heappush(self.right, -heapq.heappop(self.left))
+        elif len(self.right) > len(self.left) + 1:
+            heapq.heappush(self.left, -heapq.heappop(self.right))
+
+    def findMedian(self) -> float:
+        if len(self.left) > len(self.right):
+            return -self.left[0]
+        elif len(self.right) > len(self.left):
+            return self.right[0]
+        return (-self.left[0] + self.right[0]) / 2
+
+
+
+```
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 📥 7. **Bucket Sort**
+- **Concept**: Distribute into buckets → Sort → Merge.
+- **Best For**: Uniform float values in [0, 1)
+- **Time**:
+    - Best: O(n)
+    - Worst: O(n²) (bad distribution)
+- **Space**: O(n + k)
+- **Stable**: ❌ (but can be)
+
+```python
+def bucket_sort(arr):
+    n = len(arr)
+    buckets = [[] for _ in range(n)]
+    for num in arr:
+        index = int(n * num)
+        buckets[index].append(num)
+    for b in buckets:
+        b.sort()
+    return [x for bucket in buckets for x in bucket]
+```
+
+---
+
+
+
 ## bucket sort
 Great! Let’s explore **Bucket Sort**, a super interesting sorting algorithm that works really well in **special cases** like **uniformly distributed data**.
 
@@ -518,47 +759,6 @@ print(bucket_sort(arr))  # Output: sorted list
 
 ---
 
-## 🧑‍💻 Java Implementation (For Float Values in [0, 1))
-```java
-import java.util.*;
-
-public class BucketSort {
-    public static void bucketSort(float[] arr) {
-        int n = arr.length;
-        if (n <= 0) return;
-
-        // Step 1: Create empty buckets
-        List<Float>[] buckets = new List[n];
-        for (int i = 0; i < n; i++)
-            buckets[i] = new ArrayList<>();
-
-        // Step 2: Distribute into buckets
-        for (float num : arr) {
-            int index = (int)(num * n);
-            buckets[index].add(num);
-        }
-
-        // Step 3: Sort each bucket
-        for (List<Float> bucket : buckets)
-            Collections.sort(bucket);
-
-        // Step 4: Merge buckets into original array
-        int index = 0;
-        for (List<Float> bucket : buckets) {
-            for (float num : bucket)
-                arr[index++] = num;
-        }
-    }
-
-    public static void main(String[] args) {
-        float[] arr = {0.78f, 0.17f, 0.39f, 0.26f, 0.72f, 0.94f, 0.21f, 0.12f, 0.23f, 0.68f};
-        bucketSort(arr);
-        System.out.println(Arrays.toString(arr));  // Output: sorted array
-    }
-}
-```
-
----
 
 ## 🔥 Key Variants & Notes
 
@@ -567,26 +767,168 @@ public class BucketSort {
 - Not stable by default, but can be made stable if needed.
 
 ---
+Great question! The reason **Bucket Sort is best suited for floats in the [0, 1) range** is because of how the algorithm distributes values **evenly across buckets** — which directly impacts its performance.
+
+---
+
+## 🔍 Let’s break it down:
+
+### ✅ 1. **Uniform Distribution Makes Buckets Effective**
+- In Bucket Sort, we map elements to buckets based on their value.
+- For floats in `[0, 1)`, each value `x` can be mapped using `int(x * n)` where `n = number of buckets`.
+- This ensures:
+    - `x ∈ [0, 1)` → index ∈ `[0, n-1]`
+    - Values are **evenly distributed** if they’re uniform ⇒ small buckets ⇒ fast sort.
+
+> 📌 Example:  
+> `x = 0.72` in array of size 10  
+> `index = int(0.72 * 10) = 7`  
+> Goes into bucket 7.
+
+---
+
+### ✅ 2. **Predictable Range = Simple Indexing**
+- All values are guaranteed to lie within `[0, 1)`, so you don’t need to normalize or scale.
+- That makes it easy to assign to buckets without extra logic.
+
+---
+
+### ✅ 3. **Smaller Subproblems = Faster Sorting**
+- If values are evenly distributed, each bucket has **few elements**.
+- Sorting them individually (e.g., with insertion sort) becomes nearly **O(1)** per bucket.
+
+---
+
+## 🚫 What if values aren’t in [0, 1)?
+
+If values are:
+- Spread unevenly (e.g., `[1, 1000, 1000000]`):  
+  ⇒ **Bucket imbalance** (most values go into one bucket)
+  ⇒ Performance degrades to **O(n²)** in worst case.
+
+You’d need to:
+- **Normalize values**: Bring them into `[0, 1)` range
+- Or use another algorithm (like Quick Sort or Heap Sort)
+
+---
+
+## ✅ Summary
+
+| Reason                     | Benefit                            |
+|---------------------------|-------------------------------------|
+| Uniform float distribution| Even bucket sizes (faster sort)     |
+| [0, 1) range               | Simple index mapping (`x * n`)      |
+| Small bucket sizes         | Efficient with O(n + k) performance |
+
+---
+
+Absolutely! Here's the updated **Python implementation for Bucket Sort on integers**, **with time and space complexity analysis** included.
+
+---
+
+## ✅ **Python Code: Bucket Sort for Integers**
+```python
+def bucket_sort_integers(arr, bucket_size=5):
+    if len(arr) == 0:
+        return []
+
+    # Step 1: Find min and max
+    min_val, max_val = min(arr), max(arr)
+
+    # Step 2: Calculate number of buckets
+    bucket_count = (max_val - min_val) // bucket_size + 1
+    buckets = [[] for _ in range(bucket_count)]
+
+    # Step 3: Distribute elements into buckets
+    for num in arr:
+        index = (num - min_val) // bucket_size
+        buckets[index].append(num)
+
+    # Step 4: Sort each bucket and concatenate
+    sorted_array = []
+    for bucket in buckets:
+        sorted_array.extend(sorted(bucket))  # Replace with insertion sort if needed
+
+    return sorted_array
+
+# ✅ Example
+arr = [42, 32, 33, 52, 37, 47, 51]
+sorted_arr = bucket_sort_integers(arr)
+print(sorted_arr)  # Output: [32, 33, 37, 42, 47, 51, 52]
+```
+
+---
+
+## ⏱️ **Time and Space Complexity**
+
+### **Time Complexity:**
+Let:
+- `n` = number of elements in the input array
+- `k` = number of buckets
+- `b` = average number of elements per bucket = `n/k`
+
+| Step                          | Complexity     |
+|------------------------------|----------------|
+| Finding min/max              | O(n)           |
+| Bucketing elements           | O(n)           |
+| Sorting buckets (individually) | O(k * b log b) → worst case: O(n log n) |
+| Concatenating buckets        | O(n)           |
+| **Total (best/avg)**         | O(n + n log(n/k)) |
+| **Worst case (if all elements fall into one bucket)** | O(n log n) |
+
+### **Space Complexity:**
+- Buckets = O(n)
+- Final sorted array = O(n)
+- **Total = O(n)**
+
+---
+
+## 📌 Summary
+
+| Scenario     | Time Complexity |
+|--------------|------------------|
+| Best Case    | O(n + k)         |
+| Average Case | O(n + n log(n/k))|
+| Worst Case   | O(n log n)       |
+| Space        | O(n)             |
+
+---
+
+Let me know if you'd like to:
+- Replace built-in sort with **insertion sort** for teaching purposes,
+- See the **Java version**,
+- Or try it with **negative integers**!
+
+
+
+
+
+## 🔠 8. **Radix Sort**
+- **Concept**: Sort digits from least to most significant using Counting Sort.
+- **Time**: O(n * k), where k = digit length
+- **Space**: O(n + k)
+- **Stable**: ✅
+- **Use When**: Fixed-length integers, phone numbers, IDs.
+
+---
+
+## 🔢 9. **Counting Sort**
+- **Concept**: Count occurrences → Rebuild sorted array.
+- **Time**: O(n + k)
+- **Space**: O(k)
+- **Stable**: ✅
+- **Use When**: Small integer range.
+
+---
+
+## Frequency based Sorting (Top K Frequent)
+
 
 Perfect choice! The LeetCode problem **[347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)** is a classic — and it can be solved efficiently using **Bucket Sort**.
 
 ---
 
-## 🔍 **Problem Summary**
-
-> Given an integer array `nums` and an integer `k`, return the **k most frequent elements**.
-
----
-
-## ✅ **Why Bucket Sort Works Here**
-
-- Frequency count ranges from `1` to `n` (array length), so we can **bucket elements by their frequency**.
-- Bucket index = frequency, and each bucket holds elements with that frequency.
-- Finally, iterate **from high frequency to low** and collect top `k` elements.
-
----
-
-## 🧑‍💻 Python Bucket Sort Solution
+### 🧑‍💻 Python Bucket Sort Solution
 ```python
 from collections import defaultdict
 
@@ -613,145 +955,21 @@ def topKFrequent(nums, k):
 
 ---
 
-### ✅ Example
-
-```python
-nums = [1,1,1,2,2,3]
-k = 2
-print(topKFrequent(nums, k))  # Output: [1, 2]
-```
-
----
-
-## 🧠 Time & Space Complexity
-
-- **Time**: O(n), since:
-   - Counting = O(n)
-   - Bucketing = O(n)
-   - Collecting top k = O(n)
-- **Space**: O(n) for frequency map + buckets
-
----
-
-## Radix Sort
-
-
-
-
----------------------------------------------------------
-
-Absolutely! Here's a clean and crisp **Quick Revision Guide** for **All Sorting Algorithms** — ideal for interview prep, coding rounds, and last-minute brushing up.
-
----
-
-# ✅ **Sorting Algorithms Quick Revision Notes**
-
----
-
-## 🔄 **1. Bubble Sort**
-- **Idea**: Repeatedly swap adjacent elements if they are in the wrong order.
-- **Time**: Worst O(n²), Best O(n)
-- **Space**: O(1)
-- **Stable**: ✅
-- **Use When**: Teaching concept, very small or nearly sorted data.
-
----
-
-## ⬅️➡️ **2. Insertion Sort**
-- **Idea**: Build sorted array one item at a time by inserting current element into the right position.
-- **Time**: Worst O(n²), Best O(n)
-- **Space**: O(1)
-- **Stable**: ✅
-- **Use When**: Small or nearly sorted data, Linked Lists.
-
----
-
-## 🔄↘️ **3. Selection Sort**
-- **Idea**: Select the smallest (or largest) element and move it to correct position.
-- **Time**: O(n²) always
-- **Space**: O(1)
-- **Stable**: ❌
-- **Use When**: Simplicity matters, educational use.
-
----
-
-## 📦 **4. Merge Sort**
-- **Idea**: Divide array into halves, sort recursively, then merge.
-- **Time**: O(n log n) in all cases
-- **Space**: O(n)
-- **Stable**: ✅
-- **Use When**: Linked Lists, guaranteed performance.
-
----
-
-## ⚡ **5. Quick Sort**
-- **Idea**: Choose pivot, partition array, sort recursively.
-- **Time**: Avg O(n log n), Worst O(n²)
-- **Space**: O(log n) stack space
-- **Stable**: ❌
-- **Use When**: Arrays, fast average-case, in-place sorting.
-
----
-
-## 🪣 **6. Bucket Sort**
-- **Idea**: Divide range into buckets, sort buckets individually.
-- **Time**: Best O(n), Worst O(n²)
-- **Space**: O(n + k)
-- **Stable**: Depends
-- **Use When**: Uniformly distributed floats in [0,1)
-
----
-
-## 🧮 **7. Counting Sort**
-- **Idea**: Count frequency of elements and reconstruct the sorted array.
-- **Time**: O(n + k)
-- **Space**: O(k)
-- **Stable**: ✅
-- **Use When**: Integers in a small range.
-
----
-
-## 🔢 **8. Radix Sort**
-- **Idea**: Sort numbers digit by digit using Counting Sort as subroutine.
-- **Time**: O(nk) where k = number of digits
-- **Space**: O(n + k)
-- **Stable**: ✅
-- **Use When**: Fixed-length integers, IDs, phone numbers.
-
----
-
-## 🏔️ **9. Heap Sort**
-- **Idea**: Build a max-heap, extract elements from the heap.
-- **Time**: O(n log n)
-- **Space**: O(1)
-- **Stable**: ❌
-- **Use When**: In-place sort needed without recursion.
-
 
 
 -----
+
+
+
+
 ## problems 
 
-**Problem-1:** check the list if any element is duplicated or not
-
-hint:
-* brute-force with two loops  
-* sorting technique
 
 **Problem** Given an array , where each element of the array represents a vote in the elections. means this array contains list of chosen candidate IDs. find the candidate who wins the elections
 
-hint:
-* brute-force to find count for each candidate and update max count with candidate ID
-* sorting technique and count for each Id 
-* counting sort 
-* using hashtable 
+
 
 **Problem** Given two array of n elements and target value K. check whether a+b =k where a is from A and b is from B;
-
-hint:
-* using brute force
-* using hashing technique 
-* sort both the array and use binary search to find (k-a) in B
 
 
 **Problem** if we have a telephone directory with 10 million entries which sorting is best
@@ -759,8 +977,6 @@ hint:
 
 **Problem** nuts and bolts : given a set of nuts of different sizes and n bolts such that there is a one to one mapping only
 
-Hint: 
-* Brute force approach 
 
 **Problem** You are given an m x n integer matrix matrix with the following two properties:
 * Each row is sorted in non-decreasing order.
@@ -779,11 +995,7 @@ Hint:
 * hashmap and sort by value
 
 
-Here’s a list of the **most frequently asked LeetCode problems** that are related to **Merge Sort**, **Quick Sort**, and **Heap Sort** — commonly asked in **FAANG** and top tech interviews.
-
----
-
-## **1. Merge Sort - Top LeetCode Problems**
+## **Other problems**
 
 | Problem | Topic | Company Tags |
 |--------|-------|---------------|
@@ -792,25 +1004,11 @@ Here’s a list of the **most frequently asked LeetCode problems** that are rela
 | [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Merge + Heap (Min Heap) | Google, Amazon |
 | [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/) | Linked List Merge | Amazon |
 | [315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) | Merge Sort + Inversion Count | Google, Bloomberg |
-
----
-
-## **2. Quick Sort - Top LeetCode Problems**
-
-| Problem | Topic | Company Tags |
-|--------|-------|---------------|
 | [912. Sort an Array](https://leetcode.com/problems/sort-an-array/) | Quick Sort / Merge Sort | Facebook |
 | [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Quick Select | Amazon, Google |
 | [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | Quick Select / Heap | Google |
 | [280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | Sort + Partition | Amazon |
 | [324. Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/) | Three-way QuickSort | Google |
-
----
-
-## **3. Heap Sort / Heap - Top LeetCode Problems**
-
-| Problem | Topic | Company Tags |
-|--------|-------|---------------|
 | [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Max Heap / Quick Select | Amazon |
 | [703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | Min Heap | Microsoft |
 | [295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Min & Max Heap | Google |
@@ -820,9 +1018,6 @@ Here’s a list of the **most frequently asked LeetCode problems** that are rela
 | [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Min Heap | Amazon |
 | [621. Task Scheduler](https://leetcode.com/problems/task-scheduler/) | Max Heap + Greedy | Google |
 
----
-
-Would you like me to categorize these further (like by level or frequency), or generate a practice plan using these?
 
 
 

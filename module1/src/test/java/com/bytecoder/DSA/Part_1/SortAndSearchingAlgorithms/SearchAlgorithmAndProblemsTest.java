@@ -1,6 +1,5 @@
 package com.bytecoder.DSA.Part_1.SortAndSearchingAlgorithms;
 
-import com.bytecoder.DSA.Part_0.SortAndSearchingAlgorithms.SearchAlgorithmAndProblems;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -363,4 +363,31 @@ in a timely fashion. Despite setbacks, they rise to the occasion and never settl
 
 
 
+----
+go through the guide 
+how you drive results -> time, complexity, efficiency
+communication -> clear communication, sign-offs, structured milestones, team alignment,
+grind hard -> work hard, deliver results, be agile, be adaptive, new learning, lead with vision
+resolving conflicts -> clear communication, team alignment, compromised solution
+embrace ambiguity -> pivot, prioritise , new things to learn, lead with vision
+
+- most challenging project 
+- disagreee team and make compromise
+- most difficult project and handle conflict, made success out of it
+- external collaboration with team 
+- disagreement and compromise
+- how to take negative feedback and questions
+- your received actionable feedback from peers, manager
+- mentorship and guidance to juniors
+- worked with diffiecult teams and members
+- pivot in the project due to requirements change
+- not having complete requirements to make decision
+
+
+---
+system design 
+- clearify requirements with diagrams
+- problem navigation , best practices, find trade offs
+- pros and cons
+
 

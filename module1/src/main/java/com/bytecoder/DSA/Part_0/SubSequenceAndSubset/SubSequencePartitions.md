@@ -1,0 +1,2 @@
+- can a array split into k equal sum subsequences /subsets
+- 

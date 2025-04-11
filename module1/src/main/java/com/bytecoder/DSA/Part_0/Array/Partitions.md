@@ -1,0 +1,4 @@
+- can a array split into k equal sum
+- split array into k subarrays such that max sum of any subarray is less than k 
+- split array into k subarrays such that max sum of any subarray is minimum
+- solve create min number of subarrays from array where max sum of any sumarray is less than k

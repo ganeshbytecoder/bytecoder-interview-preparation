@@ -189,6 +189,70 @@ Here are **similar and related interval-based problems** that are **commonly ask
 - **Approach**: Greedy, sort by cost difference
 - ✅ Conceptually different, but often grouped with interval-type scheduling
 
+
+## Activity Selection Problem
+1. **Activity Selection Problem**
+  - Sort activities by their finish times.
+  - Always pick the next activity with the earliest finish time that starts after the last selected activity.
+
+7. **Maximum Trains for Which Stoppage Can be Provided**
+  - Sort the trains by their arrival times and use a greedy approach to provide platforms to trains while avoiding overlaps.
+
+
+#### **Max Meetings in One Room** / N Meetings in One room
+https://leetcode.com/problems/meeting-rooms/description/
+https://leetcode.com/problems/meeting-rooms-ii/
+https://leetcode.com/problems/meeting-rooms-iii/description/
+
+#### Minimum Number of Arrows to Burst Balloons:
+
+```java
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a,b) -> Integer.compare(a[0],b[0]));
+        int end= points[0][1];
+        int count=1;
+
+         for (int i = 1; i < points.length; i++) {
+            if(points[i][0] <= end){
+                end = Math.min(end,points[i][1]);
+            }else{
+                end = points[i][1];
+                count++;
+            }
+        }
+
+        return count;
+    }
+```
+
+
+#### Maximum Length of Pair Chain
+
+problem : You are given an array of n pairs where pairs[i] = [lefti, righti] and lefti < righti.
+Example 1:
+Input: pairs = [[1,2],[2,3],[3,4]]
+Output: 2
+Explanation: The longest chain is [1,2] -> [3,4].
+
+similarly n meetings in one room will be done
+
+```java
+    public int findLongestChain(int[][] pairs) {
+
+        Arrays.sort(pairs, (p1, p2)-> p1[1]-p2[1]);
+        int min=Integer.MIN_VALUE;
+        int count=0;
+         for (int i = 0; i <pairs.length; i++) {
+            if(pairs[i][0] > min){
+                count++;
+                min=pairs[i][1];
+                System.out.println(pairs[i][1]);
+            }
+        }
+        return count;
+    }
+```
+
 ---
 
 ### 📌 Tips for Mastering Interval Problems:

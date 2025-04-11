@@ -169,6 +169,7 @@ Instead of directly counting subarrays with **exactly `K` elements** (which is h
 ### **Recommended Practice Problems**
 - [Leetcode 992: Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/)
 - [Leetcode 1248: Count Number of Nice Subarrays](https://leetcode.com/problems/count-number-of-nice-subarrays/)
+- [Leetcode 1248: Count Number of Nice Subarrays](https://leetcode.com/problems/count-of-substrings-containing-every-vowel-and-k-consonants-ii/?envType=daily-question&envId=2025-03-10)
 
 ---
 

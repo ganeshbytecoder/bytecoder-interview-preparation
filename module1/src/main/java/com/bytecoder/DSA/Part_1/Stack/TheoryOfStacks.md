@@ -3,7 +3,11 @@ https://leetcode.com/problems/min-stack/?envType=study-plan-v2&envId=top-intervi
 https://leetcode.com/problems/evaluate-reverse-polish-notation/description/?envType=study-plan-v2&envId=top-interview-150
 https://leetcode.com/problems/decode-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 https://leetcode.com/problems/exclusive-time-of-functions/?envType=company&envId=linkedin&favoriteSlug=linkedin-thirty-days
-
+https://leetcode.com/problems/basic-calculator-ii/description/
+https://leetcode.com/problems/evaluate-reverse-polish-notation/
+https://leetcode.com/problems/basic-calculator/description/
+https://leetcode.com/problems/basic-calculator-iii/description/
+https://leetcode.com/problems/expression-add-operators/description/
 https://leetcode.com/problems/exclusive-time-of-functions/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 
 **Problem** balancing of symbols,

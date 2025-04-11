@@ -1,5 +1,12 @@
 Here's a **cleaned-up, de-duplicated, and structured version** of your LeetCode prep guide. I’ve maintained your categorization, merged overlapping content, and ensured clarity and readability.
 
+
+https://leetcode.com/problems/find-peak-element/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+https://leetcode.com/problems/random-pick-with-weight/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+https://leetcode.com/problems/dot-product-of-two-sparse-vectors/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+https://leetcode.com/problems/split-array-largest-sum/description/
+
+
 ---
 
 # 🔁 LeetCode Core Patterns – Cleaned & Structured

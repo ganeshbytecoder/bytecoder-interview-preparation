@@ -292,6 +292,54 @@ public class MergeSortLinkedList {
 }
 ```
 
+
+### Merge k sorted arrays(important)
+```java
+import java.util.*;
+
+public class MergeKSortedArrays {
+
+    public static int[] mergeKSortedArrays(List<int[]> lists) {
+        if (lists == null || lists.size() == 0) return new int[0];
+        return mergeSort(lists, 0, lists.size() - 1);
+    }
+
+    private static int[] mergeSort(List<int[]> lists, int left, int right) {
+        if (left == right) return lists.get(left);
+
+        int mid = left + (right - left) / 2;
+        int[] l1 = mergeSort(lists, left, mid);
+        int[] l2 = mergeSort(lists, mid + 1, right);
+
+        return mergeTwoArrays(l1, l2);
+    }
+
+    private static int[] mergeTwoArrays(int[] left, int[] right) {
+        int[] merged = new int[left.length + right.length];
+        int i = 0, j = 0, k = 0;
+
+        while (i < left.length && j < right.length) {
+            merged[k++] = (left[i] <= right[j]) ? left[i++] : right[j++];
+        }
+
+        while (i < left.length) merged[k++] = left[i++];
+        while (j < right.length) merged[k++] = right[j++];
+
+        return merged;
+    }
+
+    public static void main(String[] args) {
+        List<int[]> lists = new ArrayList<>();
+        lists.add(new int[]{1, 4, 5});
+        lists.add(new int[]{1, 3, 4});
+        lists.add(new int[]{2, 6});
+
+        int[] result = mergeKSortedArrays(lists);
+        System.out.println(Arrays.toString(result)); // Output: [1, 1, 2, 3, 4, 4, 5, 6]
+    }
+}
+
+```
 ---
 
 
@@ -446,7 +494,7 @@ def heap_sort(arr):
 | `nsmallest(k, iterable)` | k smallest |
 
 ---
-## ✅ **Heap Sort in Python (Manual Implementation using Max-Heap Logic)**
+### ✅ **Heap Sort in Python (Manual Implementation using Max-Heap Logic)**
 
 ```python
 def heap_sort(arr):
@@ -482,17 +530,10 @@ print(arr)  # Output: [1, 3, 4, 5, 10]
 ```
 
 ---
-## 🧰 **Python Built-in Heap: `heapq` Module**
+### 🧰 **Python Built-in Heap: `heapq` Module**
 
 The `heapq` module provides a **Min-Heap** by default. It allows **efficient priority queue operations** in O(log n) time.
 
----
-
-### 📦 `heapq` – Common Methods
-
-```python
-import heapq
-```
 
 | Method | Description |
 |--------|-------------|
@@ -646,20 +687,8 @@ class MedianFinder:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 📥 7. **Bucket Sort**
+- **Bucket Sort**, a super interesting sorting algorithm that works really well in **special cases** like **uniformly distributed data**.
 - **Concept**: Distribute into buckets → Sort → Merge.
 - **Best For**: Uniform float values in [0, 1)
 - **Time**:
@@ -683,13 +712,7 @@ def bucket_sort(arr):
 ---
 
 
-
-## bucket sort
-Great! Let’s explore **Bucket Sort**, a super interesting sorting algorithm that works really well in **special cases** like **uniformly distributed data**.
-
----
-
-## 🪣 What is **Bucket Sort**?
+### 🪣 What is **Bucket Sort**?
 
 **Bucket Sort** is a **distribution sort** that:
 1. Divides elements into several **buckets** (like bins),
@@ -698,7 +721,7 @@ Great! Let’s explore **Bucket Sort**, a super interesting sorting algorithm th
 
 ---
 
-## 🧠 When is it used?
+### 🧠 When is it used?
 
 - When input is **uniformly distributed** over a range.
 - Best for **floats** in `[0, 1)` range.
@@ -706,7 +729,7 @@ Great! Let’s explore **Bucket Sort**, a super interesting sorting algorithm th
 
 ---
 
-## 📊 Time and Space Complexity
+### 📊 Time and Space Complexity
 
 | Case        | Time       | Notes                          |
 |-------------|------------|--------------------------------|
@@ -717,61 +740,14 @@ Great! Let’s explore **Bucket Sort**, a super interesting sorting algorithm th
 
 ---
 
-## ✅ Bucket Sort Algorithm Steps
+### ✅ Bucket Sort Algorithm Steps
 
 1. Create `k` empty buckets.
 2. Distribute the elements into the buckets based on their range.
 3. Sort each bucket.
 4. Merge all sorted buckets.
 
----
 
-## 🧑‍💻 Python Implementation (For Float Values in [0, 1))
-```python
-def bucket_sort(arr):
-    n = len(arr)
-    if n <= 0:
-        return arr
-
-    # Step 1: Create empty buckets
-    buckets = [[] for _ in range(n)]
-
-    # Step 2: Distribute elements into buckets
-    for num in arr:
-        index = int(n * num)  # Index based on range [0,1)
-        buckets[index].append(num)
-
-    # Step 3: Sort individual buckets
-    for bucket in buckets:
-        bucket.sort()
-
-    # Step 4: Concatenate buckets
-    sorted_array = []
-    for bucket in buckets:
-        sorted_array.extend(bucket)
-
-    return sorted_array
-
-# Usage
-arr = [0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68]
-print(bucket_sort(arr))  # Output: sorted list
-```
-
----
-
-
-## 🔥 Key Variants & Notes
-
-- You can adapt Bucket Sort for **integers** by mapping to appropriate ranges.
-- **Insertion Sort** is often used for small bucket sorting due to low overhead.
-- Not stable by default, but can be made stable if needed.
-
----
-Great question! The reason **Bucket Sort is best suited for floats in the [0, 1) range** is because of how the algorithm distributes values **evenly across buckets** — which directly impacts its performance.
-
----
-
-## 🔍 Let’s break it down:
 
 ### ✅ 1. **Uniform Distribution Makes Buckets Effective**
 - In Bucket Sort, we map elements to buckets based on their value.
@@ -820,11 +796,6 @@ You’d need to:
 | [0, 1) range               | Simple index mapping (`x * n`)      |
 | Small bucket sizes         | Efficient with O(n + k) performance |
 
----
-
-Absolutely! Here's the updated **Python implementation for Bucket Sort on integers**, **with time and space complexity analysis** included.
-
----
 
 ## ✅ **Python Code: Bucket Sort for Integers**
 ```python
@@ -858,47 +829,6 @@ print(sorted_arr)  # Output: [32, 33, 37, 42, 47, 51, 52]
 ```
 
 ---
-
-## ⏱️ **Time and Space Complexity**
-
-### **Time Complexity:**
-Let:
-- `n` = number of elements in the input array
-- `k` = number of buckets
-- `b` = average number of elements per bucket = `n/k`
-
-| Step                          | Complexity     |
-|------------------------------|----------------|
-| Finding min/max              | O(n)           |
-| Bucketing elements           | O(n)           |
-| Sorting buckets (individually) | O(k * b log b) → worst case: O(n log n) |
-| Concatenating buckets        | O(n)           |
-| **Total (best/avg)**         | O(n + n log(n/k)) |
-| **Worst case (if all elements fall into one bucket)** | O(n log n) |
-
-### **Space Complexity:**
-- Buckets = O(n)
-- Final sorted array = O(n)
-- **Total = O(n)**
-
----
-
-## 📌 Summary
-
-| Scenario     | Time Complexity |
-|--------------|------------------|
-| Best Case    | O(n + k)         |
-| Average Case | O(n + n log(n/k))|
-| Worst Case   | O(n log n)       |
-| Space        | O(n)             |
-
----
-
-Let me know if you'd like to:
-- Replace built-in sort with **insertion sort** for teaching purposes,
-- See the **Java version**,
-- Or try it with **negative integers**!
-
 
 
 
@@ -956,12 +886,6 @@ def topKFrequent(nums, k):
 ---
 
 
-
------
-
-
-
-
 ## problems 
 
 
@@ -996,27 +920,29 @@ def topKFrequent(nums, k):
 
 
 ## **Other problems**
+*  : 
 
-| Problem | Topic | Company Tags |
-|--------|-------|---------------|
-| [148. Sort List](https://leetcode.com/problems/sort-list/) | Linked List + Merge Sort | Facebook, Amazon |
-| [912. Sort an Array](https://leetcode.com/problems/sort-an-array/) | Array + Merge Sort (or Quick Sort) | Facebook |
-| [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Merge + Heap (Min Heap) | Google, Amazon |
-| [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/) | Linked List Merge | Amazon |
-| [315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) | Merge Sort + Inversion Count | Google, Bloomberg |
-| [912. Sort an Array](https://leetcode.com/problems/sort-an-array/) | Quick Sort / Merge Sort | Facebook |
-| [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Quick Select | Amazon, Google |
-| [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | Quick Select / Heap | Google |
-| [280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/) | Sort + Partition | Amazon |
-| [324. Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/) | Three-way QuickSort | Google |
-| [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/) | Max Heap / Quick Select | Amazon |
-| [703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/) | Min Heap | Microsoft |
-| [295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/) | Min & Max Heap | Google |
-| [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Min Heap | Amazon |
-| [1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/) | Max Heap | Apple |
-| [378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | Min Heap | Facebook |
-| [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) | Min Heap | Amazon |
-| [621. Task Scheduler](https://leetcode.com/problems/task-scheduler/) | Max Heap + Greedy | Google |
+| Problem                                                                                                                | Topic                              | Company Tags |
+|------------------------------------------------------------------------------------------------------------------------|------------------------------------|---------------|
+| [75. Sort Colors](https://leetcode.com/problems/sort-colors/description/)                                              | sorting, in-place sorting          | Facebook, Amazon |
+| [148. Sort List](https://leetcode.com/problems/sort-list/)                                                             | Linked List + Merge Sort           | Facebook, Amazon |
+| [912. Sort an Array](https://leetcode.com/problems/sort-an-array/)                                                     | Array + Merge Sort (or Quick Sort) | Facebook |
+| [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)                                        | Merge + Heap (Min Heap)            | Google, Amazon |
+| [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)                                    | Linked List Merge                  | Amazon |
+| [315. Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)         | Merge Sort + Inversion Count       | Google, Bloomberg |
+| [912. Sort an Array](https://leetcode.com/problems/sort-an-array/)                                                     | Quick Sort / Merge Sort            | Facebook |
+| [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)                 | Quick Select                       | Amazon, Google |
+| [973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)                           | Quick Select / Heap                | Google |
+| [280. Wiggle Sort](https://leetcode.com/problems/wiggle-sort/)                                                         | Sort + Partition                   | Amazon |
+| [324. Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)                                                   | Three-way QuickSort                | Google |
+| [215. Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)                 | Max Heap / Quick Select            | Amazon |
+| [703. Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)                 | Min Heap                           | Microsoft |
+| [295. Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)                       | Min & Max Heap                     | Google |
+| [23. Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)                                        | Min Heap                           | Amazon |
+| [1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)                                            | Max Heap                           | Apple |
+| [378. Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | Min Heap                           | Facebook |
+| [347. Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)                                 | Min Heap                           | Amazon |
+| [621. Task Scheduler](https://leetcode.com/problems/task-scheduler/)                                                   | Max Heap + Greedy                  | Google |
 
 
 

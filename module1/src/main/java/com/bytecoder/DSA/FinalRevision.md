@@ -145,6 +145,97 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 
 ---
 
+
+## chained questions
+---
+
+### 1. **Best Time to Buy and Sell Stock Series**
+- [Best Time to Buy and Sell Stock I](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+- [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+- [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
+- [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
+- [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+- [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+---
+
+### 2. **House Robber Series**
+- [House Robber](https://leetcode.com/problems/house-robber/)
+- [House Robber II](https://leetcode.com/problems/house-robber-ii/)
+- [House Robber III](https://leetcode.com/problems/house-robber-iii/)
+
+---
+
+### 3. **Jump Game Series**
+- [Jump Game](https://leetcode.com/problems/jump-game/)
+- [Jump Game II](https://leetcode.com/problems/jump-game-ii/)
+- [Jump Game III](https://leetcode.com/problems/jump-game-iii/)
+- [Jump Game IV](https://leetcode.com/problems/jump-game-iv/)
+
+---
+
+### 4. **Decode Ways Series**
+- [Decode Ways](https://leetcode.com/problems/decode-ways/)
+- [Decode Ways II](https://leetcode.com/problems/decode-ways-ii/)
+
+---
+
+### 5. **Paint House Series**
+- [Paint House](https://leetcode.com/problems/paint-house/)
+- [Paint House II](https://leetcode.com/problems/paint-house-ii/)
+
+---
+
+### 6. **N-Queens Series**
+- [N-Queens](https://leetcode.com/problems/n-queens/)
+- [N-Queens II](https://leetcode.com/problems/n-queens-ii/)
+
+---
+
+### 7. **Course Schedule Series**
+- [Course Schedule](https://leetcode.com/problems/course-schedule/)
+- [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+
+---
+
+### 8. **Single Number Series**
+- [Single Number](https://leetcode.com/problems/single-number/)
+- [Single Number II](https://leetcode.com/problems/single-number-ii/)
+- [Single Number III](https://leetcode.com/problems/single-number-iii/)
+
+---
+
+### 9. **Binary Tree Maximum Path Sum Series**
+- [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+- [Binary Tree Maximum Path Sum II](https://leetcode.com/problems/binary-tree-maximum-path-sum-ii/)
+- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150
+- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/description/
+- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/description/
+- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/description/
+
+
+---
+
+### 10. **Dungeon Game / Cherry Pickup Series**
+- [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+- [Cherry Pickup](https://leetcode.com/problems/cherry-pickup/)
+- [Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/)
+
+---
+
+### 11. **Longest Increasing Subsequence Variants**
+- [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+- [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
+- [Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
+
+---
+
+### 12. **Compare Version Numbers**
+- [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/)
+
+---
+
+
 ## 8. 📘 Java-Specific Notes & Snippets
 
 ### Arrays & Lists

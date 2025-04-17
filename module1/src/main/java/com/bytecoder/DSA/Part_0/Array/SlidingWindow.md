@@ -3,11 +3,7 @@
 * https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/description/?envType=daily-question&envId=2025-03-08
 * https://leetcode.com/problems/alternating-groups-ii/description/?envType=daily-question&envId=2025-03-09
 * https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters/submissions/1568646837/?envType=weekly-question&envId=2025-03-08
-* public class SlidingWindow {
-
-//    Given a string S which represents DNA sequence, the task is to find all the 10-letter long substring that are repeated more than once. Returning the sequence can be done in any order.
-
-}
+* Given a string S which represents DNA sequence, the task is to find all the 10-letter long substring that are repeated more than once. Returning the sequence can be done in any order.
 
 
 ## **1️⃣ Sliding Window (Variable Length)**

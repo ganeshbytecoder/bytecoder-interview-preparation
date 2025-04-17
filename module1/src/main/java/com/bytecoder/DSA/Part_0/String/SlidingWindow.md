@@ -16,6 +16,7 @@ Use **sliding window** (two-pointer technique) when you need to find:
 - **Difficulty:** Hard
 
 *  https://leetcode.com/problems/maximize-the-confusion-of-an-exam/description/
+*  https://leetcode.com/problems/repeated-dna-sequences/description/
 
 ### **Examples & Approach**
 | Problem Type | Approach |
@@ -248,9 +249,6 @@ s = "110101110"
 - Use **prefix sum + hash map** (same logic as `0`s and `1`s problem).
 
 
-
-
-
 ## **1️⃣ Sliding Window (Variable Length)**
 Use when finding the **longest** or **shortest** substring with certain properties.
 
@@ -307,3 +305,37 @@ def is_palindrome(s: str) -> bool:
 ✅ **Use When**: Comparing parts of a string from both ends.
 
 ---
+
+
+Longest and shortest kind of String Problem :-
+
+
+https://leetcode.com/problems/longest-duplicate-substring Hard
+2.https://leetcode.com/problems/longest-string-chain Medium
+3.https://leetcode.com/problems/longest-common-subsequence Medium
+4.https://leetcode.com/problems/longest-happy-string Medium
+5.https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters Medium
+6.https://leetcode.com/problems/find-longest-awesome-substring Hard
+7.https://leetcode.com/problems/largest-substring-between-two-equal-characters Easy
+8.https://leetcode.com/problems/largest-odd-number-in-string Easy
+
+
+https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/
+
+https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/?ref=asr30
+
+https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/?ref=asr29
+
+https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/?ref=asr28
+
+https://www.geeksforgeeks.org/longest-substring-that-can-be-made-a-palindrome-by-swapping-of-characters/?ref=asr27
+
+https://www.geeksforgeeks.org/longest-substring-with-no-pair-of-adjacent-characters-are-adjacent-english-alphabets/?ref=asr26
+
+https://www.geeksforgeeks.org/longest-substring-where-all-the-characters-appear-at-least-k-times-set-3/?ref=asr25
+
+https://www.geeksforgeeks.org/longest-prefix-also-suffix/
+
+https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1
+
+https://leetcode.com/problems/longest-palindromic-substring/description/

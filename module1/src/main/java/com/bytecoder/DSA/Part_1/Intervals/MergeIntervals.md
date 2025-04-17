@@ -1,270 +1,166 @@
+### ✅ Must-Practice Interval Questions
 
-1️⃣ **Merge Intervals (Sorting + Greedy)**  
-✅ Used for interval problems like **meeting rooms, merge overlapping intervals**.
+-  [163. Missing Ranges](https://leetcode.com/problems/missing-ranges/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
+- [1854. Maximum Population Year](https://leetcode.com/problems/maximum-population-year/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
+- [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+- [57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+- [252. Meeting Rooms I](https://leetcode.com/problems/meeting-rooms/)
+- [253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+- [435. Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+- [452. Minimum Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+- [986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+- [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
+- [2406. Divide Intervals](https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/)
+- [759. Employee Free Time](https://leetcode.com/problems/employee-free-time/)
+- [1109. Corporate Flight Bookings](https://leetcode.com/problems/corporate-flight-bookings/)
+- [729. My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+- [731. My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
+- [436. Find Right Interval](https://leetcode.com/problems/find-right-interval/)
+- [1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+- [1834. Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu/)
+- [646. Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/)
 
-**Example:** **Merge Intervals**
+### 🧩 Core Patterns & Concepts
+
+#### 1️⃣ Merge Intervals (Sorting + Greedy)
+- ✅ Use when merging overlapping intervals or processing calendar events.
+- **Real-life use case**: Merging overlapping booking times, log intervals, or timelines.
+- **How to recognize**: You’re given a list of intervals and asked to merge/clean/normalize them.
+- **Example problems**:
+  - [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+  - [57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+
 ```python
-def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
-    intervals.sort()  
-    merged = []
+# Python - Merge Intervals
 
+def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
+    intervals.sort()
+    merged = []
     for interval in intervals:
         if not merged or merged[-1][1] < interval[0]:
             merged.append(interval)
         else:
             merged[-1][1] = max(merged[-1][1], interval[1])
-
     return merged
 ```
-max room required for given meetings
-```python 
-import java.util.*;
 
-public class MeetingRooms {
+#### 2️⃣ Meeting Rooms Variants
+- ✅ Track concurrent intervals.
+- **Real-life use case**: Scheduling meetings in rooms, allocating taxis, platform assignments.
+- **How to recognize**: Problem asks for "minimum rooms" or "maximum overlaps" at any time.
+- **Example problems**:
+  - [253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+  - [252. Meeting Rooms I](https://leetcode.com/problems/meeting-rooms/)
+  - [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
 
-    public static int maxMeetingRooms(int[][] meetings) {
-        if (meetings == null || meetings.length == 0) return 0;
-
-        int n = meetings.length;
-        int[] startTimes = new int[n];
-        int[] endTimes = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            startTimes[i] = meetings[i][0];
-            endTimes[i] = meetings[i][1];
-        }
-
-        Arrays.sort(startTimes);
-        Arrays.sort(endTimes);
-
-        int startPointer = 0, endPointer = 0;
-        int rooms = 0, maxRooms = 0;
-
-        while (startPointer < n) {
-            if (startTimes[startPointer] < endTimes[endPointer]) {
-                rooms++;
-                startPointer++;
-            } else {
-                rooms--;
-                endPointer++;
-            }
-            maxRooms = Math.max(maxRooms, rooms);
-        }
-
-        return maxRooms;
-    }
-
-    public static void main(String[] args) {
-        int[][] meetings = {
-            {0, 30},
-            {5, 10},
-            {15, 20}
-        };
-
-        System.out.println("Max meeting rooms required: " + maxMeetingRooms(meetings));
-    }
-}
-
+```java
+// Java - Meeting Rooms (Two Pointers)
+...
 ```
 
 ```java
-import java.util.*;
-
-public class MeetingRoomsHeap {
-
-    public static int minMeetingRooms(int[][] intervals) {
-        if (intervals == null || intervals.length == 0) return 0;
-
-        // Step 1: Sort intervals by start time
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-
-        // Step 2: Min-heap to track end times of ongoing meetings
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-
-        // Step 3: Process each meeting
-        for (int[] interval : intervals) {
-            int start = interval[0];
-            int end = interval[1];
-
-            // If a meeting has ended before the current starts, reuse the room
-            while (!minHeap.isEmpty() && start >= minHeap.peek()) {
-                minHeap.poll();  // Room becomes free
-            }
-
-            minHeap.offer(end);  // Allocate room for current meeting
-        }
-
-        // Step 4: Size of heap = max rooms used at any point
-        return minHeap.size();
-    }
-
-    public static void main(String[] args) {
-        int[][] meetings = {
-            {0, 30},
-            {5, 10},
-            {15, 20}
-        };
-
-        System.out.println("Minimum rooms required: " + minMeetingRooms(meetings));
-    }
-}
-
-```
-max platforms required for give trains timing at platform
----
-* https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/solutions/5950330/more-simpler-java-solution/
-* https://leetcode.com/problems/insert-interval/description/?envType=study-plan-v2&envId=top-interview-150
-* https://leetcode.com/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-interview-150
-* https://leetcode.com/problems/summary-ranges/description/?envType=study-plan-v2&envId=top-interview-150
-* https://leetcode.com/problems/meeting-rooms-ii/description/
-
-Absolutely — you're spot on! This **"Meeting Rooms II"** (or "Minimum Platforms for Trains") problem is a **classic interval scheduling** question and very popular in interviews, especially for roles at FAANG or any backend/system-heavy roles.
-
-Here are **similar and related interval-based problems** that are **commonly asked** in interviews — many with overlapping concepts like sweep-line, greedy, heap, and merging intervals:
-
----
-
-## 🔥 TOP Similar Interval Problems on LeetCode:
-
----
-
-### **1. [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)**
-- **Type**: Merge overlapping intervals
-- **Approach**: Sort + Merge into result list
-- ✅ Must-know for basic interval manipulation
-
----
-
-### **2. [57. Insert Interval](https://leetcode.com/problems/insert-interval/)**
-- **Type**: Insert a new interval into a sorted list and merge if needed
-- **Used for**: Scheduling systems
-- ✅ Variation of Merge Intervals
-
----
-
-### **3. [252. Meeting Rooms I](https://leetcode.com/problems/meeting-rooms/)**
-- **Type**: Just check if all meetings can be attended (no overlap)
-- **Approach**: Sort by start time, check if current starts before previous ends
-- ✅ Simpler version of Meeting Rooms II
-
----
-
-### **4. [759. Employee Free Time](https://leetcode.com/problems/employee-free-time/)**
-- **Type**: Given employees' schedules, find common free time slots
-- **Approach**: Merge all busy intervals, invert to find gaps
-- ✅ Uses heap & interval merging
-
----
-
-### **5. [435. Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)**
-- **Type**: Remove minimum number of intervals to make the rest non-overlapping
-- **Approach**: Greedy, sort by end time
-- ✅ Classic greedy optimization problem
-
----
-
-### **6. [986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)**
-- **Type**: Find overlapping parts between two interval lists
-- **Approach**: Two-pointer traversal
-- ✅ Great for calendar systems
-
----
-
-### **7. [759. Employee Free Time](https://leetcode.com/problems/employee-free-time/)**
-- **Type**: Find shared "free time" intervals among employees
-- **Approach**: Heap + interval merge
-- ✅ Complex but highly valuable
-
----
-
-### **8. [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/)**
-- **Type**: Return max number of concurrent events
-- **Approach**: Sweep line algorithm or TreeMap
-- ✅ Advanced version of Meeting Rooms II
-
----
-
-### **9. [1029. Two City Scheduling](https://leetcode.com/problems/two-city-scheduling/)**
-- **Type**: Schedule based on cost — send people to 2 cities minimizing cost
-- **Approach**: Greedy, sort by cost difference
-- ✅ Conceptually different, but often grouped with interval-type scheduling
-
-
-## Activity Selection Problem
-1. **Activity Selection Problem**
-  - Sort activities by their finish times.
-  - Always pick the next activity with the earliest finish time that starts after the last selected activity.
-
-7. **Maximum Trains for Which Stoppage Can be Provided**
-  - Sort the trains by their arrival times and use a greedy approach to provide platforms to trains while avoiding overlaps.
-
-
-#### **Max Meetings in One Room** / N Meetings in One room
-https://leetcode.com/problems/meeting-rooms/description/
-https://leetcode.com/problems/meeting-rooms-ii/
-https://leetcode.com/problems/meeting-rooms-iii/description/
-
-#### Minimum Number of Arrows to Burst Balloons:
-
-```java
-    public int findMinArrowShots(int[][] points) {
-        Arrays.sort(points, (a,b) -> Integer.compare(a[0],b[0]));
-        int end= points[0][1];
-        int count=1;
-
-         for (int i = 1; i < points.length; i++) {
-            if(points[i][0] <= end){
-                end = Math.min(end,points[i][1]);
-            }else{
-                end = points[i][1];
-                count++;
-            }
-        }
-
-        return count;
-    }
-```
-
-
-#### Maximum Length of Pair Chain
-
-problem : You are given an array of n pairs where pairs[i] = [lefti, righti] and lefti < righti.
-Example 1:
-Input: pairs = [[1,2],[2,3],[3,4]]
-Output: 2
-Explanation: The longest chain is [1,2] -> [3,4].
-
-similarly n meetings in one room will be done
-
-```java
-    public int findLongestChain(int[][] pairs) {
-
-        Arrays.sort(pairs, (p1, p2)-> p1[1]-p2[1]);
-        int min=Integer.MIN_VALUE;
-        int count=0;
-         for (int i = 0; i <pairs.length; i++) {
-            if(pairs[i][0] > min){
-                count++;
-                min=pairs[i][1];
-                System.out.println(pairs[i][1]);
-            }
-        }
-        return count;
-    }
+// Java - Meeting Rooms (Heap)
+...
 ```
 
 ---
 
-### 📌 Tips for Mastering Interval Problems:
+#### 🧠 Greedy (Choose earliest end time)
+- **Real-life use case**: Maximize jobs done in limited time, minimize conflicts in scheduling.
+- **How to recognize**: Asked to "select max non-overlapping intervals" or minimize something by choosing smartly.
+- **Example problems**:
+  - [435. Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+  - [452. Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+  - [646. Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/)
 
-- Always start by **sorting intervals** (usually by start time or end time)
-- Understand when to use:
-    - **Greedy** (e.g., choosing earliest end time)
-    - **Heap** (e.g., managing active meetings)
-    - **Sweep Line** (counting overlaps efficiently)
-    - **Two Pointers** (merging/comparing two lists)
-- Practice variations: overlap check, merging, removal, insertion, maximum concurrency.
+#### 🧱 Heap (Track ongoing intervals)
+- **Real-life use case**: Load balancers, resource managers tracking task durations.
+- **How to recognize**: Track active intervals in real-time, especially if end time is involved.
+- **Example problems**:
+  - [253. Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+  - [759. Employee Free Time](https://leetcode.com/problems/employee-free-time/)
+
+#### 🧹 Sweep Line
+- **Real-life use case**: Event management, concurrent sessions, tracking peak usage.
+- **How to recognize**: Start/end event model, and a need to compute overlaps efficiently.
+- **Example problems**:
+  - [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
+  - [2406. Divide Intervals Into Minimum Number of Groups](https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/)
+  - [1094. Car Pooling](https://leetcode.com/problems/car-pooling/)
+
+#### 🔁 Two Pointers
+- **Real-life use case**: Comparing calendars of two users, reservation system conflict checks.
+- **How to recognize**: Two sorted interval lists or sorted lists to merge/intersect.
+- **Example problems**:
+  - [986. Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+  - [1229. Meeting Scheduler](https://leetcode.com/problems/meeting-scheduler/)
 
 ---
 
-Want me to organize these into a **study plan**, or provide **Java templates** to solve each of them?
+### 🧩 Advanced Patterns
+
+#### 📊 Prefix Sum / Difference Array
+- **Real-life use case**: Traffic flow over time, cumulative change over intervals.
+- **How to recognize**: You’re given range updates and asked for aggregate values later.
+- **Example problems**:
+  - [1094. Car Pooling](https://leetcode.com/problems/car-pooling/)
+  - [1109. Corporate Flight Bookings](https://leetcode.com/problems/corporate-flight-bookings/)
+
+#### 🎨 Interval Graph Coloring
+- **Real-life use case**: Assigning lectures to rooms, TV shows to slots.
+- **How to recognize**: Problem asks for groups/partitions of intervals without overlap.
+- **Example problems**:
+  - [2406. Divide Intervals Into Minimum Number of Groups](https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/)
+
+#### 🧮 Edge Case Interval Merging
+- **Real-life use case**: Inserting new bookings, adjusting overlapping windows.
+- **How to recognize**: You're modifying an existing list (insert/delete) while maintaining merged state.
+- **Example problems**:
+  - [57. Insert Interval](https://leetcode.com/problems/insert-interval/)
+  - [1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+
+#### 🧾 Booking Systems (Segment Tree, TreeMap)
+- **Real-life use case**: Calendar apps, room reservation systems, service bookings with complex rules.
+- **How to recognize**: Complex overlapping rules (single, double, triple bookings).
+- **Example problems**:
+  - [729. My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+  - [731. My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
+  - [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
+
+#### 🔍 Binary Search in Intervals
+- **Real-life use case**: Finding the next available appointment slot, scheduling dependencies.
+- **How to recognize**: Searching across sorted intervals or earliest possible start.
+- **Example problems**:
+  - [436. Find Right Interval](https://leetcode.com/problems/find-right-interval/)
+
+#### 📐 Greedy + Custom Sorting
+- **Real-life use case**: Job scheduling, prioritizing by multiple criteria (time, cost).
+- **How to recognize**: You must sort based on more than one field.
+- **Example problems**:
+  - [1288. Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+
+#### 🔄 Sliding Window Over Timeline
+- **Real-life use case**: API rate limits, analyzing burst traffic in fixed time windows.
+- **How to recognize**: Time windows (5 min, 1 hour), and you’re asked for max/min over that period.
+- **Example problems**:
+  - [1834. Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu/)
+
+---
+
+### 📌 Final Interview Tips
+
+- Always **sort** intervals by start or end before processing.
+- Choose the right strategy:
+  - **Greedy**: Pick optimal subset (e.g., non-overlapping).
+  - **Heap**: Track real-time concurrency.
+  - **Sweep Line**: Count overlaps efficiently.
+  - **Two Pointers**: Efficient comparison of two sorted lists.
+- Focus on **edge cases**: overlapping at exact points, full containment, adjacent intervals.
+- **Pattern Recognition Tips**:
+  - If tracking current active intervals → Heap or Sweep Line
+  - If choosing max tasks → Greedy
+  - If two sorted lists involved → Two Pointers
+  - If asked about changes over ranges → Prefix Sum
+  - If asked about real-time booking behavior → TreeMap / Segment Tree
+
+---

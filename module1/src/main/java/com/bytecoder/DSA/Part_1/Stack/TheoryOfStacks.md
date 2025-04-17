@@ -9,6 +9,9 @@ https://leetcode.com/problems/basic-calculator/description/
 https://leetcode.com/problems/basic-calculator-iii/description/
 https://leetcode.com/problems/expression-add-operators/description/
 https://leetcode.com/problems/exclusive-time-of-functions/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
+https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 
 **Problem** balancing of symbols,
 

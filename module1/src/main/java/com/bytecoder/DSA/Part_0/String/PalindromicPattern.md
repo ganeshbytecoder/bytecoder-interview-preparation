@@ -79,6 +79,27 @@ def longest_palindrome(s: str) -> str:
 ✅ **Use When**: Checking for palindromes or finding longest palindromic substrings.
 
 ---
+Palindromic string:-
+
+1.https://leetcode.com/problems/palindrome-partitioning Medium
+2.https://leetcode.com/problems/palindrome-partitioning-ii Hard
+3.https://leetcode.com/problems/valid-palindrome Easy
+4.https://leetcode.com/problems/shortest-palindrome Hard
+5.https://leetcode.com/problems/palindrome-pairs Hard
+6.https://leetcode.com/problems/longest-palindrome Easy
+7.https://leetcode.com/problems/longest-palindromic-subsequence Medium
+8.https://leetcode.com/problems/find-the-closest-palindrome Hard
+9.https://leetcode.com/problems/palindromic-substrings Medium
+10.https://leetcode.com/problems/valid-palindrome-ii Easy
+11.https://leetcode.com/problems/longest-chunked-palindrome-decomposition Hard
+12.https://leetcode.com/problems/break-a-palindrome Medium
+13. https://leetcode.com/problems/can-make-palindrome-from-substring Medium
+    14.https://leetcode.com/problems/palindrome-partitioning-iii Hard
+    15.https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome Hard
+    16.https://leetcode.com/problems/remove-palindromic-subsequences Easy
+    16.https://leetcode.com/problems/construct-k-palindrome-strings Medium
+    17.https://leetcode.com/problems/split-two-strings-to-make-palindrome Medium
+
 
 
 

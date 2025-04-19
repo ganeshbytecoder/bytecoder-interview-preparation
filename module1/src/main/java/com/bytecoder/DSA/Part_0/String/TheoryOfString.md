@@ -12,7 +12,6 @@ Useful when comparing, transforming, or validating strings.
 - [Valid Anagram](https://leetcode.com/problems/valid-anagram)
 - [Buddy Strings](https://leetcode.com/problems/buddy-strings)
 - [Increasing Decreasing String](https://leetcode.com/problems/increasing-decreasing-string)
-- [Check if Two String Arrays are Equivalent](https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent)
 - [Check if Word Equals Summation of Two Words](https://leetcode.com/problems/check-if-word-equals-summation-of-two-words)
 - [Check if One String Swap Can Make Strings Equal](https://leetcode.com/problems/check-if-one-string-swap-can-make-strings-equal)
 
@@ -162,25 +161,5 @@ class Trie:
 
 ---
 
-## **9️⃣ Smallest Repeating Substring Finder**
-```python
-def find_smallest_repeating_substring(s):
-    n = len(s)
-    for k in range(1, n + 1):
-        if n % k == 0:
-            substring = s[:k]
-            if substring * (n // k) == s:
-                return substring
-    return s
-```
-✅ **Use When**: Finding minimal repeating unit in a string.
 
----
 
-## 🧬 **Special Category: DNA & Binary Strings**
-- [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/)  
-  Find subsequences of length 10 that appear more than once.
-
----
-
-If you'd like, I can turn this into a downloadable PDF or Notion-style checklist too. Let me know!

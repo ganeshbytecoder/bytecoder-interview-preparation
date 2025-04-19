@@ -93,12 +93,12 @@ Palindromic string:-
 10.https://leetcode.com/problems/valid-palindrome-ii Easy
 11.https://leetcode.com/problems/longest-chunked-palindrome-decomposition Hard
 12.https://leetcode.com/problems/break-a-palindrome Medium
-13. https://leetcode.com/problems/can-make-palindrome-from-substring Medium
-    14.https://leetcode.com/problems/palindrome-partitioning-iii Hard
-    15.https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome Hard
-    16.https://leetcode.com/problems/remove-palindromic-subsequences Easy
-    16.https://leetcode.com/problems/construct-k-palindrome-strings Medium
-    17.https://leetcode.com/problems/split-two-strings-to-make-palindrome Medium
+13.https://leetcode.com/problems/can-make-palindrome-from-substring Medium
+14.https://leetcode.com/problems/palindrome-partitioning-iii Hard 
+15.https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome Hard
+16.https://leetcode.com/problems/remove-palindromic-subsequences Easy
+16.https://leetcode.com/problems/construct-k-palindrome-strings Medium
+17.https://leetcode.com/problems/split-two-strings-to-make-palindrome Medium
 
 
 

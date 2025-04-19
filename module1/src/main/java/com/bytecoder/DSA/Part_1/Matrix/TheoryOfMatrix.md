@@ -107,6 +107,8 @@ https://leetcode.com/problems/diagonal-traverse/description/?envType=company&env
 
 https://www.geeksforgeeks.org/problems/find-shortest-safe-route-in-a-matrix/1
 
+- https://leetcode.com/problems/robot-room-cleaner/
+- https://leetcode.com/problems/number-of-closed-islands/description/?envType=problem-list-v2&envId=union-find
 
 Another queen in the left diagonal (row - col should be unique). \
 Another queen in the right diagonal (row + col should be unique). /

@@ -1,5 +1,5 @@
-Rate limiters are mechanisms used to control how frequently a user or system can access a resource. They are crucial for preventing abuse, reducing load, and ensuring fair usage in systems like APIs, databases, or message queues.
-
+## implementation of Max Stack(716), hashmap, hashset, queue and deque and priority queue
+- https://leetcode.com/problems/design-hashset/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 ---
 
 ### **Types of Rate Limiters**

@@ -41,5 +41,5 @@ def subarray_sum(nums: list[int], k: int) -> int:
     - **Difficulty:** Medium
 
 
-
+https://leetcode.com/problems/continuous-subarray-sum/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 ---

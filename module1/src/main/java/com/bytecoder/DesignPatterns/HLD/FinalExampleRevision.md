@@ -1,7 +1,15 @@
 
 * https://github.com/tssovi/grokking-the-object-oriented-design-interview/blob/master/object-oriented-design-case-studies/design-cricinfo.md
 
-# Functional 
+- do we have to build whole system from scratch? or do we have to reuse existing system?
+- How much scale do we have to support?
+- scalability
+- performance
+- security
+- availability and consistency
+
+
+# Functional
 - Core business functionalities covering all the cases
 - user should be able to book for future, cancel
 - Payment system for (one-time, recursive and subscription )
@@ -32,7 +40,7 @@ Users → API Gateway → Auth → Microservices → DBs / MQs
 
 This architecture is designed to support:
 1. Users → API Gateway → Auth → Microservices → DBs / MQs (Synchronous Flow)
-2. Users → API Gateway → Auth → Consumer → Queue (Kafka/SQS) → Microservices → DBs / MQs → Return status via WebSocket or Polling (Asynchronous Flow)
+2. Users → API Gateway → Auth → Producers → Queue (Kafka/SQS) → Consumers and Microservices → DBs / MQs → Return status via WebSocket or Polling (Asynchronous Flow)
 
 - **Flexible Subscription Management**  
   Supports multiple subscription plans (monthly, yearly, etc.) with automated enrollment and renewal.
@@ -518,6 +526,9 @@ In **Java Spring Boot**, you can handle **payment retries** and **grace period h
 ### how to handle api gateway or load balancer or auth service bottleneck (will use manage api gateways and load balancers )
 ### how s3 handle load and support ? and durability, fault-tolerance
 ### how banks make sure balance is consistent even after billions of transactions per day
+### how to handle concurrent requests for booking service?
+### how to handle concurrent requests for payment service?
+### how to handle millions event subscribers? like when youtuber / instagram followers gets notifications 
 
 
 ### **Q: Why Kafka and not RabbitMQ?**

@@ -17,6 +17,13 @@ type of graphs:
 
 https://chatgpt.com/share/66fe58f2-5008-8006-adbf-3f8e9aa04db2
 
+
+
+email -> email2
+
+
+https://leetcode.com/problems/accounts-merge/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+
 ## Disjoint set: Union Find: (DSU)
 
 Two sets are called disjoint sets if they don’t have any element in common, the intersection of sets is a null set.

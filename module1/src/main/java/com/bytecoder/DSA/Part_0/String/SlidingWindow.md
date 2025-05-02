@@ -1,15 +1,59 @@
 
-# 📌 Sliding Window Pattern – Fixed & Variable Size
+## **4️⃣ Substring Based Problems**
+Problems involving generating, counting, or matching substrings.
 
----
+### 🧮 All Possible Substrings Generator (Java)
+```java
+public List<String> substrings(String s) {
+    List<String> result = new ArrayList<>();
+    int n = s.length();
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j <= n; j++) {
+            result.add(s.substring(i, j));
+        }
+    }
+    return result;
+}
+```
 
-## 🔁 **Overview**
+### 🧮 All Possible Substrings with fixed length (Java)
+```java
+public List<String> substrings(String s) {
+    List<String> result = new ArrayList<>();
+    int n = s.length();
+    int k = 3;
+    for (int i = 0; i < n-k + 1; i++) {
+        result.add(s.substring(i, i+k));
+    }
+    return result;
+}
+```
+
+
+
+# Above substring problems can be optimised using Sliding Window Pattern – Fixed & Variable Size
 
 Sliding window is a powerful two-pointer technique used for:
-- ✅ Finding **longest** or **shortest** substrings/subarrays with specific properties.
+- ✅ Finding **longest** or **shortest** or **maximum** or **minimum** substrings/sub-arrays with specific properties.
 - ✅ Optimizing from brute force `O(n²)` to `O(n)`.
 
 ---
+
+## **2️⃣ Fixed Window Size**
+Use when you're given a strict window size (e.g., "window of size k").
+
+### 🔹 Patterns
+| Problem Type | Approach |
+|--------------|----------|
+| Max/Min sum of subarray size k | Prefix Sum / Sliding Window |
+| Replace/rearrange ≤ k characters in window | Character Count |
+
+### 🔹 Example: Maximize Confusion of Exam
+[🔗 LeetCode 2024](https://leetcode.com/problems/maximize-the-confusion-of-an-exam/)
+- Flip ≤ k answers to maximize same character window.
+
+---
+
 
 ## **1️⃣ Variable Window Size (Dynamic Window)**
 Used when window size is not fixed — it expands and shrinks based on conditions.
@@ -69,20 +113,6 @@ def longest_substr_k_distinct(s, k):
 
 ---
 
-## **2️⃣ Fixed Window Size**
-Use when you're given a strict window size (e.g., "window of size k").
-
-### 🔹 Patterns
-| Problem Type | Approach |
-|--------------|----------|
-| Max/Min sum of subarray size k | Prefix Sum / Sliding Window |
-| Replace/rearrange ≤ k characters in window | Character Count |
-
-### 🔹 Example: Maximize Confusion of Exam
-[🔗 LeetCode 2024](https://leetcode.com/problems/maximize-the-confusion-of-an-exam/)
-- Flip ≤ k answers to maximize same character window.
-
----
 
 ## **3️⃣ Prefix Sum + HashMap Extensions**
 Great for problems involving **equality in counts** (e.g., equal 0s/1s, A/B).
@@ -152,4 +182,17 @@ def longest_no_adjacent_alphabets(s):
 - [GFG – Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/)
 - [GFG – Length of longest substring without repeating characters](https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/)
 - [GFG – Longest substring that can form palindrome](https://www.geeksforgeeks.org/longest-substring-whose-characters-can-be-rearranged-to-form-a-palindrome/)
+- [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) (Hard)
+- [Minimum Window Subsequence](https://leetcode.com/problems/minimum-window-subsequence/) (Hard)
+- [Longest Repeating Substring](https://leetcode.com/problems/longest-repeating-substring/) (Hard)
 
+
+
+## **5️⃣ Substring Frequency Counting**
+Count substrings matching certain beauty, occurrence, or character distribution.
+
+- [Number of Wonderful Substrings](https://leetcode.com/problems/number-of-wonderful-substrings) (Medium)
+- [Sum of Beauty of All Substrings](https://leetcode.com/problems/sum-of-beauty-of-all-substrings) (Medium)
+- [Maximum Number of Occurrences of a Substring](https://leetcode.com/problems/maximum-number-of-occurrences-of-a-substring) (Medium)
+
+---

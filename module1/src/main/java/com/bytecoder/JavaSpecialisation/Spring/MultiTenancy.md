@@ -1,4 +1,11 @@
 
+Recommendations for Multi-Tenancy Enhancement
+- Dynamic Configuration Refresh: Implement a mechanism to refresh configurations without requiring a service restart.
+- Keyspace-Based Separation: Consider using separate keyspaces for each tenant to provide stronger isolation.
+- Connection Pool per Tenant: Implement separate connection pools for high-traffic tenants.
+- Reactive Configuration Updates: Enhance the JsonConfigCache to reactively update when configurations change.
+- Tenant-Specific Properties: Extend ApplicationProperties to include tenant-specific settings.
+- Caching Strategy: Replace the static HashMap with a more sophisticated caching solution like Caffeine or Redis.
 ## Week 6 **Implementing Multi-Tenancy with Dynamic Data Source Switching**
 
 ## **1️⃣ Determining the Shard Using a Sharding Strategy**

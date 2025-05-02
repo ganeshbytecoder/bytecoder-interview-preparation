@@ -1,13 +1,21 @@
-Here's a **cleaned-up, de-duplicated, and structured version** of your LeetCode prep guide. I’ve maintained your categorization, merged overlapping content, and ensured clarity and readability.
+# Meta Top 200 LeetCode Questions
+1. [Find Peak Element](https://leetcode.com/problems/find-peak-element/)
+2. [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight/)
+3. [Dot Product of Two Sparse Vectors](https://leetcode.com/problems/dot-product-of-two-sparse-vectors/)
+4. [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
+5. https://leetcode.com/problems/valid-number/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+5. https://leetcode.com/problems/find-the-most-common-response/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+6. [1249. Minimum Remove to Make Valid Parentheses](https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
+7. [71. Simplify Path](https://leetcode.com/problems/simplify-path/description/)
+8. [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
+9. [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
+10. [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months)
 
 
-https://leetcode.com/problems/find-peak-element/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
-https://leetcode.com/problems/random-pick-with-weight/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
-https://leetcode.com/problems/dot-product-of-two-sparse-vectors/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
-https://leetcode.com/problems/split-array-largest-sum/description/
 
 
----
+--
+
 
 # 🔁 LeetCode Core Patterns – Cleaned & Structured
 
@@ -15,6 +23,8 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 - [Two Sum](https://leetcode.com/problems/two-sum/)
 - [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 - [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+- https://leetcode.com/problems/sort-array-by-parity/submissions/1617031751/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+- https://leetcode.com/problems/count-equal-and-divisible-pairs-in-an-array/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 - [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
 - [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 - [Set Mismatch](https://leetcode.com/problems/set-mismatch/)
@@ -30,6 +40,7 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 - [Find Subsequence of Length K With Largest Sum](https://leetcode.com/problems/find-subsequence-of-length-k-with-the-largest-sum/)
 - [Rotate Array](https://leetcode.com/problems/rotate-array/)
 - [Remove Element](https://leetcode.com/problems/remove-element/)
+- https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/submissions/1618856814/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 
 ---
 
@@ -44,6 +55,10 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 - [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
 - [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
 - [Check If Every Row and Column Contains All Numbers](https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/)
+- https://leetcode.com/problems/verifying-an-alien-dictionary/submissions/1618037956/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+- https://leetcode.com/problems/greatest-common-divisor-of-strings/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+- 
+
 
 ---
 
@@ -132,6 +147,9 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 - [Number of Islands](https://leetcode.com/problems/number-of-islands/)
 - [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/)
 - [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+- https://leetcode.com/problems/nested-list-weight-sum/description/
+- https://leetcode.com/problems/nested-list-weight-sum-ii/description/
+- https://leetcode.com/problems/number-of-operations-to-make-network-connected/description/
 
 ### ⚡ Shortest Path
 - [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
@@ -235,7 +253,6 @@ https://leetcode.com/problems/split-array-largest-sum/description/
 
 ---
 
-
 ## 8. 📘 Java-Specific Notes & Snippets
 
 ### Arrays & Lists
@@ -267,3 +284,5 @@ for (int num : nums) freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
 ```
 
 ---
+
+

@@ -331,7 +331,7 @@
 
 ---
 
-### 7. WebSockets & Long Polling
+### 7. WebSockets & Long Polling & SSE
 
 **WebSockets**
 

@@ -28,20 +28,6 @@ Your notes provide a solid foundation but need Meta-specific enhancements and de
 
 ## Meta Interview Preparation Checklist
 
-### Core System Design Topics
-
-* [ ] Scalability (Horizontal vs Vertical)
-* [ ] Load Balancing
-* [ ] Caching Strategies
-* [ ] Database Design (SQL vs NoSQL)
-* [ ] API Design (REST, GraphQL)
-* [ ] Microservices Architecture
-* [ ] CAP Theorem
-* [ ] Consistent Hashing (needs more depth)
-* [ ] Rate Limiting (needs more implementation details)
-* [ ] Data Partitioning/Sharding (needs more examples)
-* [ ] Message Queues and Event-Driven Architecture
-* [ ] CDN Architecture
 
 ### Meta-Specific Systems
 
@@ -54,22 +40,7 @@ Your notes provide a solid foundation but need Meta-specific enhancements and de
 * [ ] Content Moderation Systems
 * [ ] Privacy Controls Architecture
 
-### Quantitative Design Skills
 
-* [ ] Back-of-the-envelope Calculations
-* [ ] Capacity Estimation
-* [ ] Traffic Estimation
-* [ ] Storage Requirements Calculation
-* [ ] Bandwidth Estimation
-* [ ] Latency Budgeting
-
-### Low-Level Design
-
-* [X] SOLID Principles
-* [X] Design Patterns (Creational, Structural, Behavioral)
-* [X] OOP Concepts
-* [ ] Concurrency Patterns
-* [ ] API Design Best Practices
 
 ## Preparation Plan
 

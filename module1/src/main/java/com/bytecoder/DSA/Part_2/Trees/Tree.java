@@ -1,7 +1,5 @@
 package com.bytecoder.DSA.Part_2.Trees;
-
 import java.util.List;
-
 
 //* finding the size of the tree
 //* finding the height of the tree
@@ -9,14 +7,14 @@ import java.util.List;
 //* Create – create a tree in the data structure.
 //* Insert − Inserts data in a tree.
 
-public interface Tree<T extends Comparable<T>> {
+public interface Tree {
 
-    Node<T> getRoot();
+    Node getRoot();
 
     boolean isEmpty();
 
     //  using DFS and BFS
-    Tree<T> insert(T data);
+    Tree insert(int data);
 
     //  using DFS and BFS
     void traverse(TraversalType traversalType);
@@ -28,7 +26,7 @@ public interface Tree<T extends Comparable<T>> {
     int getHeight();
 
     //  using DFS and BFS
-    int getLevel(T data);
+    int getLevel(int data);
 
     //  using DFS and BFS
     int getMax();
@@ -37,13 +35,11 @@ public interface Tree<T extends Comparable<T>> {
     int getMin();
 
     //  using DFS and BFS
-    List<Node<T>> getNodesAtLevel(int level);
+    List<Node> getNodesAtLevel(int level);
 
     //  using DFS and BFS
-    boolean searchData(T data);
+    boolean searchData(int data);
 
     //  using DFS and BFS
-    void delete(T data);
-
-
+    void delete(int data);
 }

@@ -195,6 +195,20 @@ class Solution {
 ```
 
 
+### **4️⃣ Cycle Detection & Topological Sorting (BFS in DAGs)**
+12. **[207. Course Schedule](https://leetcode.com/problems/course-schedule/)**
+- **Problem:** Determine if all courses can be taken given prerequisites.
+- **Real-Life Example:** **Dependency resolution in package management**.
+
+13. **[210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)**
+- **Problem:** Find the order in which courses should be taken.
+- **Real-Life Example:** **University curriculum planning**.
+
+14. **[1462. Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/)**
+- **Problem:** Determine if a prerequisite relationship exists between two courses.
+- **Real-Life Example:** **Building software module dependencies**.
+
+
 ### 14. **Minimum Time Taken by Each Job in a DAG**
    - Perform topological sorting and calculate the time taken for each job by relaxing edges according to the topological order.
 

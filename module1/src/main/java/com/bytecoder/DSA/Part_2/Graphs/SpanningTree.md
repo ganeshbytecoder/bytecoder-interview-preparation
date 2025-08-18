@@ -59,7 +59,11 @@ public class PrimsAlgorithm {
 
         while (!queue.isEmpty()) {
             Edge temp = queue.poll();
-            // Step 3: Add edge to MST
+
+            if (visited[neighbour.dst] != 0) {
+                continue;
+            }
+                // Step 3: Add edge to MST
             visited[temp.dst] = 1;
             cost += temp.weight;
 

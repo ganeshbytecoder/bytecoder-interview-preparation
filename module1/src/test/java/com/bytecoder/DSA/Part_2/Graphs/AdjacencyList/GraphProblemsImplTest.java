@@ -3,42 +3,18 @@ package com.bytecoder.DSA.Part_2.Graphs.AdjacencyList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GraphProblemsImplTest {
-    GraphProblemsImpl<Integer> graphProblems = new GraphProblemsImpl<>(null);
+
     @BeforeEach
     void setUp() {
-        Graph<Integer> graph = new Graph<>(true );
-        Node<Integer> node1 = new Node<>(0,0 );
-        Node<Integer> node2 = new Node<>(1,1 );
-        Node<Integer> node3 = new Node<>(2,2 );
-        Node<Integer> node4 = new Node<>(3,3 );
-
-        node1.getNeighbors().put(node2,  5);
-        node1.getNeighbors().put(node3,  10);
-        node4.getNeighbors().put(node3,  10);
-        node4.getNeighbors().put(node1,  10);
-
-        graph.getVertices().add(node1);
-        graph.getVertices().add(node2);
-        graph.getVertices().add(node3);
-        graph.getVertices().add(node4);
-
-        graphProblems = new GraphProblemsImpl<>(graph);
-
     }
 
     @Test
-    void addNode() {
+    void addVertex() {
     }
 
     @Test
-    void removeNode() {
-    }
-
-    @Test
-    void getAllNodes() {
+    void removeVertex() {
     }
 
     @Test
@@ -50,19 +26,23 @@ class GraphProblemsImplTest {
     }
 
     @Test
-    void getAllEdges() {
-    }
-
-    @Test
     void hasEdge() {
     }
 
     @Test
-    void dfs() {
+    void getAllEdges() {
     }
 
     @Test
-    void bfs() {
+    void getAllVertices() {
+    }
+
+    @Test
+    void depthFirstSearch() {
+    }
+
+    @Test
+    void breadthFirstSearch() {
     }
 
     @Test
@@ -70,44 +50,62 @@ class GraphProblemsImplTest {
     }
 
     @Test
+    void isConnected() {
+    }
+
+    @Test
+    void getVertexCount() {
+    }
+
+    @Test
+    void getEdgeCount() {
+    }
+
+    @Test
+    void findShortestPath() {
+    }
+
+    @Test
+    void findAllShortestPaths() {
+    }
+
+    @Test
+    void findMinimumSpanningTree() {
+    }
+
+    @Test
+    void topologicalSort() {
+    }
+
+    @Test
+    void findConnectedComponents() {
+    }
+
+    @Test
+    void hasBridge() {
+    }
+
+    @Test
+    void findBridges() {
+    }
+
+    @Test
+    void getDiameter() {
+    }
+
+    @Test
+    void getAveragePathLength() {
+    }
+
+    @Test
+    void getVertexDegree() {
+    }
+
+    @Test
+    void resetGraph() {
+    }
+
+    @Test
     void printGraph() {
-    }
-
-    @Test
-    void implementDFSTopologicalSorting() {
-        graphProblems.implementDFSTopologicalSorting();
-
-    }
-
-    @Test
-    void implementBFSTopologicalSorting() {
-    }
-
-    @Test
-    void allTopologicalSorting() {
-    }
-
-    @Test
-    void isTopologicalSortingValid() {
-    }
-
-    @Test
-    void printPrimMST() {
-    }
-
-    @Test
-    void printKrushkalMST() {
-    }
-
-    @Test
-    void getNodeByData() {
-    }
-
-    @Test
-    void findShortestPathUsingDijkstra() {
-    }
-
-    @Test
-    void findShortestPathUsingBellmanFord() {
     }
 }

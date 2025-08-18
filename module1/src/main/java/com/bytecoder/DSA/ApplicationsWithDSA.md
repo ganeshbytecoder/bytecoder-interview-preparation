@@ -2,6 +2,79 @@
 - https://leetcode.com/problems/design-hashset/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
 ---
 
+- Rate Limiters
+- load balancer
+- Caching
+- database implementation
+
+
+### Core System Design Topics
+
+* [ ] Scalability (Horizontal vs Vertical)
+* [ ] Load Balancing
+* [ ] Caching Strategies
+* [ ] Database Design (SQL vs NoSQL)
+* [ ] API Design (REST, GraphQL, gRPC)
+* [ ] Microservices Architecture
+* [ ] CAP Theorem and PACELC Theorem
+* [ ] Consistent Hashing (needs more depth)
+* [ ] Rate Limiting (needs more implementation details)
+* [ ] Data Partitioning/Sharding (needs more examples)
+* [ ] Message Queues and Event-Driven Architecture
+* [ ] CDN Architecture
+* [ ] Pyspark Architecture System
+
+### Quantitative Design Skills
+
+* [ ] Back-of-the-envelope Calculations
+* [ ] Capacity Estimation
+* [ ] Traffic Estimation
+* [ ] Storage Requirements Calculation
+* [ ] Bandwidth Estimation
+* [ ] Latency Budgeting
+
+### Low-Level Design
+
+* [X] SOLID Principles
+* [X] Design Patterns (Creational, Structural, Behavioral)
+* [X] OOP Concepts
+* [ ] Concurrency Patterns
+* [ ] API Design Best Practices
+* [ ] Data Structures and Algorithms
+* [ ] Database Design (SQL vs NoSQL)
+* [ ] Caching Strategies
+* [ ] Event-Driven Architecture
+
+### 6. Bloom Filters
+
+**Definition**
+
+- A probabilistic data structure that tells you whether an element **definitely is not** in a set or **possibly is** in a set.
+
+**Characteristics**
+
+- **False positives** are possible, but **false negatives** are not.
+- Very space-efficient for large data sets.
+- Commonly used to reduce expensive lookups, e.g., checking if an item is in a cache.
+
+**Use Cases**
+
+- Check if an email is in a spam list.
+- Check if a request has been processed before.
+- Quick membership tests in large datasets (e.g., from disk-based or remote data sources).
+
+**Key Considerations**
+
+- Tuning the **number of hash functions** and **size of the bit array** to minimize false positives.
+- Bloom filters cannot remove elements easily (unless using advanced variants like Counting Bloom Filters).
+
+---
+
+
+
+
+
+
 ### **Types of Rate Limiters**
 
 | Type | Description | DSA Behind It |
@@ -135,14 +208,16 @@ Here’s a breakdown of **types of load balancers**, what they do, and how you c
 
 ## **Types of Load Balancers**
 
-| Type | Description | DSA Used |
-|------|-------------|----------|
-| **Round Robin** | Assigns requests to servers in circular order | Circular queue / pointer index |
-| **Weighted Round Robin** | Like Round Robin but gives preference to higher-weight servers | Array/List + server weight logic |
-| **Least Connections** | Routes to server with fewest active connections | Min Heap / PriorityQueue |
-| **IP Hash** | Uses hash of client IP to route to same server | HashMap / Consistent Hashing |
-| **Random** | Picks a random server each time | Random with Array/List |
-| **Consistent Hashing** | Smoothly handles node additions/removals | TreeMap + Hashing (like in Distributed systems) |
+| Type                         | Description                                                    | DSA Used                                        |
+|------------------------------|----------------------------------------------------------------|-------------------------------------------------|
+| **Round Robin**              | Assigns requests to servers in circular order                  | Circular queue / pointer index                  |
+| **Sticky Round Robin**       | Assigns requests to same servers to same user                  | Circular queue / pointer index / hashmap        |
+| **Weighted Round Robin**     | Like Round Robin but gives preference to higher-weight servers | Array/List + server weight logic                |
+| **IP/URL Hash**              | Uses hash of client IP to route to same server                 | HashMap / Consistent Hashing                    |
+| **Random**                   | Picks a random server each time                                | Random with Array/List                          |
+| **Consistent Hashing**       | Smoothly handles node additions/removals                       | TreeMap + Hashing (like in Distributed systems) |
+| **Least Time (low latency)** | Like Round Robin but gives preference to least time servers    | Array/List + server weight logic                |
+| **Least Connections**        | Routes to server with fewest active connections                | Min Heap / PriorityQueue                        |
 
 ---
 
@@ -571,10 +646,6 @@ Here’s a deep dive into **types of internal database systems** (like B-Trees, 
 | **Heap File** | Unordered storage | Appends new records, full scan needed | Used in simple file-based DBs |
 | **Bitmaps / Bit Index** | Boolean columns | Fast filtering on categorical data | Columnar DBs like ClickHouse |
 | **Inverted Index** | Text search | Maps words to document IDs | Search engines (Elasticsearch, Lucene) |
-
----
-
-## **DSA Implementations**
 
 ---
 

@@ -148,6 +148,7 @@
   2. **Document Stores** (MongoDB, CouchDB)
   3. **Column-Family Stores** (Cassandra, HBase)
   4. **Graph Databases** (Neo4j)
+  5. **VectorDB** 
 
 **Key Considerations**
 

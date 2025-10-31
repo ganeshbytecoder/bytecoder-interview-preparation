@@ -33,20 +33,6 @@ public class BinaryTree implements Tree {
         return this;
     }
 
-    private void insertNode_DFS(Node current, int data) {
-        if (current.getLeftChild() == null) {
-            current.setLeftChild(new Node(data));
-        } else if (current.getRightChild() == null) {
-            current.setRightChild(new Node(data));
-        } else {
-            // Insert in the shortest subtree
-            if (getHeight(current.getLeftChild()) <= getHeight(current.getRightChild())) {
-                insertNode_DFS(current.getLeftChild(), data);
-            } else {
-                insertNode_DFS(current.getRightChild(), data);
-            }
-        }
-    }
 
     // Time: O(n), Space: O(w) where w is max width
     private void insertNode_BFS(int data) {
@@ -69,6 +55,23 @@ public class BinaryTree implements Tree {
             queue.add(current.getRightChild());
         }
     }
+
+    private void insertNode_DFS(Node current, int data) {
+        if (current.getLeftChild() == null) {
+            current.setLeftChild(new Node(data));
+        } else if (current.getRightChild() == null) {
+            current.setRightChild(new Node(data));
+        } else {
+            // Insert in the shortest subtree
+            if (getHeight(current.getLeftChild()) <= getHeight(current.getRightChild())) {
+                insertNode_DFS(current.getLeftChild(), data);
+            } else {
+                insertNode_DFS(current.getRightChild(), data);
+            }
+        }
+    }
+
+ 
 
     // FAANG Question 1: Check if tree is balanced
     // Time: O(n), Space: O(h) where h is height

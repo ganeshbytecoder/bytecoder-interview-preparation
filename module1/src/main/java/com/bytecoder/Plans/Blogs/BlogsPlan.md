@@ -1,0 +1,14 @@
+- design patterns 
+- system designs 
+- DSA
+- Books 
+- Big Data
+- Spark 
+- java quick revision
+- Multi threading and concurrency 
+- python quick revision
+- databases
+- databases internals and concurrency
+- system design problems 
+- CAP and PACELC 
+- Solid and DRY

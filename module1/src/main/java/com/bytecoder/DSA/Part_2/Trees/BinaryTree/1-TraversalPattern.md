@@ -1,3 +1,77 @@
+### 1. DFS (Depth-First Search) - Recursive
+
+**Use Cases:** Tree traversals, path problems, subtree properties
+
+**💡 Key Insight:** Process node in preorder (before children), inorder (between children), or postorder (after children). Postorder when you need child info first.
+
+**Time:** O(n) | **Space:** O(h) where h is height
+
+#### Template:
+
+```python
+def dfs(node):
+    if not node:
+        return base_case
+  
+    # Preorder: process node here
+    left_result = dfs(node.left)
+    # Inorder: process node here
+    right_result = dfs(node.right)
+    # Postorder: process node here
+  
+    return combine(left_result, right_result)
+```
+
+**Common Problems:**
+
+- Max Depth, Min Depth, find min/max,
+- isValueExists
+- Diameter of Binary Tree (543)
+- Path Sum problems (112, 113, 437)
+- Maximum Path Sum (124)
+
+### 2. BFS (Breadth-First Search) - Level Order
+
+**Use Cases:** Level-by-level processing, shortest path, right/left view
+
+**💡 Key Insight:** Use queue. Process entire level before moving to next. Perfect for problems asking "by level" or "minimum depth".
+
+**Time:** O(n) | **Space:** O(w) where w is max width
+
+#### Template:
+
+```python
+from collections import deque
+
+def bfs(root):
+    if not root: return []
+    q = deque([root])
+    result = []
+  
+    while q:
+        level_size = len(q)
+        level = []
+  
+        for _ in range(level_size):
+            node = q.popleft()
+            level.append(node.val)
+  
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+  
+        result.append(level)
+  
+    return result
+```
+
+**Common Problems:**
+
+- Level Order Traversal (102)
+- Zigzag Level Order (103)
+- Right Side View (199)
+- Minimum Depth (111)
+- Maximum Level Sum (1161)
+
 ### 15. **Diagonal Traversal of a Binary Tree**
 
 ![img_1.png](img_1.png)
@@ -253,7 +327,6 @@ void zigZagTraversal(Node<T> root) {
 }
 ```
 
-
 ### **4. Find the Deepest Node**
 
 ```java
@@ -272,7 +345,6 @@ Node<T> getDeepestNode(Node<T> root) {
     return deepestNode;
 }
 ```
-
 
 ### 🧪 Example: LeetCode 230 – Kth Smallest Element in a BST
 
@@ -302,7 +374,6 @@ class Solution {
 }
 ```
 
-
 ### **3. Check Existence of Path with Given Sum**
 
 give a algorithm for checking the existence of path with given sum. that means , given a sum, check whether there exists a path from root to any of the nodes.
@@ -320,7 +391,6 @@ boolean hasPathSum(Node<T> root, int sum) {
     return hasPathSum(root.left, sum - root.data) || hasPathSum(root.right, sum - root.data);
 }
 ```
-
 
 ### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
 

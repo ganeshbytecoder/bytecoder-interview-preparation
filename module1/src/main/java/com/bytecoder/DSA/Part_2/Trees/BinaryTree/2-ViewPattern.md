@@ -1,3 +1,15 @@
+### 10. Tree Views Pattern
+
+**Use Cases:** Right view, left view, vertical view, boundary
+
+**💡 Key Insight:** Right view = last node per level. Vertical = group by column. Boundary = left edge + leaves + reversed right edge.
+
+**Common Problems:**
+
+- Right Side View (199)
+- Vertical Order Traversal (314, 987)
+- Boundary of Binary Tree (545)
+
 ## **9. Left View of a Tree**
 
 Perform level order traversal and track the first node at each level.
@@ -59,6 +71,65 @@ void rightView(Node root) {
 
 **Time Complexity**: \(O(n)\).
 **Space Complexity**: \(O(w)\).
+
+
+```java
+
+    // FAANG Question 5: Right Side View -> bfs as well
+    // Time: O(n), Space: O(h)
+    public List<Integer> rightSideView() {
+        List<Integer> result = new ArrayList<>();
+        rightView(root, result, 0);
+        return result;
+    }
+
+    private void rightView(Node node, List<Integer> result, int level) {
+        if (node == null) return;
+    
+        if (level == result.size()) {
+            result.add(node.getData());
+        }
+    
+        rightView(node.getRightChild(), result, level + 1);
+        rightView(node.getLeftChild(), result, level + 1);
+    }
+
+
+    // FAANG Question 5: Right Side View using BFS
+    // Time: O(n), Space: O(h)
+    public List<Integer> rightSideView(Node root) {
+        List<Integer> result =  new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while(!queue.isEmpty()){
+
+
+            boolean flag= true;
+            int level = queue.size();
+            while(level >0){
+                Node temp = queue.poll();
+                if(flag){
+                    result.add(temp.data);
+                    flag= false;
+                }
+                if(temp.rightChild != null ){
+                    queue.add(temp.rightChild);
+                }
+                if(temp.leftChild != null){
+                    queue.add(temp.leftChild);
+                }
+                level--;
+            }
+        }
+
+        return result;
+    }
+
+```
 
 ---
 
@@ -131,6 +202,40 @@ void bottomView(Node root) {
 
 **Time Complexity**: \(O(n)\).
 **Space Complexity**: \(O(n)\) for the map.
+
+
+
+```java
+   // FAANG Question 8: Vertical Order Traversal
+    // Time: O(n log n), Space: O(n)
+    public List<List<Integer>> verticalOrder() {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+    
+        Map<Integer, List<Integer>> columnTable = new TreeMap<>();
+        Queue<Pair<Node, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+    
+        while (!queue.isEmpty()) {
+            Pair<Node, Integer> p = queue.poll();
+            Node node = p.getKey();
+            int column = p.getValue();
+        
+            columnTable.computeIfAbsent(column, k -> new ArrayList<>()).add(node.getData());
+        
+            if (node.getLeftChild() != null) {
+                queue.offer(new Pair<>(node.getLeftChild(), column - 1));
+            }
+            if (node.getRightChild() != null) {
+                queue.offer(new Pair<>(node.getRightChild(), column + 1));
+            }
+        }
+    
+        result.addAll(columnTable.values());
+        return result;
+    }
+
+```
 
 ---
 

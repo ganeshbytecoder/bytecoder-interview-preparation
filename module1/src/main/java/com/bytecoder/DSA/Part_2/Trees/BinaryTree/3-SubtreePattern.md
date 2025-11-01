@@ -1,3 +1,43 @@
+### 7. Subtree Properties Pattern
+
+**Use Cases:** Finding largest/smallest subtree with property, counting subtrees
+
+**💡 Key Insight:** Use postorder to get info from children first. Return tuple with (property, size, min, max, etc). Track global best.
+
+#### Template:
+
+```python
+def largestBSTSubtree(root):
+    result = 0
+  
+    def dfs(node):
+        nonlocal result
+        if not node:
+            return (True, 0, float('inf'), float('-inf'))
+  
+        l_valid, l_size, l_min, l_max = dfs(node.left)
+        r_valid, r_size, r_min, r_max = dfs(node.right)
+  
+        if l_valid and r_valid and l_max < node.val < r_min:
+            size = l_size + r_size + 1
+            result = max(result, size)
+            return (True, size, 
+                    min(l_min, node.val), 
+                    max(r_max, node.val))
+  
+        return (False, 0, 0, 0)
+  
+    dfs(root)
+    return result
+```
+
+**Common Problems:**
+
+- Largest BST Subtree (333)
+- Maximum Sum BST (1373)
+- Count Nodes Equal to Average (2265)
+- Balanced Binary Tree (110)
+
 ### **2. Maximum Path Sum**
 
 given a binary tree . find the max path sum. the path may start and end at any node in the tree.
@@ -24,9 +64,7 @@ int maxPathSum(Node<T> root) {
 }
 ```
 
-
 ### **9. Find Diameter of Binary Tree**
-
 
 ```java
 int diameterOfBinaryTree(Node<T> root) {
@@ -45,7 +83,6 @@ int diameterOfBinaryTree(Node<T> root) {
 }
 
 ```
-
 
 ### **4. Diameter of a Tree**
 
@@ -102,5 +139,55 @@ int height(Node node, Result result) {
   
         return Math.max(leftHeight, rightHeight) + 1;
     }
+
+```
+
+
+```java
+    // FAANG Question 4: Maximum Path Sum
+    // Time: O(n), Space: O(h)
+    private int maxSum;
+  
+    public int maxPathSum() {
+        maxSum = Integer.MIN_VALUE;
+        maxPathSumHelper(root);
+        return maxSum;
+    }
+
+    private int maxPathSumHelper(Node node) {
+        if (node == null) return 0;
+    
+        int leftGain = Math.max(maxPathSumHelper(node.getLeftChild()), 0);
+        int rightGain = Math.max(maxPathSumHelper(node.getRightChild()), 0);
+    
+        maxSum = Math.max(maxSum, node.getData() + leftGain + rightGain);
+    
+        return node.getData() + Math.max(leftGain, rightGain);
+    }
+
+
+
+
+    // FAANG Question 6: Diameter of Binary Tree -> Q2 - max width of BT (level order )
+    // Time: O(n), Space: O(h)
+    private int maxDiameter;
+  
+    public int diameterOfBinaryTree() {
+        maxDiameter = 0;
+        calculateHeight(root);
+        return maxDiameter;
+    }
+
+    private int calculateHeight(Node node) {
+        if (node == null) return 0;
+    
+        int leftHeight = calculateHeight(node.getLeftChild());
+        int rightHeight = calculateHeight(node.getRightChild());
+    
+        maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
+    
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
 
 ```

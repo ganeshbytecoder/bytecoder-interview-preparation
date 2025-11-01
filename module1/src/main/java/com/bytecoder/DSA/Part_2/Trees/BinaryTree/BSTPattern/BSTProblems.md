@@ -1,13 +1,48 @@
+
+### 3. BST Properties Pattern
+
+**Use Cases:** Search, insert, validate BST, find closest value
+
+**💡 Key Insight:** Left subtree < node < right subtree. Inorder traversal gives sorted order. Use this to prune search space.
+
+**Time:** O(h) for search | **Space:** O(1) iterative, O(h) recursive
+
+#### Validation Template:
+
+```python
+def isValidBST(root):
+    def validate(node, low=float('-inf'), high=float('inf')):
+        if not node:
+            return True
+  
+        if node.val <= low or node.val >= high:
+            return False
+  
+        return (validate(node.left, low, node.val) and
+                validate(node.right, node.val, high))
+  
+    return validate(root)
+```
+
+**Common Problems:**
+
+- Validate BST (98)
+- BST Iterator (173)
+- Kth Smallest in BST (230)
+- LCA of BST (235)
+- Range Sum of BST (938)
+- Closest Value in BST (270)
+
 * https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
 * https://leetcode.com/problems/increasing-order-search-tree/description/
 * https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-interview-150
-* https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150 
+* https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150
 * https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
 * https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/?envType=study-plan-v2&envId=top-interview-150
-* https://leetcode.com/problems/recover-binary-search-tree/ 
-
+* https://leetcode.com/problems/recover-binary-search-tree/
 
 ### **41. Populate Inorder Successor of All Nodes**
+
 Traverse the tree in reverse in-order and link each node to its successor.
 
 ```java
@@ -29,6 +64,7 @@ void populateHelper(Node node, AtomicReference<Node> next) {
 ---
 
 ### **42. Find LCA of Two Nodes in a BST**
+
 Find the Lowest Common Ancestor using the BST property.
 
 ```java
@@ -45,6 +81,7 @@ Node findLCA(Node root, int n1, int n2) {
 ---
 
 ### **43. Construct BST from Preorder Traversal**
+
 Use a stack to efficiently construct the BST.
 
 ```java
@@ -73,6 +110,7 @@ Node constructBSTFromPreorder(int[] preorder) {
 ---
 
 ### **44. Convert Binary Tree into BST**
+
 1. Extract the in-order traversal.
 2. Sort the values.
 3. Reconstruct the tree.
@@ -105,6 +143,7 @@ void fillTreeWithValues(Node node, Iterator<Integer> iterator) {
 ---
 
 ### **45. Convert Normal BST into Balanced BST**
+
 1. Perform an in-order traversal to extract sorted values.
 2. Recursively build the balanced BST.
 
@@ -129,6 +168,7 @@ Node buildBalancedTree(List<Integer> values, int start, int end) {
 ---
 
 ### **46. Merge Two BSTs**
+
 Merge two BSTs by combining their sorted arrays and building a new BST.
 
 ```java
@@ -146,6 +186,7 @@ Node mergeBSTs(Node root1, Node root2) {
 ---
 
 ### **47. Find Kth Largest Element in BST**
+
 Perform reverse in-order traversal.
 
 ```java
@@ -170,6 +211,7 @@ int kthLargestHelper(Node node, int k, AtomicInteger count) {
 ---
 
 ### **48. Find Kth Smallest Element in BST**
+
 Perform in-order traversal.
 
 ```java
@@ -194,6 +236,7 @@ int kthSmallestHelper(Node node, int k, AtomicInteger count) {
 ---
 
 ### **49. Count Pairs from Two BSTs Whose Sum is Equal to X**
+
 Use in-order and reverse in-order traversal.
 
 ```java
@@ -240,6 +283,7 @@ int countPairs(Node root1, Node root2, int X) {
 ---
 
 ### **50. Find Median of a BST**
+
 Use Morris Traversal to count nodes and find the median.
 
 ```java

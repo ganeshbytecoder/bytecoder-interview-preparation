@@ -17,3 +17,12 @@ boolean printAllAncestors(Node<T> root, Node<T> target) {
     return false;
 }
 ```
+
+
+### 9. Binary Tree Paths (LC 257)
+
+**Difficulty:** Easy | **Pattern:** DFS, Backtracking
+
+Return all root-to-leaf paths as strings.
+
+**Time:** O(n) | **Space:** O(h)

@@ -26,7 +26,6 @@ class Solution {
 }
 ```
 
-
 ### **8. Check if Two Trees Are Structurally Same**
 
 ```java
@@ -71,7 +70,6 @@ public class TreeIsomorphism {
     }
 ````
 
-
 ### **4. Convert Tree to Its Mirror**
 
 - **Recursive Approach:** Swap the left and right children of each node recursively.
@@ -106,4 +104,24 @@ boolean areMirrors(Node<T> root1, Node<T> root2) {
            areMirrors(root1.left, root2.right) &&
            areMirrors(root1.right, root2.left);
 }
+```
+
+
+```java
+
+    // FAANG Question 7: Check if Binary Tree is Symmetric -> Q2 two tree are same or not or mirror or symmetric ?
+    // Time: O(n), Space: O(h)
+    public boolean isSymmetric() {
+        if (root == null) return true;
+        return isMirror(root.getLeftChild(), root.getRightChild());
+    }
+
+    private boolean isMirror(Node left, Node right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+    
+        return left.getData() == right.getData()
+            && isMirror(left.getLeftChild(), right.getRightChild())
+            && isMirror(left.getRightChild(), right.getLeftChild());
+    }
 ```

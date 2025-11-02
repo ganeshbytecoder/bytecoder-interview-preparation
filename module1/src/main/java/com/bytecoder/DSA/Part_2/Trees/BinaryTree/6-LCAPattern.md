@@ -41,6 +41,14 @@ def lowestCommonAncestor(root, p, q):
 - LCA II (nodes may not exist) (1644)
 - Distance Between Nodes
 
+### 24. Smallest Subtree with Deepest Nodes (LC 865)
+
+**Difficulty:** Medium | **Pattern:** DFS, Postorder
+
+Find LCA of deepest leaves.
+
+**Time:** O(n) | **Space:** O(h)
+
 ### LCA in a Binary Tree
 
 https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-interview-150

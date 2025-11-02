@@ -26,3 +26,15 @@ boolean printAllAncestors(Node<T> root, Node<T> target) {
 Return all root-to-leaf paths as strings.
 
 **Time:** O(n) | **Space:** O(h)
+
+
+
+## 6. Flatten Tree to Linked List (LC 114)
+
+**Difficulty:** Medium | **Pattern:** DFS, Postorder
+
+Flatten tree to linked list in preorder.
+
+**Time:** O(n) | **Space:** O(h)
+
+**Trick:** Process in reverse preorder, maintain prev pointer.

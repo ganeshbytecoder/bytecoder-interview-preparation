@@ -49,60 +49,6 @@ class Node:  # for next pointers / special problems
 
 ---
 
-### 4. Path Sum Pattern
-
-**Use Cases:** Finding paths with specific sum, root-to-leaf problems
-
-**💡 Key Insight:** Use DFS with running sum. For "any path" use prefix sum with hashmap. For "root-to-leaf" check leaf condition.
-
-#### Root-to-Leaf Template:
-
-```python
-def hasPathSum(root, target):
-    if not root:
-        return False
-  
-    if not root.left and not root.right:
-        return root.val == target
-  
-    return (hasPathSum(root.left, target - root.val) or
-            hasPathSum(root.right, target - root.val))
-```
-
-#### Any Path (Prefix Sum) Template:
-
-```python
-def pathSum(root, target):
-    def dfs(node, curr_sum):
-        if not node:
-            return 0
-  
-        curr_sum += node.val
-        count = prefix_sums[curr_sum - target]
-  
-        prefix_sums[curr_sum] += 1
-        count += dfs(node.left, curr_sum)
-        count += dfs(node.right, curr_sum)
-        prefix_sums[curr_sum] -= 1
-  
-        return count
-  
-    from collections import defaultdict
-    prefix_sums = defaultdict(int)
-    prefix_sums[0] = 1
-    return dfs(root, 0)
-```
-
-**Common Problems:**
-
-- Path Sum (112)
-- Path Sum II (113)
-- Path Sum III (437)
-- Sum Root to Leaf Numbers (129)
-- Binary Tree Maximum Path Sum (124)
-
----
-
 ### 8. Tree Construction Pattern
 
 **Use Cases:** Building tree from traversals or other representations
@@ -572,7 +518,7 @@ public class BinaryTree implements Tree {
             // Case 2: Node with one child
             if (node.getLeftChild() == null) return node.getRightChild();
             if (node.getRightChild() == null) return node.getLeftChild();
-      
+  
             // Case 3: Node with two children
             // Find the minimum value in right subtree (successor)
             Node successor = findMinNode(node.getRightChild());
@@ -753,24 +699,6 @@ def inorderTraversal_Morris(root):
 
 ---
 
-### 9. Binary Tree Paths (LC 257)
-
-**Difficulty:** Easy | **Pattern:** DFS, Backtracking
-
-Return all root-to-leaf paths as strings.
-
-**Time:** O(n) | **Space:** O(h)
-
-
-### 10. Sum of Left Leaves (LC 404)
-
-**Difficulty:** Easy | **Pattern:** DFS
-
-Sum all left leaves (leaves that are left children).
-
-**Time:** O(n) | **Space:** O(h)
-
-
 ### 13. Closest BST Value (LC 270)
 
 **Difficulty:** Easy | **Pattern:** BST
@@ -781,17 +709,6 @@ Find value closest to given target in BST.
 
 ---
 
-### 14. Sum Root to Leaf Binary Numbers (LC 1022)
-
-**Difficulty:** Easy | **Pattern:** DFS
-
-Treat root-to-leaf paths as binary numbers, sum them.
-
-**Time:** O(n) | **Space:** O(h)
-
-**Formula:** val = (val << 1) | node.val
-
----
 
 ### 15. Cousins in Binary Tree (LC 993)
 
@@ -800,3 +717,114 @@ Treat root-to-leaf paths as binary numbers, sum them.
 Check if two nodes are cousins (same depth, different parents).
 
 **Time:** O(n) | **Space:** O(w)
+
+## 6. Flatten Tree to Linked List (LC 114)
+
+**Difficulty:** Medium | **Pattern:** DFS, Postorder
+
+Flatten tree to linked list in preorder.
+
+**Time:** O(n) | **Space:** O(h)
+
+**Trick:** Process in reverse preorder, maintain prev pointer.
+
+### 10. BST Iterator (LC 173)
+
+**Difficulty:** Medium | **Pattern:** BST, Stack
+
+Implement iterator for BST with O(h) space.
+
+**Time:** O(1) average per next() | **Space:** O(h)
+
+**Approach:** Controlled inorder using stack. Push all left nodes.
+
+### 15. Binary Tree Longest Consecutive (LC 298)
+
+**Difficulty:** Medium | **Pattern:** DFS
+
+Find longest consecutive sequence path.
+
+**Time:** O(n) | **Space:** O(h)
+
+
+
+### 24. Smallest Subtree with Deepest Nodes (LC 865)
+
+**Difficulty:** Medium | **Pattern:** DFS, Postorder
+
+Find LCA of deepest leaves.
+
+**Time:** O(n) | **Space:** O(h)
+
+
+
+### 21. Boundary of Binary Tree (LC 545)
+
+**Difficulty:** Medium | **Pattern:** Tree Views, DFS
+
+Return boundary in counter-clockwise order.
+
+**Time:** O(n) | **Space:** O(h)
+
+**Three parts:** Left boundary + Leaves + Reversed right boundary
+
+---
+
+### 22. Maximum Width (LC 662)
+
+**Difficulty:** Medium | **Pattern:** BFS
+
+Find maximum width using heap indexing (2*i, 2*i+1).
+
+**Time:** O(n) | **Space:** O(w)
+
+
+### 25. Check Completeness (LC 958)
+
+**Difficulty:** Medium | **Pattern:** BFS
+
+Check if tree is complete (all levels filled except possibly last).
+
+**Time:** O(n) | **Space:** O(w)
+
+**Trick:** Once null seen in BFS, no more non-null nodes allowed.
+
+
+
+### 29. All Elements in Two BSTs (LC 1305)
+
+**Difficulty:** Medium | **Pattern:** BST, Merge
+
+Merge two BSTs into sorted array.
+
+**Time:** O(n1 + n2) | **Space:** O(h1 + h2)
+
+---
+
+### 30. Validate Binary Tree Nodes (LC 1361)
+
+**Difficulty:** Medium | **Pattern:** Graph, BFS
+
+Check if given edges form valid binary tree.
+
+**Time:** O(n) | **Space:** O(n)
+
+
+
+### 32. Clone Tree with Random Pointer (LC 1485)
+
+**Difficulty:** Medium | **Pattern:** DFS, HashMap
+
+Deep copy tree with random pointers.
+
+**Time:** O(n) | **Space:** O(n)
+
+
+
+### 33. Diameter of N-Ary Tree (LC 1522)
+
+**Difficulty:** Medium | **Pattern:** DFS
+
+Find diameter of N-ary tree.
+
+**Time:** O(n) | **Space:** O(h)

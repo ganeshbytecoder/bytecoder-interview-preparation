@@ -143,7 +143,18 @@ int height(Node node, Result result) {
 ```
 
 
+
+### 15. Binary Tree Longest Consecutive (LC 298)
+
+**Difficulty:** Medium | **Pattern:** DFS
+
+Find longest consecutive sequence path.
+
+**Time:** O(n) | **Space:** O(h)
+
+
 ```java
+
     // FAANG Question 4: Maximum Path Sum
     // Time: O(n), Space: O(h)
     private int maxSum;
@@ -156,12 +167,12 @@ int height(Node node, Result result) {
 
     private int maxPathSumHelper(Node node) {
         if (node == null) return 0;
-    
+  
         int leftGain = Math.max(maxPathSumHelper(node.getLeftChild()), 0);
         int rightGain = Math.max(maxPathSumHelper(node.getRightChild()), 0);
-    
+  
         maxSum = Math.max(maxSum, node.getData() + leftGain + rightGain);
-    
+  
         return node.getData() + Math.max(leftGain, rightGain);
     }
 
@@ -180,12 +191,12 @@ int height(Node node, Result result) {
 
     private int calculateHeight(Node node) {
         if (node == null) return 0;
-    
+  
         int leftHeight = calculateHeight(node.getLeftChild());
         int rightHeight = calculateHeight(node.getRightChild());
-    
+  
         maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
-    
+  
         return Math.max(leftHeight, rightHeight) + 1;
     }
 

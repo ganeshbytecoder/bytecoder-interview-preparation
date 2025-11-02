@@ -11,8 +11,6 @@ import java.util.Map;
 public class Graph {
     private final boolean directed;
     private final List<Node> vertices;
-
-//    or
 //    used to create graph as well
     private final Map<Node, List<Node>> graph = new HashMap<>();
 

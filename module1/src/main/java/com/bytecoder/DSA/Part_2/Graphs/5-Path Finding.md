@@ -301,4 +301,10 @@ def shortest_path_using_dfs(root, target, visited, temp, result):
 ---
 
 * Longest Increasing Path (329)
-*
+* 
+
+**Shortest Path in Binary Matrix** (LC 1091) ⭐⭐
+
+- Grid BFS with 8 directions
+- Time: O(m × n) | Space: O(m × n)
+- **Real-world:** Robot navigation, maze-solving

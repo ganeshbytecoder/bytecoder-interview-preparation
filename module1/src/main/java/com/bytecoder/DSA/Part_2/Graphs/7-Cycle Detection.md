@@ -34,8 +34,6 @@ def has_cycle_directed(n, edges):
 
 **Common Problems:** Course Schedule (207), Redundant Connection (684)
 
-
-
 ### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
 
 - **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
@@ -145,7 +143,6 @@ private boolean checkCycle(Map<Integer, List<Integer>> adj, int src, int[] state
 
 ```
 
-
 ### Pattern 8: Cycle Detection
 
 **Use Cases:** Detect cycles in directed/undirected graphs
@@ -222,9 +219,7 @@ def has_cycle_undirected(n, edges):
 - Redundant Connection (LC 684)
 - Graph Valid Tree (LC 261)
 
-
 ## BFS
-
 
 ### Pattern 5: Cycle Detection in Undirected Graph
 
@@ -344,3 +339,11 @@ private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src,
     return false;
 }
 ```
+
+
+
+
+**Graph Valid Tree** (LC 261) ⭐⭐
+
+- Cycle detection + connectivity
+- Time: O(V + E) | Space: O(V)

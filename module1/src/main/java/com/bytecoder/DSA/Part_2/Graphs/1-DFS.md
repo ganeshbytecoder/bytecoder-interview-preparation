@@ -1,10 +1,4 @@
-//    MST -> PK -> P -> graph starts PriorityQueue 0 edge +  BFS and K -> PriorityQueue + all edges + DSU
-//    note -> use only if you know graph is DAG for this (stack and DFS) else use kahn's algorithm (in-degree and queue
-
-in the real world , many problems are representated in terms of objects and connections between them.
-for example, airline routes, electric circuits , LAN and internet , facebook friends etc
-
-## 📚 Graph Fundamentals
+# 📚 Graph Fundamentals
 
 **Graph Definition:** A graph G = (V, E) where V is vertices and E is edges connecting them.
 
@@ -20,18 +14,17 @@ for example, airline routes, electric circuits , LAN and internet , facebook fri
 #### 1. Adjacency List (Preferred for sparse graphs)
 
 ```python
-from collections import defaultdict
-
 # Unweighted graph
-graph = defaultdict(list)
+graph = {}
+
 for u, v in edges:
+    if u not in graph:
+        graph[u] = []
+    if v not in graph:
+        graph[v] = []
+  
     graph[u].append(v)
     graph[v].append(u)  # For undirected
-
-# Weighted graph
-graph = defaultdict(list)
-for u, v, weight in edges:
-    graph[u].append((v, weight))
 ```
 
 #### 2. Adjacency Matrix (Dense graphs)
@@ -50,150 +43,6 @@ for u, v in edges:
 visited = set()  # For node tracking
 visited = [[False] * cols for _ in range(rows)]  # For grid/matrix
 ```
-
----
-
-## 🎨 Core DFS Patterns
-
-### Pattern 1: Basic DFS Traversal
-
-**Use Cases:** Explore all nodes, detect connectivity, count components
-
-**💡 Key Insight:** Go deep before going wide. Mark visited to avoid cycles.
-
-**Time:** O(V + E) | **Space:** O(V) for recursion stack
-
-#### Recursive Template:
-
-```python
-def dfs_recursive(node, graph, visited):
-    if node in visited:
-        return
-    visited.add(node)
-    # Process node here
-    for neighbor in graph[node]:
-        dfs_recursive(neighbor, graph, visited)
-
-# Usage
-graph = defaultdict(list)
-visited = set()
-dfs_recursive(start_node, graph, visited)
-```
-
-#### Iterative Template (Using Stack):
-
-```python
-def dfs_iterative(start, graph):
-    stack = [start]
-    visited = set([start])
-  
-    while stack:
-        node = stack.pop()
-        # Process node here
-  
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                stack.append(neighbor)
-  
-    return visited
-```
-
----
-
-### Pattern 6: Boundary DFS (Start from Edges)
-
-**Use Cases:** Surrounded regions, enclaves, capture territories
-
-**💡 Key Insight:** Start DFS from boundary cells. Mark reachable cells. Remaining cells are "surrounded".
-
-**Time:** O(rows * cols) | **Space:** O(rows * cols)
-
-```python
-def surrounded_regions(board):
-    """Capture surrounded regions (LC 130)"""
-    if not board:
-        return
-  
-    rows, cols = len(board), len(board[0])
-  
-    def dfs(r, c):
-        if (r < 0 or r >= rows or c < 0 or c >= cols or
-            board[r][c] != 'O'):
-            return
-  
-        board[r][c] = 'T'  # Mark as temporary
-        dfs(r + 1, c)
-        dfs(r - 1, c)
-        dfs(r, c + 1)
-        dfs(r, c - 1)
-  
-    # Mark boundary-connected 'O's
-    for r in range(rows):
-        dfs(r, 0)
-        dfs(r, cols - 1)
-    for c in range(cols):
-        dfs(0, c)
-        dfs(rows - 1, c)
-  
-    # Capture surrounded regions and restore boundary-connected
-    for r in range(rows):
-        for c in range(cols):
-            if board[r][c] == 'O':
-                board[r][c] = 'X'  # Surrounded
-            elif board[r][c] == 'T':
-                board[r][c] = 'O'  # Restore
-```
-
-**FAANG Problems:**
-
-- Surrounded Regions (LC 130)
-- Number of Enclaves (LC 1020)
-- Pacific Atlantic Water Flow (LC 417)
-
----
-
-### Pattern 7: Clone Graph
-
-**Use Cases:** Deep copy graph with pointers
-
-**💡 Key Insight:** Use HashMap to map old nodes to new nodes. DFS to traverse and clone.
-
-**Time:** O(V + E) | **Space:** O(V)
-
-```python
-class Node:
-    def __init__(self, val=0, neighbors=None):
-        self.val = val
-        self.neighbors = neighbors if neighbors else []
-
-def clone_graph(node):
-    """Clone undirected graph (LC 133)"""
-    if not node:
-        return None
-  
-    old_to_new = {}
-  
-    def dfs(node):
-        if node in old_to_new:
-            return old_to_new[node]
-  
-        clone = Node(node.val)
-        old_to_new[node] = clone
-  
-        for neighbor in node.neighbors:
-            clone.neighbors.append(dfs(neighbor))
-  
-        return clone
-  
-    return dfs(node)
-```
-
----
-
-## 📋 FAANG DFS Problem List
-
-## 🎯 Quick Reference Guide
 
 ### When to Use DFS
 
@@ -305,6 +154,117 @@ sys.setrecursionlimit(10**6)  # Increase if needed
    - Test with single node
    - Test with empty graph
 
+### Pattern 1: Basic DFS Traversal
+
+**Use Cases:** Explore all nodes, detect connectivity, count components
+
+**💡 Key Insight:** Go deep before going wide. Mark visited to avoid cycles.
+
+**Time:** O(V + E) | **Space:** O(V) for recursion stack
+
+#### Recursive Template:
+
+```python
+def dfs_recursive(node, graph, visited):
+    if node in visited:
+        return
+    visited.add(node)
+    # Process node here
+    for neighbor in graph[node]:
+        dfs_recursive(neighbor, graph, visited)
+
+# Usage
+graph = defaultdict(list)
+visited = set()
+dfs_recursive(start_node, graph, visited)
+```
+
+#### Iterative Template (Using Stack):
+
+```python
+def dfs_iterative(start, graph):
+    stack = [start]
+    visited = set([start])
+  
+    while stack:
+        node = stack.pop()
+        # Process node here
+  
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                stack.append(neighbor)
+  
+    return visited
+```
+
 ---
 
-**Good luck with your FAANG interviews! 🚀**
+### Pattern 7: Clone Graph
+
+**Use Cases:** Deep copy graph with pointers
+
+**💡 Key Insight:** Use HashMap to map old nodes to new nodes. DFS to traverse and clone.
+
+**Time:** O(V + E) | **Space:** O(V)
+
+```python
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors else []
+
+def clone_graph(node):
+    """Clone undirected graph (LC 133)"""
+    if not node:
+        return None
+  
+    old_to_new = {}
+  
+    def dfs(node):
+        if node in old_to_new:
+            return old_to_new[node]
+  
+        clone = Node(node.val)
+        old_to_new[node] = clone
+  
+        for neighbor in node.neighbors:
+            clone.neighbors.append(dfs(neighbor))
+  
+        return clone
+  
+    return dfs(node)
+```
+
+
+
+
+**Flood Fill** (LC 733)
+
+- Basic BFS/DFS on grid
+- Time: O(m × n) | Space: O(m × n)
+
+---
+
+**Number of Islands** (LC 200) ⭐⭐⭐
+
+- Grid BFS, connected components
+- Time: O(m × n) | Space: O(min(m, n))
+- **Real-world:** Flood-fill algorithms in image processing
+
+
+
+**Number of Connected Components** (LC 323) ⭐
+
+- Basic component counting
+- Time: O(V + E) | Space: O(V)
+
+1. **Find Center of Star Graph** (LC 1791)
+
+- Graph property check or In-degree/out-degree analysis
+- Time: O(1) | Space: O(1)
+
+3. **Find the Town Judge** (LC 997)
+
+   - In-degree/out-degree analysis
+   - Time: O(E) | Space: O(V)

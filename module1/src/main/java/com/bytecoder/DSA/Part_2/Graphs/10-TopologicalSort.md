@@ -46,7 +46,7 @@ def topological_sort(n, edges):
     while queue:
         node = queue.popleft()
         result.append(node)
-      
+    
         for neighbor in graph[node]:
             in_degree[neighbor] -= 1
             if in_degree[neighbor] == 0:
@@ -73,13 +73,13 @@ def topological_sort_dfs(n, edges):
             return False  # Cycle detected
         if node in visited:
             return True
-      
+    
         rec_stack.add(node)
         for neighbor in graph[node]:
             if not dfs(neighbor):
                 return False
         rec_stack.remove(node)
-      
+    
         visited.add(node)
         result.append(node)
         return True
@@ -213,7 +213,7 @@ class Solution {
             state[src] = 2; // Mark as visited
             return false;
         }
-      
+    
         //     this is used when order is possible or not
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> adjList = new HashMap<>();
@@ -235,7 +235,7 @@ class Solution {
             }
         }
         return true;
-      
+    
     }
 
 
@@ -275,12 +275,20 @@ class Solution {
          }
 
          return order.size()!= numCourses ? false : true;
-      
+    
      }
 }
 ```
 
-### **4️⃣ Cycle Detection & Topological Sorting (BFS in DAGs)**
+* **Course Schedule** (LC 207) ⭐⭐⭐
+  - Topological sort (Kahn's algorithm)
+  - Time: O(V + E) | Space: O(V)
+  - **Real-world:** Task scheduling, dependency resolution
+* **Course Schedule II** (LC 210) ⭐⭐
+  - Topological sort with ordering
+  - Time: O(V + E) | Space: O(V)
+
+### **Cycle Detection & Topological Sorting (BFS in DAGs)**
 
 12. **[207. Course Schedule](https://leetcode.com/problems/course-schedule/)**
 

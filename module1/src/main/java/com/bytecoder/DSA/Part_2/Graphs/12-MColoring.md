@@ -1,4 +1,3 @@
-
 ### Pattern 8: Graph Coloring (Bipartite Check)
 
 **Use Cases:** Possible bipartition, conflict detection, two-group division
@@ -96,7 +95,7 @@ class Solution:
                             visited[neighbor] = 1
                         elif colors[neighbor] == colors[current]:  # Conflict found
                             return False
-                      
+                    
         return True  # After processing all components, return True
 
 
@@ -143,4 +142,10 @@ class Solution:
 3. **DFS/BFS:** To check for cycles or bipartiteness.
 4. **Bitmasking:** For optimization in state-based problems.
 
-Would you like a detailed solution for one of these problems? 🚀
+
+* **Is Graph Bipartite?** (LC 785) ⭐⭐
+  - Graph coloring with BFS
+  - Time: O(V + E) | Space: O(V)
+* **Possible Bipartition** (LC 886) ⭐⭐
+  - Bipartite check variant
+  - Time: O(V + E) | Space: O(V)

@@ -164,14 +164,6 @@ def shortest_path_with_reconstruction(start, end, graph):
    - Grid problem → Grid BFS with directions
    - State space → BFS with custom state
    - Bipartite check → BFS with coloring
-3. **Implementation checklist:**
-
-   - [ ] Initialize queue with starting node(s)
-   - [ ] Initialize visited set/array
-   - [ ] Mark visited during enqueue
-   - [ ] Process level by level if needed
-   - [ ] Check bounds for grid problems
-   - [ ] Handle disconnected components
 
 ## 🎯 BFS vs DFS Comparison
 
@@ -217,42 +209,7 @@ def shortest_path_with_reconstruction(start, end, graph):
 | "Detect cycle"                | Cycle Detection  | BFS/DFS        |
 | "Task dependencies"           | Topological Sort | Kahn's (BFS)   |
 
-### Edge Cases to Consider
-
-1. **Empty graph** - Handle null/empty inputs
-2. **Single node** - Base case
-3. **Disconnected components** - Loop through all nodes
-4. **Self-loops** - Check in cycle detection
-5. **Duplicate edges** - Use Set if needed
-6. **No path exists** - Return -1 or empty result
-
-### Optimization Techniques
-
-```java
-// 1. Early termination
-if (node == target) return distance;
-
-// 2. Bidirectional BFS (for large graphs)
-// Run BFS from both source and target
-
-// 3. Use visited during enqueue (not dequeue)
-if (!visited.contains(neighbor)) {
-    visited.add(neighbor);  // Mark here
-    queue.add(neighbor);
-}
-
-// 4. For grid problems, use directions array
-int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-```
-
-### Common Mistakes to Avoid
-
-1. ❌ Marking visited after dequeue (causes duplicates in queue)
-2. ❌ Not handling disconnected graphs
-3. ❌ Forgetting to track parent for path reconstruction
-4. ❌ Using DFS when BFS is needed for shortest path
-5. ❌ Not checking bounds in grid problems
-6. ❌ Modifying graph while traversing
+### Practice
 
 **Flood Fill** (LC 733)
 
@@ -270,56 +227,13 @@ int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
 - BFS with HashMap
 - Time: O(V + E) | Space: O(V)
 
-* **Nearest Exit from Entrance in Maze** (LC 1926) ⭐
-  - BFS with exit detection
-  - Time: O(m × n) | Space: O(m × n)
-  - **Real-world:** Emergency evacuation planning
-* **Minimum Knight Moves** (LC 1197) ⭐⭐
-  - BFS on infinite board
-  - Time: O(|x| × |y|) | Space: O(|x| × |y|)
+**Nearest Exit from Entrance in Maze** (LC 1926) ⭐
 
-## 📋 🌍 Real-Life Applications of BFS
+- BFS with exit detection
+- Time: O(m × n) | Space: O(m × n)
+- **Real-world:** Emergency evacuation planning
 
-### 1️⃣ Social Network Analysis
+**Minimum Knight Moves** (LC 1197) ⭐⭐
 
-- **Use Case:** Find shortest connection between two people
-- **Example:** LinkedIn's "degrees of connection", Facebook friend suggestions
-- **Algorithm:** BFS finds minimum friend connections
-
-### 2️⃣ Google Maps / GPS Navigation
-
-- **Use Case:** Finding shortest path in road networks
-- **Example:** Google Maps uses BFS for unweighted routes (fewest turns/stops)
-- **Algorithm:** BFS on road graph with intersections as nodes
-
-### 3️⃣ AI & Game Development
-
-- **Use Case:** Pathfinding in games
-- **Example:** AI characters finding shortest route to target
-- **Algorithm:** BFS as base for A* pathfinding
-
-### 4️⃣ Web Crawlers (Search Engines)
-
-- **Use Case:** Traversing web pages efficiently
-- **Example:** Googlebot uses BFS to crawl the web
-- **Algorithm:** Level-by-level page discovery
-
-### 5️⃣ Network Packet Routing
-
-- **Use Case:** Ensuring packets take shortest path
-- **Example:** Data packet transmission in internet backbone
-- **Algorithm:** BFS for optimal routing
-
-### 6️⃣ Water Supply and Power Grid Analysis
-
-- **Use Case:** Finding shortest distribution path
-- **Example:** Electricity distribution planning in smart grids
-- **Algorithm:** BFS for resource distribution
-
-### 7️⃣ Fire Escape Planning
-
-- **Use Case:** Determining quickest escape routes
-- **Example:** Fire safety systems in smart buildings
-- **Algorithm:** BFS from fire location to exits
-
----
+- BFS on infinite board
+- Time: O(|x| × |y|) | Space: O(|x| × |y|)

@@ -1,120 +1,346 @@
-### Pattern 4: Path Finding (All Paths)
+# Path Finding Patterns — De-duplicated
 
-**Use Cases:** Find all paths, backtracking problems
+1. **Path Existence (DFS)**
 
-**💡 Key Insight:** Use DFS with backtracking. Track current path and add to result when destination reached.
+   Use to check connectivity (O(V+E)/O(V)).
+2. **All Paths (DFS + Backtracking)**
 
-**Time:** O(2^V * V) worst case | **Space:** O(V)
+   Enumerate all routes; beware exponential growth.
+3. **Shortest Path (Unweighted, BFS)**
+
+   * Return length
+   * Return full path
+   * Parent tracking (memory-friendly)
+4. **Weighted Shortest Path**
+
+   * **Dijkstra** (non-negative weights)
+   * **Bellman–Ford** (handles negative weights, detects negative cycles)
+5. **Weighted Path with Constraints (DFS/Backtracking)**
+
+   e.g., “Is there a path with total weight ≥ k?” with pruning.
+6. **Longest Path in DAG (DFS + Memoization)**
+
+   Works only for DAGs.
+7. **K-Stops / Limited-Hops Path (Cheapest Flights Within K Stops)** ✅ *Merged*
+
+   Use modified BFS / level-by-level relaxation up to K edges (or K stops).
+8. **Shortest Path in Grid (Binary Matrix)**
+
+   **Use Case:** Grid navigation, maze solving, robot pathfinding
+
+---
+
+## 🔥 Pattern 1: Path Existence Check
+
+**Use Case:** Check if any path exists between two nodes
+
+**Complexity:** Time O(V + E) | Space O(V)
 
 ```python
+def dfs_path_exists(graph, node, end, visited):
+    if node == end:
+        return True
+  
+    visited.add(node)
+  
+    for neighbor in graph[node]:
+	if neighbor in visited:
+            continue
+        if dfs_path_exists(graph, neighbor, end, visited):
+            return True
+  
+    return False
+
+def has_path(graph, start, end):
+    """Check if path exists from start to end"""
+    visited = set()
+    return dfs_path_exists(graph, start, end, visited)
+```
+
+## 🛤️ Pattern 2: Find All Paths (Backtracking)
+
+**Use Case:** Enumerate all possible paths from source to target
+
+**Complexity:** Time O(2^V × V) | Space O(V)
+
+```python
+def dfs_all_paths(graph, node, target, path, result):
+    if node == target:
+        result.append(path[:])  # Add copy of current path
+        return
+  
+    for neighbor in graph[node]:
+        path.append(neighbor)
+        dfs_all_paths(graph, neighbor, target, path, result)
+        path.pop()  # Backtrack
+
 def all_paths_source_target(graph):
     """Find all paths from 0 to n-1 in DAG (LC 797)"""
     n = len(graph)
     result = []
-  
-    def dfs(node, path):
-        if node == n - 1:
-            result.append(path[:])  # Found a path
-            return
-  
-        for neighbor in graph[node]:
-            path.append(neighbor)
-            dfs(neighbor, path)
-            path.pop()  # Backtrack
-  
-    dfs(0, [0])
+    dfs_all_paths(graph, 0, n - 1, [0], result)
     return result
 ```
 
-**Path Exists Check:**
+## 🎯 Pattern 3: Shortest Path (Unweighted Graph - BFS)
+
+**Use Case:** Find shortest path in unweighted graphs
+
+**Complexity:** Time O(V + E) | Space O(V)
+
+### Version A: Return Path Length
 
 ```python
-def has_path(graph, start, end):
-    """Check if path exists from start to end"""
-    visited = set()
+from collections import deque
+
+def bfs_shortest_path_length(graph, start, end):
+    queue = deque([(start, 0)])  # (node, distance)
+    visited = {start}
   
-    def dfs(node):
+    while queue:
+        node, dist = queue.popleft()
+  
         if node == end:
-            return True
-        if node in visited:
-            return False
+            return dist
   
-        visited.add(node)
         for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
-        return False
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
   
-    return dfs(start)
+    return -1  # No path exists
 ```
 
-**FAANG Problems:**
+### Version B: Return Full Path
 
-- All Paths From Source to Target (LC 797)
-- Find if Path Exists in Graph (LC 1971)
-- Path Sum II (LC 113)
+```python
+from collections import deque
 
-### Pattern 9: All Paths from Source to Target
+def bfs_shortest_path(graph, start, end):
+    queue = deque([[start]])  # Store entire path
+    visited = {start}
+  
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+  
+        if node == end:
+            return path
+  
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                new_path = path + [neighbor]
+                queue.append(new_path)
+  
+    return []  # No path exists
+```
 
-**Use Cases:** Find all possible routes, enumerate paths
+### Version C: Using Parent Tracking (Memory Efficient)
 
-**💡 Key Insight:** BFS with path tracking. Store entire path in queue state.
+```python
+from collections import deque
 
-**Time:** O(2^V × V) | **Space:** O(2^V × V)
+def reconstruct_path(parent, start, end):
+    path = []
+    current = end
+  
+    while current is not None:
+        path.append(current)
+        current = parent.get(current)
+  
+    path.reverse()
+    return path if path[0] == start else []
 
-```java
-public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-    List<List<Integer>> result = new ArrayList<>();
-    Queue<List<Integer>> queue = new LinkedList<>();
+def bfs_shortest_path_parent(graph, start, end):
+    queue = deque([start])
+    parent = {start: None}
   
-    List<Integer> initialPath = new ArrayList<>();
-    initialPath.add(0);
-    queue.add(initialPath);
+    while queue:
+        node = queue.popleft()
   
-    int target = graph.length - 1;
+        if node == end:
+            return reconstruct_path(parent, start, end)
   
-    while (!queue.isEmpty()) {
-        List<Integer> path = queue.poll();
-        int node = path.get(path.size() - 1);
+        for neighbor in graph[node]:
+            if neighbor not in parent:
+                parent[neighbor] = node
+                queue.append(neighbor)
   
-        if (node == target) {
-            result.add(new ArrayList<>(path));
-            continue;
-        }
-  
-        for (int neighbor : graph[node]) {
-            List<Integer> newPath = new ArrayList<>(path);
-            newPath.add(neighbor);
-            queue.add(newPath);
-        }
-    }
-  
-    return result;
-}
+    return []
 ```
 
 ---
 
-### Pattern 10: Cheapest Flights Within K Stops
+### ⚖️ Pattern 4. Wighted Shortest Path (both directed and undirected)
 
-**Use Cases:** Path with constraints, limited hops, budget optimization
+### a. Dijkstra's Algorithm
 
-**💡 Key Insight:** Modified BFS tracking (node, cost, stops). Prune paths exceeding k stops.
+**Use Cases:** Shortest path in weighted graph with non-negative weights, network routing
 
-**Time:** O(K × E) | **Space:** O(V)
+**💡 Key Insight:** Greedy algorithm. Always pick closest unvisited node. Use min-heap (priority queue). Does NOT work with negative weights (use Bellman-Ford instead).
+
+**Time:** O((V + E) log V) with min-heap | **Space:** O(V)
+
+#### Template:
+
+```python
+import heapq
+from collections import defaultdict
+
+def dijkstra(n, edges, start):
+    graph = defaultdict(list)
+    for u, v, weight in edges:
+        graph[u].append((v, weight))
+  
+    # Min heap: (distance, node)
+    heap = [(0, start)]
+    dist = {i: float('inf') for i in range(n)}
+    dist[start] = 0
+    visited = set()
+  
+    while heap:
+        d, node = heapq.heappop(heap)
+  
+        if node in visited:
+            continue
+        visited.add(node)
+  
+        for neighbor, weight in graph[node]:
+            new_dist = d + weight
+            if new_dist < dist[neighbor]:
+                dist[neighbor] = new_dist
+                heapq.heappush(heap, (new_dist, neighbor))
+  
+    return dist
+```
+
+**Common Problems:**
+
+* Network Delay Time (743)
+* Cheapest Flights Within K Stops (787)
+
+### b. Bellman-Ford Algorithm
+
+**Use Cases:** Shortest path with negative weights, detect negative cycles
+
+**💡 Key Insight:** Relax all edges V-1 times. Can detect negative cycles by checking if distances still decrease in V-th iteration.
+
+**Time:** O(V * E) | **Space:** O(V)
+
+#### Template:
+
+```python
+def bellman_ford(n, edges, start):
+    dist = [float('inf')] * n
+    dist[start] = 0
+  
+    # Relax all edges V-1 times
+    for _ in range(n - 1):
+        for u, v, weight in edges:
+            if dist[u] != float('inf') and dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+  
+    # Check for negative cycles
+    for u, v, weight in edges:
+        if dist[u] != float('inf') and dist[u] + weight < dist[v]:
+            return None  # Negative cycle detected
+  
+    return dist
+```
+
+**Common Problems:**
+
+* Cheapest Flights Within K Stops (787) - Modified Bellman-Ford
+* Network Delay Time (743) - Alternative to Dijkstra
+
+## ⚖️ Pattern 5: Weighted Path Finding (With Constraints)(both directed and undirected)
+
+****Use when:** **“Is there a path with total weight ≥/≤ K?”, resource limits, etc.
+
+**Complexity:** Time O(V!) worst case | Space O(V)
+
+```python
+def dfs_weighted_path(graph, node, target, current_sum, k, visited):
+    if current_sum >= k:
+        return True
+    if node == target:
+        return current_sum >= k
+  
+    visited[node] = True
+  
+    for neighbor, weight in graph[node]:
+        if not visited[neighbor]:
+            if dfs_weighted_path(graph, neighbor, target, current_sum + weight, k, visited):
+                visited[node] = False  # Backtrack
+                return True
+  
+    visited[node] = False  # Backtrack
+    return False
+
+def path_more_than_k_length(n, edges, k):
+    """Find if path exists with weight >= k"""
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
+    for u, v, weight in edges:
+        graph[u].append((v, weight))
+        graph[v].append((u, weight))  # Undirected
+  
+    visited = [False] * n
+    return dfs_weighted_path(graph, 0, n - 1, 0, k, visited)
+```
+
+---
+
+## 📏 Pattern 6: Longest Path in DAG
+
+**Use Case:** Find maximum length path (works only for DAGs)
+
+**Complexity:** Time O(V + E) | Space O(V)
+
+```python
+def dfs_longest_path(graph, node, memo):
+    if node in memo:
+        return memo[node]
+  
+    max_length = 0
+    for neighbor in graph[node]:
+        max_length = max(max_length, 1 + dfs_longest_path(graph, neighbor, memo))
+  
+    memo[node] = max_length
+    return max_length
+
+def longest_path_dag(graph, n):
+    """Find longest path in DAG using DFS + memoization"""
+    memo = {}
+    max_path = 0
+  
+    for i in range(n):
+        max_path = max(max_path, dfs_longest_path(graph, i, memo))
+  
+    return max_path
+```
+
+---
+
+## ✈️ Pattern 7: Cheapest Flights (K Stops Constraint)
+
+**Use Case:** “Cheapest path with ≤ K stops/edges” (merged pattern).
+
+**Complexity:** Time O(K × E) | Space O(V)
 
 ```python
 from collections import deque
 
 def findCheapestPrice(n, flights, src, dst, k):
-    """
-    LC 787: Cheapest Flights Within K Stops
-    """
-    graph = {i: [] for i in range(n)}
+    """LC 787: Cheapest Flights Within K Stops"""
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
     for u, v, price in flights:
         graph[u].append((v, price))
   
-    # BFS approach
     queue = deque([(src, 0, 0)])  # (node, cost, stops)
     min_cost = {src: 0}
   
@@ -138,173 +364,103 @@ def findCheapestPrice(n, flights, src, dst, k):
     return min_cost.get(dst, -1)
 ```
 
-### Pattern 5: Weighted Path DFS (Path with Constraints)
+---
 
-**Use Cases:** Path with minimum/maximum weight, path length constraints
+## 🗺️ Pattern 8: Shortest Path in Grid (Binary Matrix)
 
-**💡 Key Insight:** DFS with backtracking. Track cumulative weight/distance. Backtrack to explore other paths.
+**Use Case:** Grid navigation, maze solving, robot pathfinding
 
-**Time:** O(V!) worst case | **Space:** O(V)
-
-```python
-def path_more_than_k_length(n, edges, k):
-    """Find if path exists with weight >= k"""
-    graph = defaultdict(list)
-    for u, v, weight in edges:
-        graph[u].append((v, weight))
-        graph[v].append((u, weight))  # Undirected
-  
-    visited = [False] * n
-  
-    def dfs(node, current_sum):
-        if current_sum >= k:
-            return True
-  
-        visited[node] = True
-  
-        for neighbor, weight in graph[node]:
-            if not visited[neighbor]:
-                if dfs(neighbor, current_sum + weight):
-                    return True
-  
-        visited[node] = False  # Backtrack
-        return False
-  
-    return dfs(0, 0)
-```
-
-**Longest Path in DAG:**
-
-```python
-def longest_path_dag(graph, n):
-    """Find longest path in DAG using DFS + memoization"""
-    memo = {}
-  
-    def dfs(node):
-        if node in memo:
-            return memo[node]
-  
-        max_length = 0
-        for neighbor in graph[node]:
-            max_length = max(max_length, 1 + dfs(neighbor))
-  
-        memo[node] = max_length
-        return max_length
-  
-    return max(dfs(i) for i in range(n))
-```
-
-### Pattern 2: Shortest Path in Unweighted Graph
-
-**Use Cases:** Finding minimum distance, shortest transformation sequence
-
-**💡 Key Insight:** BFS naturally finds shortest path in unweighted graphs. Track parent to reconstruct path.
-
-**Time:** O(V + E) | **Space:** O(V)
-
-#### Python Implementation (Using Node Class):
+**Complexity:** Time O(m × n) | Space O(m × n)
 
 ```python
 from collections import deque
 
-class Node:
-    def __init__(self, val, neighbours=None):
-        self.val = val
-        self.neighbours = neighbours or []
-
-def build_graph(edges):
-    nodes = {}
-
-    for u, v in edges:
-        if u not in nodes:
-            nodes[u] = Node(u)
-        if v not in nodes:
-            nodes[v] = Node(v)
-
-        # Add neighbours (undirected graph)
-        nodes[u].neighbours.append(nodes[v])
-        nodes[v].neighbours.append(nodes[u])
-
-    return nodes
-
-def get_path(target, mapper):
-    ans = []
-    node = target
-    while node is not None:
-        ans.insert(0, node)
-        node = mapper.get(node)
-    return ans
-
-def shortest_path_bfs(root, target):
-    q = deque([root])
-    mapper = {root: None}
+def shortestPathBinaryMatrix(grid):
+    """LC 1091: Shortest Path in Binary Matrix (8-directional)"""
+    if not grid or grid[0][0] == 1:
+        return -1
   
-    while q:
-        level_size = len(q)
-        for _ in range(level_size):
-            temp = q.popleft()
-            if temp == target:
-                return get_path(target, mapper)
+    n = len(grid)
+    if grid[n-1][n-1] == 1:
+        return -1
   
-            for neighbor in temp.neighbours:
-                if neighbor not in mapper:
-                    q.append(neighbor)
-                    mapper[neighbor] = temp
+    # 8 directions
+    directions = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
   
-    return []
-
-# Usage Example
-edges = [
-    ("A", "B"),
-    ("A", "C"),
-    ("C", "D"),
-    ("B", "E"),
-    ("F", "Z")
-]
-
-graph = build_graph(edges)
-start = graph["A"]
-end = graph["E"]
-
-path = shortest_path_bfs(start, end)
-print(" -> ".join(node.val for node in path))
-# Output: A -> B -> E
-```
-
-#### Alternative: Shortest Path Using DFS (Not Optimal)
-
-```python
-def shortest_path_using_dfs(root, target, visited, temp, result):
-    """DFS approach - explores all paths, not optimal for shortest path"""
-    if root is None:
-        return 
-
-    if root == target:
-        if len(temp) < len(result) or not result:
-            result.clear()
-            result.extend(temp)
-            return 
+    queue = deque([(0, 0, 1)])  # (row, col, distance)
+    grid[0][0] = 1  # Mark as visited
   
-    visited.add(root)
+    while queue:
+        r, c, dist = queue.popleft()
   
-    for node in root.neighbours:
-        if node not in visited:
-            temp.append(node.val)
-            shortest_path_using_dfs(node, target, visited, temp, result)
-            temp.remove(node.val)
+        if r == n - 1 and c == n - 1:
+            return dist
   
-    visited.remove(root)
-
-# Note: BFS is preferred for shortest path in unweighted graphs
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+  
+            if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 0:
+                grid[nr][nc] = 1  # Mark as visited
+                queue.append((nr, nc, dist + 1))
+  
+    return -1
 ```
 
 ---
 
-* Longest Increasing Path (329)
-* 
+## 📝 FAANG Problem List
 
-**Shortest Path in Binary Matrix** (LC 1091) ⭐⭐
+### Path Existence
 
-- Grid BFS with 8 directions
-- Time: O(m × n) | Space: O(m × n)
-- **Real-world:** Robot navigation, maze-solving
+* **Find if Path Exists in Graph** (LC 1971) ⭐
+* **Keys and Rooms** (LC 841) ⭐⭐
+
+### All Paths
+
+* **All Paths From Source to Target** (LC 797) ⭐⭐
+* **Path Sum II** (LC 113) ⭐⭐
+* **Binary Tree Paths** (LC 257) ⭐
+
+### Shortest Path
+
+* **Shortest Path in Binary Matrix** (LC 1091) ⭐⭐
+* **Word Ladder** (LC 127) ⭐⭐⭐
+* **Minimum Knight Moves** (LC 1197) ⭐⭐
+* **Nearest Exit from Entrance in Maze** (LC 1926) ⭐
+
+### Weighted/Constrained Paths
+
+* **Cheapest Flights Within K Stops** (LC 787) ⭐⭐⭐
+* **Path with Maximum Probability** (LC 1514) ⭐⭐
+* **Network Delay Time** (LC 743) ⭐⭐
+
+### Longest Path
+
+* **Longest Increasing Path in Matrix** (LC 329) ⭐⭐⭐
+* **Longest Path in a DAG** (varies)
+
+---
+
+## 💡 Key Decision Points
+
+| Problem Type               | Algorithm             | Why                 |
+| -------------------------- | --------------------- | ------------------- |
+| Path exists?               | DFS                   | Simple, O(V) space  |
+| Shortest path (unweighted) | BFS                   | Guarantees shortest |
+| All paths                  | DFS + Backtracking    | Need to explore all |
+| Shortest path (weighted)   | Dijkstra/Bellman-Ford | Handles weights     |
+| Path with constraints      | Modified BFS/DFS      | Custom pruning      |
+| Longest path (DAG)         | DFS + Memo            | Works only for DAGs |
+| Grid shortest path         | BFS                   | Layer-by-layer      |
+
+---
+
+## 🎓 Common Pitfalls
+
+1. **Using DFS for shortest path** → May not find optimal solution
+2. **Not handling cycles** → Infinite loops in all-paths problems
+3. **Forgetting to backtrack** → Incorrect results in path enumeration
+4. **Not copying paths** → Reference issues with `path[:]`
+5. **Wrong visited tracking** → Missing valid paths or infinite loops
+
+---

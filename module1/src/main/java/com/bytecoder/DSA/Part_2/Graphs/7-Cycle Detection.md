@@ -1,195 +1,65 @@
-### 6. Cycle Detection
+# Cycle Detection Pattern - Complete Notes
 
-**Use Cases:** Detect cycles, validate DAG
+## 🎯 Core Concept
 
-**💡 Key Insight:**
+Detect if a graph contains a cycle (a path that starts and ends at the same vertex). Approach differs for **directed** vs **undirected** graphs.
 
-- **Directed:** DFS with 3 colors (white/gray/black)
-- **Undirected:** DFS with parent or Union-Find
+---
 
-#### Directed Graph:
+## 📋 Key Differences
 
-```python
-def has_cycle_directed(n, edges):
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-    WHITE, GRAY, BLACK = 0, 1, 2
-    color = [WHITE] * n
-  
-    def dfs(node):
-        if color[node] == GRAY:
-            return True
-        if color[node] == BLACK:
-            return False
-        color[node] = GRAY
-        for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
-        color[node] = BLACK
-        return False
-  
-    return any(color[i] == WHITE and dfs(i) for i in range(n))
-```
+| Aspect                     | Undirected Graph                         | Directed Graph               |
+| -------------------------- | ---------------------------------------- | ---------------------------- |
+| **Cycle Definition** | Back to any visited node (except parent) | Back to node in current path |
+| **Detection Method** | Track parent                             | Track recursion stack/state  |
+| **Colors/States**    | 2 (visited/unvisited)                    | 3 (white/gray/black)         |
+| **Complexity**       | O(V + E)                                 | O(V + E)                     |
 
-**Common Problems:** Course Schedule (207), Redundant Connection (684)
+---
 
-### 4. **Detect Cycle in Undirected Graph using BFS/DFS Algorithm**
+## 🔴 Pattern 1: Undirected Graph - DFS with Parent Tracking
 
-- **DFS:** Track the parent of each node; if you find an edge that leads to a previously visited node that is not the parent, a cycle is detected.
-- **BFS:** Use a queue and track parent nodes similarly to DFS.
+**Use Case:** Detect cycles in undirected graphs, validate tree structure
 
-```java
-/*                                 Detect cycle in an undirected graph
----------------------------------------------------------------------------------------------------------------*/
-    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
-        HashSet<Integer> visited = new HashSet<>();
+**Key Insight:** If we visit a node that's already visited AND it's not our parent, we found a cycle.
 
-        for (int i = 0; i < V; i++) {
-            if (!visited.contains(i)){
-                if (dfs(adj, i, -1, visited))
-                        return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src, int parent, HashSet<Integer> visited)
-    {
-        visited.add(src);
-
-        for (int neighbour : adj.get(src)){
-            if (!visited.contains(neighbour)) {
-                if (dfs(adj, neighbour, src, visited))
-                    return true;
-            } else if (parent != neighbour) {
-                return true;
-            }
-        }
-        return false;
-    }
-/*-------------------------------------------------------------------------------------------------------------*/
-
-```
-
-### 5. **Detect Cycle in Directed Graph using BFS/DFS Algorithm**
-
-- **DFS Approach:** Maintain a recursion stack to check for back edges (edges that point to an ancestor in DFS tree).
-- **BFS Approach (Kahn’s Algorithm):** Use topological sorting and check for leftover nodes (a cycle exists if a topological sort is not possible).
-
-```java
-/*                                      Detect cycle in Directed graph
-----------------------------------------------------------------------------------------------------------------*/
-    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
-        boolean[] visited = new boolean[V];
-        boolean[] recstack = new boolean[V];
-
-        for (int i = 0; i < V; i++){
-            if (dfs(adj, i, visited, recstack))
-                return true;
-        }
-        return false;
-    }
-
-    private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src, boolean[] visited, boolean[] recstack) {
-        if (recstack[src])
-            return true;
-        if (visited[src])
-            return false;
-
-        visited[src] = true;
-        recstack[src] = true;
-
-        for (int neighbour : adj.get(src)){
-            if (dfs(adj, neighbour, visited, recstack))
-                return true;
-        }
-        recstack[src] = false;
-        return false;
-    }
-/*--------------------------------------------------------------------------------------------------------------*/
-```
-
-M2
-
-```java
-
-public boolean isCyclic(int V, Map<Integer, List<Integer>> adj) {
-    int[] state = new int[V]; // 0 = unvisited, 1 = visiting, 2 = visited
-
-    for (int i = 0; i < V; i++) {
-        if (state[i] == 0 && checkCycle(adj, i, state)) {
-            return true;  // Cycle detected
-        }
-    }
-    return false;
-}
-
-private boolean checkCycle(Map<Integer, List<Integer>> adj, int src, int[] state) {
-    if (state[src] == 1) return true;  // Cycle detected
-    if (state[src] == 2) return false; // Already processed
-
-    state[src] = 1; // Mark as visiting
-
-    for (int neighbour : adj.getOrDefault(src, new ArrayList<>())) {
-        if (checkCycle(adj, neighbour, state)) {
-            return true;  // Cycle found
-        }
-    }
-
-    state[src] = 2; // Mark as visited (fully processed)
-    return false;
-}
-
-```
-
-### Pattern 8: Cycle Detection
-
-**Use Cases:** Detect cycles in directed/undirected graphs
-
-**💡 Key Insight:**
-
-- **Directed:** Use 3 colors (white/gray/black) or recursion stack
-- **Undirected:** Track parent to avoid false cycle detection
-
-**Time:** O(V + E) | **Space:** O(V)
-
-#### Directed Graph Cycle Detection:
+**Complexity:** Time O(V + E) | Space O(V)
 
 ```python
-def has_cycle_directed(n, edges):
-    """Detect cycle in directed graph"""
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
+def dfs_cycle_check(graph, node, parent, visited):
+    visited.add(node)
   
-    WHITE, GRAY, BLACK = 0, 1, 2
-    color = [WHITE] * n
-  
-    def dfs(node):
-        if color[node] == GRAY:
-            return True  # Back edge = cycle
-        if color[node] == BLACK:
-            return False
-  
-        color[node] = GRAY
-        for neighbor in graph[node]:
-            if dfs(neighbor):
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            if dfs_cycle_undirected(graph, neighbor, node, visited):
                 return True
-        color[node] = BLACK
-        return False
+        elif neighbor != parent:
+            return True  # Cycle found
   
-    for i in range(n):
-        if color[i] == WHITE and dfs(i):
-            return True
     return False
-```
 
-#### Undirected Graph Cycle Detection:
 
-```python
+def bfs_cycle_check(graph, start, visited):
+    queue = deque([(start, -1)])  # (node, parent)
+    visited.add(start)
+  
+    while queue:
+        node, parent = queue.popleft()
+  
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, node))
+            elif neighbor != parent:
+                return True  # Cycle detected
+  
+    return False
+
+
 def has_cycle_undirected(n, edges):
-    """Detect cycle in undirected graph"""
+    """Detect cycle in undirected graph using DFS"""
+    from collections import defaultdict
+  
     graph = defaultdict(list)
     for u, v in edges:
         graph[u].append(v)
@@ -197,153 +67,298 @@ def has_cycle_undirected(n, edges):
   
     visited = set()
   
-    def dfs(node, parent):
-        visited.add(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                if dfs(neighbor, node):
-                    return True
-            elif neighbor != parent:
-                return True  # Cycle found
-        return False
-  
+    # Check each component
     for i in range(n):
-        if i not in visited and dfs(i, -1):
-            return True
+        if i not in visited:
+            if dfs_cycle_undirected(graph, i, -1, visited):
+                return True
+  
     return False
-```
-
-**FAANG Problems:**
-
-- Course Schedule (LC 207)
-- Redundant Connection (LC 684)
-- Graph Valid Tree (LC 261)
-
-## BFS
-
-### Pattern 5: Cycle Detection in Undirected Graph
-
-**Use Cases:** Validate graph structure, detect redundant connections
-
-**💡 Key Insight:** Track parent during BFS. If we visit a node that's already visited and it's not the parent, cycle exists.
-
-**Time:** O(V + E) | **Space:** O(V)
-
-```java
-public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
-    HashSet<Integer> visited = new HashSet<>();
-
-    for (int i = 0; i < V; i++) {
-        if (!visited.contains(i)) {
-            if (bfsCycleCheck(adj, i, visited))
-                return true;
-        }
-    }
-    return false;
-}
-
-private boolean bfsCycleCheck(ArrayList<ArrayList<Integer>> adj, int src, HashSet<Integer> visited) {
-    Queue<int[]> queue = new LinkedList<>();  // [node, parent]
-    queue.add(new int[]{src, -1});
-    visited.add(src);
-
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int node = curr[0];
-        int parent = curr[1];
-
-        for (int neighbor : adj.get(node)) {
-            if (!visited.contains(neighbor)) {
-                visited.add(neighbor);
-                queue.add(new int[]{neighbor, node});
-            } else if (neighbor != parent) {
-                return true;  // Cycle detected
-            }
-        }
-    }
-    return false;
-}
 ```
 
 ---
 
-### Pattern 6: Cycle Detection in Directed Graph
+## 🟢 Pattern 3: Directed Graph - DFS with 3 Colors
 
-**Use Cases:** Course schedule, task dependencies, deadlock detection
+**Use Case:** Detect cycles in directed graphs, course scheduling, dependency resolution
 
-**💡 Key Insight:** Use 3-state coloring (unvisited, visiting, visited) or Kahn's algorithm with in-degree.
+**Key Insight:** Use 3 states:
 
-**Time:** O(V + E) | **Space:** O(V)
+* **WHITE (0):** Unvisited
+* **GRAY (1):** Visiting (in current DFS path)
+* **BLACK (2):** Visited (fully processed)
 
-#### Method 1: Using State Array (DFS-based)
+**Cycle detected when:** We encounter a GRAY node (back edge in current path)
 
-```java
-public boolean isCyclic(int V, Map<Integer, List<Integer>> adj) {
-    int[] state = new int[V];  // 0 = unvisited, 1 = visiting, 2 = visited
+**Complexity:** Time O(V + E) | Space O(V)
 
-    for (int i = 0; i < V; i++) {
-        if (state[i] == 0 && checkCycle(adj, i, state)) {
-            return true;  // Cycle detected
-        }
-    }
-    return false;
-}
-
-private boolean checkCycle(Map<Integer, List<Integer>> adj, int src, int[] state) {
-    if (state[src] == 1) return true;   // Cycle detected
-    if (state[src] == 2) return false;  // Already processed
-
-    state[src] = 1;  // Mark as visiting
-
-    for (int neighbor : adj.getOrDefault(src, new ArrayList<>())) {
-        if (checkCycle(adj, neighbor, state)) {
-            return true;  // Cycle found
-        }
-    }
-
-    state[src] = 2;  // Mark as visited (fully processed)
-    return false;
-}
-```
-
-#### Method 2: Using Recursion Stack
-
-```java
-public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
-    boolean[] visited = new boolean[V];
-    boolean[] recStack = new boolean[V];
-
-    for (int i = 0; i < V; i++) {
-        if (dfs(adj, i, visited, recStack))
-            return true;
-    }
-    return false;
-}
-
-private boolean dfs(ArrayList<ArrayList<Integer>> adj, int src, 
-                    boolean[] visited, boolean[] recStack) {
-    if (recStack[src])
-        return true;
-    if (visited[src])
-        return false;
-
-    visited[src] = true;
-    recStack[src] = true;
-
-    for (int neighbor : adj.get(src)) {
-        if (dfs(adj, neighbor, visited, recStack))
-            return true;
-    }
+```python
+def dfs_cycle_directed(graph, node, color):
+    if color[node] == 1:  # GRAY
+        return True  # Back edge = cycle
+    if color[node] == 2:  # BLACK
+        return False  # Already processed
   
-    recStack[src] = false;
-    return false;
-}
+    color[node] = 1  # Mark as GRAY (visiting)
+  
+    for neighbor in graph[node]:
+        if dfs_cycle_directed(graph, neighbor, color):
+            return True
+  
+    color[node] = 2  # Mark as BLACK (visited)
+    return False
+
+def has_cycle_directed(n, edges):
+    """Detect cycle in directed graph using 3-color DFS"""
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+  
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = [WHITE] * n
+  
+    for i in range(n):
+        if color[i] == WHITE:
+            if dfs_cycle_directed(graph, i, color):
+                return True
+  
+    return False
 ```
 
+---
 
+## 🟡 Pattern 4: Directed Graph - Recursion Stack Method
 
+**Use Case:** Alternative to 3-color method, easier to understand
 
-**Graph Valid Tree** (LC 261) ⭐⭐
+**Key Insight:** Maintain separate `visited` and `recursion_stack` arrays
 
-- Cycle detection + connectivity
-- Time: O(V + E) | Space: O(V)
+**Complexity:** Time O(V + E) | Space O(V)
+
+```python
+def dfs_rec_stack(graph, node, visited, rec_stack):
+    if rec_stack[node]:
+        return True  # Cycle detected
+    if visited[node]:
+        return False  # Already processed
+  
+    visited[node] = True
+    rec_stack[node] = True
+  
+    for neighbor in graph[node]:
+        if dfs_rec_stack(graph, neighbor, visited, rec_stack):
+            return True
+  
+    rec_stack[node] = False  # Backtrack
+    return False
+
+def has_cycle_directed_recstack(n, edges):
+    """Detect cycle using visited + recursion stack"""
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+  
+    visited = [False] * n
+    rec_stack = [False] * n
+  
+    for i in range(n):
+        if not visited[i]:
+            if dfs_rec_stack(graph, i, visited, rec_stack):
+                return True
+  
+    return False
+```
+
+---
+
+## 🟠 Pattern 5: Directed Graph - Kahn's Algorithm (BFS)
+
+**Use Case:** Topological sort based cycle detection
+
+**Key Insight:** If we can't complete topological sort (some nodes remain), there's a cycle
+
+**Complexity:** Time O(V + E) | Space O(V)
+
+```python
+from collections import deque, defaultdict
+
+def has_cycle_kahns(n, edges):
+    """Detect cycle using Kahn's algorithm (topological sort)"""
+    graph = defaultdict(list)
+    in_degree = [0] * n
+  
+    # Build graph and in-degree array
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+  
+    # Start with nodes having 0 in-degree
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    processed = 0
+  
+    while queue:
+        node = queue.popleft()
+        processed += 1
+  
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+  
+    # If we couldn't process all nodes, there's a cycle
+    return processed != n
+```
+
+---
+
+## 🎯 Pattern 6: Graph Valid Tree (Combined Check)
+
+**Problem:** LC 261 - Check if graph is a valid tree
+
+**Key Insight:** A valid tree must:
+
+1. Have no cycles
+2. Be fully connected
+3. Have exactly n-1 edges for n nodes
+
+**Complexity:** Time O(V + E) | Space O(V)
+
+```python
+def validTree(n, edges):
+    """LC 261: Check if undirected graph is a valid tree"""
+    # Tree must have exactly n-1 edges
+    if len(edges) != n - 1:
+        return False
+  
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+  
+    visited = set()
+  
+    # Check for cycle and connectivity
+    if has_cycle_or_not_connected(graph, 0, -1, visited):
+        return False
+  
+    # Check if all nodes are connected
+    return len(visited) == n
+
+def has_cycle_or_not_connected(graph, node, parent, visited):
+    visited.add(node)
+  
+    for neighbor in graph[node]:
+        if neighbor not in visited:
+            if has_cycle_or_not_connected(graph, neighbor, node, visited):
+                return True
+        elif neighbor != parent:
+            return True  # Cycle found
+  
+    return False
+```
+
+---
+
+## 🔴 Pattern 7: Redundant Connection (Find the Edge)
+
+**Problem:** LC 684 - Find edge that creates cycle in undirected graph or
+
+**Use Case:** Find which edge to remove to make graph acyclic
+
+**Complexity:** Time O(V + E) | Space O(V)
+
+```python
+def findRedundantConnection(edges):
+    """LC 684: Find the edge that creates a cycle"""
+    from collections import defaultdict
+  
+    graph = defaultdict(list)
+  
+    def has_cycle(node, target, parent, visited):
+        visited.add(node)
+  
+        if node == target:
+            return True
+  
+        for neighbor in graph[node]:
+            if neighbor not in visited and neighbor != parent:
+                if has_cycle(neighbor, target, node, visited):
+                    return True
+  
+        return False
+  
+    # Try adding edges one by one
+    for u, v in edges:
+        # Check if adding this edge creates a cycle
+        if u in graph and v in graph:
+            if has_cycle(u, v, -1, set()):
+                return [u, v]
+  
+        graph[u].append(v)
+        graph[v].append(u)
+  
+    return []
+```
+
+**Union Find**
+
+```python
+class Solution:
+
+    def find(self, a , parent):
+        if(parent.get(a) != a):
+            return self.find(parent.get(a), parent)
+
+        return parent.get(a)
+  
+
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+
+        parent =  {}
+
+        # O(N)
+        for i in range(len(edges)):
+            parent[i]=i
+        # O(N)
+        for edge in edges:
+            a, b = edge
+            # O(N)
+            parent_a = self.find(a, parent)
+            parent_b = self.find(b, parent)
+
+            if(parent_a == parent_b):
+                return edge
+            else:
+                parent[parent_a] = parent_b
+  
+        return []
+
+```
+
+---
+
+## 📝 FAANG Problem List
+
+### Undirected Graph Cycles
+
+* **Redundant Connection** (LC 684) ⭐⭐ - Find edge creating cycle
+* **Graph Valid Tree** (LC 261) ⭐⭐ - Validate tree structure (Premium)
+* **Detect Cycles in 2D Grid** (LC 1559) ⭐⭐ - Same value cycle
+
+## 💡 Method Selection Guide
+
+| Scenario                      | Best Method      | Why                            |
+| ----------------------------- | ---------------- | ------------------------------ |
+| Undirected graph              | DFS + Parent     | Simple, intuitive              |
+| Directed graph (small)        | 3-Color DFS      | Most common interview approach |
+| Directed graph (large)        | Kahn's Algorithm | Also gives topological sort    |
+| Need to find cycle edge       | Union-Find       | Efficient edge-by-edge         |
+| Already have topological sort | Kahn's Algorithm | Reuse existing logic           |
+
+---

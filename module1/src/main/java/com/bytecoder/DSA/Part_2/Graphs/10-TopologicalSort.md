@@ -46,7 +46,7 @@ def topological_sort(n, edges):
     while queue:
         node = queue.popleft()
         result.append(node)
-    
+  
         for neighbor in graph[node]:
             in_degree[neighbor] -= 1
             if in_degree[neighbor] == 0:
@@ -73,13 +73,13 @@ def topological_sort_dfs(n, edges):
             return False  # Cycle detected
         if node in visited:
             return True
-    
+  
         rec_stack.add(node)
         for neighbor in graph[node]:
             if not dfs(neighbor):
                 return False
         rec_stack.remove(node)
-    
+  
         visited.add(node)
         result.append(node)
         return True
@@ -213,7 +213,7 @@ class Solution {
             state[src] = 2; // Mark as visited
             return false;
         }
-    
+  
         //     this is used when order is possible or not
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> adjList = new HashMap<>();
@@ -235,7 +235,7 @@ class Solution {
             }
         }
         return true;
-    
+  
     }
 
 
@@ -275,7 +275,7 @@ class Solution {
          }
 
          return order.size()!= numCourses ? false : true;
-    
+  
      }
 }
 ```
@@ -304,6 +304,12 @@ class Solution {
 
 - **Problem:** Determine if a prerequisite relationship exists between two courses.
 - **Real-Life Example:** **Building software module dependencies**.
+
+### Directed Graph Cycles
+
+* **Course Schedule** (LC 207) ⭐⭐ - Can finish all courses?
+* **Course Schedule II** (LC 210) ⭐⭐ - Return valid order
+* **Find Eventual Safe States** (LC 802) ⭐⭐ - Nodes not in cycles
 
 ### 14. **Minimum Time Taken by Each Job in a DAG**
 

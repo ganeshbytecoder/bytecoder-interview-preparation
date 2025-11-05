@@ -11,6 +11,34 @@
 
 ### Graph Representation
 
+#### Node Graph
+
+```java
+@Getter
+@Setter
+public class Node {
+    public int data;
+    public boolean visited;
+
+//    weighted graph
+    @ToString.Exclude
+    public Map<Node, Integer> neighbors;
+
+    public Node(int data) {
+        this.data = data;
+        this.visited = false;
+        this.neighbors = new HashMap<>();
+    }
+}
+
+public class Graph {
+    private final boolean directed;
+    private final List<Node> vertices;
+//    used to create graph as well
+    private final Map<Node, List<Node>> graph = new HashMap<>();
+}
+```
+
 #### 1. Adjacency List (Preferred for sparse graphs)
 
 ```python
@@ -37,11 +65,13 @@ for u, v in edges:
     matrix[v][u] = 1  # For undirected
 ```
 
+#### Matrix as Graph
+
 #### 3. Visited Tracking
 
 ```python
 visited = set()  # For node tracking
-visited = [[False] * cols for _ in range(rows)]  # For grid/matrix
+visited = [[False] * cols for _ in range(rows)]  # For grid/matrix as graph
 ```
 
 ### When to Use DFS
@@ -105,24 +135,6 @@ Clone Graph:             O(V + E)
 
 ---
 
-### Space Complexity Optimization
-
-```python
-# Standard: Use visited set
-visited = set()  # O(V) space
-
-# Optimized: Modify input (if allowed)
-grid[r][c] = '0'  # Mark as visited
-
-# For recursion depth issues:
-import sys
-sys.setrecursionlimit(10**6)  # Increase if needed
-
-# Or use iterative DFS with explicit stack
-```
-
----
-
 ## 💡 Interview Tips
 
 1. **Always clarify:**
@@ -154,7 +166,7 @@ sys.setrecursionlimit(10**6)  # Increase if needed
    - Test with single node
    - Test with empty graph
 
-### Pattern 1: Basic DFS Traversal
+### Basic DFS Traversal
 
 **Use Cases:** Explore all nodes, detect connectivity, count components
 
@@ -198,15 +210,13 @@ def dfs_iterative(start, graph):
     return visited
 ```
 
----
 
-### Pattern 7: Clone Graph
+## **Practice**
 
-**Use Cases:** Deep copy graph with pointers
+**Clone Graph**
 
-**💡 Key Insight:** Use HashMap to map old nodes to new nodes. DFS to traverse and clone.
-
-**Time:** O(V + E) | **Space:** O(V)
+* Use HashMap to map old nodes to new nodes. DFS to traverse and clone.
+* **Time:** O(V + E) | **Space:** O(V)
 
 ```python
 class Node:
@@ -236,35 +246,28 @@ def clone_graph(node):
     return dfs(node)
 ```
 
-
-
-
-**Flood Fill** (LC 733)
+  **Flood Fill** (LC 733)
 
 - Basic BFS/DFS on grid
 - Time: O(m × n) | Space: O(m × n)
 
----
-
-**Number of Islands** (LC 200) ⭐⭐⭐
+ **Number of Islands** (LC 200) ⭐⭐⭐
 
 - Grid BFS, connected components
 - Time: O(m × n) | Space: O(min(m, n))
 - **Real-world:** Flood-fill algorithms in image processing
-
-
 
 **Number of Connected Components** (LC 323) ⭐
 
 - Basic component counting
 - Time: O(V + E) | Space: O(V)
 
-1. **Find Center of Star Graph** (LC 1791)
+**Find Center of Star Graph** (LC 1791)
 
 - Graph property check or In-degree/out-degree analysis
 - Time: O(1) | Space: O(1)
 
-3. **Find the Town Judge** (LC 997)
+**Find the Town Judge** (LC 997)
 
-   - In-degree/out-degree analysis
-   - Time: O(E) | Space: O(V)
+- In-degree/out-degree analysis
+- Time: O(E) | Space: O(V)

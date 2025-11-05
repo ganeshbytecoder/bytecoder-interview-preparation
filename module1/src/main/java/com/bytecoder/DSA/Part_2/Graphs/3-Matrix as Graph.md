@@ -1,288 +1,338 @@
-### 9. Matrix as Graph Pattern
+# Matrix as Graph Pattern - Complete Notes
 
-**Use Cases:** Grid problems, islands, shortest path in matrix, flood fill
+## 🎯 Core Concept
 
-**💡 Key Insight:** Each cell is a node. Neighbors are adjacent cells (4 or 8 directions). Use DFS/BFS to explore. Mark visited to avoid revisiting.
+Treat each cell in a matrix as a **node** in a graph. Adjacent cells are  **neighbors** . Use DFS/BFS to explore the graph structure.
 
-#### Template:
+---
+
+## 📋 When to Use
+
+* Grid/island problems
+* Flood fill operations
+* Shortest path in matrix
+* Connected regions
+* Boundary-based problems
+
+---
+
+## ⚙️ Key Components
+
+### 1. Directions Array
 
 ```python
-def solve_matrix(matrix):
-    if not matrix:
-        return
-  
-    rows, cols = len(matrix), len(matrix[0])
-    visited = set()
-    directions = [(0,1), (1,0), (0,-1), (-1,0)]  # 4-directional
-  
-    def dfs(r, c):
-        if (r, c) in visited:
-            return
-        if r < 0 or r >= rows or c < 0 or c >= cols:
-            return
-        if matrix[r][c] == 0:  # obstacle or invalid
-            return
-  
-        visited.add((r, c))
-  
-        for dr, dc in directions:
-            dfs(r + dr, c + dc)
-  
-    # Start DFS from each unvisited cell
-    for i in range(rows):
-        for j in range(cols):
-            if (i, j) not in visited and matrix[i][j] == 1:
-                dfs(i, j)
+# 4-directional (up, right, down, left)
+directions = [(0,1), (1,0), (0,-1), (-1,0)]
+
+# 8-directional (includes diagonals)
+directions = [(0,1), (1,0), (0,-1), (-1,0), (1,1), (1,-1), (-1,1), (-1,-1)]
 ```
 
-**Common Problems:**
-
-* Longest Increasing Path in Matrix (329)
-* Number of Islands
-* Surrounded Regions
-
-
-### Pattern 3: Matrix/Grid DFS (Island Problems)
-
-**Use Cases:** Number of islands, flood fill, surrounded regions
-
-**💡 Key Insight:** Treat each cell as a node. 4-directional or 8-directional neighbors.
-
-**Time:** O(rows * cols) | **Space:** O(rows * cols)
+### 2. Boundary Checks
 
 ```python
+if r < 0 or r >= rows or c < 0 or c >= cols:
+    continue  # Skip invalid cell
+```
+
+### 3. Visited Tracking
+
+* **Option A:** Use `visited` set → O(rows × cols) space
+* **Option B:** Modify grid in-place → O(1) extra space
+
+---
+
+## 🔥 Pattern 1: Basic Matrix DFS
+
+---
+
+## 🏝️ Pattern 2: Island Counting (Connected Components)
+
+**Problem:** Number of Islands (LC 200), explore connected components
+
+**Complexity:** Time O(m × n) | Space O(m × n)
+
+### Version A: Using Visited Set
+
+```python
+def dfs_island(grid, r, c, visited, rows, cols):
+    stack = [(r, c)]
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+  
+    while stack:
+        curr_r, curr_c = stack.pop()
+  
+        if curr_r < 0 or curr_r >= rows or curr_c < 0 or curr_c >= cols:
+            continue
+        if (curr_r, curr_c) in visited:
+            continue
+        if grid[curr_r][curr_c] == '0':
+            continue
+  
+        visited.add((curr_r, curr_c))
+  
+        for dr, dc in directions:
+            stack.append((curr_r + dr, curr_c + dc))
+
+def dfs_island(grid, r, c, visited, rows, cols):
+    if r < 0 or r >= rows or c < 0 or c >= cols:
+        return
+    if (r, c) in visited:
+        return
+    if grid[r][c] == '0':
+        return
+  
+    visited.add((r, c))
+  
+    # Explore 4 directions
+    dfs_island(grid, r + 1, c, visited, rows, cols)
+    dfs_island(grid, r - 1, c, visited, rows, cols)
+    dfs_island(grid, r, c + 1, visited, rows, cols)
+    dfs_island(grid, r, c - 1, visited, rows, cols)
+
+
+
 def num_islands(grid):
-    """Count number of islands in 2D grid (LC 200)"""
     if not grid:
         return 0
   
     rows, cols = len(grid), len(grid[0])
     visited = set()
     count = 0
-  
-    def dfs(r, c):
-        # Boundary checks
-        if (r < 0 or r >= rows or c < 0 or c >= cols or
-            (r, c) in visited or grid[r][c] == '0'):
-            return
-    
-        visited.add((r, c))
-    
-        # Explore 4 directions
-        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        for dr, dc in directions:
-            dfs(r + dr, c + dc)
   
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == '1' and (r, c) not in visited:
-                dfs(r, c)
+                dfs_island(grid, r, c, visited, rows, cols)
                 count += 1
   
     return count
 ```
 
-**Alternative: Modify Grid In-Place (Space Optimized)**
+### Version B: In-Place Modification (Space Optimized)
 
 ```python
+def dfs_island_inplace(grid, r, c, rows, cols):
+    stack = [(r, c)]
+  
+    while stack:
+        curr_r, curr_c = stack.pop()
+  
+        if curr_r < 0 or curr_r >= rows or curr_c < 0 or curr_c >= cols:
+            continue
+        if grid[curr_r][curr_c] != '1':
+            continue
+  
+        grid[curr_r][curr_c] = '0'  # Mark as visited
+  
+        stack.append((curr_r + 1, curr_c))
+        stack.append((curr_r - 1, curr_c))
+        stack.append((curr_r, curr_c + 1))
+        stack.append((curr_r, curr_c - 1))
+
+def dfs_island_inplace(grid, r, c, rows, cols):
+    if r < 0 or r >= rows or c < 0 or c >= cols:
+        return
+    if grid[r][c] != '1':
+        return
+  
+    grid[r][c] = '0'  # Mark as visited
+  
+    # Explore 4 directions
+    dfs_island_inplace(grid, r + 1, c, rows, cols)
+    dfs_island_inplace(grid, r - 1, c, rows, cols)
+    dfs_island_inplace(grid, r, c + 1, rows, cols)
+    dfs_island_inplace(grid, r, c - 1, rows, cols)
+
 def num_islands_optimized(grid):
-    """O(1) extra space by modifying grid"""
     if not grid:
         return 0
   
     rows, cols = len(grid), len(grid[0])
     count = 0
   
-    def dfs(r, c):
-        if (r < 0 or r >= rows or c < 0 or c >= cols or
-            grid[r][c] != '1'):
-            return
-    
-        grid[r][c] = '0'  # Mark as visited
-        dfs(r + 1, c)
-        dfs(r - 1, c)
-        dfs(r, c + 1)
-        dfs(r, c - 1)
-  
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == '1':
-                dfs(r, c)
+                dfs_island_inplace(grid, r, c, rows, cols)
                 count += 1
   
     return count
 ```
 
-**FAANG Problems:**
+---
 
-- Number of Islands (LC 200)
-- Max Area of Island (LC 695)
-- Number of Closed Islands (LC 1254)
-- Flood Fill (LC 733
+## 🔲 Pattern 3: Boundary DFS (Edge-to-Center)
 
+**Use Case:** Surrounded regions, enclaves, territories
 
+**Key Insight:** Start from edges, mark reachable cells, remaining cells are "surrounded"
 
-**Max Area of Island** (LC 695) ⭐⭐
-
-- Grid DFS with area calculation
-- Time: O(m * n) | Space: O(m * n)
-
-### Pattern 6: Boundary DFS (Start from Edges)
-
-**Use Cases:** Surrounded regions, enclaves, capture territories
-
-**💡 Key Insight:** Start DFS from boundary cells. Mark reachable cells. Remaining cells are "surrounded".
-
-**Time:** O(rows * cols) | **Space:** O(rows * cols)
+**Complexity:** Time O(m × n) | Space O(m × n)
 
 ```python
+def dfs_boundary(board, r, c, rows, cols):
+    stack = [(r, c)]
+  
+    while stack:
+        curr_r, curr_c = stack.pop()
+  
+        if curr_r < 0 or curr_r >= rows or curr_c < 0 or curr_c >= cols:
+            continue
+        if board[curr_r][curr_c] != 'O':
+            continue
+  
+        board[curr_r][curr_c] = 'T'  # Temporary mark
+  
+        stack.append((curr_r + 1, curr_c))
+        stack.append((curr_r - 1, curr_c))
+        stack.append((curr_r, curr_c + 1))
+        stack.append((curr_r, curr_c - 1))
+
+def dfs_boundary(board, r, c, rows, cols):
+    if r < 0 or r >= rows or c < 0 or c >= cols:
+        return
+    if board[r][c] != 'O':
+        return
+  
+    board[r][c] = 'T'  # Temporary mark
+  
+    # Explore 4 directions
+    dfs_boundary(board, r + 1, c, rows, cols)
+    dfs_boundary(board, r - 1, c, rows, cols)
+    dfs_boundary(board, r, c + 1, rows, cols)
+    dfs_boundary(board, r, c - 1, rows, cols)
+
 def surrounded_regions(board):
-    """Capture surrounded regions (LC 130)"""
     if not board:
         return
   
     rows, cols = len(board), len(board[0])
   
-    def dfs(r, c):
-        if (r < 0 or r >= rows or c < 0 or c >= cols or
-            board[r][c] != 'O'):
-            return
-  
-        board[r][c] = 'T'  # Mark as temporary
-        dfs(r + 1, c)
-        dfs(r - 1, c)
-        dfs(r, c + 1)
-        dfs(r, c - 1)
-  
-    # Mark boundary-connected 'O's
+    # Step 1: Mark boundary-connected 'O's
     for r in range(rows):
-        dfs(r, 0)
-        dfs(r, cols - 1)
-    for c in range(cols):
-        dfs(0, c)
-        dfs(rows - 1, c)
+        dfs_boundary(board, r, 0, rows, cols)         # Left edge
+        dfs_boundary(board, r, cols - 1, rows, cols)  # Right edge
   
-    # Capture surrounded regions and restore boundary-connected
+    for c in range(cols):
+        dfs_boundary(board, 0, c, rows, cols)         # Top edge
+        dfs_boundary(board, rows - 1, c, rows, cols)  # Bottom edge
+  
+    # Step 2: Capture surrounded & restore boundary-connected
     for r in range(rows):
         for c in range(cols):
             if board[r][c] == 'O':
-                board[r][c] = 'X'  # Surrounded
+                board[r][c] = 'X'  # Surrounded → capture
             elif board[r][c] == 'T':
-                board[r][c] = 'O'  # Restore
+                board[r][c] = 'O'  # Boundary-connected → restore
 ```
 
-**FAANG Problems:**
+---
 
-- Surrounded Regions (LC 130)
-- Number of Enclaves (LC 1020)
-- Pacific Atlantic Water Flow (LC 417)
+## 🎯 Pattern 5: Max Area of Island
 
+**Problem:** Max Area of Island (LC 695)
 
-
-### Pattern 2: Connected Components
-
-**Use Cases:** Count islands, find provinces, network connectivity
-
-**💡 Key Insight:** Run DFS from each unvisited node. Each DFS call finds one component.
-
-**Time:** O(V + E) | **Space:** O(V)
+**Complexity:** Time O(m × n) | Space O(m × n)
 
 ```python
-def count_components(n, edges):
-    """Count number of connected components in undirected graph"""
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
+    def dfs(self, grid: List[List[int]], r: int, c: int, visited: List[List[bool]]) -> int:
+        # Boundary and base checks
+        if (r < 0 or r >= len(grid) or
+            c < 0 or c >= len(grid[0]) or
+            grid[r][c] == 0 or visited[r][c]):
+            return 0
+
+        # Mark current cell as visited
+        visited[r][c] = True
+
+        # Explore 4 directions
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        area = 1  # current cell
+
+        for dr, dc in directions:
+            area += self.dfs(grid, r + dr, c + dc, visited)
+
+        return area
+
+
+def dfs_area(grid, r, c, visited, rows, cols):
+    stack = [(r, c)]
+    area = 0
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
   
+    while stack:
+        curr_r, curr_c = stack.pop()
+  
+        if curr_r < 0 or curr_r >= rows or curr_c < 0 or curr_c >= cols:
+            continue
+        if (curr_r, curr_c) in visited:
+            continue
+        if grid[curr_r][curr_c] == 0:
+            continue
+  
+        visited.add((curr_r, curr_c))
+        area += 1
+  
+        for dr, dc in directions:
+            stack.append((curr_r + dr, curr_c + dc))
+  
+    return area
+
+def max_area_of_island(grid):
+    if not grid:
+        return 0
+  
+    rows, cols = len(grid), len(grid[0])
     visited = set()
-    count = 0
+    max_area = 0
   
-    def dfs(node):
-        if node in visited:
-            return False
-        visited.add(node)
-        for neighbor in graph[node]:
-            dfs(neighbor)
-        return True
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1 and (r, c) not in visited:
+                area = dfs_area(grid, r, c, visited, rows, cols)
+                max_area = max(max_area, area)
   
-    for node in range(n):
-        if dfs(node):
-            count += 1
-  
-    return count
+    return max_area
 ```
 
-**FAANG Problems:**
+---
 
-- Number of Provinces (LC 547)
-- Number of Connected Components (LC 323)
-- Keys and Rooms (LC 841)
+## 📝 FAANG Problem List
 
-### Pattern 4: Connected Components Using BFS
+### Island Problems
 
-**Use Cases:** Count islands, find provinces, network connectivity
+* **Number of Islands** (LC 200) ⭐⭐
+* **Max Area of Island** (LC 695) ⭐⭐
+* **Number of Closed Islands** (LC 1254) ⭐⭐
+* **Flood Fill** (LC 733) ⭐
 
-**💡 Key Insight:** Run BFS from each unvisited node. Each BFS finds one component.
+### Boundary Problems
 
-**Time:** O(V + E) | **Space:** O(V)
+* **Surrounded Regions** (LC 130) ⭐⭐
+* **Number of Enclaves** (LC 1020) ⭐⭐
+* **Pacific Atlantic Water Flow** (LC 417) ⭐⭐⭐
 
-```java
-public List<List<Integer>> findConnectedComponents(Map<Integer, List<Integer>> adjList) {
-    Set<Integer> visited = new HashSet<>();
-    List<List<Integer>> components = new ArrayList<>();
+### Connected Components
 
-    for (int node : adjList.keySet()) {
-        if (!visited.contains(node)) {
-            List<Integer> component = new ArrayList<>();
-            Queue<Integer> queue = new LinkedList<>();
+* **Number of Provinces** (LC 547) ⭐⭐
+* **Number of Connected Components** (LC 323) ⭐⭐
+* **Keys and Rooms** (LC 841) ⭐
 
-            queue.add(node);
-            visited.add(node);
+### Path Problems
 
-            while (!queue.isEmpty()) {
-                int curr = queue.poll();
-                component.add(curr);
-
-                for (int neighbor : adjList.get(curr)) {
-                    if (!visited.contains(neighbor)) {
-                        queue.add(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-            components.add(component);
-        }
-    }
-    return components;
-}
-
-// Usage Example
-public class Main {
-    public static void main(String[] args) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        graph.put(1, Arrays.asList(2));
-        graph.put(2, Arrays.asList(1, 3));
-        graph.put(3, Arrays.asList(2));
-        graph.put(4, Arrays.asList(5));
-        graph.put(5, Arrays.asList(4));
-
-        System.out.println("Connected Components: " + findConnectedComponents(graph));
-        // Output: Connected Components: [[1, 2, 3], [4, 5]]
-    }
-}
-```
-
-**Pacific Atlantic Water Flow** (LC 417) ⭐⭐
-
-- Dual BFS from boundaries
-- Time: O(m × n) | Space: O(m × n)
-
-
-* **Nearest Exit from Entrance in Maze** (LC 1926) ⭐
-  - BFS with exit detection
-  - Time: O(m × n) | Space: O(m × n)
-  - **Real-world:** Emergency evacuation planning
+* **Longest Increasing Path in Matrix** (LC 329) ⭐⭐⭐
+* **Nearest Exit from Entrance in Maze** (LC 1926) ⭐⭐
 * **Minimum Knight Moves** (LC 1197) ⭐⭐
-  - BFS on infinite board
-  - Time: O(|x| × |y|) | Space: O(|x| × |y|)
+
+---
+
+## 💡 Key Decision Points
+
+| Scenario                  | Use DFS         | Use BFS          |
+| ------------------------- | --------------- | ---------------- |
+| Count components          | ✅              | ✅               |
+| Find shortest path        | ❌              | ✅               |
+| Explore all paths         | ✅              | ❌               |
+| Memory constraints        | ✅ (uses stack) | ❌ (needs queue) |
+| Layer-by-layer processing | ❌              | ✅               |

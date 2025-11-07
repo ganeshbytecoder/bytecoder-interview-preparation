@@ -167,17 +167,6 @@ private Node deleteDfs(Node node, int data) {
 
 ```
 
-patterns questions:
-
-find max height of tree or node
-give a subtree has all the elements below x value
-recreate binary tree since after remove certain nodes
-
-insert a node at level
-delete node at level x and value y
-is both binary trees are same ?
-add elements at same level and give resultant
-
 Here's a **concise and clean revision note** for:
 
 ✅ **Height**
@@ -432,12 +421,7 @@ public class BinaryTree implements Tree {
     }
 
     @Override
-    public int getMax() {
-        if (isEmpty()) return Integer.MIN_VALUE;
-        return findMax(root);
-    }
-
-    private int findMax(Node node) {
+    public int getMax(Node node) {
         if (node == null) return Integer.MIN_VALUE;
         int max = node.getData();
         int leftMax = findMax(node.getLeftChild());
@@ -445,13 +429,9 @@ public class BinaryTree implements Tree {
         return Math.max(max, Math.max(leftMax, rightMax));
     }
 
-    @Override
-    public int getMin() {
-        if (isEmpty()) return Integer.MAX_VALUE;
-        return findMin(root);
-    }
 
-    private int findMin(Node node) {
+    @Override
+    public int getMin(Node node) {
         if (node == null) return Integer.MAX_VALUE;
         int min = node.getData();
         int leftMin = findMin(node.getLeftChild());
@@ -459,6 +439,7 @@ public class BinaryTree implements Tree {
         return Math.min(min, Math.min(leftMin, rightMin));
     }
 
+  
     @Override
     public int getLevel(int data) {
         return findLevel(root, data, 1);
@@ -599,106 +580,6 @@ class Solution {
 }
 ```
 
-### 18. **Convert Binary Tree into Doubly Linked List**
-
-- Perform in-order traversal, convert each node into a doubly linked list node, and link them together.
-
-### 19. **Convert Binary Tree into Sum Tree**
-
-- Recursively replace each node with the sum of its left and right subtrees while returning  Finally, return the sum of new value and value (which is sum of values in the subtree rooted with this node).
-
-### 20. **Construct Binary Tree from Inorder and Preorder Traversal**
-
-- Use recursion and index tracking to build the tree. The first element in preorder is the root; use inorder to find left and right subtrees.
-
-### 21. **Find Minimum Swaps to Convert Binary Tree to BST**
-
-- In-order traversal of the tree yields a list. Count the minimum swaps required to sort the list.
-
-### 22. **Check if Binary Tree is Sum Tree**
-
-- A sum tree is one where the value of each node is equal to the sum of its left and right subtree values.
-- Use a post-order traversal to verify the sum property.
-
-### 23. **Check if All Leaf Nodes are at the Same Level**
-
-- Use level order traversal and check the levels of leaf nodes.
-
-### 24. **Check if a Binary Tree Contains Duplicate Subtrees of Size 2 or More**
-
-- Use serialization (or hashing) of subtrees to detect duplicates during post-order traversal.
-
-### 26. **Sum of Nodes on the Longest Path from Root to Leaf Node**
-
-- Use DFS to find the path with the maximum depth and calculate the sum of its nodes.
-
-### 27. **Check if Given Graph is Tree**
-
-- A graph is a tree if it is connected and has no cycles.
-- Use BFS/DFS to verify connectivity and absence of cycles.
-
-### 29. **Maximum Sum of Nodes in a Binary Tree Such that No Two are Adjacent**
-
-- Use dynamic programming with two states: include the current node or exclude it.
-
-### 30. **Print All “K” Sum Paths in a Binary Tree**
-
-- Use DFS and backtracking to find all paths from any node that sum to `K`.
-
-### 33. **Kth Ancestor of a Node in a Binary Tree**
-
-- Use recursion to track ancestors and return the `Kth` one when the target node is found.
-
-### 34. **Find All Duplicate Subtrees in a Binary Tree** (good)
-
-- Use serialization (or hashing) of subtrees during post-order traversal to detect duplicates.
-
-### 9. Morris Traversal Pattern (Advanced)
-
-**Use Cases:** O(1) space traversal using threading
-
-**💡 Key Insight:** Temporarily modify tree to create threads back to inorder successor. Restore structure while traversing. O(1) extra space!
-
-**Time:** O(n) | **Space:** O(1)
-
-#### Template:
-
-```python
-def inorderTraversal_Morris(root):
-    result = []
-    curr = root
-  
-    while curr:
-        if not curr.left:
-            result.append(curr.val)
-            curr = curr.right
-        else:
-            # Find predecessor
-            pred = curr.left
-            while pred.right and pred.right != curr:
-                pred = pred.right
-  
-            if not pred.right:
-                # Create thread
-                pred.right = curr
-                curr = curr.left
-            else:
-                # Remove thread
-                pred.right = None
-                result.append(curr.val)
-                curr = curr.right
-  
-    return result
-```
-
-**Common Problems:**
-
-- Inorder Traversal (94)
-- Kth Smallest in BST (230)
-- Recover BST (99)
-
----
-
 ### 13. Closest BST Value (LC 270)
 
 **Difficulty:** Easy | **Pattern:** BST
@@ -708,7 +589,6 @@ Find value closest to given target in BST.
 **Time:** O(h) | **Space:** O(1)
 
 ---
-
 
 ### 15. Cousins in Binary Tree (LC 993)
 
@@ -746,8 +626,6 @@ Find longest consecutive sequence path.
 
 **Time:** O(n) | **Space:** O(h)
 
-
-
 ### 24. Smallest Subtree with Deepest Nodes (LC 865)
 
 **Difficulty:** Medium | **Pattern:** DFS, Postorder
@@ -755,8 +633,6 @@ Find longest consecutive sequence path.
 Find LCA of deepest leaves.
 
 **Time:** O(n) | **Space:** O(h)
-
-
 
 ### 21. Boundary of Binary Tree (LC 545)
 
@@ -778,7 +654,6 @@ Find maximum width using heap indexing (2*i, 2*i+1).
 
 **Time:** O(n) | **Space:** O(w)
 
-
 ### 25. Check Completeness (LC 958)
 
 **Difficulty:** Medium | **Pattern:** BFS
@@ -788,8 +663,6 @@ Check if tree is complete (all levels filled except possibly last).
 **Time:** O(n) | **Space:** O(w)
 
 **Trick:** Once null seen in BFS, no more non-null nodes allowed.
-
-
 
 ### 29. All Elements in Two BSTs (LC 1305)
 
@@ -809,8 +682,6 @@ Check if given edges form valid binary tree.
 
 **Time:** O(n) | **Space:** O(n)
 
-
-
 ### 32. Clone Tree with Random Pointer (LC 1485)
 
 **Difficulty:** Medium | **Pattern:** DFS, HashMap
@@ -819,8 +690,6 @@ Deep copy tree with random pointers.
 
 **Time:** O(n) | **Space:** O(n)
 
-
-
 ### 33. Diameter of N-Ary Tree (LC 1522)
 
 **Difficulty:** Medium | **Pattern:** DFS
@@ -828,3 +697,16 @@ Deep copy tree with random pointers.
 Find diameter of N-ary tree.
 
 **Time:** O(n) | **Space:** O(h)
+
+### 18. **Convert Binary Tree into Doubly Linked List**
+
+- Perform in-order traversal, convert each node into a doubly linked list node, and link them together.
+
+### 21. **Find Minimum Swaps to Convert Binary Tree to BST**
+
+- In-order traversal of the tree yields a list. Count the minimum swaps required to sort the list.
+
+### 27. **Check if Given Graph is Tree**
+
+- A graph is a tree if it is connected and has no cycles.
+- Use BFS/DFS to verify connectivity and absence of cycles.

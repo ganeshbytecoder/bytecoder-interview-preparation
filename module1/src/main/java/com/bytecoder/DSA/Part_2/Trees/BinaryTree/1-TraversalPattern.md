@@ -22,6 +22,146 @@ def dfs(node):
     return combine(left_result, right_result)
 ```
 
+#### **DFS Traversal Without Recursion**
+
+```java
+void dfsWithoutRecursion(Node<T> root) {
+    if (root == null) return;
+
+    Stack<Node<T>> stack = new Stack<>();
+    stack.push(root);
+
+    while (!stack.isEmpty()) {
+        Node<T> node = stack.pop();
+        System.out.print(node.data + " ");
+        if (node.right != null) stack.push(node.right);
+        if (node.left != null) stack.push(node.left);
+    }
+}
+```
+
+**given a binary tree print all its root-to-leaf paths**
+
+```java
+void pathsFinder(Node<T> root) {
+    List<Integer> path = new ArrayList<>();
+    dfs(root, path);
+
+    void dfs(Node<T> node, List<Integer> path) {
+        if (node == null) return;
+
+        path.add(node.data);
+        if (node.left == null && node.right == null) {
+            System.out.println(path);
+        } else {
+            dfs(node.left, path);
+            dfs(node.right, path);
+        }
+        path.remove(path.size() - 1);
+    }
+}
+```
+
+**Sum of Root-to-Leaf Numbers**
+
+given a binary tree containing digits from 0-9 only , each root-to-leaf path could represent a number. an example
+is the root-to-leaf path 1->2->3 which represents the number 123, find the total sum of all root-to-leaf numbers
+
+https://leetcode.com/problems/sum-root-to-leaf-numbers/description/?envType=study-plan-v2&envId=top-interview-150
+
+```java
+int sumRoot2LeafNumbers(Node<T> root) {
+    return dfs(root, 0);
+
+    int dfs(Node<T> node, int currentSum) {
+        if (node == null) return 0;
+
+        currentSum = currentSum * 10 + node.data;
+
+        // If leaf node, return the computed number
+        if (node.left == null && node.right == null) {
+            return currentSum;
+        }
+
+        // Recursive calls for left and right subtrees
+        return dfs(node.left, currentSum) + dfs(node.right, currentSum);
+    }
+}
+```
+
+**Kth Smallest Element in a BST**
+
+```java
+class Solution {
+    int count = 0;
+    int result = -1;
+
+    public int kthSmallest(TreeNode root, int k) {
+        inorder(root, k);
+        return result;
+    }
+
+    private void inorder(TreeNode node, int k) {
+        if (node == null) return;
+
+        inorder(node.left, k);
+
+        count++;
+        if (count == k) {
+            result = node.val;
+            return;
+        }
+
+        inorder(node.right, k);
+    }
+}
+```
+
+**3. Check Existence of Path with Given Sum**
+
+give a algorithm for checking the existence of path with given sum. that means , given a sum, check whether there exists a path from root to any of the nodes.
+
+```java
+boolean hasPathSum(Node<T> root, int sum) {
+    if (root == null) return false;
+
+    // Check if we have reached a leaf node with the exact sum
+    if (root.left == null && root.right == null) {
+        return sum == root.data;
+    }
+
+    // Recur for left and right subtrees with the reduced sum
+    return hasPathSum(root.left, sum - root.data) || hasPathSum(root.right, sum - root.data);
+}
+```
+
+
+**Find Vertical Sum of a Binary Tree**
+
+Give an algorithm for finding thr vertical sum of a binary tree
+
+```java
+List<Integer> getVerticalSum(Node<T> root) {
+    TreeMap<Integer, Integer> columnSumMap = new TreeMap<>();
+
+    dfs(root, 0, columnSumMap);
+
+    return new ArrayList<>(columnSumMap.values());
+}
+
+void dfs(Node<T> node, int column, TreeMap<Integer, Integer> columnSumMap) {
+    if (node == null) return;
+
+    // Update the sum for the current column
+    columnSumMap.put(column, columnSumMap.getOrDefault(column, 0) + node.data);
+
+    // Recur for left and right subtrees
+    dfs(node.left, column - 1, columnSumMap);
+    dfs(node.right, column + 1, columnSumMap);
+}
+```
+
+
 **Common Problems:**
 
 - Max Depth, Min Depth, find min/max,
@@ -29,6 +169,11 @@ def dfs(node):
 - Diameter of Binary Tree (543)
 - Path Sum problems (112, 113, 437)
 - Maximum Path Sum (124)
+- **Sum of Nodes on the Longest Path from Root to Leaf Node**
+  - Use DFS to find the path with the maximum depth and calculate the sum of its nodes.
+
+* **Kth Ancestor of a Node in a Binary Tree**
+  * Use recursion to track ancestors and return the `Kth` one when the target node is found.
 
 ### 2. BFS (Breadth-First Search) - Level Order
 
@@ -64,97 +209,7 @@ def bfs(root):
     return result
 ```
 
-**Common Problems:**
-
-- Level Order Traversal (102)
-- Zigzag Level Order (103)
-- Right Side View (199)
-- Minimum Depth (111)
-- Maximum Level Sum (1161)
-
-### 15. **Diagonal Traversal of a Binary Tree**
-
-![img_1.png](img_1.png)
-
-**Output**: 8 10 14 3 6 7 13 1 4
-
-- Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
-- To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
-
-### **3. Level Order Traversal from Bottom to Top**
-
-```java
-void traverseFromBottom2Top(Node<T> root) {
-    if (root == null) return;
-
-    Queue<Node<T>> q = new LinkedList<>();
-    Stack<List<Integer>> stack = new Stack<>();
-    q.add(root);
-
-    while (!q.isEmpty()) {
-        int size = q.size();
-        List<Integer> level = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Node<T> node = q.poll();
-            level.add(node.data);
-            if (node.left != null) q.add(node.left);
-            if (node.right != null) q.add(node.right);
-        }
-        stack.push(level);
-    }
-
-    while (!stack.isEmpty()) {
-        for (int val : stack.pop()) System.out.print(val + " ");
-        System.out.println();
-    }
-}
-```
-
----
-
-* https://leetcode.com/problems/populating-next-right-pointers-in-each-node
-
-### **5. DFS Traversal Without Recursion**
-
-```java
-void dfsWithoutRecursion(Node<T> root) {
-    if (root == null) return;
-
-    Stack<Node<T>> stack = new Stack<>();
-    stack.push(root);
-
-    while (!stack.isEmpty()) {
-        Node<T> node = stack.pop();
-        System.out.print(node.data + " ");
-        if (node.right != null) stack.push(node.right);
-        if (node.left != null) stack.push(node.left);
-    }
-}
-```
-
----
-
-### **6. BFS Traversal Without Recursion**
-
-```java
-void bfsWithoutRecursion(Node<T> root) {
-    if (root == null) return;
-
-    Queue<Node<T>> q = new LinkedList<>();
-    q.add(root);
-
-    while (!q.isEmpty()) {
-        Node<T> node = q.poll();
-        System.out.print(node.data + " ");
-        if (node.left != null) q.add(node.left);
-        if (node.right != null) q.add(node.right);
-    }
-}
-```
-
----
-
-### **7. Get Height of Tree Without Recursion**
+**7. Get Height of Tree Without Recursion**
 
 ```java
 int getHeight_m2(Node<T> root) {
@@ -177,9 +232,7 @@ int getHeight_m2(Node<T> root) {
 }
 ```
 
----
-
-### **10.  give a algorithm for finding the level that has the maximum sum in binary tree**
+**10.  give a algorithm for finding the level that has the maximum sum in binary tree**
 
 ```java
 int findLevelWithMaxSum(Node<T> root) {
@@ -210,89 +263,27 @@ int findLevelWithMaxSum(Node<T> root) {
 }
 ```
 
----
 
-### **11. given a binary tree print all its root-to-leaf paths**
+**4. Find the Deepest Node**
 
 ```java
-void pathsFinder(Node<T> root) {
-    List<Integer> path = new ArrayList<>();
-    dfs(root, path);
+Node<T> getDeepestNode(Node<T> root) {
+    if (root == null) return null;
 
-    void dfs(Node<T> node, List<Integer> path) {
-        if (node == null) return;
+    Queue<Node<T>> q = new LinkedList<>();
+    q.add(root);
+    Node<T> deepestNode = null;
 
-        path.add(node.data);
-        if (node.left == null && node.right == null) {
-            System.out.println(path);
-        } else {
-            dfs(node.left, path);
-            dfs(node.right, path);
-        }
-        path.remove(path.size() - 1);
+    while (!q.isEmpty()) {
+        deepestNode = q.poll();
+        if (deepestNode.left != null) q.add(deepestNode.left);
+        if (deepestNode.right != null) q.add(deepestNode.right);
     }
+    return deepestNode;
 }
 ```
 
----
-
-### **1. Sum of Root-to-Leaf Numbers**
-
-given a binary tree containing digits from 0-9 only , each root-to-leaf path could represent a number. an example
-is the root-to-leaf path 1->2->3 which represents the number 123, find the total sum of all root-to-leaf numbers
-
-https://leetcode.com/problems/sum-root-to-leaf-numbers/description/?envType=study-plan-v2&envId=top-interview-150
-
-```java
-int sumRoot2LeafNumbers(Node<T> root) {
-    return dfs(root, 0);
-
-    int dfs(Node<T> node, int currentSum) {
-        if (node == null) return 0;
-
-        currentSum = currentSum * 10 + node.data;
-
-        // If leaf node, return the computed number
-        if (node.left == null && node.right == null) {
-            return currentSum;
-        }
-
-        // Recursive calls for left and right subtrees
-        return dfs(node.left, currentSum) + dfs(node.right, currentSum);
-    }
-}
-```
-
----
-
-### **7. Find Vertical Sum of a Binary Tree**
-
-Give an algorithm for finding thr vertical sum of a binary tree
-
-```java
-List<Integer> getVerticalSum(Node<T> root) {
-    TreeMap<Integer, Integer> columnSumMap = new TreeMap<>();
-
-    dfs(root, 0, columnSumMap);
-
-    return new ArrayList<>(columnSumMap.values());
-}
-
-void dfs(Node<T> node, int column, TreeMap<Integer, Integer> columnSumMap) {
-    if (node == null) return;
-
-    // Update the sum for the current column
-    columnSumMap.put(column, columnSumMap.getOrDefault(column, 0) + node.data);
-
-    // Recur for left and right subtrees
-    dfs(node.left, column - 1, columnSumMap);
-    dfs(node.right, column + 1, columnSumMap);
-}
-```
-
----
-
-### **8. Zigzag Traversal**
+**Zigzag Traversal**
 
 - Use two stacks to alternate between left-to-right and right-to-left traversals at each level.
 
@@ -327,71 +318,73 @@ void zigZagTraversal(Node<T> root) {
 }
 ```
 
-### **4. Find the Deepest Node**
 
-```java
-Node<T> getDeepestNode(Node<T> root) {
-    if (root == null) return null;
+**Common Problems:**
 
-    Queue<Node<T>> q = new LinkedList<>();
-    q.add(root);
-    Node<T> deepestNode = null;
+- Level Order Traversal (102)
+- Zigzag Level Order (103)
+- Right Side View (199)
+- Minimum Depth (111)
+- Maximum Level Sum (1161)
+- https://leetcode.com/problems/populating-next-right-pointers-in-each-node
+- **Check if All Leaf Nodes are at the Same Level**
+  - Use level order traversal and check the levels of leaf nodes.
 
-    while (!q.isEmpty()) {
-        deepestNode = q.poll();
-        if (deepestNode.left != null) q.add(deepestNode.left);
-        if (deepestNode.right != null) q.add(deepestNode.right);
-    }
-    return deepestNode;
-}
-```
+### 15. **Diagonal Traversal of a Binary Tree**
 
-### 🧪 Example: LeetCode 230 – Kth Smallest Element in a BST
+![img_1.png](img_1.png)
 
-```java
-class Solution {
-    int count = 0;
-    int result = -1;
+**Output**: 8 10 14 3 6 7 13 1 4
 
-    public int kthSmallest(TreeNode root, int k) {
-        inorder(root, k);
-        return result;
-    }
-
-    private void inorder(TreeNode node, int k) {
-        if (node == null) return;
-
-        inorder(node.left, k);
-
-        count++;
-        if (count == k) {
-            result = node.val;
-            return;
-        }
-
-        inorder(node.right, k);
-    }
-}
-```
-
-### **3. Check Existence of Path with Given Sum**
-
-give a algorithm for checking the existence of path with given sum. that means , given a sum, check whether there exists a path from root to any of the nodes.
-
-```java
-boolean hasPathSum(Node<T> root, int sum) {
-    if (root == null) return false;
-
-    // Check if we have reached a leaf node with the exact sum
-    if (root.left == null && root.right == null) {
-        return sum == root.data;
-    }
-
-    // Recur for left and right subtrees with the reduced sum
-    return hasPathSum(root.left, sum - root.data) || hasPathSum(root.right, sum - root.data);
-}
-```
+- Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
+- To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
 
 ### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
 
 - Traverse the left boundary, then leaf nodes, then the right boundary (in reverse order).
+
+### 9. Morris Traversal Pattern (Advanced)
+
+**Use Cases:** O(1) space traversal using threading
+
+**💡 Key Insight:** Temporarily modify tree to create threads back to inorder successor. Restore structure while traversing. O(1) extra space!
+
+**Time:** O(n) | **Space:** O(1)
+
+#### Template:
+
+```python
+def inorderTraversal_Morris(root):
+    result = []
+    curr = root
+  
+    while curr:
+        if not curr.left:
+            result.append(curr.val)
+            curr = curr.right
+        else:
+            # Find predecessor
+            pred = curr.left
+            while pred.right and pred.right != curr:
+                pred = pred.right
+  
+            if not pred.right:
+                # Create thread
+                pred.right = curr
+                curr = curr.left
+            else:
+                # Remove thread
+                pred.right = None
+                result.append(curr.val)
+                curr = curr.right
+  
+    return result
+```
+
+**Common Problems:**
+
+- Inorder Traversal (94)
+- Kth Smallest in BST (230)
+- Recover BST (99)
+
+---

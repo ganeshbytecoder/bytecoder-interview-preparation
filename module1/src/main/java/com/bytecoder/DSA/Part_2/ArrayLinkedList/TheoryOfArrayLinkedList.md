@@ -1,186 +1,3 @@
-
-# **Complete revision guide with 45+ essential problems**
-
----
-
-## 📚 Table of Contents
-
-1. [Quick Reference](#quick-reference)
-2. [Essential Patterns](#essential-patterns)
-3. [Easy Problems](#easy-problems)
-4. [Medium Problems](#medium-problems)
-5. [Hard Problems](#hard-problems)
-
----
-
-## 📚 Quick Reference Guide
-
-### ⚡ Time & Space Complexity Cheat Sheet
-
-| Operation                  | Time       | Space          |
-| -------------------------- | ---------- | -------------- |
-| Access/Search              | O(n)       | O(1)           |
-| Insert/Delete (known pos)  | O(1)       | O(1)           |
-| Reverse List               | O(n)       | O(1) iterative |
-| Find Middle (Two Pointers) | O(n)       | O(1)           |
-| Cycle Detection            | O(n)       | O(1)           |
-| Merge Two Lists            | O(n+m)     | O(1)           |
-| Merge k Lists (Heap)       | O(N log k) | O(k)           |
-| Sort List (Merge Sort)     | O(n log n) | O(log n)       |
-
-### 🎯 Meta Interview Tips
-
-- **Master Design Problems:** All 5 design patterns in Patterns section - especially LRU Cache!
-- **Practice Two Pointers:** Most efficient pattern for LinkedList problems
-- **Always consider edge cases:** null, single node, two nodes, cycles
-- **Draw diagrams:** Visualize pointer movements before coding
-- **Start with brute force:** Then optimize to O(1) space
-- **Use dummy nodes:** Simplifies head modifications
-- **Test with examples:** Walk through 3-4 node example
-- **Discuss trade-offs:** Time vs space, iterative vs recursive
-- **Know design patterns:** When to use HashMap+DLL vs Array vs pure LinkedList
-
-### 🔥 Must-Know Code Templates
-
-#### 1. Reverse LinkedList (Iterative)
-
-```java
-ListNode prev = null, curr = head;
-while (curr != null) {
-    ListNode next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-}
-return prev;
-```
-
-#### 2. Find Middle (Two Pointers)
-
-```java
-ListNode slow = head, fast = head;
-while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-}
-return slow;
-```
-
-#### 3. Detect Cycle
-
-```java
-ListNode slow = head, fast = head;
-while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow == fast) return true;
-}
-return false;
-```
-
-#### 4. Find Cycle Start
-
-```java
-// After detecting cycle
-slow = head;
-while (slow != fast) {
-    slow = slow.next;
-    fast = fast.next;
-}
-return slow;
-```
-
-#### 5. Merge Two Sorted Lists
-
-```java
-ListNode dummy = new ListNode(0), curr = dummy;
-while (l1 != null && l2 != null) {
-    if (l1.val <= l2.val) {
-        curr.next = l1;
-        l1 = l1.next;
-    } else {
-        curr.next = l2;
-        l2 = l2.next;
-    }
-    curr = curr.next;
-}
-curr.next = (l1 != null) ? l1 : l2;
-return dummy.next;
-```
-
-#### 6. Remove Nth From End
-
-```java
-ListNode dummy = new ListNode(0);
-dummy.next = head;
-ListNode fast = dummy, slow = dummy;
-
-for (int i = 0; i <= n; i++) fast = fast.next;
-while (fast != null) {
-    slow = slow.next;
-    fast = fast.next;
-}
-slow.next = slow.next.next;
-return dummy.next;
-```
-
-### 💡 Problem-Solving Framework
-
-1. **Understand the problem:** Draw example with 3-4 nodes
-2. **Identify pattern:** Two pointers? Reversal? Merge? Stack?
-3. **Consider edge cases:** null, single node, even/odd length
-4. **Choose approach:** Iterative vs recursive (discuss trade-offs)
-5. **Write clean code:** Use meaningful variable names
-6. **Test thoroughly:** Walk through example step-by-step
-7. **Analyze complexity:** State time and space clearly
-8. **Optimize if possible:** Can you reduce space to O(1)?
-
-### 🚨 Common Mistakes to Avoid
-
-- ❌ Forgetting to handle null head
-- ❌ Not using dummy node when head changes
-- ❌ Losing reference to next node before modifying pointers
-- ❌ Infinite loops in cycle problems
-- ❌ Off-by-one errors in two-pointer problems
-- ❌ Not breaking circular references (memory leak)
-- ❌ Forgetting to return correct head after modifications
-- ❌ Not checking fast.next before accessing fast.next.next
-
-### 📊 Priority Order for Meta Prep
-
-#### 🔴 Critical (Must Know)
-
-- **LRU Cache (146)** - #1 Priority
-- Reverse Linked List (206)
-- Merge Two Sorted Lists (21)
-- Linked List Cycle (141, 142)
-- Add Two Numbers (2)
-- Remove Nth From End (19)
-
-#### 🟡 High Priority
-
-- Copy List with Random Pointer (138)
-- Merge k Sorted Lists (23)
-- Reverse Nodes in k-Group (25)
-- Reorder List (143)
-- Palindrome Linked List (234)
-- Sort List (148)
-
-#### 🟢 Medium Priority
-
-- Odd Even Linked List (328)
-- Swap Nodes in Pairs (24)
-- Reverse Linked List II (92)
-- Flatten Multilevel List (430)
-- Design Browser History (1472)
-
-#### 🔵 Good to Know
-
-- Design HashMap (706)
-- Design Skiplist (1206)
-- Remove Zero Sum Sublists (1171)
-- Split List in Parts (725)
-
 ### 🎨 Essential Patterns for Meta Interviews
 
 ### 1. Two Pointers (Fast & Slow)
@@ -197,6 +14,68 @@ return dummy.next;
 - Palindrome Linked List (234)
 - Remove Nth From End (19)
 
+```python
+
+
+def middle(node):
+	slow,fast = node, node
+	while(fast and fast.next):
+		slow = slow.next
+		fast = fast.next.next
+	# this will give second element in even length to get first use fast.next and fast.next.next
+
+	return slow 
+
+def isCycle(node):
+	slow,fast = node, node
+	while(fast and fast.next):
+		slow = slow.next
+		fast = fast.next.next
+		if(fast==slow):
+			return True
+	return False
+
+def getStart(node):
+	slow,fast = node, node
+	while(fast and fast.next):
+		slow = slow.next
+		fast = fast.next.next
+		if(fast==slow):
+			break
+	slow = node
+	while(fast==slow):
+		slow = slow.next
+		fast = fast.next
+	return slow
+
+self.head = root
+
+def palindromeLinkedList(node):
+	if(node is None): return True
+
+	temp = palindromeLinkedList(node.next)
+	if(node.val == self.head.val and temp):
+		self.head = self.head.next
+		return True
+	else:
+		return False
+
+def Remove Nth From End(node, n):
+	dummy = Node(-1)
+	dummy.next = node
+	// 1,2,3,4,5. -> n = 2(node 4)
+	// d-1-2-3-4-5 
+	for i in range(n+1): fast = fast.next
+
+	while(fast):
+		slow = slow.next
+		fast = fast.next
+	slow.next = slow.next.next
+	return node
+
+
+```
+
 ### 2. Dummy Node Technique
 
 **Use Cases:** Simplifying head modifications, edge case handling
@@ -210,6 +89,11 @@ return dummy.next;
 - Remove Nth Node (19)
 - Partition List (86)
 
+```python
+l =[1,5,8,10] l2 = [2,3,5,9,10]
+
+```
+
 ### 3. In-Place Reversal
 
 **Use Cases:** Reversing entire list or sublists without extra space
@@ -218,11 +102,45 @@ return dummy.next;
 
 **Common Problems:**
 
-- Reverse Linked List (206)
-- Reverse Linked List II (92)
-- Swap Nodes in Pairs (24)
-- Reverse Nodes in k-Group (25)
-- Reorder List (143)
+- **Reverse Linked List (206)**
+- **Reverse Linked List II (92) between(n,m)**
+- **Swap Nodes in Pairs (24)**
+- **Reverse Nodes in k-Group (25)**
+- **Reorder List (143)**
+
+```python
+
+class Solution:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(-1)
+        dummy.next = head
+        prev = dummy
+
+        # Step 1: Move `prev` to the node just before `left`
+        for _ in range(left - 1):
+            prev = prev.next
+
+        # Step 2: Reverse the sublist between left and right
+        curr = prev.next
+        nxt = None
+        prev_sub = None
+        for _ in range(right - left + 1):
+            nxt = curr.next
+            curr.next = prev_sub
+            prev_sub = curr
+            curr = nxt
+
+        # Step 3: Connect the reversed sublist
+        # prev is node before left
+        # curr is node after right
+        prev.next.next = curr      # left node becomes tail
+        prev.next = prev_sub       # connect to new head of reversed section
+
+        return dummy.next
+```
 
 ### 4. Stack for Reverse Processing
 
@@ -247,7 +165,7 @@ return dummy.next;
 
 - Copy List with Random Pointer (138)
 - Intersection of Two Lists (160)
-- Remove Zero Sum Sublists (1171)
+- **Remove Zero Sum Sublists (1171)**
 
 ### 6. Priority Queue/Heap
 
@@ -257,7 +175,7 @@ return dummy.next;
 
 **Common Problems:**
 
-- Merge k Sorted Lists (23)
+- **Merge k Sorted Lists (23)**
 
 **Complexity:**
 
@@ -282,108 +200,10 @@ return dummy.next;
 
 **Common Problems:**
 
-- LRU Cache (146)
-- Design Browser History (1472)
-- BST to Sorted Doubly List (426)
-- Flatten Multilevel List (430)
-
-### 9. Design Problems - LRU Cache Pattern ⭐⭐⭐
-
-**CRITICAL FOR META!** Most frequently asked LinkedList design problem.
-
-#### LRU Cache (LC 146)
-
-**💡 Core Design:**
-
-- HashMap + Doubly LinkedList combination
-- HashMap: O(1) access to any node
-- DLL: O(1) insertion/deletion, maintains LRU order
-- Most recent at head, least recent at tail
-- Dummy head & tail nodes simplify edge cases
-
-**Operations:**
-
-- **get(key):** Return value & move to head (mark as recently used)
-- **put(key, value):** Insert/update & move to head, evict tail if full
-
-**Implementation Template:**
-
-```java
-class LRUCache {
-    class Node {
-        int key, value;
-        Node prev, next;
-        Node(int k, int v) { key = k; value = v; }
-    }
-  
-    private Map<Integer, Node> map;
-    private Node head, tail;
-    private int capacity;
-  
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        map = new HashMap<>();
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
-    }
-  
-    public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        Node node = map.get(key);
-        moveToHead(node);
-        return node.value;
-    }
-  
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            Node node = map.get(key);
-            node.value = value;
-            moveToHead(node);
-        } else {
-            if (map.size() >= capacity) {
-                Node lru = tail.prev;
-                removeNode(lru);
-                map.remove(lru.key);
-            }
-            Node newNode = new Node(key, value);
-            addToHead(newNode);
-            map.put(key, newNode);
-        }
-    }
-  
-    private void addToHead(Node node) {
-        node.next = head.next;
-        node.prev = head;
-        head.next.prev = node;
-        head.next = node;
-    }
-  
-    private void removeNode(Node node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-  
-    private void moveToHead(Node node) {
-        removeNode(node);
-        addToHead(node);
-    }
-}
-```
-
-**Complexity:**
-
-- **Time:** O(1) for both get and put
-- **Space:** O(capacity)
-
-**⚡ Meta Interview Tips:**
-
-- Be ready to implement from scratch in 20-25 minutes
-- Explain the trade-offs: Why not just HashMap? Why not just array?
-- Discuss thread safety and concurrency considerations
-- Know variations: LFU Cache, Time-based eviction
-- Can you make it generic? Support different eviction policies?
+- **LRU Cache (146)**
+- **Design Browser History (1472)**
+- **BST to Sorted Doubly List (426)**
+- **Flatten Multilevel List (430)**
 
 ### 10. Design Problems - HashMap/HashSet Pattern
 
@@ -529,49 +349,12 @@ class MyHashMap {
 
 ## 🟢 Easy Problems
 
-### 1. Reverse Linked List (LC 206)
-
-- **Difficulty:** Easy
-- **Tags:** Reversal, Two Pointers
-- **Problem:** Reverse a singly linked list.
-- **Time:** O(n) | **Space:** O(1) iterative, O(n) recursive
-- **Key Approach:** Maintain prev, curr, next pointers. Iteratively change curr.next to prev.
-
-### 2. Merge Two Sorted Lists (LC 21)
-
-- **Difficulty:** Easy
-- **Tags:** Merge, Dummy Node
-- **Problem:** Merge two sorted lists into one sorted list.
-- **Time:** O(n + m) | **Space:** O(1)
-
-### 3. Linked List Cycle (LC 141)
-
-- **Difficulty:** Easy
-- **Tags:** Two Pointers, Floyd's Algorithm
-- **Problem:** Detect if linked list has a cycle.
-- **Time:** O(n) | **Space:** O(1)
-- **Floyd's Tortoise & Hare:** If fast and slow pointers meet, cycle exists.
-
-### 4. Middle of Linked List (LC 876)
-
-- **Difficulty:** Easy
-- **Tags:** Two Pointers
-- **Problem:** Return the middle node of linked list.
-- **Time:** O(n) | **Space:** O(1)
-
 ### 5. Remove Duplicates from Sorted List (LC 83)
 
 - **Difficulty:** Easy
 - **Tags:** Two Pointers
 - **Problem:** Remove duplicate nodes from sorted list.
 - **Time:** O(n) | **Space:** O(1)
-
-### 6. Delete Node in Linked List (LC 237)
-
-- **Difficulty:** Easy
-- **Tags:** Pointer Manipulation
-- **Problem:** Delete a node when only given access to that node.
-- **Trick:** Copy next node's value to current, then skip next node.
 
 ### 7. Binary to Integer (LC 1290)
 
@@ -580,14 +363,6 @@ class MyHashMap {
 - **Problem:** Convert binary linked list to integer.
 - **Time:** O(n) | **Space:** O(1)
 - **Formula:** result = (result << 1) | node.val
-
-### 8. Intersection of Two Lists (LC 160)
-
-- **Difficulty:** Easy
-- **Tags:** Two Pointers
-- **Problem:** Find intersection point of two lists.
-- **Time:** O(n + m) | **Space:** O(1)
-- **Trick:** When pointer reaches end, redirect to other list's head. They'll meet at intersection.
 
 ### 9. Move Last Element to Front
 
@@ -617,64 +392,6 @@ public ListNode moveLastToFront(ListNode head) {
 ---
 
 ## 🟡 Medium Problems
-
-### 1. Add Two Numbers (LC 2)
-
-- **Difficulty:** Medium
-- **Tags:** Dummy Node, Math
-- **Problem:** Add two numbers represented as linked lists (reversed order).
-- **Time:** O(max(n,m)) | **Space:** O(max(n,m))
-
-### 2. Add Two Numbers II (LC 445)
-
-- **Difficulty:** Medium
-- **Tags:** Stack
-- **Problem:** Add two numbers (most significant digit first).
-- **Time:** O(max(n,m)) | **Space:** O(max(n,m))
-
-### 3. Remove Nth Node From End (LC 19)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Dummy Node
-- **Problem:** Remove nth node from end in one pass.
-- **Time:** O(n) | **Space:** O(1)
-- **Trick:** Move fast n+1 steps ahead, then move both until fast reaches end.
-
-### 4. Swap Nodes in Pairs (LC 24)
-
-- **Difficulty:** Medium
-- **Tags:** Reversal
-- **Problem:** Swap every two adjacent nodes.
-- **Time:** O(n) | **Space:** O(1) iterative, O(n) recursive
-
-### 5. Odd Even Linked List (LC 328)
-
-- **Difficulty:** Medium
-- **Tags:** Split & Merge
-- **Problem:** Group odd and even positioned nodes together.
-- **Time:** O(n) | **Space:** O(1)
-
-### 6. Reorder List (LC 143)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Reversal
-- **Problem:** Reorder L0→L1→...→Ln to L0→Ln→L1→Ln-1→...
-- **Time:** O(n) | **Space:** O(1)
-- **Steps:** 1) Find middle 2) Reverse second half 3) Merge alternately
-
-### 7. Palindrome Linked List (LC 234)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Reversal
-- **Problem:** Check if linked list is palindrome.
-- **Time:** O(n) | **Space:** O(1)
-
-### 8. Reverse Linked List II (LC 92)
-
-- **Difficulty:** Medium
-- **Tags:** Reversal
-- **Problem:** Reverse nodes from position left to right.
-- **Time:** O(n) | **Space:** O(1)
 
 ### 9. Rotate List (LC 61)
 
@@ -810,69 +527,6 @@ public ListNode removeDuplicates(ListNode head) {
 }
 ```
 
-### 25. Segregate Even and Odd Values
-
-- **Difficulty:** Medium
-- **Tags:** Split & Merge
-- **Problem:** Segregate nodes by value (even values first, then odd values). Maintain relative order.
-- **Example:** `[2,1,3,5,6,4,7]` → `[2,6,4,1,3,5,7]`
-- **Time:** O(n) | **Space:** O(1)
-- **Approach:** Create two separate lists for even and odd values, then concatenate.
-
-```java
-public ListNode segregateEvenOdd(ListNode head) {
-    if (head == null || head.next == null) return head;
-  
-    ListNode evenDummy = new ListNode(0);
-    ListNode oddDummy = new ListNode(0);
-    ListNode even = evenDummy, odd = oddDummy;
-  
-    while (head != null) {
-        if (head.val % 2 == 0) {
-            even.next = head;
-            even = even.next;
-        } else {
-            odd.next = head;
-            odd = odd.next;
-        }
-        head = head.next;
-    }
-  
-    odd.next = null;
-    even.next = oddDummy.next;
-    return evenDummy.next;
-}
-```
-
-### 26. Intersection of Two Sorted Lists (Common Elements)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Merge
-- **Problem:** Find common elements in two sorted lists.
-- **Example:** `[1,2,3,4]` and `[2,4,6,8]` → `[2,4]`
-- **Time:** O(n + m) | **Space:** O(1)
-- **Approach:** Traverse both lists simultaneously, add matching elements.
-
-```java
-public ListNode getIntersection(ListNode l1, ListNode l2) {
-    ListNode dummy = new ListNode(0), curr = dummy;
-  
-    while (l1 != null && l2 != null) {
-        if (l1.val == l2.val) {
-            curr.next = new ListNode(l1.val);
-            curr = curr.next;
-            l1 = l1.next;
-            l2 = l2.next;
-        } else if (l1.val < l2.val) {
-            l1 = l1.next;
-        } else {
-            l2 = l2.next;
-        }
-    }
-    return dummy.next;
-}
-```
-
 ### 27. Add One to Number as Linked List
 
 - **Difficulty:** Medium
@@ -1002,19 +656,19 @@ public ListNode selectionSort(ListNode head) {
     while (curr != null) {
         ListNode min = curr;
         ListNode temp = curr.next;
-    
+  
         while (temp != null) {
             if (temp.val < min.val) {
                 min = temp;
             }
             temp = temp.next;
         }
-    
+  
         // Swap values
         int tempVal = curr.val;
         curr.val = min.val;
         min.val = tempVal;
-    
+  
         curr = curr.next;
     }
     return head;
@@ -1130,7 +784,7 @@ public Node sortKSortedDLL(Node head, int k) {
   
     while (!pq.isEmpty()) {
         Node min = pq.poll();
-    
+  
         if (newHead == null) {
             newHead = min;
             min.prev = null;
@@ -1140,7 +794,7 @@ public Node sortKSortedDLL(Node head, int k) {
             min.prev = last;
             last = min;
         }
-    
+  
         if (curr != null) {
             pq.offer(curr);
             curr = curr.next;
@@ -1213,7 +867,7 @@ public Node reverseInGroups(Node head, int k) {
         Node groupStart = curr;
         Node prev = null;
         int count = 0;
-    
+  
         // Reverse k nodes
         while (curr != null && count < k) {
             Node next = curr.next;
@@ -1223,19 +877,19 @@ public Node reverseInGroups(Node head, int k) {
             curr = next;
             count++;
         }
-    
+  
         if (newHead == null) {
             newHead = prev;
         }
-    
+  
         if (prevGroupEnd != null) {
             prevGroupEnd.next = prev;
             prev.prev = prevGroupEnd;
         }
-    
+  
         groupStart.next = curr;
         if (curr != null) curr.prev = groupStart;
-    
+  
         prevGroupEnd = groupStart;
     }
   
@@ -1244,46 +898,3 @@ public Node reverseInGroups(Node head, int k) {
 ```
 
 ---
-
-## 🔴 Hard Problems
-
-### 1. Merge k Sorted Lists (LC 23)
-
-- **Difficulty:** Hard
-- **Tags:** Priority Queue, Divide & Conquer
-- **Problem:** Merge k sorted linked lists into one.
-- **Priority Queue:** O(N log k) time, O(k) space
-- **Divide & Conquer:** O(N log k) time, O(1) space
-- **Approach 1:** Use min-heap to always extract smallest element.
-- **Approach 2:** Repeatedly merge pairs of lists.
-
-### 2. Reverse Nodes in k-Group (LC 25)
-
-- **Difficulty:** Hard
-- **Tags:** Reversal, Recursion
-- **Problem:** Reverse nodes in groups of k.
-- **Time:** O(n) | **Space:** O(n/k) recursive, O(1) iterative
-- **Steps:** 1) Count k nodes 2) Reverse if k exists 3) Recursively process rest 4) Connect groups
-
-### 3. Design Skiplist (LC 1206)
-
-- **Difficulty:** Hard
-- **Tags:** Design, Probabilistic DS
-- **Problem:** Design skiplist without built-in libraries.
-- **Time:** O(log n) average for search/insert/delete | **Space:** O(n)
-- **Key Concept:** Multi-level linked list. Each level is express lane. Use randomization for level promotion (P=0.25).
-
----
-
-## 📝 Summary
-
-This guide covers **45+ LinkedList problems** organized by difficulty, with:
-
-- ✅ **Quick Reference** for fast revision
-- ✅ **13 Essential Patterns** with detailed explanations
-- ✅ **Code Templates** for common operations
-- ✅ **Priority Order** for Meta preparation
-- ✅ **1-Week Study Plan** for systematic prep
-- ✅ **Complete problem list** with complexity analysis
-
-**Perfect for FAANG interviews, especially Meta!**

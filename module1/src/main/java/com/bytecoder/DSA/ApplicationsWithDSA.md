@@ -1,12 +1,13 @@
 ## implementation of Max Stack(716), hashmap, hashset, queue and deque and priority queue
+
 - https://leetcode.com/problems/design-hashset/description/?envType=company&envId=facebook&favoriteSlug=facebook-three-months
+
 ---
 
 - Rate Limiters
 - load balancer
 - Caching
 - database implementation
-
 
 ### Core System Design Topics
 
@@ -70,26 +71,22 @@
 
 ---
 
-
-
-
-
-
 ### **Types of Rate Limiters**
 
-| Type | Description | DSA Behind It |
-|------|-------------|---------------|
-| **Fixed Window** | Counts requests in a fixed time window (e.g., 10 reqs per minute). | HashMap + Counter |
+| Type                     | Description                                                                      | DSA Behind It                         |
+| ------------------------ | -------------------------------------------------------------------------------- | ------------------------------------- |
+| **Fixed Window**   | Counts requests in a fixed time window (e.g., 10 reqs per minute).               | HashMap + Counter                     |
 | **Sliding Window** | Improves fixed window by splitting into smaller intervals for smoother limiting. | HashMap + Deque (Queue of timestamps) |
-| **Token Bucket** | Adds tokens at a fixed rate, each request consumes a token. | Queue or counter + time-based refill |
-| **Leaky Bucket** | Queues requests and processes them at a fixed rate (smooth out bursts). | Queue with fixed processing interval |
-| **Sliding Log** | Stores timestamps of all requests, removes those older than the window. | Queue/Deque |
+| **Token Bucket**   | Adds tokens at a fixed rate, each request consumes a token.                      | Queue or counter + time-based refill  |
+| **Leaky Bucket**   | Queues requests and processes them at a fixed rate (smooth out bursts).          | Queue with fixed processing interval  |
+| **Sliding Log**    | Stores timestamps of all requests, removes those older than the window.          | Queue/Deque                           |
 
 ---
 
 ### **How to Implement Each Using DSA**
 
 #### **1. Fixed Window Counter (Simple)**
+
 ```java
 class FixedWindowRateLimiter {
     Map<String, Integer> requestCounts = new HashMap<>();
@@ -110,6 +107,7 @@ class FixedWindowRateLimiter {
 ```
 
 #### **2. Sliding Window Log**
+
 ```java
 class SlidingWindowRateLimiter {
     Map<String, Deque<Long>> userTimestamps = new HashMap<>();
@@ -136,6 +134,7 @@ class SlidingWindowRateLimiter {
 ```
 
 #### **3. Token Bucket**
+
 ```java
 class TokenBucket {
     int capacity = 100;
@@ -164,6 +163,7 @@ class TokenBucket {
 ```
 
 #### **4. Leaky Bucket (Queue)**
+
 ```java
 class LeakyBucket {
     Queue<Long> bucket = new LinkedList<>();
@@ -191,16 +191,16 @@ class LeakyBucket {
 ---
 
 ### **When to Use Which?**
-| Scenario | Use |
-|----------|-----|
-| Simplicity & speed | Fixed Window |
-| Smooth rate control | Sliding Window |
-| Burstable traffic | Token Bucket |
-| Guaranteed uniform flow | Leaky Bucket |
-| High accuracy per-user | Sliding Log |
+
+| Scenario                | Use            |
+| ----------------------- | -------------- |
+| Simplicity & speed      | Fixed Window   |
+| Smooth rate control     | Sliding Window |
+| Burstable traffic       | Token Bucket   |
+| Guaranteed uniform flow | Leaky Bucket   |
+| High accuracy per-user  | Sliding Log    |
 
 ---
-
 
 Here’s a breakdown of **types of load balancers**, what they do, and how you can **implement them using Data Structures and Algorithms (DSA)**.
 
@@ -208,8 +208,8 @@ Here’s a breakdown of **types of load balancers**, what they do, and how you c
 
 ## **Types of Load Balancers**
 
-| Type                         | Description                                                    | DSA Used                                        |
-|------------------------------|----------------------------------------------------------------|-------------------------------------------------|
+| Type                               | Description                                                    | DSA Used                                        |
+| ---------------------------------- | -------------------------------------------------------------- | ----------------------------------------------- |
 | **Round Robin**              | Assigns requests to servers in circular order                  | Circular queue / pointer index                  |
 | **Sticky Round Robin**       | Assigns requests to same servers to same user                  | Circular queue / pointer index / hashmap        |
 | **Weighted Round Robin**     | Like Round Robin but gives preference to higher-weight servers | Array/List + server weight logic                |
@@ -224,6 +224,7 @@ Here’s a breakdown of **types of load balancers**, what they do, and how you c
 ## **DSA Implementations**
 
 ### **1. Round Robin**
+
 ```java
 class RoundRobinLB {
     List<String> servers;
@@ -244,6 +245,7 @@ class RoundRobinLB {
 ---
 
 ### **2. Weighted Round Robin**
+
 ```java
 class WeightedServer {
     String name;
@@ -280,6 +282,7 @@ class WeightedRoundRobinLB {
 ---
 
 ### **3. Least Connections**
+
 ```java
 class Server implements Comparable<Server> {
     String name;
@@ -324,6 +327,7 @@ class LeastConnectionLB {
 ---
 
 ### **4. Random Load Balancer**
+
 ```java
 class RandomLB {
     List<String> servers;
@@ -343,6 +347,7 @@ class RandomLB {
 ---
 
 ### **5. IP Hash**
+
 ```java
 class IPHashLB {
     List<String> servers;
@@ -362,6 +367,7 @@ class IPHashLB {
 ---
 
 ### **6. Consistent Hashing (Advanced)**
+
 ```java
 class ConsistentHashLB {
     TreeMap<Integer, String> ring = new TreeMap<>();
@@ -388,14 +394,14 @@ class ConsistentHashLB {
 
 ## **When to Use What**
 
-| Use Case | Load Balancer |
-|----------|----------------|
-| Simple round distribution | Round Robin |
-| Different server capacities | Weighted Round Robin |
-| Handle long connections (DBs) | Least Connections |
-| Client affinity | IP Hash |
-| High availability & scale | Consistent Hashing |
-| Stateless microservices | Random |
+| Use Case                      | Load Balancer        |
+| ----------------------------- | -------------------- |
+| Simple round distribution     | Round Robin          |
+| Different server capacities   | Weighted Round Robin |
+| Handle long connections (DBs) | Least Connections    |
+| Client affinity               | IP Hash              |
+| High availability & scale     | Consistent Hashing   |
+| Stateless microservices       | Random               |
 
 ---
 
@@ -405,21 +411,26 @@ Here’s a full breakdown of **cache types**, how they work, and how to **implem
 
 ## **Types of Caches**
 
-| Cache Type | Description | DSA Used |
-|------------|-------------|----------|
-| **LRU (Least Recently Used)** | Removes least recently accessed item when full | HashMap + Doubly Linked List |
-| **LFU (Least Frequently Used)** | Removes least frequently used item | HashMap + Min Heap or Frequency Map + LinkedHashSet |
-| **MRU (Most Recently Used)** | Opposite of LRU, removes most recently accessed | HashMap + Stack/Deque |
-| **FIFO (First In First Out)** | Removes the oldest inserted item | Queue + HashMap |
-| **Write-through Cache** | Writes data to cache and backing store simultaneously | No eviction logic; simulate DB write + HashMap |
-| **Write-back Cache** | Writes to cache first, then DB later (lazy write) | HashMap + Dirty Bit + Write queue |
-| **Time-based Expiry Cache** | Removes entries after a TTL | HashMap + PriorityQueue (min-heap on expiration time) |
+| Cache Type                            | Description                                           | DSA Used                                              |
+| ------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| **LRU (Least Recently Used)**   | Removes least recently accessed item when full        | HashMap + Doubly Linked List                          |
+| **LFU (Least Frequently Used)** | Removes least frequently used item                    | HashMap + Min Heap or Frequency Map + LinkedHashSet   |
+| **MRU (Most Recently Used)**    | Opposite of LRU, removes most recently accessed       | HashMap + Stack/Deque                                 |
+| **FIFO (First In First Out)**   | Removes the oldest inserted item                      | Queue + HashMap                                       |
+| **Write-through Cache**         | Writes data to cache and backing store simultaneously | No eviction logic; simulate DB write + HashMap        |
+| **Write-back Cache**            | Writes to cache first, then DB later (lazy write)     | HashMap + Dirty Bit + Write queue                     |
+| **Time-based Expiry Cache**     | Removes entries after a TTL                           | HashMap + PriorityQueue (min-heap on expiration time) |
 
 ---
+
+- how what's handles million of requests and connections
+- Trillions of Web Pages: Where Does Google Store Them?
+- bloom filter
 
 ## **DSA Implementations**
 
 ### **1. LRU Cache**
+
 ```java
 class LRUCache {
     class Node {
@@ -471,6 +482,7 @@ class LRUCache {
 ---
 
 ### **2. LFU Cache (Using Frequency Map + LinkedHashSet)**
+
 ```java
 class LFUCache {
     class Node {
@@ -525,6 +537,7 @@ class LFUCache {
 ---
 
 ### **3. MRU Cache (Most Recently Used)**
+
 ```java
 class MRUCache {
     Deque<Integer> stack = new ArrayDeque<>();
@@ -557,6 +570,7 @@ class MRUCache {
 ---
 
 ### **4. FIFO Cache**
+
 ```java
 class FIFOCache {
     Queue<Integer> queue = new LinkedList<>();
@@ -585,6 +599,7 @@ class FIFOCache {
 ---
 
 ### **5. Time-Based Expiry Cache**
+
 ```java
 class TimeCache {
     class Entry {
@@ -618,15 +633,15 @@ class TimeCache {
 
 ## **When to Use What?**
 
-| Use Case | Use |
-|----------|-----|
-| Most recent access is valuable | **LRU** |
-| Frequency of access matters | **LFU** |
-| You want to evict new data first | **MRU** |
-| FIFO strategy needed (e.g., queue logic) | **FIFO** |
-| Expiring sessions or tokens | **TTL Cache** |
-| Cache + always write to DB | **Write-through** |
-| Cache first, write later | **Write-back** |
+| Use Case                                 | Use                     |
+| ---------------------------------------- | ----------------------- |
+| Most recent access is valuable           | **LRU**           |
+| Frequency of access matters              | **LFU**           |
+| You want to evict new data first         | **MRU**           |
+| FIFO strategy needed (e.g., queue logic) | **FIFO**          |
+| Expiring sessions or tokens              | **TTL Cache**     |
+| Cache + always write to DB               | **Write-through** |
+| Cache first, write later                 | **Write-back**    |
 
 ---
 
@@ -636,21 +651,23 @@ Here’s a deep dive into **types of internal database systems** (like B-Trees, 
 
 ## **Types of Internal Database Systems**
 
-| Data Structure | Used In | Description | Commonly Used In |
-|----------------|---------|-------------|------------------|
-| **B-Tree / B+ Tree** | Indexing | Balanced tree for ordered data, fast lookups | Relational DBs (MySQL, Postgres) |
-| **LSM Tree (Log-Structured Merge Tree)** | Write-heavy systems | Write-optimized structure using memory + disk trees | NoSQL DBs (LevelDB, RocksDB, Cassandra) |
-| **SSTable (Sorted String Table)** | Disk storage for LSM | Immutable, sorted files on disk with indexes | Cassandra, HBase |
-| **Trie / Radix Tree** | Prefix-based search | Fast string or IP prefix lookups | DNS, Redis, IP routing |
-| **Hash Index** | Key-value storage | Fast access via hashing | MongoDB, DynamoDB |
-| **Heap File** | Unordered storage | Appends new records, full scan needed | Used in simple file-based DBs |
-| **Bitmaps / Bit Index** | Boolean columns | Fast filtering on categorical data | Columnar DBs like ClickHouse |
-| **Inverted Index** | Text search | Maps words to document IDs | Search engines (Elasticsearch, Lucene) |
+| Data Structure                                 | Used In              | Description                                         | Commonly Used In                        |
+| ---------------------------------------------- | -------------------- | --------------------------------------------------- | --------------------------------------- |
+| **B-Tree / B+ Tree**                     | Indexing             | Balanced tree for ordered data, fast lookups        | Relational DBs (MySQL, Postgres)        |
+| **LSM Tree (Log-Structured Merge Tree)** | Write-heavy systems  | Write-optimized structure using memory + disk trees | NoSQL DBs (LevelDB, RocksDB, Cassandra) |
+| **SSTable (Sorted String Table)**        | Disk storage for LSM | Immutable, sorted files on disk with indexes        | Cassandra, HBase                        |
+| **Trie / Radix Tree**                    | Prefix-based search  | Fast string or IP prefix lookups                    | DNS, Redis, IP routing                  |
+| **Hash Index**                           | Key-value storage    | Fast access via hashing                             | MongoDB, DynamoDB                       |
+| **Heap File**                            | Unordered storage    | Appends new records, full scan needed               | Used in simple file-based DBs           |
+| **Bitmaps / Bit Index**                  | Boolean columns      | Fast filtering on categorical data                  | Columnar DBs like ClickHouse            |
+| **Inverted Index**                       | Text search          | Maps words to document IDs                          | Search engines (Elasticsearch, Lucene)  |
 
 ---
 
 ### **1. B-Tree (Simplified)**
+
 - Used in file systems and RDBMS for ordered indexing.
+
 ```java
 class BTreeNode {
     int[] keys;
@@ -715,6 +732,7 @@ class LSMTree {
 ---
 
 ### **3. SSTable (Immutable, Sorted Table on Disk - In-memory Sim)**
+
 ```java
 class SSTable {
     TreeMap<String, String> data = new TreeMap<>();
@@ -737,7 +755,9 @@ class SSTable {
 ---
 
 ### **4. Trie (Prefix Tree)**
+
 - Used for autocomplete, DNS, IP routing
+
 ```java
 class TrieNode {
     Map<Character, TrieNode> children = new HashMap<>();
@@ -767,7 +787,9 @@ class Trie {
 ---
 
 ### **5. Inverted Index**
+
 - Used for text search (full-text search)
+
 ```java
 class InvertedIndex {
     Map<String, List<Integer>> index = new HashMap<>();
@@ -787,7 +809,9 @@ class InvertedIndex {
 ---
 
 ### **6. Hash Index**
+
 - Used in key-value databases like DynamoDB
+
 ```java
 class HashIndex {
     Map<String, String> index = new HashMap<>();
@@ -806,14 +830,13 @@ class HashIndex {
 
 ## **Quick Comparison Table**
 
-| Structure | Read | Write | Ordered? | Use Case |
-|-----------|------|-------|----------|----------|
-| B-Tree    | Fast | Fast  | Yes      | Relational DB |
-| LSM Tree  | Moderate | Very Fast | Yes (eventually) | Write-heavy NoSQL |
-| SSTable   | Fast (binary search) | Write-once | Yes | Immutable disk storage |
-| Trie      | Fast prefix | Fast | Yes | DNS, search |
-| Hash Index | O(1) | O(1) | No | Key-value |
-| Inverted Index | Fast (search term) | Moderate | N/A | Full-text search |
+| Structure      | Read                 | Write      | Ordered?         | Use Case               |
+| -------------- | -------------------- | ---------- | ---------------- | ---------------------- |
+| B-Tree         | Fast                 | Fast       | Yes              | Relational DB          |
+| LSM Tree       | Moderate             | Very Fast  | Yes (eventually) | Write-heavy NoSQL      |
+| SSTable        | Fast (binary search) | Write-once | Yes              | Immutable disk storage |
+| Trie           | Fast prefix          | Fast       | Yes              | DNS, search            |
+| Hash Index     | O(1)                 | O(1)       | No               | Key-value              |
+| Inverted Index | Fast (search term)   | Moderate   | N/A              | Full-text search       |
 
 ---
-

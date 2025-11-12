@@ -1,4 +1,154 @@
-### 🎨 Essential Patterns for Meta Interviews
+## LinkedList:
+
+1. Reverse LinkedList (Iterative)
+
+```java
+ListNode prev = null, curr = head;
+while (curr != null) {
+    ListNode next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+}
+return prev;
+```
+
+#### 2. Find Middle (Two Pointers)
+
+```java
+ListNode slow = head, fast = head;
+while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+}
+return slow;
+```
+
+#### 3. Detect Cycle
+
+```java
+ListNode slow = head, fast = head;
+while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow == fast) return true;
+}
+return false;
+```
+
+#### 4. Find Cycle Start
+
+```java
+// After detecting cycle
+slow = head;
+while (slow != fast) {
+    slow = slow.next;
+    fast = fast.next;
+}
+return slow;
+```
+
+#### 5. Merge Two Sorted Lists
+
+```java
+ListNode dummy = new ListNode(0), curr = dummy;
+while (l1 != null && l2 != null) {
+    if (l1.val <= l2.val) {
+        curr.next = l1;
+        l1 = l1.next;
+    } else {
+        curr.next = l2;
+        l2 = l2.next;
+    }
+    curr = curr.next;
+}
+curr.next = (l1 != null) ? l1 : l2;
+return dummy.next;
+```
+
+#### 6. Remove Nth From End
+
+```java
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+ListNode fast = dummy, slow = dummy;
+
+for (int i = 0; i <= n; i++) fast = fast.next;
+while (fast != null) {
+    slow = slow.next;
+    fast = fast.next;
+}
+slow.next = slow.next.next;
+return dummy.next;
+```
+
+### 24. Remove Duplicates from Unsorted List
+
+```java
+public ListNode removeDuplicates(ListNode head) {
+    if (head == null) return null;
+  
+    Set<Integer> seen = new HashSet<>();
+    ListNode curr = head, prev = null;
+  
+    while (curr != null) {
+        if (seen.contains(curr.val)) {
+            prev.next = curr.next;
+        } else {
+            seen.add(curr.val);
+            prev = curr;
+        }
+        curr = curr.next;
+    }
+    return head;
+}
+```
+
+### 27. Add One to Number as Linked List
+
+**Approach 1: Reverse List**
+
+```java
+public ListNode addOne(ListNode head) {
+    head = reverse(head);
+    ListNode curr = head;
+    int carry = 1;
+  
+    while (curr != null && carry > 0) {
+        int sum = curr.val + carry;
+        curr.val = sum % 10;
+        carry = sum / 10;
+        if (curr.next == null && carry > 0) {
+            curr.next = new ListNode(carry);
+            carry = 0;
+        }
+        curr = curr.next;
+    }
+    return reverse(head);
+}
+```
+
+**Approach 2: Recursion**
+
+```java
+public ListNode addOne(ListNode head) {
+    int carry = addOneHelper(head);
+    if (carry > 0) {
+        ListNode newHead = new ListNode(carry);
+        newHead.next = head;
+        return newHead;
+    }
+    return head;
+}
+
+private int addOneHelper(ListNode node) {
+    if (node == null) return 1;
+    int carry = addOneHelper(node.next);
+    int sum = node.val + carry;
+    node.val = sum % 10;
+    return sum / 10;
+}
+```
 
 ### 1. Two Pointers (Fast & Slow)
 
@@ -11,7 +161,7 @@
 - Middle of LinkedList (876)
 - Linked List Cycle (141)
 - Linked List Cycle II (142)
-- Palindrome Linked List (234)
+- **Palindrome Linked List (234)**
 - Remove Nth From End (19)
 
 ```python
@@ -35,7 +185,7 @@ def isCycle(node):
 			return True
 	return False
 
-def getStart(node):
+def getStartOfCycle(node):
 	slow,fast = node, node
 	while(fast and fast.next):
 		slow = slow.next
@@ -49,7 +199,6 @@ def getStart(node):
 	return slow
 
 self.head = root
-
 def palindromeLinkedList(node):
 	if(node is None): return True
 
@@ -107,39 +256,127 @@ l =[1,5,8,10] l2 = [2,3,5,9,10]
 - **Swap Nodes in Pairs (24)**
 - **Reverse Nodes in k-Group (25)**
 - **Reorder List (143)**
+- **Reverse Even Length Groups (LC 2074)**
 
 ```python
 
-class Solution:
-    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        if not head or left == right:
+
+def reverseLL(node):
+	curr = node
+	prev = None
+
+	while(curr):
+		temp = curr.next 
+		curr.next = prev
+		prev = curr
+		curr = curr.next
+	return prev
+
+def reverseLL(node, left, right ):
+
+	dummy = Node(0)
+	dummy.next  = node
+	curr = dummy.next 
+	prev = dummy
+	for _ in range(left-1):prev = prev.next 
+
+#	1->,2,3,4,5,6
+	curr = prev.next
+	for _ in range(right-left):
+		temp = curr.next
+		curr.next = temp.next
+		temp.next = prev.next
+		prev.next = temp
+	return dummy.next
+
+def swapInPair(node):
+	dummy = ListNode(0, node)
+	curr = dummy.next
+	prev = dummy
+
+	while(curr and curr.next):
+		temp = curr.next.next
+		prev.next,curr.next.next, curr.next = curr.next, curr, temp
+
+		prev = curr
+		curr = temp
+	return dummy.next
+
+
+
+ def reverseKGroup( head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if(k<=1):
             return head
+        def get_kth(curr, k):
+            while curr and k > 0:
+                curr = curr.next
+                k -= 1
+            return curr
 
-        dummy = ListNode(-1)
-        dummy.next = head
-        prev = dummy
+        dummy = ListNode(0, head)
+  
+        prevGroupH = dummy
+        curr = dummy.next
+        while(curr):
+            kth = get_kth(curr, k-1) # last element of current k group
 
-        # Step 1: Move `prev` to the node just before `left`
-        for _ in range(left - 1):
-            prev = prev.next
+            if(kth is None ):
+                break
 
-        # Step 2: Reverse the sublist between left and right
-        curr = prev.next
-        nxt = None
-        prev_sub = None
-        for _ in range(right - left + 1):
-            nxt = curr.next
-            curr.next = prev_sub
-            prev_sub = curr
-            curr = nxt
+            nextH = temp.next # first element of next group 
 
-        # Step 3: Connect the reversed sublist
-        # prev is node before left
-        # curr is node after right
-        prev.next.next = curr      # left node becomes tail
-        prev.next = prev_sub       # connect to new head of reversed section
+            prev = temp.next # prev will point to next group head so if next group is not complete then it will point in same order c
 
+            while(curr and curr != nextH ):
+                t = curr.next 
+                curr.next = prev
+                prev = curr
+                curr = t
+   
+            nexttt = prevGroupH.next
+            prevGroupH.next = temp
+            prevGroupH = nexttt
         return dummy.next
+
+def reorderList( head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        slow = head 
+        fast = head
+
+        while(fast and fast.next):
+            slow = slow.next
+            fast = fast.next.next
+  
+        curr = slow.next
+        slow.next = None
+        prev = None
+
+        while(curr):
+            temp = curr.next 
+            curr.next = prev
+            prev = curr 
+            curr = temp
+        l1 = head 
+        l2 = prev
+
+        while(l1 and l2):
+            temp1 = l1.next
+  
+            temp2 = l2.next
+            l1.next = l2
+            l2.next = temp1
+
+            l1 = temp1
+            l2 = temp2
+        return head
+
+
+
+
+
+
 ```
 
 ### 4. Stack for Reverse Processing
@@ -152,8 +389,112 @@ class Solution:
 
 - Add Two Numbers II (445)
 - Remove Nodes (2487)
-- Next Greater Node (1019)
+- **Next Greater Node (1019)**
 - Palindrome Check (234 - alternative)
+
+```python
+
+def addTwoNumbers( l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        s1 = []
+        s2 = []
+        curr1 = l1
+        curr2 = l2
+        while(curr1 ):
+            s1.append(curr1.val)
+            curr1 = curr1.next 
+        while( curr2):
+            s2.append(curr2.val)
+            curr2 =  curr2.next
+
+        dummy = ListNode(0)
+        curr = dummy 
+        carry = 0
+        while(s1 or s2):
+            temp = (int(s1.pop()) if s1 else 0) + (int(s2.pop()) if s2 else 0) + carry 
+            carry = temp//10
+            curr.next = ListNode(temp%10)
+            curr = curr.next 
+        if(carry>0):
+            curr.next = ListNode(carry)
+            curr = curr.next 
+
+        curr = dummy.next
+        prev = None
+
+        while(curr):
+            t = curr.next 
+            curr.next = prev
+            prev = curr
+            curr = t
+        return prev
+
+def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        st = []
+        curr = head
+        while(curr):
+            while(st and st[-1]< curr.val):
+                st.pop()
+            st.append(curr.val)
+            curr = curr.next
+        dummy = ListNode(0)
+        curr = dummy
+        while(st):
+            curr.next = ListNode(st.pop(0))
+            curr = curr.next
+        return dummy.next
+  
+
+def removeNodes_v2(head: Optional[ListNode]) -> Optional[ListNode]:
+        # Step 1: Reverse the list
+        def reverse(node):
+            prev = None
+            while node:
+                nxt = node.next
+                node.next = prev
+                prev = node
+                node = nxt
+            return prev
+  
+        head = reverse(head)
+  
+        # Step 2: Traverse reversed list, removing smaller nodes
+        max_val = head.val
+        curr = head
+        while curr and curr.next:
+            if curr.next.val < max_val:
+                # remove node
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+                max_val = curr.val
+  
+        # Step 3: Reverse again to restore original order
+        return reverse(head)
+
+def nextLargerNodes(head: Optional[ListNode]) -> List[int]:
+        # Convert linked list to array
+        arr = []
+        curr = head
+        while curr:
+            arr.append(curr.val)
+            curr = curr.next
+
+  
+        res = [0] * len(arr)
+        st = []  # stack holds indices
+        print(arr)
+        for i, val in enumerate(arr):
+            # pop smaller values and set their next greater
+            while st and arr[st[-1]] < val:
+                idx = st.pop()
+                res[idx] = val
+                print(idx, val)
+            st.append(i)
+  
+        print(res)
+        return res
+
+```
 
 ### 5. HashMap/HashSet for Tracking
 
@@ -166,6 +507,40 @@ class Solution:
 - Copy List with Random Pointer (138)
 - Intersection of Two Lists (160)
 - **Remove Zero Sum Sublists (1171)**
+
+```python
+
+def copyRandomList_dfs( node, hashmap):
+        if(node == None):
+            return None
+        if(node in hashmap):
+            return hashmap.get(node)
+
+        temp = Node(node.val)
+        hashmap[node] = temp
+        temp.next = copyRandomList_dfs(node.next, hashmap)
+        temp.random = hashmap.get(node.random)
+        return temp
+
+def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        hashmap = {}
+        curr = head
+   
+        while(curr):
+            hashmap[curr] = Node(curr.val)
+            curr = curr.next
+
+        curr = head  
+        while(curr):
+            newNode  = hashmap.get(curr)
+            newNode.next = hashmap.get(curr.next)
+            newNode.random = hashmap.get(curr.random)
+            curr = curr.next
+        return hashmap.get(head)
+
+
+
+```
 
 ### 6. Priority Queue/Heap
 
@@ -182,6 +557,28 @@ class Solution:
 - **Time:** O(N log k) where N is total nodes
 - **Space:** O(k) for heap
 
+```python
+import heapq
+
+def mergeKLists_2(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        heap = []
+        head = ListNode()
+        curr = head
+# O(k)
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(heap, (node.val, i , node))
+# O(n*logk)
+        while(heap):
+            temp = heapq.heappop(heap)
+            curr.next = temp[2]
+            if(temp[2].next):
+                heapq.heappush(heap, (temp[2].next.val, temp[1], temp[2].next))
+            curr = curr.next
+        return head.next
+
+```
+
 ### 7. Merge/Split Patterns
 
 **Use Cases:** Combining or dividing lists based on criteria
@@ -191,21 +588,6 @@ class Solution:
 - Odd Even Linked List (328)
 - Partition List (86)
 - Split List in Parts (725)
-
-### 8. Doubly Linked List
-
-**Use Cases:** LRU cache, browser history, bidirectional traversal
-
-**💡 Key Insight:** Use dummy head and tail to simplify boundary conditions. Always update both prev and next pointers.
-
-**Common Problems:**
-
-- **LRU Cache (146)**
-- **Design Browser History (1472)**
-- **BST to Sorted Doubly List (426)**
-- **Flatten Multilevel List (430)**
-
-### 10. Design Problems - HashMap/HashSet Pattern
 
 #### Design HashMap (LC 706)
 
@@ -220,55 +602,62 @@ class Solution:
 
 **Key Operations:**
 
-```java
-class MyHashMap {
-    class ListNode {
-        int key, val;
-        ListNode next;
-        ListNode(int k, int v) { key = k; val = v; }
-    }
-  
-    private ListNode[] buckets;
-    private static final int SIZE = 10000;
-  
-    public MyHashMap() {
-        buckets = new ListNode[SIZE];
-    }
-  
-    private int getIndex(int key) {
-        return key % SIZE;
-    }
-  
-    public void put(int key, int value) {
-        int idx = getIndex(key);
-        if (buckets[idx] == null) {
-            buckets[idx] = new ListNode(-1, -1); // dummy
-        }
-        ListNode prev = find(key, idx);
-        if (prev.next == null) {
-            prev.next = new ListNode(key, value);
-        } else {
-            prev.next.val = value;
-        }
-    }
-  
-    public int get(int key) {
-        int idx = getIndex(key);
-        if (buckets[idx] == null) return -1;
-        ListNode prev = find(key, idx);
-        return prev.next == null ? -1 : prev.next.val;
-    }
-  
-    private ListNode find(int key, int idx) {
-        ListNode prev = buckets[idx];
-        ListNode curr = prev.next;
-        while (curr != null && curr.key != key) {
-            prev = curr;
-            curr = curr.next;
-        }
-        return prev;
-    }
-}
+```python
+class ListNode:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.next = None
+
+
+class MyHashMap:
+
+    def __init__(self):
+        self.size = 1000
+        self.buckets = [None] * self.size
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        idx = self._hash(key)
+        if self.buckets[idx] is None:
+            self.buckets[idx] = ListNode(key, value)
+            return
+
+        curr = self.buckets[idx]
+        while True:
+            if curr.key == key:
+                curr.val = value  # update existing
+                return
+            if curr.next is None:
+                break
+            curr = curr.next
+        curr.next = ListNode(key, value)
+
+    def get(self, key: int) -> int:
+        idx = self._hash(key)
+        curr = self.buckets[idx]
+        while curr:
+            if curr.key == key:
+                return curr.val
+            curr = curr.next
+        return -1
+
+    def remove(self, key: int) -> None:
+        idx = self._hash(key)
+        curr = self.buckets[idx]
+        prev = None
+
+        while curr:
+            if curr.key == key:
+                if prev:
+                    prev.next = curr.next
+                else:
+                    self.buckets[idx] = curr.next
+                return
+            prev, curr = curr, curr.next
+
 ```
 
 **Complexity:**
@@ -276,165 +665,50 @@ class MyHashMap {
 - **Time:** O(1) average, O(n) worst case
 - **Space:** O(n + m) where m is SIZE
 
-### 11. Design Problems - Circular Queue Pattern
-
-#### Design Circular Queue (LC 622)
-
-**Use Cases:** Fixed-size queue with wraparound
-
-**💡 Core Design:**
-
-- Array-based implementation with modular arithmetic
-- Track head, tail, size, capacity
-- Use (index + 1) % capacity for wraparound
-- Can also implement with circular LinkedList
-
-**Complexity:**
-
-- **Time:** O(1) all operations
-- **Space:** O(n)
-
-### 12. Design Problems - Browser History Pattern
-
-#### Design Browser History (LC 1472)
-
-**Use Cases:** Bidirectional navigation with history clearing
-
-**💡 Core Design:**
-
-- Doubly LinkedList for back/forward navigation
-- Current pointer tracks current page
-- Visit: clear forward history, add new page
-- Back/Forward: move pointer, respect boundaries
-
-**Complexity:**
-
-- **Time:** O(1) visit, O(min(steps, n)) back/forward
-- **Space:** O(n)
-
-### 13. Design Problems - Skiplist Pattern (Advanced)
-
-#### Design Skiplist (LC 1206)
-
-**Use Cases:** Fast search/insert/delete without balancing (alternative to BST)
-
-**💡 Core Design:**
-
-- Multi-level LinkedList structure
-- Bottom level: complete sorted list
-- Higher levels: "express lanes" with fewer nodes
-- Probabilistic promotion: P = 0.25 (each level has ~25% of nodes)
-- Search from top level, drop down when needed
-
-**Key Characteristics:**
-
-- O(log n) average time for search/insert/delete
-- No rebalancing needed (unlike Red-Black trees)
-- Simpler implementation than balanced trees
-- Randomization ensures good average performance
-
-**Complexity:**
-
-- **Time:** O(log n) average for all operations
-- **Space:** O(n)
-
-**⚡ When to Use:**
-
-- Need fast search in sorted data
-- Frequent insertions/deletions
-- Simpler than self-balancing trees
-- Concurrent access scenarios (lock fewer nodes)
-
----
-
-## 🟢 Easy Problems
-
-### 5. Remove Duplicates from Sorted List (LC 83)
-
-- **Difficulty:** Easy
-- **Tags:** Two Pointers
-- **Problem:** Remove duplicate nodes from sorted list.
-- **Time:** O(n) | **Space:** O(1)
-
 ### 7. Binary to Integer (LC 1290)
 
-- **Difficulty:** Easy
-- **Tags:** Bit Manipulation
-- **Problem:** Convert binary linked list to integer.
-- **Time:** O(n) | **Space:** O(1)
-- **Formula:** result = (result << 1) | node.val
-
-### 9. Move Last Element to Front
-
-- **Difficulty:** Easy
-- **Tags:** Pointer Manipulation
-- **Problem:** Move the last node to the front of the list.
-- **Example:** `2→5→6→2→1` becomes `1→2→5→6→2`
-- **Time:** O(n) | **Space:** O(1)
-- **Approach:** Traverse to second-to-last node, unlink last node, make it new head.
-
-```java
-public ListNode moveLastToFront(ListNode head) {
-    if (head == null || head.next == null) return head;
-  
-    ListNode prev = null, curr = head;
-    while (curr.next != null) {
-        prev = curr;
-        curr = curr.next;
-    }
-  
-    prev.next = null;
-    curr.next = head;
-    return curr;
-}
+```python
+ def calculate(self, node):
+        if(node.next == None):
+            return node.val*(2**self.n)
+        temp = self.calculate(node.next)
+        self.n += 1
+        return node.val*(2**self.n) + temp
 ```
 
----
+## 9. Rotate List (LC 61)
 
-## 🟡 Medium Problems
-
-### 9. Rotate List (LC 61)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers
 - **Problem:** Rotate list to the right by k places.
 - **Time:** O(n) | **Space:** O(1)
 
-### 10. Remove Duplicates II (LC 82)
+```python
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head or not head.next or k == 0:
+            return head
+        slow = head 
+        fast = head
+        curr = head
+        l = 0
+        while(curr):
+            l += 1
+            curr = curr.next
 
-- **Difficulty:** Medium
-- **Tags:** Dummy Node
-- **Problem:** Remove all nodes that have duplicates.
-- **Time:** O(n) | **Space:** O(1)
+        k = k%l
+        if k == 0:
+            return head
+        for _ in range(k): fast = fast.next
 
-### 11. Copy List with Random Pointer (LC 138)
+        while(fast and fast.next):
+            slow = slow.next 
+            fast = fast.next
+  
+        prev = head
+        curr = slow.next
+        slow.next = None
+        fast.next = head
 
-- **Difficulty:** Medium
-- **Tags:** HashMap, Interweaving
-- **Problem:** Deep copy linked list with random pointers.
-- **Time:** O(n) | **Space:** O(n) with map, O(1) with interweaving
-
-### 12. Linked List Cycle II (LC 142)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Floyd's Algorithm
-- **Problem:** Find the starting point of cycle.
-- **Time:** O(n) | **Space:** O(1)
-- **Key:** After meeting, reset one to head. Move both 1 step until they meet again.
-
-### 13. Sort List (LC 148)
-
-- **Difficulty:** Medium
-- **Tags:** Merge Sort, Two Pointers
-- **Problem:** Sort linked list using merge sort.
-- **Time:** O(n log n) | **Space:** O(log n)
-
-### 14. Insertion Sort List (LC 147)
-
-- **Difficulty:** Medium
-- **Tags:** Sorting
-- **Problem:** Sort list using insertion sort.
-- **Time:** O(n²) | **Space:** O(1)
+        return curr 
+```
 
 ### 15. Split List in Parts (LC 725)
 
@@ -450,142 +724,7 @@ public ListNode moveLastToFront(ListNode head) {
 - **Problem:** Remove consecutive nodes that sum to zero.
 - **Time:** O(n) | **Space:** O(n)
 
-### 17. Next Greater Node (LC 1019)
-
-- **Difficulty:** Medium
-- **Tags:** Stack
-- **Problem:** Find next greater element for each node.
-- **Time:** O(n) | **Space:** O(n)
-
-### 18. Remove Nodes (LC 2487)
-
-- **Difficulty:** Medium
-- **Tags:** Stack, Reversal
-- **Problem:** Remove nodes with greater value to their right.
-- **Time:** O(n) | **Space:** O(n) with stack, O(1) with reversal
-
-### 19. Sorted List to BST (LC 109)
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Recursion
-- **Problem:** Convert sorted list to height-balanced BST.
-- **Time:** O(n log n) | **Space:** O(log n)
-
-### 20. Reverse Even Length Groups (LC 2074)
-
-- **Difficulty:** Medium
-- **Tags:** Reversal
-- **Problem:** Reverse each group of even length.
-- **Time:** O(n) | **Space:** O(1)
-
-### 21. Flatten Multilevel List (LC 430)
-
-- **Difficulty:** Medium
-- **Tags:** DFS, Stack
-- **Problem:** Flatten multilevel doubly linked list.
-- **Time:** O(n) | **Space:** O(n)
-
-### 22. BST to Sorted Doubly List (LC 426)
-
-- **Difficulty:** Medium
-- **Tags:** In-order Traversal
-- **Problem:** Convert BST to circular sorted doubly list.
-- **Time:** O(n) | **Space:** O(log n)
-
-### 23. Design Circular Queue (LC 622)
-
-- **Difficulty:** Medium
-- **Tags:** Array/LinkedList
-- **Problem:** Implement circular queue.
-- **Time:** O(1) all operations | **Space:** O(n)
-
-### 24. Remove Duplicates from Unsorted List
-
-- **Difficulty:** Medium
-- **Tags:** HashMap, Two Pointers
-- **Problem:** Remove duplicate values from unsorted linked list.
-- **Time:** O(n) | **Space:** O(n)
-- **Approach:** Use HashSet to track seen values. Remove nodes with duplicate values.
-
-```java
-public ListNode removeDuplicates(ListNode head) {
-    if (head == null) return null;
-  
-    Set<Integer> seen = new HashSet<>();
-    ListNode curr = head, prev = null;
-  
-    while (curr != null) {
-        if (seen.contains(curr.val)) {
-            prev.next = curr.next;
-        } else {
-            seen.add(curr.val);
-            prev = curr;
-        }
-        curr = curr.next;
-    }
-    return head;
-}
-```
-
-### 27. Add One to Number as Linked List
-
-- **Difficulty:** Medium
-- **Tags:** Recursion, Stack, Reversal
-- **Problem:** Add 1 to a number represented as linked list.
-- **Example:** `1→2→3` → `1→2→4`, `9→9→9` → `1→0→0→0`
-- **Time:** O(n) | **Space:** O(n) recursive/stack, O(1) with reversal
-
-**Approach 1: Reverse List**
-
-```java
-public ListNode addOne(ListNode head) {
-    head = reverse(head);
-    ListNode curr = head;
-    int carry = 1;
-  
-    while (curr != null && carry > 0) {
-        int sum = curr.val + carry;
-        curr.val = sum % 10;
-        carry = sum / 10;
-        if (curr.next == null && carry > 0) {
-            curr.next = new ListNode(carry);
-            carry = 0;
-        }
-        curr = curr.next;
-    }
-    return reverse(head);
-}
-```
-
-**Approach 2: Recursion**
-
-```java
-public ListNode addOne(ListNode head) {
-    int carry = addOneHelper(head);
-    if (carry > 0) {
-        ListNode newHead = new ListNode(carry);
-        newHead.next = head;
-        return newHead;
-    }
-    return head;
-}
-
-private int addOneHelper(ListNode node) {
-    if (node == null) return 1;
-    int carry = addOneHelper(node.next);
-    int sum = node.val + carry;
-    node.val = sum % 10;
-    return sum / 10;
-}
-```
-
 ### 28. Split Circular Linked List into Two Halves
-
-- **Difficulty:** Medium
-- **Tags:** Two Pointers, Circular List
-- **Problem:** Split a circular linked list into two equal halves.
-- **Time:** O(n) | **Space:** O(1)
-- **Approach:** Use slow-fast pointers to find middle, then split.
 
 ```java
 public ListNode[] splitCircular(ListNode head) {
@@ -611,12 +750,28 @@ public ListNode[] splitCircular(ListNode head) {
 }
 ```
 
-### 29. Bubble Sort for Linked List
+### 13. Sort List (LC 148)
+
+- **Difficulty:** Medium
+- **Tags:** Merge Sort, Two Pointers
+- **Problem:** Sort linked list using merge sort.
+- **Time:** O(n log n) | **Space:** O(log n)
+
+### 14. Insertion Sort List (LC 147)
 
 - **Difficulty:** Medium
 - **Tags:** Sorting
-- **Problem:** Sort linked list using bubble sort.
+- **Problem:** Sort list using insertion sort.
 - **Time:** O(n²) | **Space:** O(1)
+
+### 19. Sorted List to BST (LC 109)
+
+- **Difficulty:** Medium
+- **Tags:** Two Pointers, Recursion
+- **Problem:** Convert sorted list to height-balanced BST.
+- **Time:** O(n log n) | **Space:** O(log n)
+
+### 29. Bubble Sort for Linked List
 
 ```java
 public ListNode bubbleSort(ListNode head) {
@@ -643,11 +798,6 @@ public ListNode bubbleSort(ListNode head) {
 ```
 
 ### 30. Selection Sort for Linked List
-
-- **Difficulty:** Medium
-- **Tags:** Sorting
-- **Problem:** Sort linked list using selection sort.
-- **Time:** O(n²) | **Space:** O(1)
 
 ```java
 public ListNode selectionSort(ListNode head) {
@@ -898,3 +1048,200 @@ public Node reverseInGroups(Node head, int k) {
 ```
 
 ---
+
+### **Important Problems:**
+
+- **LRU Cache (146)**
+- **Design Browser History (1472)**
+- **Design Circular Queue (LC 622)**
+- **BST to Sorted Doubly List (426)**
+- **Flatten Multilevel List (430)**
+
+```python
+class Node:
+    def __init__(self, val, nxt = None, prev =None):
+        self.val = val
+        self.next = nxt 
+        self.prev = prev
+
+# LRU Cache (146)
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.map = {}
+        self.head, self.tail = Node(0, 0), Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        p, n = node.prev, node.next
+        p.next = n
+        n.prev = p
+
+    def _add(self, node):
+        p, n = self.tail.prev, self.tail
+        p.next = n.prev = node
+        node.prev, node.next = p, n
+
+    def get(self, key: int) -> int:
+        if key not in self.map:
+            return -1
+        node = self.map[key]
+        self._remove(node)
+        self._add(node)
+        return node.val
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.map:
+            self._remove(self.map[key])
+        node = Node(key, value)
+        self._add(node)
+        self.map[key] = node
+        if len(self.map) > self.cap:
+            lru = self.head.next
+            self._remove(lru)
+            del self.map[lru.key]
+
+
+class BrowserHistory:
+    def __init__(self, homepage: str):
+        self.back_stack = [homepage]
+        self.forward_stack = []
+
+    def visit(self, url: str) -> None:
+        self.back_stack.append(url)
+        self.forward_stack.clear()
+
+    def back(self, steps: int) -> str:
+        while steps > 0 and len(self.back_stack) > 1:
+            self.forward_stack.append(self.back_stack.pop())
+            steps -= 1
+        return self.back_stack[-1]
+
+    def forward(self, steps: int) -> str:
+        while steps > 0 and self.forward_stack:
+            self.back_stack.append(self.forward_stack.pop())
+            steps -= 1
+        return self.back_stack[-1]
+
+
+
+class MyCircularQueue:
+
+    def __init__(self, k: int):
+        self.tail = None
+        self.head = None
+        self.maxSize = k
+        self.size = 0
+  
+
+    def enQueue(self, value: int) -> bool:
+        if(self.size >= self.maxSize):
+            return False
+        temp = Node(value)
+        if(self.tail):
+
+            self.tail.next = temp
+            temp.prev = self.tail
+            self.tail = temp
+
+            self.head.prev = self.tail 
+            self.tail.next = self.head
+        else:
+            self.head = temp
+            self.tail = temp 
+            temp.next = temp
+            temp.prev = temp
+        self.size += 1
+        return True
+
+    def deQueue(self) -> bool:
+        if(self.size ==0 ):
+            return False
+        if( self.size > 1):
+            self.head = self.head.next
+            self.head.prev = self.tail
+            self.tail.next = self.head
+        else:
+            self.head = None
+            self.tail = None
+        self.size -= 1
+        return True
+  
+  
+
+    def Front(self) -> int:
+        if(self.head):
+            return self.head.val
+        return -1
+  
+
+    def Rear(self) -> int:
+        if(self.tail):
+            return self.tail.val
+        return -1
+  
+
+    def isEmpty(self) -> bool:
+        if(self.head is None):
+            return True
+        return False
+  
+
+    def isFull(self) -> bool:
+        return self.size == self.maxSize
+
+
+
+# BST to Sorted Doubly List (426)
+def treeToDoublyList( root: 'Node') -> 'Node':
+        if not root:
+            return None
+
+        def inorder(node):
+            nonlocal last, first
+            if not node:
+                return
+            inorder(node.left)
+            if last:
+                last.right = node
+                node.left = last
+            else:
+                first = node
+            last = node
+            inorder(node.right)
+
+        first = last = None
+        inorder(root)
+        first.left = last
+        last.right = first
+        return first
+
+# Flatten Multilevel List (430)
+ def flatten(self, head: 'Node') -> 'Node':
+        if not head:
+            return None
+
+        def dfs(node):
+            curr = node
+            last = node
+            while curr:
+                nxt = curr.next
+                if curr.child:
+                    child_last = dfs(curr.child)
+                    curr.next = curr.child
+                    curr.child.prev = curr
+                    curr.child = None
+                    if nxt:
+                        child_last.next = nxt
+                        nxt.prev = child_last
+                    last = child_last
+                else:
+                    last = curr
+                curr = nxt
+            return last
+
+        dfs(head)
+        return head
+
+```

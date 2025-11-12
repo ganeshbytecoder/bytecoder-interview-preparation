@@ -14,100 +14,16 @@
 
 --
 
-# 🔁 LeetCode Core Patterns – Cleaned & Structured
-
-## LinkedList:
 
 https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/description/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 
 https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/?envType=company&envId=facebook&favoriteSlug=facebook-thirty-days
 
-
 https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/
 
 
-1. Reverse LinkedList (Iterative)
 
-```java
-ListNode prev = null, curr = head;
-while (curr != null) {
-    ListNode next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-}
-return prev;
-```
-
-#### 2. Find Middle (Two Pointers)
-
-```java
-ListNode slow = head, fast = head;
-while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-}
-return slow;
-```
-
-#### 3. Detect Cycle
-
-```java
-ListNode slow = head, fast = head;
-while (fast != null && fast.next != null) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow == fast) return true;
-}
-return false;
-```
-
-#### 4. Find Cycle Start
-
-```java
-// After detecting cycle
-slow = head;
-while (slow != fast) {
-    slow = slow.next;
-    fast = fast.next;
-}
-return slow;
-```
-
-#### 5. Merge Two Sorted Lists
-
-```java
-ListNode dummy = new ListNode(0), curr = dummy;
-while (l1 != null && l2 != null) {
-    if (l1.val <= l2.val) {
-        curr.next = l1;
-        l1 = l1.next;
-    } else {
-        curr.next = l2;
-        l2 = l2.next;
-    }
-    curr = curr.next;
-}
-curr.next = (l1 != null) ? l1 : l2;
-return dummy.next;
-```
-
-#### 6. Remove Nth From End
-
-```java
-ListNode dummy = new ListNode(0);
-dummy.next = head;
-ListNode fast = dummy, slow = dummy;
-
-for (int i = 0; i <= n; i++) fast = fast.next;
-while (fast != null) {
-    slow = slow.next;
-    fast = fast.next;
-}
-slow.next = slow.next.next;
-return dummy.next;
-```
-
+# 🔁 LeetCode Core Patterns – Cleaned & Structured
 
 ## 1. 📦 Arrays & Hashing
 

@@ -1,4 +1,3 @@
-
 # Tree Views Pattern
 
 **Use Cases:** Right view, left view, top view, bottom view, vertical order traversal, boundary traversal
@@ -49,14 +48,14 @@ def left_view(root: Optional[TreeNode]) -> List[int]:
   
     while queue:
         level_size = len(queue)
-      
+  
         for i in range(level_size):
             node = queue.popleft()
-          
+      
             # First node at current level
             if i == 0:
                 result.append(node.val)
-          
+      
             if node.left:
                 queue.append(node.left)
             if node.right:
@@ -87,14 +86,14 @@ def right_side_view_bfs(root: Optional[TreeNode]) -> List[int]:
   
     while queue:
         level_size = len(queue)
-      
+  
         for i in range(level_size):
             node = queue.popleft()
-          
+      
             # Last node at current level
             if i == level_size - 1:
                 result.append(node.val)
-          
+      
             if node.left:
                 queue.append(node.left)
             if node.right:
@@ -116,11 +115,11 @@ def right_side_view_dfs(root: Optional[TreeNode]) -> List[int]:
     def dfs(node: Optional[TreeNode], level: int) -> None:
         if not node:
             return
-      
+  
         # First time visiting this level
         if level == len(result):
             result.append(node.val)
-      
+  
         # Process right subtree first for right view
         dfs(node.right, level + 1)
         dfs(node.left, level + 1)
@@ -156,11 +155,11 @@ def top_view(root: Optional[TreeNode]) -> List[int]:
   
     while queue:
         node, hd = queue.popleft()
-      
+  
         # Only store first node at each horizontal distance
         if hd not in hd_map:
             hd_map[hd] = node.val
-      
+  
         if node.left:
             queue.append((node.left, hd - 1))
         if node.right:
@@ -195,10 +194,10 @@ def bottom_view(root: Optional[TreeNode]) -> List[int]:
   
     while queue:
         node, hd = queue.popleft()
-      
+  
         # Update with current node (overwrites previous)
         hd_map[hd] = node.val
-      
+  
         if node.left:
             queue.append((node.left, hd - 1))
         if node.right:
@@ -234,7 +233,7 @@ def vertical_order(root: Optional[TreeNode]) -> List[List[int]]:
     while queue:
         node, col = queue.popleft()
         column_map[col].append(node.val)
-      
+  
         if node.left:
             queue.append((node.left, col - 1))
         if node.right:
@@ -245,65 +244,3 @@ def vertical_order(root: Optional[TreeNode]) -> List[List[int]]:
 ```
 
 ---
-
-## **Key Patterns & Tips for Meta Interviews**
-
-### **1. Top vs. Bottom View**
-
-| View                  | Strategy                                                        |
-| --------------------- | --------------------------------------------------------------- |
-| **Top View**    | Store**first**node at each horizontal distance            |
-| **Bottom View** | Store**last**node at each horizontal distance (overwrite) |
-
-### **2. Horizontal Distance (HD) Rules**
-
-* Root has HD = 0
-* Left child: `parent_hd - 1`
-* Right child: `parent_hd + 1`
-
-### **3. BFS vs. DFS Trade-offs**
-
-* **BFS:** Better for level-based views, uses `O(w)` space
-* **DFS:** Better for skewed trees, uses `O(h)` space
-* **For Meta:** Start with BFS, mention DFS as optimization
-
-### **4. Common Mistakes to Avoid**
-
-* ❌ Forgetting to handle empty tree
-* ❌ Not sorting horizontal distances in top/bottom view
-* ❌ Using wrong traversal order in right view DFS (should be right→left)
-* ❌ Not using `defaultdict` for column grouping in vertical order
-
-### **5. Follow-up Questions to Expect**
-
-* "How would you handle ties in vertical order?" (Add row tracking)
-* "What if we need diagonal view?" (Use HD + level as key)
-* "Can you optimize space complexity?" (Switch BFS to DFS)
-
----
-
-## **Complete Example Usage**
-
-```python
-# Build sample tree:
-#       1
-#      / \
-#     2   3
-#    / \   \
-#   4   5   6
-
-root = TreeNode(1)
-root.left = TreeNode(2)
-root.right = TreeNode(3)
-root.left.left = TreeNode(4)
-root.left.right = TreeNode(5)
-root.right.right = TreeNode(6)
-
-print(left_view(root))              # [1, 2, 4]
-print(right_side_view_bfs(root))    # [1, 3, 6]
-print(top_view(root))               # [4, 2, 1, 3, 6]
-print(bottom_view(root))            # [4, 2, 5, 3, 6]
-print(vertical_order(root))         # [[4], [2], [1, 5], [3], [6]]
-```
-
-**Pro Tip for Meta:** Always clarify edge cases (empty tree, single node, skewed tree) and discuss time/space complexity before coding!

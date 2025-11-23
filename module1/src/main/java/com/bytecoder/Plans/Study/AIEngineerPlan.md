@@ -1,8 +1,16 @@
+- ML/AI
+  - maths for ML - https://www.coursera.org/specializations/mathematics-for-machine-learning-and-data-science
+  - **Machine Learning Specialization** (Andrew Ng)
+  - Deep Learning Specialization (https://www.coursera.org/specializations/deep-learning?))
+- AWS certficates -
+  - Associates
+  - ML
+- System Design and Distributed Systems
+
 Alright — here’s your **month-by-month execution plan (2025–2026)** to balance:
 
 * **Remote MS in AI coursework**
 * **Walmart AI project work**
-* **GamaAlbum AI features**
 * **FAANG interview prep**
 
 Goal: By **mid-2027**, you’ll be ready for **FAANG Applied Scientist / Machine Learning Engineer** interviews at **L5–L6** level.

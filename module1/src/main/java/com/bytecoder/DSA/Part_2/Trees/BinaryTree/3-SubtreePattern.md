@@ -196,10 +196,10 @@ def largest_bst_subtree(root: Optional[TreeNode]) -> int:
         # Check if current subtree is BST
         if (left_is_bst and right_is_bst and 
             left_max < node.val < right_min):
-      
+  
             size = left_size + right_size + 1
             result = max(result, size)
-      
+  
             return (
                 True,
                 size,
@@ -245,10 +245,10 @@ def max_sum_bst(root: Optional[TreeNode]) -> int:
         # Check if current subtree is BST
         if (left_is_bst and right_is_bst and 
             left_max < node.val < right_min):
-      
+  
             current_sum = left_sum + right_sum + node.val
             max_sum = max(max_sum, current_sum)
-      
+  
             return (
                 True,
                 current_sum,
@@ -431,64 +431,5 @@ def subtree_property(root: Optional[TreeNode]) -> Any:
     dfs(root)
     return result
 ```
-
----
-
-## **Key Patterns for Meta Interviews**
-
-### **1. When to Use Subtree Pattern**
-
-✅ Need information from both left and right children
-
-✅ Property depends on entire subtree
-
-✅ Tracking global max/min across tree
-
-✅ Validating tree properties bottom-up
-
-### **2. Return Tuple Design**
-
-| Problem Type             | Tuple Structure                         |
-| ------------------------ | --------------------------------------- |
-| **BST Validation** | `(is_valid, min, max)`                |
-| **Size/Count**     | `(is_valid, size)`                    |
-| **Sum Problems**   | `(sum, count)`or `(is_valid, sum)`  |
-| **Max Path**       | `(max_down, max_global)`              |
-| **Height Balance** | `(height, is_balanced)`or `-1`trick |
-
-### **3. Common Return Values**
-
-```python
-# Base case for empty node
-if not node:
-    return (True, 0, float('inf'), float('-inf'))  # BST
-    return (0, 0)                                    # Sum/count
-    return 0                                         # Height
-    return -1                                        # Invalid marker
-```
-
-### **4. Global vs. Return Value**
-
-* **Global (`nonlocal`)** : Final answer (max, count, etc.)
-* **Return value** : Information for parent to make decisions
-
-### **5. Optimization Tips**
-
-* Use `-1` sentinel instead of tuple for simple validation (balanced tree)
-* Cache repeated calculations
-* Short-circuit when subtree is invalid
-* Use `float('inf')` and `float('-inf')` for BST bounds
-
-### **6. Common Mistakes**
-
-❌ Forgetting to handle null nodes
-
-❌ Not using postorder (processing children before parent)
-
-❌ Returning wrong information to parent
-
-❌ Forgetting `nonlocal` keyword for global tracker
-
-❌ Not handling leaf nodes separately when needed
 
 ---

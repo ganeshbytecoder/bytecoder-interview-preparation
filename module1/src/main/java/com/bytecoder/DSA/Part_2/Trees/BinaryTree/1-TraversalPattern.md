@@ -1,390 +1,517 @@
-### 1. DFS (Depth-First Search) - Recursive
+Covers  **DFS, BFS, Morris** , and  **important problem templates** .
 
-**Use Cases:** Tree traversals, path problems, subtree properties
+---
 
-**💡 Key Insight:** Process node in preorder (before children), inorder (between children), or postorder (after children). Postorder when you need child info first.
+# ✅ **1. DFS (Depth-First Search)**
 
-**Time:** O(n) | **Space:** O(h) where h is height
+Used for:
 
-#### Template:
+✔ Tree traversals
+
+✔ Subtree computations
+
+✔ Path problems
+
+✔ Max path, diameter, sums, ancestors
+
+### **General DFS Template (Python)**
 
 ```python
 def dfs(node):
     if not node:
         return base_case
+
+    # preorder
+    left = dfs(node.left)
+
+    # inorder
+    right = dfs(node.right)
+
+    # postorder
+
+    return combine(left, right)
+```
+
+---
+
+## 🔥 **1B. DFS Without Recursion (Python)**
+
+```python
+def dfs_iterative(root):
+    if not root: 
+        return
   
-    # Preorder: process node here
-    left_result = dfs(node.left)
-    # Inorder: process node here
-    right_result = dfs(node.right)
-    # Postorder: process node here
+    stack = [root]
+
+    while stack:
+        node = stack.pop()
+        print(node.val, end=" ")
+
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+```
+
+---
+
+# 🌿 **Problems Based on DFS**
+
+---
+
+## **📌 Root-to-Leaf Paths**
+
+```python
+def root_to_leaf_paths(root):
+    result = []
+    path = []
+
+    def dfs(node):
+        if not node:
+            return
+
+        path.append(node.val)
+
+        if not node.left and not node.right:
+            result.append(path.copy())
+        else:
+            dfs(node.left)
+            dfs(node.right)
+
+        path.pop()
+
+    dfs(root)
+    return result
+```
+
+---
+
+## **📌 Sum of Root-to-Leaf Numbers**
+
+LeetCode 129
+
+```python
+def sumNumbers(root):
+    def dfs(node, curr):
+        if not node:
+            return 0
   
-    return combine(left_result, right_result)
+        curr = curr * 10 + node.val
+  
+        if not node.left and not node.right:
+            return curr
+  
+        return dfs(node.left, curr) + dfs(node.right, curr)
+
+    return dfs(root, 0)
 ```
 
-#### **DFS Traversal Without Recursion**
+---
 
-```java
-void dfsWithoutRecursion(Node<T> root) {
-    if (root == null) return;
+## **📌 Kth Smallest in BST (Inorder)**
 
-    Stack<Node<T>> stack = new Stack<>();
-    stack.push(root);
+```python
+def kthSmallest(root, k):
+    stack = []
+    curr = root
 
-    while (!stack.isEmpty()) {
-        Node<T> node = stack.pop();
-        System.out.print(node.data + " ");
-        if (node.right != null) stack.push(node.right);
-        if (node.left != null) stack.push(node.left);
-    }
-}
+    while True:
+        while curr:
+            stack.append(curr)
+            curr = curr.left
+  
+        curr = stack.pop()
+        k -= 1
+        if k == 0:
+            return curr.val
+  
+        curr = curr.right
 ```
 
-**given a binary tree print all its root-to-leaf paths**
+---
 
-```java
-void pathsFinder(Node<T> root) {
-    List<Integer> path = new ArrayList<>();
-    dfs(root, path);
+## **📌 Check If Path Sum Exists (Root → Leaf)**
 
-    void dfs(Node<T> node, List<Integer> path) {
-        if (node == null) return;
+LeetCode 112
 
-        path.add(node.data);
-        if (node.left == null && node.right == null) {
-            System.out.println(path);
-        } else {
-            dfs(node.left, path);
-            dfs(node.right, path);
-        }
-        path.remove(path.size() - 1);
-    }
-}
+```python
+def hasPathSum(root, target):
+    if not root:
+        return False
+
+    if not root.left and not root.right:
+        return target == root.val
+
+    return (
+        hasPathSum(root.left, target - root.val) or 
+        hasPathSum(root.right, target - root.val)
+    )
 ```
 
-**Sum of Root-to-Leaf Numbers**
+---
 
-given a binary tree containing digits from 0-9 only , each root-to-leaf path could represent a number. an example
-is the root-to-leaf path 1->2->3 which represents the number 123, find the total sum of all root-to-leaf numbers
+## **📌 Vertical Sum of Binary Tree**
 
-https://leetcode.com/problems/sum-root-to-leaf-numbers/description/?envType=study-plan-v2&envId=top-interview-150
+```python
+from collections import defaultdict
 
-```java
-int sumRoot2LeafNumbers(Node<T> root) {
-    return dfs(root, 0);
+def vertical_sum(root):
+    column_sum = defaultdict(int)
 
-    int dfs(Node<T> node, int currentSum) {
-        if (node == null) return 0;
+    def dfs(node, col):
+        if not node:
+            return
+  
+        column_sum[col] += node.val
+        dfs(node.left, col - 1)
+        dfs(node.right, col + 1)
 
-        currentSum = currentSum * 10 + node.data;
-
-        // If leaf node, return the computed number
-        if (node.left == null && node.right == null) {
-            return currentSum;
-        }
-
-        // Recursive calls for left and right subtrees
-        return dfs(node.left, currentSum) + dfs(node.right, currentSum);
-    }
-}
+    dfs(root, 0)
+    return [column_sum[x] for x in sorted(column_sum)]
 ```
 
-**Kth Smallest Element in a BST**
+---
 
-```java
-class Solution {
-    int count = 0;
-    int result = -1;
+| Problem Type                 | Pattern                                | Time        | Works For     |
+| ---------------------------- | -------------------------------------- | ----------- | ------------- |
+| Root→Leaf only              | Simple DFS                             | O(n)        | leaf paths    |
+| Root→Any node               | DFS                                    | O(n)        | downward only |
+| Any node→downward           | Path Sum III                           | O(n) prefix | downward only |
+| **Any Node→Any Node** | **Prefix sum DFS (this method)** |             |               |
 
-    public int kthSmallest(TreeNode root, int k) {
-        inorder(root, k);
-        return result;
-    }
+## Python Template for “Any Node to Any Node Path Sum for a Given Target
 
-    private void inorder(TreeNode node, int k) {
-        if (node == null) return;
+```python
+class Solution:
+    def pathSumAnyToAny(self, root, target):
+        self.count = 0
 
-        inorder(node.left, k);
+        def dfs(node):
+            if not node:
+                return []
 
-        count++;
-        if (count == k) {
-            result = node.val;
-            return;
-        }
+            # get all downward sums from children
+            left_paths = dfs(node.left)
+            right_paths = dfs(node.right)
 
-        inorder(node.right, k);
-    }
-}
+            # paths starting AT node
+            new_paths = [node.val]
+
+            # downward paths from left
+            for s in left_paths:
+                new_paths.append(node.val + s)
+
+            # downward paths from right
+            for s in right_paths:
+                new_paths.append(node.val + s)
+
+            # count paths ending at this node
+            for s in new_paths:
+                if s == target:
+                    self.count += 1
+
+            # Now check "through paths": left → node → right
+            for L in left_paths:
+                for R in right_paths:
+                    if L + node.val + R == target:
+                        self.count += 1
+
+            return new_paths
+
+        dfs(root)
+        return self.count
+
 ```
 
-**3. Check Existence of Path with Given Sum**
+## **Other DFS-Driven Problems**
 
-give a algorithm for checking the existence of path with given sum. that means , given a sum, check whether there exists a path from root to any of the nodes.
+* Max Depth
+* Min Depth
+* Node exists
+* Diameter of Tree (543)
+* Path Sum II (113)
+* Path Sum III (437)https://chatgpt.com/share/692202df-6db0-8006-8912-80ec35174f51
+* Maximum Path Sum (124)
+* Longest root-to-leaf path sum
+* Kth ancestor
 
-```java
-boolean hasPathSum(Node<T> root, int sum) {
-    if (root == null) return false;
+If you want, I can also add templates for all of these.
 
-    // Check if we have reached a leaf node with the exact sum
-    if (root.left == null && root.right == null) {
-        return sum == root.data;
-    }
+---
 
-    // Recur for left and right subtrees with the reduced sum
-    return hasPathSum(root.left, sum - root.data) || hasPathSum(root.right, sum - root.data);
-}
-```
+# 🟦 **2. BFS (Level-Order Search)**
 
+Used for:
 
-**Find Vertical Sum of a Binary Tree**
+✔ Level order
 
-Give an algorithm for finding thr vertical sum of a binary tree
+✔ Zigzag
 
-```java
-List<Integer> getVerticalSum(Node<T> root) {
-    TreeMap<Integer, Integer> columnSumMap = new TreeMap<>();
+✔ Left & right view
 
-    dfs(root, 0, columnSumMap);
+✔ Minimum depth
 
-    return new ArrayList<>(columnSumMap.values());
-}
+✔ Maximum level sum
 
-void dfs(Node<T> node, int column, TreeMap<Integer, Integer> columnSumMap) {
-    if (node == null) return;
+✔ Deepest node
 
-    // Update the sum for the current column
-    columnSumMap.put(column, columnSumMap.getOrDefault(column, 0) + node.data);
+---
 
-    // Recur for left and right subtrees
-    dfs(node.left, column - 1, columnSumMap);
-    dfs(node.right, column + 1, columnSumMap);
-}
-```
-
-
-**Common Problems:**
-
-- Max Depth, Min Depth, find min/max,
-- isValueExists
-- Diameter of Binary Tree (543)
-- Path Sum problems (112, 113, 437)
-- Maximum Path Sum (124)
-- **Sum of Nodes on the Longest Path from Root to Leaf Node**
-  - Use DFS to find the path with the maximum depth and calculate the sum of its nodes.
-
-* **Kth Ancestor of a Node in a Binary Tree**
-  * Use recursion to track ancestors and return the `Kth` one when the target node is found.
-
-### 2. BFS (Breadth-First Search) - Level Order
-
-**Use Cases:** Level-by-level processing, shortest path, right/left view
-
-**💡 Key Insight:** Use queue. Process entire level before moving to next. Perfect for problems asking "by level" or "minimum depth".
-
-**Time:** O(n) | **Space:** O(w) where w is max width
-
-#### Template:
+## **General BFS Template**
 
 ```python
 from collections import deque
 
 def bfs(root):
-    if not root: return []
+    if not root:
+        return []
+  
     q = deque([root])
     result = []
-  
+
     while q:
-        level_size = len(q)
+        size = len(q)
         level = []
-  
-        for _ in range(level_size):
+
+        for _ in range(size):
             node = q.popleft()
             level.append(node.val)
-  
-            if node.left: q.append(node.left)
-            if node.right: q.append(node.right)
-  
+
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+
         result.append(level)
-  
+
     return result
 ```
 
-**7. Get Height of Tree Without Recursion**
+---
 
-```java
-int getHeight_m2(Node<T> root) {
-    if (root == null) return 0;
-
-    Queue<Node<T>> q = new LinkedList<>();
-    q.add(root);
-    int height = 0;
-
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            Node<T> node = q.poll();
-            if (node.left != null) q.add(node.left);
-            if (node.right != null) q.add(node.right);
-        }
-        height++;
-    }
-    return height;
-}
-```
-
-**10.  give a algorithm for finding the level that has the maximum sum in binary tree**
-
-```java
-int findLevelWithMaxSum(Node<T> root) {
-    if (root == null) return -1;
-
-    Queue<Node<T>> q = new LinkedList<>();
-    q.add(root);
-    int maxSum = 0, maxLevel = 0, currentLevel = 0;
-
-    while (!q.isEmpty()) {
-        int size = q.size();
-        int levelSum = 0;
-
-        for (int i = 0; i < size; i++) {
-            Node<T> node = q.poll();
-            levelSum += node.data;
-            if (node.left != null) q.add(node.left);
-            if (node.right != null) q.add(node.right);
-        }
-
-        if (levelSum > maxSum) {
-            maxSum = levelSum;
-            maxLevel = currentLevel;
-        }
-        currentLevel++;
-    }
-    return maxLevel;
-}
-```
-
-
-**4. Find the Deepest Node**
-
-```java
-Node<T> getDeepestNode(Node<T> root) {
-    if (root == null) return null;
-
-    Queue<Node<T>> q = new LinkedList<>();
-    q.add(root);
-    Node<T> deepestNode = null;
-
-    while (!q.isEmpty()) {
-        deepestNode = q.poll();
-        if (deepestNode.left != null) q.add(deepestNode.left);
-        if (deepestNode.right != null) q.add(deepestNode.right);
-    }
-    return deepestNode;
-}
-```
-
-**Zigzag Traversal**
-
-- Use two stacks to alternate between left-to-right and right-to-left traversals at each level.
-
-```java
-void zigZagTraversal(Node<T> root) {
-    if (root == null) return;
-
-    Queue<Node<T>> queue = new LinkedList<>();
-    queue.add(root);
-    boolean leftToRight = true;
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        LinkedList<Integer> level = new LinkedList<>();
-
-        for (int i = 0; i < size; i++) {
-            Node<T> node = queue.poll();
-
-            if (leftToRight) {
-                level.add(node.data);
-            } else {
-                level.addFirst(node.data);
-            }
-
-            if (node.left != null) queue.add(node.left);
-            if (node.right != null) queue.add(node.right);
-        }
-
-        System.out.println(level);
-        leftToRight = !leftToRight;  // Toggle direction
-    }
-}
-```
-
-
-**Common Problems:**
-
-- Level Order Traversal (102)
-- Zigzag Level Order (103)
-- Right Side View (199)
-- Minimum Depth (111)
-- Maximum Level Sum (1161)
-- https://leetcode.com/problems/populating-next-right-pointers-in-each-node
-- **Check if All Leaf Nodes are at the Same Level**
-  - Use level order traversal and check the levels of leaf nodes.
-
-### 15. **Diagonal Traversal of a Binary Tree**
-
-![img_1.png](img_1.png)
-
-**Output**: 8 10 14 3 6 7 13 1 4
-
-- Use a queue to traverse nodes diagonally. For each node, enqueue its left child and move to the right child.
-- To find the diagonal view of a binary tree, we perform a recursive  traversal that stores nodes in a hashmap based on their diagonal levels. Left children increase the diagonal level, while right children remain on the same level.
-
-### 16. **Boundary Traversal of a Binary Tree**![img.png](img.png)
-
-- Traverse the left boundary, then leaf nodes, then the right boundary (in reverse order).
-
-### 9. Morris Traversal Pattern (Advanced)
-
-**Use Cases:** O(1) space traversal using threading
-
-**💡 Key Insight:** Temporarily modify tree to create threads back to inorder successor. Restore structure while traversing. O(1) extra space!
-
-**Time:** O(n) | **Space:** O(1)
-
-#### Template:
+## **📌 Height of Tree (BFS)**
 
 ```python
-def inorderTraversal_Morris(root):
+from collections import deque
+
+def height(root):
+    if not root:
+        return 0
+  
+    q = deque([root])
+    h = 0
+
+    while q:
+        for _ in range(len(q)):
+            node = q.popleft()
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+        h += 1
+  
+    return h
+```
+
+---
+
+## **📌 Level with Maximum Sum**
+
+```python
+from collections import deque
+
+def level_with_max_sum(root):
+    if not root: return -1
+
+    q = deque([root])
+    max_sum = float('-inf')
+    max_level = 0
+    level = 0
+
+    while q:
+        curr_sum = 0
+
+        for _ in range(len(q)):
+            node = q.popleft()
+            curr_sum += node.val
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+  
+        if curr_sum > max_sum:
+            max_sum = curr_sum
+            max_level = level
+  
+        level += 1
+
+    return max_level
+```
+
+---
+
+## **📌 Deepest Node**
+
+```python
+def deepest_node(root):
+    from collections import deque
+    q = deque([root])
+    node = None
+
+    while q:
+        node = q.popleft()
+        if node.left: q.append(node.left)
+        if node.right: q.append(node.right)
+
+    return node
+```
+
+---
+
+## **📌 Zigzag Level Order Traversal**
+
+```python
+from collections import deque
+
+def zigzag(root):
+    if not root: return []
+    q = deque([root])
+    result = []
+    left_to_right = True
+
+    while q:
+        level = deque()
+        for _ in range(len(q)):
+            node = q.popleft()
+
+            if left_to_right:
+                level.append(node.val)
+            else:
+                level.appendleft(node.val)
+
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+
+        result.append(list(level))
+        left_to_right = not left_to_right
+
+    return result
+```
+
+---
+
+# 🟩 **3. Diagonal Traversal**
+
+```python
+from collections import deque
+
+class Solution:
+    def diagonal(self, root):
+        if not root:
+            return []
+
+        q = deque([(root, 0)])
+        diag = {}  # dictionary: index → list of values
+
+        while q:
+            node, index = q.popleft()
+
+            # travel rightwards on the same diagonal
+            while node:
+                if index not in diag:
+                    diag[index] = []
+                diag[index].append(node.data)
+
+                # left child → next diagonal
+                if node.left:
+                    q.append((node.left, index + 1))
+
+                # move right → same diagonal
+                node = node.right
+
+        # collect result in order of diagonal indices
+        result = []
+        for i in sorted(diag.keys()):
+            result.extend(diag[i])
+
+        return result
+
+```
+
+---
+
+# 🟫 **4. Boundary Traversal Template**
+
+```python
+def boundary_traversal(root):
+    if not root:
+        return []
+  
+    result = []
+
+    def is_leaf(node):
+        return not node.left and not node.right
+
+    # left boundary (excluding leaves)
+    def add_left(node):
+        while node:
+            if not is_leaf(node):
+                result.append(node.val)
+            node = node.left if node.left else node.right
+
+    # leaves
+    def add_leaves(node):
+        if not node:
+            return
+        if is_leaf(node):
+            result.append(node.val)
+        add_leaves(node.left)
+        add_leaves(node.right)
+
+    # right boundary (store reverse)
+    def add_right(node):
+        temp = []
+        while node:
+            if not is_leaf(node):
+                temp.append(node.val)
+            node = node.right if node.right else node.left
+        result.extend(temp[::-1])
+
+    if not is_leaf(root):
+        result.append(root.val)
+
+    add_left(root.left)
+    add_leaves(root)
+    add_right(root.right)
+
+    return result
+```
+
+---
+
+# 🟧 **5. Morris Traversal (O(1) Space)**
+
+**Inorder Traversal without stack/recursion**
+
+```python
+def morris_inorder(root):
     result = []
     curr = root
-  
+
     while curr:
         if not curr.left:
             result.append(curr.val)
             curr = curr.right
         else:
-            # Find predecessor
             pred = curr.left
             while pred.right and pred.right != curr:
                 pred = pred.right
-  
+
             if not pred.right:
-                # Create thread
                 pred.right = curr
                 curr = curr.left
             else:
-                # Remove thread
                 pred.right = None
                 result.append(curr.val)
                 curr = curr.right
   
     return result
 ```
-
-**Common Problems:**
-
-- Inorder Traversal (94)
-- Kth Smallest in BST (230)
-- Recover BST (99)
 
 ---

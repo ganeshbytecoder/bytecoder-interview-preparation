@@ -3,34 +3,22 @@
 a tree is a data structure similar to a linked list but instead of each node pointing simply to the next node in a linear fashion, each node
 points to a number of nodes. it's non-linear and non-cyclic data structure. we will study binary tree, BST( Binary Search Tree) and Nary Tree
 
-```java
-public static class Node {
-    int data;
-    Node first_child;
-    Node second_child;
-    Node third_child;
-    .
-    .
-    .
-    Node nth_child;
-}
-
-```
-
-* In tree ADT, the order of  the elements  is not important. tree is a graph with special conditions
-* **Level / depth of a node:** The count of edges on the path from the root node to that node. The root node has level 0.
-* **Height of a node :** is the length of the path from that node to the deepest node.
-* **Height of tree :** is the max height among all the nodes
-
 ```python
-# Common Helpers (for local testing)
-# LeetCode already provides these; included here for local testing only.
-
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
+
+class TreeNode:
+    def __init__(self, val=0,first=None,second=None, third = None ):
+        self.val = val
+        self.first = first
+        self.second = second
+	self.third = third
+
+
+
 
 
 class Node:  # for next pointers / special problems
@@ -41,54 +29,13 @@ class Node:  # for next pointers / special problems
         self.next = next
         self.parent = parent
         self.random = random
+
 ```
 
----
-
-## 🎨 Essential Tree Patterns for FAANG
-
----
-
-### 8. Tree Construction Pattern
-
-**Use Cases:** Building tree from traversals or other representations
-
-**💡 Key Insight:** Inorder + Preorder/Postorder uniquely determines tree. Preorder gives root, inorder splits left/right. Use hashmap for O(1) lookup.
-
-#### Template:
-
-```python
-def buildTree(preorder, inorder):
-    if not preorder:
-        return None
-  
-    pos = {v: i for i, v in enumerate(inorder)}
-    pre_idx = 0
-  
-    def build(left, right):
-        nonlocal pre_idx
-        if left > right:
-            return None
-  
-        root_val = preorder[pre_idx]
-        pre_idx += 1
-        root = TreeNode(root_val)
-  
-        mid = pos[root_val]
-        root.left = build(left, mid - 1)
-        root.right = build(mid + 1, right)
-  
-        return root
-  
-    return build(0, len(inorder) - 1)
-```
-
-**Common Problems:**
-
-- Construct from Preorder & Inorder (105)
-- Construct from Postorder & Inorder (106)
-- BST from Preorder (1008)
-- Generate Unique BSTs (95)
+* In tree ADT, the order of  the elements  is not important. tree is a graph with special conditions
+* **Level / depth of a node:** The count of edges on the path from the root node to that node. The root node has level 0.
+* **Height of a node :** is the length of the path from that node to the deepest node.
+* **Height of tree :** is the max height among all the nodes
 
 ---
 
@@ -536,6 +483,41 @@ public class BinaryTree implements Tree {
 
 ---
 
+### Tree Construction Pattern
+
+**Use Cases:** Building tree from traversals or other representations
+
+**💡 Key Insight:** Inorder + Preorder/Postorder uniquely determines tree. Preorder gives root, inorder splits left/right. Use hashmap for O(1) lookup.
+
+#### Template:
+
+```python
+class Solution:
+
+    def createTree(self, preorder, mapper, l, r):
+        if(l>r):
+            return None
+        node = TreeNode(preorder.pop(0))
+        mid = mapper.get(node.val)
+        node.left = self.createTree(preorder, mapper, l, mid-1)
+        node.right = self.createTree(preorder, mapper, mid+1 , r)
+        return node
+
+
+
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+
+        mapper = {v: i for i, v in enumerate(inorder)}  
+        return self.createTree(preorder, mapper,0, len(preorder)-1)
+```
+
+**Common Problems:**
+
+- Construct from Preorder & Inorder (105)
+- Construct from Postorder & Inorder (106)
+- BST from Preorder (1008)
+- Generate Unique BSTs (95)
+
 # Problems
 
 https://leetcode.com/problems/delete-nodes-and-return-forest/description/
@@ -608,6 +590,66 @@ Flatten tree to linked list in preorder.
 
 **Trick:** Process in reverse preorder, maintain prev pointer.
 
+```python
+class Solution:
+
+    def dfs(self, node):
+        if node is None:
+            return
+  
+        print(node.val)
+
+        # Save original children BEFORE modifying the node
+        left = node.left
+        right = node.right
+
+        # Remove left pointer (linked-list rule)
+        node.left = None
+
+        # Attach this node to the result list
+        self.last.right = node
+        self.last = node
+
+        # Preorder: node → left → right
+        self.dfs(left)
+        self.dfs(right)
+
+    def flatten(self, root):
+        self.dummy = TreeNode(-1)
+        self.last = self.dummy
+
+        self.dfs(root)
+
+        return self.dummy.right
+
+class Solution:
+
+    def dfs(self, node):
+        if not node:
+            return
+
+        # inorder left
+        self.dfs(node.left)
+
+        # process root
+        node.left = None
+        if self.prev:
+            self.prev.right = node
+        else:
+            self.head = node
+        self.prev = node
+
+        # inorder right
+        self.dfs(node.right)
+
+    def flatten_inorder(self, root):
+        self.prev = None
+        self.head = None
+        self.dfs(root)
+        return self.head
+
+```
+
 ### 10. BST Iterator (LC 173)
 
 **Difficulty:** Medium | **Pattern:** BST, Stack
@@ -626,13 +668,16 @@ Find longest consecutive sequence path.
 
 **Time:** O(n) | **Space:** O(h)
 
-### 24. Smallest Subtree with Deepest Nodes (LC 865)
 
-**Difficulty:** Medium | **Pattern:** DFS, Postorder
+### 32. Clone Tree with Random Pointer (LC 1485)
 
-Find LCA of deepest leaves.
+**Difficulty:** Medium | **Pattern:** DFS, HashMap
 
-**Time:** O(n) | **Space:** O(h)
+Deep copy tree with random pointers.
+
+**Time:** O(n) | **Space:** O(n)
+
+
 
 ### 21. Boundary of Binary Tree (LC 545)
 
@@ -682,13 +727,55 @@ Check if given edges form valid binary tree.
 
 **Time:** O(n) | **Space:** O(n)
 
-### 32. Clone Tree with Random Pointer (LC 1485)
 
-**Difficulty:** Medium | **Pattern:** DFS, HashMap
+## **Correct Conditions for a Valid Binary Tree**
 
-Deep copy tree with random pointers.
+1. **Exactly one root** — i.e., exactly one node with no parent.
+2. **No node has more than one parent** — you already check this.
+3. **The structure forms a single connected tree**
 
-**Time:** O(n) | **Space:** O(n)
+```python
+class Solution:
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        parent = [-1] * n
+        left = leftChild
+        right = rightChild
+        # Step 1: assign parents; check no node has two parents
+        for i in range(n):
+            if left[i] != -1:
+                if parent[left[i]] != -1:
+                    return False
+                parent[left[i]] = i
+
+            if right[i] != -1:
+                if parent[right[i]] != -1:
+                    return False
+                parent[right[i]] = i
+        # Step 2: find root (exactly one node must have no parent)
+        roots = [i for i in range(n) if parent[i] == -1]
+        if len(roots) != 1: 
+            return False
+
+        root = roots[0]
+
+        # Step 3: BFS/DFS from root to check connectivity
+        visited = set()
+        stack = [root]
+
+        while stack:
+            node = stack.pop()
+            if node in visited:
+                return False  # cycle detected
+            visited.add(node)
+
+            if left[node] != -1:
+                stack.append(left[node])
+            if right[node] != -1:
+                stack.append(right[node])
+
+        return len(visited) == n   
+
+```
 
 ### 33. Diameter of N-Ary Tree (LC 1522)
 

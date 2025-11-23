@@ -170,26 +170,26 @@ def lowest_common_ancestor_ii(root: Optional[TreeNode], p: TreeNode, q: TreeNode
   
     def dfs(node: Optional[TreeNode]) -> Optional[TreeNode]:
         nonlocal found_count
-    
+  
         if not node:
             return None
-    
+  
         # Search in subtrees
         left = dfs(node.left)
         right = dfs(node.right)
-    
+  
         # Check if current node is p or q
         is_target = (node == p or node == q)
         if is_target:
             found_count += 1
-    
+  
         # Return LCA logic
         if is_target and (left or right):
             return node
-    
+  
         if left and right:
             return node
-    
+  
         return node if is_target else (left or right)
   
     result = dfs(root)
@@ -312,14 +312,14 @@ def lowest_common_ancestor_iv(root: Optional[TreeNode], nodes: list[TreeNode]) -
     def dfs(node: Optional[TreeNode]) -> Optional[TreeNode]:
         if not node or node in nodes_set:
             return node
-    
+  
         left = dfs(node.left)
         right = dfs(node.right)
-    
+  
         # Both subtrees found nodes → current is LCA
         if left and right:
             return node
-    
+  
         return left or right
   
     return dfs(root)
@@ -362,14 +362,14 @@ def subtree_with_all_deepest(root: Optional[TreeNode]) -> Optional[TreeNode]:
         """
         if not node:
             return (None, 0)
-    
+  
         left_lca, left_depth = dfs(node.left)
         right_lca, right_depth = dfs(node.right)
-    
+  
         # Same depth on both sides → current node is LCA
         if left_depth == right_depth:
             return (node, left_depth + 1)
-    
+  
         # Return deeper side
         if left_depth > right_depth:
             return (left_lca, left_depth + 1)
@@ -419,20 +419,20 @@ def find_distance(root: Optional[TreeNode], p: TreeNode, q: TreeNode) -> int:
         """Find distance from node to target."""
         if not node:
             return -1
-    
+  
         if node == target:
             return 0
-    
+  
         # Search in left subtree
         left_dist = distance_from_node(node.left, target)
         if left_dist != -1:
             return left_dist + 1
-    
+  
         # Search in right subtree
         right_dist = distance_from_node(node.right, target)
         if right_dist != -1:
             return right_dist + 1
-    
+  
         return -1
   
     # Calculate distance from LCA to both nodes
@@ -457,25 +457,25 @@ def find_distance_optimized(root: Optional[TreeNode], p: TreeNode, q: TreeNode) 
         Returns: (found_target, distance_from_lca)
         """
         nonlocal result
-    
+  
         if not node:
             return (False, 0)
-    
+  
         left_found, left_dist = dfs(node.left)
         right_found, right_dist = dfs(node.right)
-    
+  
         is_target = (node == p or node == q)
-    
+  
         # Both subtrees found targets
         if left_found and right_found:
             result = left_dist + right_dist
             return (True, 0)
-    
+  
         # One subtree found, current is other target
         if (left_found or right_found) and is_target:
             result = max(left_dist, right_dist)
             return (True, 0)
-    
+  
         # Pass up the distance
         if left_found:
             return (True, left_dist + 1)
@@ -483,7 +483,7 @@ def find_distance_optimized(root: Optional[TreeNode], p: TreeNode, q: TreeNode) 
             return (True, right_dist + 1)
         if is_target:
             return (True, 0)
-    
+  
         return (False, 0)
   
     dfs(root)
@@ -528,16 +528,16 @@ def find_path(root: Optional[TreeNode], p: TreeNode, q: TreeNode) -> list[TreeNo
         """Build path from node to target."""
         if not node:
             return False
-    
+  
         path.append(node)
-    
+  
         if node == target:
             return True
-    
+  
         if (find_path_to_target(node.left, target, path) or
             find_path_to_target(node.right, target, path)):
             return True
-    
+  
         path.pop()
         return False
   
@@ -602,30 +602,30 @@ def lca_template(root: Optional[TreeNode],
   
     def dfs(node: Optional[TreeNode]) -> Optional[TreeNode]:
         nonlocal found_count
-    
+  
         # Base case
         if not node:
             return None
-    
+  
         # Check if current node is target
         is_target = node in targets
         if is_target:
             found_count += 1
-    
+  
         # Recurse on subtrees
         left = dfs(node.left)
         right = dfs(node.right)
-    
+  
         # LCA logic: multiple return patterns
-    
+  
         # Pattern 1: Current node is target AND found in subtree
         if is_target and (left or right):
             return node
-    
+  
         # Pattern 2: Both subtrees found targets
         if left and right:
             return node
-    
+  
         # Pattern 3: Return current if target, else propagate subtree result
         return node if is_target else (left or right)
   
@@ -781,3 +781,13 @@ print(subtree_with_all_deepest(root).val)              # 2
 3. Current node is target → return it
 
 Then walk through a concrete example to show how values bubble up!
+
+
+
+### 24. Smallest Subtree with Deepest Nodes (LC 865)
+
+**Difficulty:** Medium | **Pattern:** DFS, Postorder
+
+Find LCA of deepest leaves.
+
+**Time:** O(n) | **Space:** O(h)
